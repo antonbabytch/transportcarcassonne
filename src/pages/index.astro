@@ -1,0 +1,390 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Header from '../components/Header.astro';
+import Footer from '../components/Footer.astro';
+import Hero from '../components/Hero.astro';
+import ServiceCard from '../components/ServiceCard.astro';
+import CityCard from '../components/CityCard.astro';
+import QuoteForm from '../components/QuoteForm.astro';
+import CTA from '../components/CTA.astro';
+import CalculatorPlaceholder from '../components/CalculatorPlaceholder.astro';
+import SchemaLocalBusiness from '../components/SchemaLocalBusiness.astro';
+import { SITE } from '../data/site.config';
+import { SERVICES } from '../data/services';
+import { CITIES } from '../data/cities';
+
+const title = 'Déménagement Carcassonne | TransDéménage — Devis Gratuit';
+const description = `Déménageur professionnel à Carcassonne et dans l'Aude. Déménagement local, longue distance, transport piano, évacuation déchets. 2 fourgons jusqu'à 20 m³. Devis gratuit sous 2h. ${SITE.phoneDisplay}`;
+
+const stats = [
+  { value: '2', label: 'Fourgons', sub: '12 et 20 m³' },
+  { value: '50 km', label: 'Zone', sub: 'autour de Carcassonne' },
+  { value: '6j/7', label: 'Disponibilité', sub: 'Lun–Sam 8h–19h' },
+  { value: '100%', label: 'Assurance', sub: 'incluse jusqu\'à 50 000 €' },
+];
+
+const whyUs = [
+  { icon: '📍', title: 'Équipe locale', desc: 'Basés à Carcassonne, nous connaissons l\'Aude mieux que quiconque.' },
+  { icon: '💶', title: 'Prix transparent', desc: 'Devis détaillé par écrit, sans surprise ni frais cachés le jour J.' },
+  { icon: '🛡️', title: 'Assurance incluse', desc: 'Couverture jusqu\'à 50 000 € incluse dans tous nos déménagements.' },
+  { icon: '⚡', title: 'Réactivité', desc: 'Réponse sous 2h à votre devis, intervention possible sous 48h.' },
+];
+
+const steps = [
+  { num: '01', title: 'Demandez un devis', desc: 'Remplissez le formulaire ou appelez-nous. Devis sous 2h, gratuit et sans engagement.' },
+  { num: '02', title: 'Visite ou inventaire', desc: 'Nous évaluons le volume à transporter pour vous proposer le meilleur tarif.' },
+  { num: '03', title: 'Jour du déménagement', desc: 'Notre équipe arrive à l\'heure, emballe si besoin et charge avec soin.' },
+  { num: '04', title: 'Livraison & installation', desc: 'Livraison à l\'adresse convenue, remontage des meubles si souhaité.' },
+];
+
+const testimonials = [
+  { name: 'Marie L.', city: 'Carcassonne', text: 'Équipe professionnelle, ponctuelle et très soigneuse avec nos affaires. Je recommande sans hésiter !', stars: 5 },
+  { name: 'Thomas R.', city: 'Limoux', text: 'Déménagement de Limoux vers Toulouse impeccable. Prix correct, aucun dommage, personnel sympathique.', stars: 5 },
+  { name: 'Sophie M.', city: 'Narbonne', text: 'Transport de piano réalisé avec expertise. L\'instrument est arrivé en parfait état. Merci !', stars: 5 },
+];
+
+const faqs = [
+  { q: 'Combien coûte un déménagement à Carcassonne ?', a: 'Un déménagement local (≤ 50 km) commence à 450 € pour un studio et 650 € pour un T2. Le prix exact dépend du volume, de l\'étage et des options choisies. Devis gratuit sous 2h.' },
+  { q: 'Intervenez-vous hors de Carcassonne ?', a: `Oui, nous intervenons dans un rayon de ${SITE.serviceRadius} km autour de Carcassonne : Limoux, Castelnaudary, Lézignan-Corbières, Narbonne, Trèbes, Bram et environs. Nous réalisons aussi des déménagements longue distance vers toute la France.` },
+  { q: 'Proposez-vous l\'emballage des cartons ?', a: 'Oui, nous proposons le service d\'emballage complet (matériel + main d\'œuvre) en option, à partir de 120 € pour les matériaux et 40 €/h ou 280 € au forfait pour la main d\'œuvre.' },
+  { q: 'Avez-vous une assurance pour les objets transportés ?', a: 'Oui, une assurance grand standing couvrant jusqu\'à 50 000 € est incluse dans tous nos déménagements, sans supplément.' },
+  { q: 'Comment obtenir un devis ?', a: 'Remplissez le formulaire sur cette page ou appelez-nous directement au ' + SITE.phoneDisplay + '. Vous recevrez une réponse sous 2h (Lun–Sam, 8h–19h).' },
+];
+---
+
+<BaseLayout title={title} description={description}>
+  <SchemaLocalBusiness slot="head" />
+  <Header />
+
+  <!-- HERO -->
+  <Hero
+    badge="Déménageur professionnel · Carcassonne"
+    title="Déménagement &amp; Transport<br/><span class='highlight'>à Carcassonne et dans l'Aude</span>"
+    subtitle="2 fourgons jusqu'à 20 m³, équipe locale, assurance incluse. Devis gratuit sous 2h."
+    ctaPrimary={{ href: '/contact', label: 'Devis gratuit →' }}
+    ctaSecondary={{ href: `tel:${SITE.phone}`, label: `📞 ${SITE.phoneDisplay}` }}
+    phone={SITE.phone}
+    phoneDisplay={SITE.phoneDisplay}
+  />
+
+  <!-- STATS -->
+  <section class="section stats-section">
+    <div class="container stats-grid">
+      {stats.map(s => (
+        <div class="stat-item">
+          <div class="stat-value">{s.value}</div>
+          <div class="stat-label">{s.label}</div>
+          <div class="stat-sub">{s.sub}</div>
+        </div>
+      ))}
+    </div>
+  </section>
+
+  <!-- SERVICES -->
+  <section class="section section--alt">
+    <div class="container">
+      <div class="section-header">
+        <span class="section-label">Nos prestations</span>
+        <h2 class="section-title">Tous vos besoins de transport</h2>
+        <p class="section-subtitle">Du déménagement local au transport international, nous avons la solution adaptée.</p>
+      </div>
+      <div class="grid-3">
+        {SERVICES.map(s => <ServiceCard {...s} />)}
+      </div>
+    </div>
+  </section>
+
+  <!-- WHY US -->
+  <section class="section">
+    <div class="container why-layout">
+      <div class="why-left">
+        <span class="section-label">Pourquoi nous</span>
+        <h2 class="section-title">Le choix de la sérénité</h2>
+        <p class="section-subtitle">
+          TransDéménage Carcassonne, c'est une équipe locale qui traite vos affaires comme les siennes.
+        </p>
+        <a href="/a-propos" class="btn btn--outline" style="margin-top:28px">En savoir plus →</a>
+      </div>
+      <div class="why-right">
+        {whyUs.map(item => (
+          <div class="why-item">
+            <div class="why-icon">{item.icon}</div>
+            <div>
+              <h3 class="why-title">{item.title}</h3>
+              <p class="why-desc">{item.desc}</p>
+            </div>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- CALCULATOR + CITIES -->
+  <section class="section section--alt">
+    <div class="container zone-layout">
+      <div class="zone-left">
+        <span class="section-label">Zone d'intervention</span>
+        <h2 class="section-title">Carcassonne et environs</h2>
+        <p class="section-subtitle">Nous intervenons dans un rayon de {SITE.serviceRadius} km autour de Carcassonne.</p>
+        <div class="cities-grid">
+          {CITIES.map(c => <CityCard {...c} />)}
+        </div>
+      </div>
+      <div class="zone-right">
+        <CalculatorPlaceholder formHref="/contact" />
+      </div>
+    </div>
+  </section>
+
+  <!-- HOW IT WORKS -->
+  <section class="section">
+    <div class="container">
+      <div class="section-header" style="text-align:center;margin-bottom:56px">
+        <span class="section-label">Simple et rapide</span>
+        <h2 class="section-title">Comment ça marche</h2>
+      </div>
+      <div class="steps-grid">
+        {steps.map(step => (
+          <div class="step-item">
+            <div class="step-num">{step.num}</div>
+            <h3 class="step-title">{step.title}</h3>
+            <p class="step-desc">{step.desc}</p>
+          </div>
+        ))}
+      </div>
+      <div style="text-align:center;margin-top:48px">
+        <a href="/comment-ca-marche" class="btn btn--outline">Voir le processus complet →</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- TESTIMONIALS -->
+  <section class="section section--alt">
+    <div class="container">
+      <div class="section-header" style="text-align:center;margin-bottom:48px">
+        <span class="section-label">Avis clients</span>
+        <h2 class="section-title">Ils nous font confiance</h2>
+      </div>
+      <div class="grid-3">
+        {testimonials.map(t => (
+          <div class="testimonial-card">
+            <div class="testimonial-stars">{'⭐'.repeat(t.stars)}</div>
+            <p class="testimonial-text">"{t.text}"</p>
+            <div class="testimonial-author">
+              <strong>{t.name}</strong>
+              <span>{t.city}</span>
+            </div>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- FAQ -->
+  <section class="section">
+    <div class="container">
+      <div class="section-header" style="text-align:center;margin-bottom:48px">
+        <span class="section-label">FAQ</span>
+        <h2 class="section-title">Questions fréquentes</h2>
+      </div>
+      <div class="faq-list">
+        {faqs.map(faq => (
+          <details class="faq-item">
+            <summary class="faq-question">{faq.q}</summary>
+            <p class="faq-answer">{faq.a}</p>
+          </details>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <QuoteForm title="Demandez votre devis gratuit" subtitle="Réponse sous 2h · Lun-Sam 8h-19h" />
+
+  <CTA title="Prêt à déménager ?" subtitle="Contactez-nous dès aujourd'hui pour un devis gratuit et sans engagement." />
+
+  <Footer />
+</BaseLayout>
+
+<style>
+  /* Stats */
+  .stats-section { padding: 48px 0; background: var(--color-navy); }
+  .stats-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 0;
+    text-align: center;
+  }
+  .stat-item {
+    padding: 20px;
+    border-right: 1px solid rgba(255,255,255,.12);
+  }
+  .stat-item:last-child { border-right: none; }
+  .stat-value {
+    font-family: var(--font-display);
+    font-size: clamp(1.8rem, 4vw, 2.6rem);
+    font-weight: 700;
+    color: var(--color-accent);
+    line-height: 1;
+  }
+  .stat-label {
+    font-size: .9rem;
+    font-weight: 600;
+    color: white;
+    margin: 4px 0 2px;
+  }
+  .stat-sub { font-size: .75rem; color: rgba(255,255,255,.55); }
+
+  /* Section header */
+  .section-header { margin-bottom: 48px; }
+
+  /* Why us */
+  .why-layout {
+    display: grid;
+    grid-template-columns: 1fr 1.4fr;
+    gap: 80px;
+    align-items: center;
+  }
+  .why-right { display: flex; flex-direction: column; gap: 24px; }
+  .why-item { display: flex; gap: 20px; align-items: flex-start; }
+  .why-icon {
+    font-size: 1.8rem;
+    width: 52px;
+    height: 52px;
+    background: rgba(234,125,58,.1);
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+  }
+  .why-title {
+    font-family: var(--font-sans);
+    font-size: 1rem;
+    font-weight: 700;
+    color: var(--color-navy);
+    margin-bottom: 4px;
+  }
+  .why-desc { font-size: .9rem; color: var(--color-text-light); line-height: 1.5; }
+
+  /* Zone */
+  .zone-layout {
+    display: grid;
+    grid-template-columns: 1fr 340px;
+    gap: 64px;
+    align-items: start;
+  }
+  .cities-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+    margin-top: 28px;
+  }
+
+  /* Steps */
+  .steps-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 32px;
+    position: relative;
+  }
+  .steps-grid::before {
+    content: '';
+    position: absolute;
+    top: 30px;
+    left: calc(12.5% + 20px);
+    right: calc(12.5% + 20px);
+    height: 2px;
+    background: var(--color-border);
+  }
+  .step-item { text-align: center; }
+  .step-num {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 56px;
+    height: 56px;
+    border-radius: 50%;
+    background: var(--color-navy);
+    color: white;
+    font-size: 1rem;
+    font-weight: 700;
+    margin: 0 auto 16px;
+    position: relative;
+    z-index: 1;
+  }
+  .step-title {
+    font-family: var(--font-sans);
+    font-size: 1rem;
+    font-weight: 700;
+    color: var(--color-navy);
+    margin-bottom: 8px;
+  }
+  .step-desc { font-size: .85rem; color: var(--color-text-light); line-height: 1.5; }
+
+  /* Testimonials */
+  .testimonial-card {
+    background: var(--color-white);
+    border: 1.5px solid var(--color-border);
+    border-radius: var(--radius-lg);
+    padding: 28px 24px;
+  }
+  .testimonial-stars { font-size: 1rem; margin-bottom: 14px; }
+  .testimonial-text {
+    font-size: .95rem;
+    line-height: 1.65;
+    color: var(--color-text);
+    margin-bottom: 16px;
+    font-style: italic;
+  }
+  .testimonial-author { display: flex; flex-direction: column; gap: 2px; }
+  .testimonial-author strong { font-size: .9rem; color: var(--color-navy); }
+  .testimonial-author span { font-size: .8rem; color: var(--color-text-light); }
+
+  /* FAQ */
+  .faq-list { max-width: 800px; margin: 0 auto; display: flex; flex-direction: column; gap: 8px; }
+  .faq-item {
+    background: var(--color-white);
+    border: 1.5px solid var(--color-border);
+    border-radius: var(--radius);
+    overflow: hidden;
+  }
+  .faq-question {
+    padding: 20px 24px;
+    font-weight: 600;
+    font-size: .95rem;
+    color: var(--color-navy);
+    cursor: pointer;
+    list-style: none;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  .faq-question::-webkit-details-marker { display: none; }
+  .faq-question::after {
+    content: '+';
+    font-size: 1.2rem;
+    color: var(--color-accent);
+    flex-shrink: 0;
+  }
+  details[open] .faq-question::after { content: '−'; }
+  .faq-answer {
+    padding: 0 24px 20px;
+    font-size: .9rem;
+    color: var(--color-text-light);
+    line-height: 1.65;
+  }
+
+  @media (max-width: 900px) {
+    .stats-grid { grid-template-columns: repeat(2, 1fr); }
+    .stat-item:nth-child(2) { border-right: none; }
+    .why-layout { grid-template-columns: 1fr; gap: 40px; }
+    .zone-layout { grid-template-columns: 1fr; }
+    .steps-grid { grid-template-columns: 1fr 1fr; }
+    .steps-grid::before { display: none; }
+  }
+  @media (max-width: 600px) {
+    .stats-grid { grid-template-columns: 1fr 1fr; }
+    .cities-grid { grid-template-columns: 1fr; }
+    .steps-grid { grid-template-columns: 1fr; }
+  }
+</style>

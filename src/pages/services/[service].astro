@@ -1,0 +1,483 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import Header from '../../components/Header.astro';
+import Footer from '../../components/Footer.astro';
+import PhotoPlaceholder from '../../components/PhotoPlaceholder.astro';
+import QuoteForm from '../../components/QuoteForm.astro';
+import CTA from '../../components/CTA.astro';
+import SchemaLocalBusiness from '../../components/SchemaLocalBusiness.astro';
+import { SERVICES } from '../../data/services';
+import { SITE } from '../../data/site.config';
+
+export function getStaticPaths() {
+  return SERVICES.map(s => ({ params: { service: s.slug }, props: { service: s } }));
+}
+
+const { service } = Astro.props;
+
+type ServiceContent = {
+  title: string;
+  metaTitle: string;
+  metaDescription: string;
+  body: string[];
+  included: string[];
+  notIncluded: string[];
+  faqs: { q: string; a: string }[];
+  image: string;
+};
+
+const serviceContent: Record<string, ServiceContent> = {
+  'demenagement-local': {
+    title: 'Déménagement local à Carcassonne et dans l\'Aude',
+    metaTitle: 'Déménagement local Carcassonne | À partir de 450 € | TransDéménage',
+    metaDescription: `Déménagement local professionnel à Carcassonne et dans l'Aude (rayon 50 km). Studio à partir de 450 €. Devis gratuit sous 2h. Équipe locale, assurance incluse. ${SITE.phoneDisplay}`,
+    body: [
+      `Vous déménagez à Carcassonne ou dans les environs ? TransDéménage Carcassonne est votre partenaire de confiance pour tous vos déménagements locaux dans un rayon de 50 kilomètres autour de Carcassonne. Forts de notre expérience sur le terrain audois, nous connaissons parfaitement les particularités de la région : les ruelles médiévales de la Cité, les immeubles du centre-ville sans ascenseur, les maisons de village avec accès difficile.`,
+      `Notre service de déménagement local couvre l'ensemble du bassin carcassonnais : Trèbes, Pezens, Alzonne, Capendu, Bram, Lézignan-Corbières, Limoux, Castelnaudary et toute la plaine audoise. Avec nos deux fourgons de 12 m³ et 20 m³, nous sommes équipés pour déménager aussi bien un studio que une grande maison.`,
+      `Chaque déménagement local commence par un devis gratuit et détaillé. Nous évaluons le volume de vos affaires, les contraintes d'accès (étage, monte-meuble nécessaire, distance de stationnement) et vous proposons un tarif fixe et transparent. Pas de mauvaise surprise le jour J.`,
+      `Le jour du déménagement, notre équipe arrive à l'heure convenue avec tout le matériel nécessaire : couvertures de protection, sangles de levage, matériel de calage. Nous protégeons soigneusement vos meubles et appareils électroménagers avant de les charger dans le fourgon. Tout est arrimé correctement pour éviter tout mouvement pendant le transport.`,
+      `À l'arrivée, nous déchargeons et déposons vos affaires dans les pièces indiquées. Sur demande, nous proposons également le remontage des meubles démontés. Notre assurance grand standing couvrant jusqu'à 50 000 € est incluse dans le prix, pour votre tranquillité d'esprit.`,
+      `Que vous soyez locataire ou propriétaire, que vous déménagiez d'un appartement ou d'une maison, notre équipe s'adapte à votre situation et à vos besoins spécifiques. Nous intervenons du lundi au samedi, de 8h à 19h, et pouvons planifier votre déménagement sous 48h selon disponibilité.`,
+    ],
+    included: [
+      'Déchargement et chargement du fourgon',
+      'Protection des meubles (couvertures)',
+      'Transport sécurisé jusqu\'à destination',
+      'Déchargement et mise en place',
+      'Assurance grand standing jusqu\'à 50 000 €',
+      'Devis détaillé écrit',
+    ],
+    notIncluded: [
+      'Emballage des cartons (option payante)',
+      'Démontage/remontage des meubles (option payante)',
+      'Monte-meuble si nécessaire (sur devis)',
+      'Garde-meuble (option payante)',
+    ],
+    faqs: [
+      { q: 'Quel est le délai pour réserver un déménagement local ?', a: 'Nous pouvons intervenir sous 48h selon disponibilité. Pour les périodes chargées (été, fin de mois), nous recommandons de réserver 2 à 3 semaines à l\'avance.' },
+      { q: 'Proposez-vous des créneaux le week-end ?', a: 'Oui, nous intervenons du lundi au samedi de 8h à 19h. Le dimanche est possible sur demande spéciale et sous réserve de disponibilité.' },
+      { q: 'Comment est calculé le prix d\'un déménagement local ?', a: 'Le prix est calculé en fonction du volume à déménager (m³), de la distance, des difficultés d\'accès (étages, portage), et des options choisies (emballage, démontage). Nous vous donnons un prix fixe avant le déménagement.' },
+    ],
+    image: 'demenagement-action.jpg',
+  },
+  'demenagement-longue-distance': {
+    title: 'Déménagement longue distance depuis Carcassonne',
+    metaTitle: 'Déménagement longue distance Carcassonne | Toute la France | TransDéménage',
+    metaDescription: `Déménagement longue distance depuis Carcassonne vers toute la France. Studio à partir de 950 €. Devis gratuit. Assurance incluse. TransDéménage ${SITE.phoneDisplay}`,
+    body: [
+      `Vous quittez l'Aude pour vous installer ailleurs en France ? TransDéménage Carcassonne organise et réalise votre déménagement longue distance avec le même professionnalisme que pour un déménagement local. Paris, Lyon, Bordeaux, Marseille, Toulouse, Lille, Rennes… nous livrons dans toute la France métropolitaine.`,
+      `Un déménagement longue distance demande une organisation rigoureuse. Nous planifions votre déménagement en amont pour optimiser le chargement du fourgon et garantir une livraison dans les délais convenus. Notre camion de 20 m³ est parfaitement adapté aux déménagements complets d'appartements ou de maisons vers n'importe quelle destination en France.`,
+      `Pour les grands volumes ou les logements importants, nous pouvons effectuer plusieurs voyages ou faire appel à un véhicule supplémentaire. La coordination logistique est entièrement prise en charge par notre équipe, qui s'occupe du planning de bout en bout.`,
+      `Tous nos déménagements longue distance sont couverts par notre assurance grand standing jusqu\'à 50 000 €, incluse dans le tarif. Vos objets les plus précieux (œuvres d\'art, équipements hi-fi, instruments de musique) bénéficient d\'un emballage adapté et d\'une manipulation soignée.`,
+      `Nous vous proposons également des services additionnels pour faciliter votre installation dans votre nouveau logement : emballage professionnel de vos affaires avant le départ, démontage de vos meubles à Carcassonne et remontage à destination, nettoyage de votre ancien logement (sur partenariat).`,
+      `Notre expérience des longues distances nous permet de vous proposer un tarif compétitif et transparent. Le devis est établi sur la base du volume réel, de la distance et des prestations choisies. Aucun frais caché, aucune mauvaise surprise à la livraison.`,
+    ],
+    included: [
+      'Chargement depuis Carcassonne',
+      'Transport longue distance vers destination',
+      'Déchargement et mise en place',
+      'Assurance jusqu\'à 50 000 € incluse',
+      'Suivi de votre déménagement',
+      'Devis écrit détaillé',
+    ],
+    notIncluded: [
+      'Emballage cartons (option)',
+      'Démontage/remontage (option)',
+      'Hébergement de nuit si nécessaire (sur devis)',
+      'Péages et carburant (inclus dans le devis)',
+    ],
+    faqs: [
+      { q: 'Combien de temps dure un déménagement Paris-Carcassonne ?', a: 'Le trajet Carcassonne-Paris prend environ 7h de route. En comptant le chargement et déchargement, comptez 1 à 2 jours selon le volume et les contraintes.' },
+      { q: 'Puis-je voyager dans le camion ?', a: 'Non, nos véhicules ne sont pas aménagés pour le transport de personnes. Vous voyagez séparément et nous retrouvez à destination.' },
+      { q: 'Proposez-vous le garde-meuble si les dates ne coïncident pas ?', a: 'Oui, nous pouvons stocker vos affaires dans notre entrepôt à partir de 80 €/mois pour 5 m³ si votre nouveau logement n\'est pas encore disponible.' },
+    ],
+    image: 'fourgon-20m3.jpg',
+  },
+  'demenagement-international': {
+    title: 'Déménagement international depuis Carcassonne',
+    metaTitle: 'Déménagement international Carcassonne | Espagne, Italie, Belgique | TransDéménage',
+    metaDescription: `Déménagement international depuis Carcassonne : Espagne, Italie, Belgique et Europe. Sur devis à partir de 2 500 €. TransDéménage ${SITE.phoneDisplay}`,
+    body: [
+      `Vous déménagez à l\'étranger depuis Carcassonne ? TransDéménage Carcassonne propose des services de déménagement international vers les principaux pays européens : Espagne, Italie, Belgique, Luxembourg, Suisse, Allemagne et au-delà.`,
+      `Grâce à notre proximité avec l\'Espagne (Barcelone est à 3h de Carcassonne), nous sommes particulièrement expérimentés sur ce corridor. Que vous partiez vers Barcelone, Madrid, la Costa Brava ou les îles Baléares, nous connaissons les formalités douanières et logistiques liées à ce déménagement.`,
+      `Un déménagement international nécessite une préparation minutieuse. Nous vous accompagnons dès la phase de devis pour évaluer votre volume, identifier les contraintes spécifiques à votre destination (accès, réglementation locale, taxes éventuelles) et établir un planning réaliste.`,
+      `Tous nos déménagements internationaux sont réalisés avec nos propres véhicules et notre propre équipe, sans sous-traitance. Cela garantit la continuité de service et la responsabilité directe de notre entreprise tout au long de l\'opération.`,
+      `L\'emballage soigneux de vos affaires est particulièrement important pour les longues distances internationales. Nous utilisons des matériaux d\'emballage professionnels (cartons doubles épaisseurs, papier bulle, housses de matelas) pour protéger vos biens pendant le voyage.`,
+      `Pour les déménagements hors Union Européenne ou vers des pays avec des réglementations spécifiques, nous vous conseillons sur les formalités à accomplir (inventaire douanier, carnet ATA, attestation de déménagement) et pouvons vous mettre en relation avec des transitaires partenaires.`,
+    ],
+    included: [
+      'Transport de porte à porte',
+      'Assurance internationale incluse',
+      'Formalités douanières conseillées',
+      'Emballage professionnel recommandé',
+      'Déchargement et mise en place',
+    ],
+    notIncluded: [
+      'Taxes douanières éventuelles',
+      'Permis de stationnement (à votre charge)',
+      'Travaux d\'adaptation logement destination',
+    ],
+    faqs: [
+      { q: 'Intervenez-vous vers toute l\'Europe ?', a: 'Nous intervenons principalement vers l\'Espagne, l\'Italie, la Belgique et le Luxembourg. Pour d\'autres destinations européennes, contactez-nous : nous étudions chaque demande.' },
+      { q: 'Faut-il un inventaire douanier pour déménager en Espagne ?', a: 'Pour les ressortissants de l\'UE déménageant entre pays membres, les formalités douanières sont simplifiées. Cependant, un inventaire détaillé reste recommandé pour votre assurance.' },
+      { q: 'Quel est le délai de livraison vers l\'Espagne ?', a: 'Un déménagement vers Barcelone peut être réalisé en 1-2 jours. Vers Madrid, comptez 2-3 jours selon le volume et les conditions de circulation.' },
+    ],
+    image: 'fourgon-12m3.jpg',
+  },
+  'transport-meubles': {
+    title: 'Transport de meubles à Carcassonne et dans l\'Aude',
+    metaTitle: 'Transport meubles Carcassonne | À partir de 80 € | TransDéménage',
+    metaDescription: `Transport de meubles à Carcassonne et dans l'Aude. Un meuble, plusieurs objets, livraison. À partir de 80 €. Devis gratuit. ${SITE.phoneDisplay}`,
+    body: [
+      `Vous avez besoin de transporter un ou plusieurs meubles sans pour autant faire appel à un service de déménagement complet ? TransDéménage Carcassonne propose un service de transport de meubles à la pièce ou par lots, adapté à vos besoins précis.`,
+      `Notre service de transport de meubles est idéal dans de nombreuses situations : achat d\'un meuble chez un particulier ou en magasin, livraison d\'un meuble en cadeau, transfert de quelques objets entre deux logements, récupération d\'héritage familial, vente de meubles en ligne.`,
+      `Avec notre fourgon de 12 m³, nous sommes équipés pour transporter tout type de mobilier : armoires, canapés, tables, lits, buffets, bibliothèques, électroménager encombrant. Pour les objets de grande taille ou les quantités importantes, notre fourgon de 20 m³ prend le relais.`,
+      `Chaque meuble est soigneusement protégé avant le chargement : couvertures de déménagement, film plastique protecteur, angles de protection. Nous veillons à ce que rien ne soit abîmé pendant le transport, que ce soit une table basse achetée 50 € ou un buffet ancien de valeur.`,
+      `Notre service de transport de meubles couvre Carcassonne et les communes environnantes dans un rayon de 50 km. Pour les destinations plus lointaines, contactez-nous : nous étudions chaque demande selon les disponibilités.`,
+      `Le tarif de transport de meubles est établi selon le volume, la distance et les difficultés d\'accès (étage, portage, stationnement). À partir de 80 € pour un seul meuble en livraison locale, c\'est le service idéal quand vous n\'avez besoin que d\'un coup de main ponctuel.`,
+    ],
+    included: [
+      'Chargement et transport du meuble',
+      'Protection couvertures et film',
+      'Livraison à l\'étage si nécessaire',
+      'Déchargement et mise en place',
+      'Assurance incluse',
+    ],
+    notIncluded: [
+      'Démontage/remontage (option +25 €/meuble)',
+      'Monte-meuble (si nécessaire, sur devis)',
+      'Emballage cartons (non applicable)',
+    ],
+    faqs: [
+      { q: 'Puis-je faire transporter un seul canapé ?', a: 'Oui, c\'est exactement notre spécialité. Nous transportons dès le premier meuble, à partir de 80 € pour une livraison locale.' },
+      { q: 'Proposez-vous le démontage de meubles ?', a: 'Oui, le démontage et remontage sont disponibles en option à 25 € par meuble. Gratuit à partir de 3 meubles.' },
+      { q: 'Intervenez-vous le même jour ?', a: 'Selon nos disponibilités, une intervention le jour même ou sous 24h est possible. Appelez-nous directement pour vérifier.' },
+    ],
+    image: 'demenagement-action.jpg',
+  },
+  'transport-piano': {
+    title: 'Transport piano et objets lourds à Carcassonne',
+    metaTitle: 'Transport piano Carcassonne | Pianos, coffres-forts | TransDéménage',
+    metaDescription: `Transport piano professionnel à Carcassonne. Piano droit 350 €, piano à queue 550 €. Coffres-forts, objets lourds. Assurance incluse. ${SITE.phoneDisplay}`,
+    body: [
+      `Le transport d\'un piano est une opération délicate qui ne s\'improvise pas. Un piano droit pèse entre 200 et 250 kg, un piano à queue entre 300 et 600 kg selon le modèle. TransDéménage Carcassonne dispose de l\'équipement et du savoir-faire nécessaires pour transporter votre piano en toute sécurité.`,
+      `Notre équipe est formée aux techniques de levage et de manutention spécialisée. Nous utilisons des diables renforcés, des sangles de levage adaptées et des protections spécifiques pour les instruments de musique. Que votre piano soit droit ou à queue, nous le protégeons et le transportons avec le plus grand soin.`,
+      `La préparation est essentielle : le piano est d\'abord évalué (taille, poids, accès depuis le logement de départ et d\'arrivée). Certaines configurations nécessitent un démontage partiel ou l\'utilisation d\'un monte-meuble. Nous anticipons tous ces aspects dès le devis pour vous proposer la solution la plus adaptée.`,
+      `Au-delà des pianos, nous transportons tous les objets exceptionnellement lourds ou encombrants : coffres-forts (à partir de 250 €), statues et sculptures, équipements de sport (billards, machines de musculation), grandes céramiques, œuvres d\'art volumineuses.`,
+      `Pour les objets d\'art et les instruments de valeur, nous recommandons notre emballage premium avec protection intérieure renforcée. L\'assurance incluse dans notre tarif couvre jusqu\'à 50 000 €, ce qui vous garantit une tranquillité d\'esprit même pour les objets les plus précieux.`,
+      `Nous intervenons à Carcassonne et dans un rayon de 50 km pour le transport de pianos et objets lourds. Pour les déménagements longue distance incluant un piano, nous adaptons l\'organisation logistique en conséquence.`,
+    ],
+    included: [
+      'Évaluation technique et devis adapté',
+      'Équipement spécialisé (diable piano, sangles)',
+      'Protection complète de l\'instrument',
+      'Transport sécurisé',
+      'Assurance incluse jusqu\'à 50 000 €',
+    ],
+    notIncluded: [
+      'Monte-meuble si nécessaire (supplément)',
+      'Démontage de la queue du piano à queue (si requis)',
+      'Accord du piano après transport (à votre charge)',
+    ],
+    faqs: [
+      { q: 'Faut-il faire accorder le piano après transport ?', a: 'Il est recommandé de faire accorder un piano après un déménagement, surtout si les conditions de température et d\'humidité ont changé. Nous pouvons vous recommander un accordeur à Carcassonne.' },
+      { q: 'Combien de personnes sont nécessaires pour transporter un piano ?', a: 'Selon le type et la configuration (étages, accès), nous mobilisons 2 à 3 personnes. La sécurité de votre instrument et de nos équipes est notre priorité.' },
+      { q: 'Transportez-vous les clavecins et orgues ?', a: 'Oui, nous sommes équipés pour transporter différents types d\'instruments à clavier. Chaque cas est étudié individuellement au moment du devis.' },
+    ],
+    image: 'piano-transport.jpg',
+  },
+  'evacuation-dechets-metaux': {
+    title: 'Évacuation de déchets et métaux à Carcassonne',
+    metaTitle: 'Évacuation déchets ferraille Carcassonne | À partir de 150 € | TransDéménage',
+    metaDescription: `Évacuation de déchets encombrants, ferraille et métaux à Carcassonne et dans l'Aude. À partir de 150 €. Service rapide. ${SITE.phoneDisplay}`,
+    body: [
+      `Vous avez des encombrants à évacuer, de la ferraille à faire enlever ou des déchets à transporter vers la déchetterie ? TransDéménage Carcassonne propose un service d\'évacuation de déchets et de métaux rapide et efficace.`,
+      `Notre service d\'évacuation couvre tout type de déchets encombrants : vieux meubles, électroménager hors d\'usage, ferraille, métaux divers (aluminium, cuivre, acier), déchets de chantier non dangereux, gravats, bois et palettes.`,
+      `Nous intervenons chez les particuliers comme chez les professionnels. Que vous ayez besoin de vider une cave, un grenier, un garage ou un terrain, notre équipe se charge du chargement, du transport et de l\'élimination dans les filières appropriées.`,
+      `La valorisation des métaux est une préoccupation environnementale importante. Les métaux ferreux et non ferreux que nous collectons sont dirigés vers des centres de recyclage agréés. Cette démarche éco-responsable est intégrée dans notre fonctionnement quotidien.`,
+      `Notre tarification est transparente et basée sur le volume à évacuer et la distance. À partir de 150 € pour un enlèvement local, c\'est une solution économique par rapport à la location d\'une benne ou aux multiples allers-retours en déchetterie.`,
+      `Nous intervenons rapidement, souvent sous 48h, pour répondre aux urgences (vente immobilière, départ de locataire, nettoyage avant travaux). Appelez-nous ou remplissez le formulaire pour obtenir un devis en quelques minutes.`,
+    ],
+    included: [
+      'Chargement des déchets et ferraille',
+      'Transport vers filières adaptées',
+      'Évacuation meubles et électroménager',
+      'Ferraille et métaux divers',
+      'Déchets de chantier non dangereux',
+    ],
+    notIncluded: [
+      'Déchets dangereux (amiante, produits chimiques)',
+      'Déchets radioactifs',
+      'Véhicules hors d\'usage (VHU) — filière dédiée',
+    ],
+    faqs: [
+      { q: 'Récupérez-vous les métaux pour la revente ?', a: 'Oui, les métaux valorisables (cuivre, aluminium, acier) sont dirigés vers des centres de recyclage. Selon la quantité et la qualité des métaux, un ajustement de tarif peut être proposé.' },
+      { q: 'Intervenez-vous pour les professionnels ?', a: 'Oui, nous travaillons avec les artisans, les entreprises du bâtiment et les industries locales pour l\'évacuation régulière de déchets métalliques et encombrants.' },
+      { q: 'Vous chargez-vous du nettoyage après évacuation ?', a: 'Nous évacuons les déchets mais le nettoyage de la zone n\'est pas inclus par défaut. Nous pouvons le proposer en option sur demande.' },
+    ],
+    image: 'fourgon-12m3.jpg',
+  },
+};
+
+const content = serviceContent[service.slug];
+const pageTitle = content?.metaTitle ?? `${service.name} | TransDéménage Carcassonne`;
+const pageDescription = content?.metaDescription ?? service.description;
+---
+
+<BaseLayout title={pageTitle} description={pageDescription}>
+  <SchemaLocalBusiness
+    slot="head"
+    serviceName={service.name}
+    serviceDescription={service.description}
+  />
+  <Header />
+
+  <!-- Page Hero -->
+  <section class="svc-hero">
+    <div class="svc-hero-bg"></div>
+    <div class="container svc-hero-layout">
+      <div class="svc-hero-content">
+        <div class="svc-hero-badge">
+          <span class="svc-icon">{service.icon}</span>
+          <span>Service professionnel</span>
+        </div>
+        <h1>{content?.title ?? service.name}</h1>
+        <p class="svc-hero-desc">{service.description}</p>
+        <div class="svc-hero-price">
+          À partir de <strong>{service.priceFrom} €</strong>
+        </div>
+        <div class="svc-hero-ctas">
+          <a href="/contact" class="btn btn--primary btn--lg">Devis gratuit →</a>
+          <a href={`tel:${SITE.phone}`} class="btn btn--white btn--lg">📞 {SITE.phoneDisplay}</a>
+        </div>
+      </div>
+      <div class="svc-hero-media">
+        <PhotoPlaceholder
+          aspectRatio="4/3"
+          label={service.name}
+          description={content?.image ?? 'photo.jpg'}
+          variant="dark"
+        />
+      </div>
+    </div>
+  </section>
+
+  <!-- Body text -->
+  <section class="section">
+    <div class="container svc-layout">
+      <div class="svc-body">
+        {content?.body.map(para => <p class="svc-para">{para}</p>)}
+
+        <!-- Included / not included -->
+        <div class="svc-lists">
+          <div class="svc-list-block svc-list-block--yes">
+            <h3>✅ Ce qui est inclus</h3>
+            <ul>
+              {content?.included.map(item => <li>{item}</li>)}
+            </ul>
+          </div>
+          <div class="svc-list-block svc-list-block--no">
+            <h3>ℹ️ Non inclus (options)</h3>
+            <ul>
+              {content?.notIncluded.map(item => <li>{item}</li>)}
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <!-- Sidebar price block -->
+      <aside class="svc-sidebar">
+        <div class="price-block">
+          <div class="price-block__label">Tarif de base</div>
+          <div class="price-block__price">À partir de {service.priceFrom} €</div>
+          <p class="price-block__note">Devis précis gratuit sous 2h</p>
+          <a href="/contact" class="btn btn--primary" style="width:100%;justify-content:center;margin-bottom:12px">
+            Demander un devis
+          </a>
+          <a href={`tel:${SITE.phone}`} class="btn btn--outline" style="width:100%;justify-content:center">
+            📞 Appeler maintenant
+          </a>
+        </div>
+
+        <div class="trust-block">
+          <div class="trust-item">🛡️ Assurance jusqu'à 50 000 €</div>
+          <div class="trust-item">⚡ Réponse sous 2h</div>
+          <div class="trust-item">📍 Équipe locale Carcassonne</div>
+          <div class="trust-item">💶 Prix fixe garanti</div>
+        </div>
+      </aside>
+    </div>
+  </section>
+
+  <!-- FAQ -->
+  {content?.faqs && (
+    <section class="section section--alt">
+      <div class="container">
+        <div class="section-header" style="text-align:center;margin-bottom:40px">
+          <span class="section-label">FAQ</span>
+          <h2 class="section-title">Questions sur {service.name.toLowerCase()}</h2>
+        </div>
+        <div class="faq-list">
+          {content.faqs.map(faq => (
+            <details class="faq-item">
+              <summary class="faq-question">{faq.q}</summary>
+              <p class="faq-answer">{faq.a}</p>
+            </details>
+          ))}
+        </div>
+      </div>
+    </section>
+  )}
+
+  <QuoteForm prefilledService={service.slug} />
+
+  <CTA
+    title={`Prêt pour votre ${service.name.toLowerCase()} ?`}
+    subtitle="Devis gratuit sous 2h, sans engagement."
+  />
+
+  <Footer />
+</BaseLayout>
+
+<style>
+  .svc-hero {
+    background: var(--color-navy);
+    color: white;
+    padding: 72px 0;
+    position: relative;
+    overflow: hidden;
+  }
+  .svc-hero-bg {
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(ellipse at 70% 50%, rgba(234,125,58,.12) 0%, transparent 60%);
+    pointer-events: none;
+  }
+  .svc-hero-layout {
+    position: relative;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 56px;
+    align-items: center;
+  }
+  .svc-hero-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: rgba(255,255,255,.1);
+    border: 1px solid rgba(255,255,255,.2);
+    padding: 6px 14px;
+    border-radius: 100px;
+    font-size: .8rem;
+    font-weight: 600;
+    margin-bottom: 20px;
+    color: rgba(255,255,255,.9);
+  }
+  .svc-icon { font-size: 1.1em; }
+  .svc-hero-content h1 { color: white; margin-bottom: 16px; }
+  .svc-hero-desc { color: rgba(255,255,255,.8); font-size: 1.05rem; margin-bottom: 16px; }
+  .svc-hero-price {
+    font-size: 1rem;
+    color: rgba(255,255,255,.75);
+    margin-bottom: 28px;
+  }
+  .svc-hero-price strong { color: var(--color-accent); font-size: 1.3rem; }
+  .svc-hero-ctas { display: flex; gap: 14px; flex-wrap: wrap; }
+  .svc-hero-media { border-radius: var(--radius-lg); overflow: hidden; }
+
+  .svc-layout {
+    display: grid;
+    grid-template-columns: 1fr 320px;
+    gap: 56px;
+    align-items: start;
+  }
+  .svc-para {
+    font-size: 1rem;
+    line-height: 1.75;
+    color: var(--color-text);
+    margin-bottom: 20px;
+  }
+
+  .svc-lists {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 24px;
+    margin-top: 40px;
+  }
+  .svc-list-block {
+    padding: 24px;
+    border-radius: var(--radius);
+    border: 1.5px solid var(--color-border);
+  }
+  .svc-list-block--yes { background: rgba(34,197,94,.05); border-color: rgba(34,197,94,.2); }
+  .svc-list-block--no { background: rgba(148,163,184,.05); }
+  .svc-list-block h3 {
+    font-family: var(--font-sans);
+    font-size: .9rem;
+    font-weight: 700;
+    margin-bottom: 12px;
+    color: var(--color-navy);
+  }
+  .svc-list-block ul { display: flex; flex-direction: column; gap: 6px; }
+  .svc-list-block li {
+    font-size: .88rem;
+    color: var(--color-text-light);
+    padding-left: 16px;
+    position: relative;
+  }
+  .svc-list-block li::before { content: '—'; position: absolute; left: 0; }
+
+  /* Sidebar */
+  .svc-sidebar { position: sticky; top: 80px; display: flex; flex-direction: column; gap: 16px; }
+  .price-block {
+    background: var(--color-white);
+    border: 1.5px solid var(--color-border);
+    border-radius: var(--radius-lg);
+    padding: 24px;
+    box-shadow: var(--shadow);
+  }
+  .price-block__label { font-size: .78rem; font-weight: 700; text-transform: uppercase; letter-spacing: .08em; color: var(--color-text-light); margin-bottom: 6px; }
+  .price-block__price { font-family: var(--font-display); font-size: 1.8rem; font-weight: 700; color: var(--color-navy); margin-bottom: 6px; }
+  .price-block__note { font-size: .8rem; color: var(--color-text-light); margin-bottom: 20px; }
+
+  .trust-block {
+    background: var(--color-bg-alt);
+    border-radius: var(--radius);
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+  .trust-item { font-size: .88rem; color: var(--color-text); font-weight: 500; }
+
+  .faq-list { max-width: 800px; margin: 0 auto; display: flex; flex-direction: column; gap: 8px; }
+  .faq-item {
+    background: var(--color-white);
+    border: 1.5px solid var(--color-border);
+    border-radius: var(--radius);
+    overflow: hidden;
+  }
+  .faq-question {
+    padding: 18px 24px;
+    font-weight: 600;
+    font-size: .93rem;
+    cursor: pointer;
+    list-style: none;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    color: var(--color-navy);
+  }
+  .faq-question::-webkit-details-marker { display: none; }
+  .faq-question::after { content: '+'; font-size: 1.1rem; color: var(--color-accent); }
+  details[open] .faq-question::after { content: '−'; }
+  .faq-answer { padding: 0 24px 18px; font-size: .9rem; color: var(--color-text-light); line-height: 1.65; }
+
+  @media (max-width: 900px) {
+    .svc-hero-layout { grid-template-columns: 1fr; gap: 32px; }
+    .svc-hero-media { order: -1; }
+    .svc-layout { grid-template-columns: 1fr; }
+    .svc-sidebar { position: static; }
+    .svc-lists { grid-template-columns: 1fr; }
+  }
+</style>

@@ -1,0 +1,270 @@
+---
+import { SITE } from '../data/site.config';
+
+interface Props {
+  title: string;
+  description: string;
+  canonical?: string;
+  ogImage?: string;
+  ogType?: string;
+  noindex?: boolean;
+}
+
+const {
+  title,
+  description,
+  canonical,
+  ogImage = '/images/og-default.jpg',
+  ogType = 'website',
+  noindex = false,
+} = Astro.props;
+
+const canonicalURL = canonical ?? new URL(Astro.url.pathname, SITE.url).href;
+const ogImageURL = ogImage.startsWith('http') ? ogImage : new URL(ogImage, SITE.url).href;
+
+const schemaOrg = {
+  '@context': 'https://schema.org',
+  '@type': 'MovingCompany',
+  name: SITE.name,
+  url: SITE.url,
+  telephone: SITE.phone,
+  email: SITE.email,
+  address: {
+    '@type': 'PostalAddress',
+    addressLocality: SITE.hq.city,
+    postalCode: SITE.hq.postalCode,
+    addressRegion: SITE.hq.region,
+    addressCountry: SITE.hq.country,
+  },
+  geo: {
+    '@type': 'GeoCoordinates',
+    latitude: SITE.geo.lat,
+    longitude: SITE.geo.lng,
+  },
+  openingHours: 'Mo-Sa 08:00-19:00',
+  areaServed: {
+    '@type': 'GeoCircle',
+    geoMidpoint: {
+      '@type': 'GeoCoordinates',
+      latitude: SITE.geo.lat,
+      longitude: SITE.geo.lng,
+    },
+    geoRadius: SITE.serviceRadius * 1000,
+  },
+  priceRange: '€€',
+  image: ogImageURL,
+};
+---
+
+<!DOCTYPE html>
+<html lang="fr">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="format-detection" content="telephone=no" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+
+    <title>{title}</title>
+    <meta name="description" content={description} />
+    <link rel="canonical" href={canonicalURL} />
+    {noindex && <meta name="robots" content="noindex, nofollow" />}
+
+    <!-- Open Graph -->
+    <meta property="og:type" content={ogType} />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:url" content={canonicalURL} />
+    <meta property="og:image" content={ogImageURL} />
+    <meta property="og:site_name" content={SITE.name} />
+    <meta property="og:locale" content="fr_FR" />
+
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={title} />
+    <meta name="twitter:description" content={description} />
+    <meta name="twitter:image" content={ogImageURL} />
+
+    <!-- Favicons -->
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="icon" type="image/x-icon" href="/favicon.ico" />
+
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Playfair+Display:wght@700;800&display=swap"
+      rel="stylesheet"
+    />
+
+    <!-- JSON-LD MovingCompany -->
+    <script type="application/ld+json" set:html={JSON.stringify(schemaOrg)} />
+
+    <slot name="head" />
+  </head>
+  <body>
+    <slot />
+
+    <!-- Floating CTA buttons (mobile) -->
+    <div class="float-cta">
+      <a
+        href={`https://wa.me/${SITE.phoneWhatsapp}`}
+        class="float-cta__btn float-cta__btn--wa"
+        aria-label="WhatsApp"
+        target="_blank"
+        rel="noopener noreferrer"
+      >
+        <svg viewBox="0 0 24 24" fill="currentColor" width="24" height="24">
+          <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/>
+          <path d="M12 0C5.373 0 0 5.373 0 12c0 2.126.556 4.121 1.523 5.851L.057 23.882a.5.5 0 0 0 .606.607l6.044-1.457A11.942 11.942 0 0 0 12 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm0 21.818a9.8 9.8 0 0 1-4.998-1.368l-.357-.213-3.709.895.928-3.595-.234-.369A9.818 9.818 0 0 1 2.182 12C2.182 6.57 6.57 2.182 12 2.182S21.818 6.57 21.818 12 17.43 21.818 12 21.818z"/>
+        </svg>
+      </a>
+      <a href={`tel:${SITE.phone}`} class="float-cta__btn float-cta__btn--phone" aria-label="Appeler">
+        <svg viewBox="0 0 24 24" fill="currentColor" width="24" height="24">
+          <path d="M6.62 10.79c1.44 2.83 3.76 5.14 6.59 6.59l2.2-2.2c.27-.27.67-.36 1.02-.24 1.12.37 2.33.57 3.57.57.55 0 1 .45 1 1V20c0 .55-.45 1-1 1-9.39 0-17-7.61-17-17 0-.55.45-1 1-1h3.5c.55 0 1 .45 1 1 0 1.25.2 2.45.57 3.57.11.35.03.74-.25 1.02l-2.2 2.2z"/>
+        </svg>
+      </a>
+    </div>
+  </body>
+</html>
+
+<style is:global>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --color-navy: #1a2845;
+    --color-navy-dark: #111d33;
+    --color-navy-light: #2a3f6f;
+    --color-accent: #ea7d3a;
+    --color-accent-dark: #d06020;
+    --color-bg: #fafaf7;
+    --color-bg-alt: #f3f0ea;
+    --color-text: #2d3748;
+    --color-text-light: #718096;
+    --color-border: #e5e0d8;
+    --color-white: #ffffff;
+    --font-sans: 'Inter', system-ui, -apple-system, sans-serif;
+    --font-display: 'Playfair Display', Georgia, serif;
+    --radius: 8px;
+    --radius-lg: 16px;
+    --shadow-sm: 0 1px 3px rgba(0,0,0,.08), 0 1px 2px rgba(0,0,0,.06);
+    --shadow: 0 4px 12px rgba(0,0,0,.1);
+    --shadow-lg: 0 10px 40px rgba(0,0,0,.12);
+    --max-width: 1160px;
+  }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    font-family: var(--font-sans);
+    background: var(--color-bg);
+    color: var(--color-text);
+    line-height: 1.6;
+    font-size: 16px;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  .container {
+    max-width: var(--max-width);
+    margin: 0 auto;
+    padding: 0 24px;
+  }
+
+  h1, h2, h3 { font-family: var(--font-display); line-height: 1.2; color: var(--color-navy); }
+  h1 { font-size: clamp(2rem, 5vw, 3.2rem); }
+  h2 { font-size: clamp(1.6rem, 3.5vw, 2.4rem); }
+  h3 { font-size: clamp(1.2rem, 2.5vw, 1.6rem); }
+
+  a { color: inherit; text-decoration: none; }
+  img { max-width: 100%; height: auto; display: block; }
+  ul { list-style: none; }
+
+  .btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 14px 28px;
+    border-radius: var(--radius);
+    font-family: var(--font-sans);
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    border: none;
+    transition: all .2s ease;
+    text-decoration: none;
+    white-space: nowrap;
+  }
+  .btn--primary {
+    background: var(--color-accent);
+    color: var(--color-white);
+  }
+  .btn--primary:hover { background: var(--color-accent-dark); transform: translateY(-1px); box-shadow: var(--shadow); }
+  .btn--outline {
+    background: transparent;
+    color: var(--color-navy);
+    border: 2px solid var(--color-navy);
+  }
+  .btn--outline:hover { background: var(--color-navy); color: var(--color-white); }
+  .btn--white {
+    background: var(--color-white);
+    color: var(--color-navy);
+  }
+  .btn--white:hover { background: var(--color-bg); transform: translateY(-1px); }
+  .btn--lg { padding: 18px 36px; font-size: 1.1rem; }
+
+  .section { padding: 80px 0; }
+  .section--alt { background: var(--color-bg-alt); }
+  .section--navy { background: var(--color-navy); color: var(--color-white); }
+  .section--navy h2, .section--navy h3 { color: var(--color-white); }
+
+  .section-label {
+    display: inline-block;
+    font-size: .75rem;
+    font-weight: 700;
+    letter-spacing: .12em;
+    text-transform: uppercase;
+    color: var(--color-accent);
+    margin-bottom: 12px;
+  }
+  .section-title { margin-bottom: 16px; }
+  .section-subtitle { font-size: 1.1rem; color: var(--color-text-light); max-width: 600px; }
+
+  .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 32px; }
+  .grid-3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 28px; }
+  .grid-4 { display: grid; grid-template-columns: repeat(4, 1fr); gap: 24px; }
+
+  @media (max-width: 900px) {
+    .grid-3 { grid-template-columns: 1fr 1fr; }
+    .grid-4 { grid-template-columns: 1fr 1fr; }
+  }
+  @media (max-width: 600px) {
+    .grid-2, .grid-3, .grid-4 { grid-template-columns: 1fr; }
+    .section { padding: 56px 0; }
+    .container { padding: 0 16px; }
+  }
+
+  /* Floating CTA */
+  .float-cta {
+    position: fixed;
+    bottom: 24px;
+    right: 20px;
+    z-index: 900;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+  .float-cta__btn {
+    width: 52px;
+    height: 52px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: var(--shadow-lg);
+    transition: transform .2s ease;
+  }
+  .float-cta__btn:hover { transform: scale(1.1); }
+  .float-cta__btn--wa { background: #25D366; color: white; }
+  .float-cta__btn--phone { background: var(--color-accent); color: white; }
+
+  @media (min-width: 1024px) { .float-cta { display: none; } }
+</style>

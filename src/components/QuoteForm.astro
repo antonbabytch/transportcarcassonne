@@ -1,0 +1,241 @@
+---
+interface Props {
+  title?: string;
+  subtitle?: string;
+  prefilledCity?: string;
+  prefilledService?: string;
+}
+
+const {
+  title = 'Demandez votre devis gratuit',
+  subtitle = 'Réponse sous 2h · Lun-Sam 8h-19h',
+  prefilledCity = '',
+  prefilledService = '',
+} = Astro.props;
+---
+
+<section class="qf-section">
+  <div class="container">
+    <div class="qf-header">
+      <span class="section-label">Devis gratuit</span>
+      <h2 class="section-title">{title}</h2>
+      <p class="section-subtitle">{subtitle}</p>
+    </div>
+
+    <form
+      class="qf"
+      name="devis-transport"
+      method="POST"
+      action="/merci"
+      data-netlify="true"
+      netlify-honeypot="bot-field"
+    >
+      <input type="hidden" name="form-name" value="devis-transport" />
+      <p class="qf__honeypot" aria-hidden="true">
+        <label>Ne pas remplir : <input name="bot-field" /></label>
+      </p>
+
+      <div class="qf__row qf__row--2">
+        <div class="qf__field">
+          <label class="qf__label" for="qf-nom">Votre nom *</label>
+          <input
+            class="qf__input"
+            type="text"
+            id="qf-nom"
+            name="nom"
+            placeholder="Jean Dupont"
+            required
+            autocomplete="name"
+          />
+        </div>
+        <div class="qf__field">
+          <label class="qf__label" for="qf-tel">Téléphone *</label>
+          <input
+            class="qf__input"
+            type="tel"
+            id="qf-tel"
+            name="telephone"
+            placeholder="06 00 00 00 00"
+            required
+            autocomplete="tel"
+          />
+        </div>
+      </div>
+
+      <div class="qf__row">
+        <div class="qf__field">
+          <label class="qf__label" for="qf-type">Type de prestation *</label>
+          <select class="qf__input qf__select" id="qf-type" name="type_demenagement" required>
+            <option value="" disabled selected={!prefilledService}>Choisissez une prestation…</option>
+            <option value="demenagement-local" selected={prefilledService === 'demenagement-local'}>Déménagement local (≤ 50 km)</option>
+            <option value="demenagement-longue-distance" selected={prefilledService === 'demenagement-longue-distance'}>Déménagement longue distance</option>
+            <option value="demenagement-international" selected={prefilledService === 'demenagement-international'}>Déménagement international</option>
+            <option value="transport-meubles" selected={prefilledService === 'transport-meubles'}>Transport de meubles</option>
+            <option value="transport-piano" selected={prefilledService === 'transport-piano'}>Transport piano / objets lourds</option>
+            <option value="evacuation-dechets-metaux" selected={prefilledService === 'evacuation-dechets-metaux'}>Évacuation déchets / métaux</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="qf__row qf__row--2">
+        <div class="qf__field">
+          <label class="qf__label" for="qf-depart">Ville de départ *</label>
+          <input
+            class="qf__input"
+            type="text"
+            id="qf-depart"
+            name="depart_ville"
+            placeholder="Carcassonne"
+            value={prefilledCity}
+            required
+            autocomplete="address-level2"
+          />
+        </div>
+        <div class="qf__field">
+          <label class="qf__label" for="qf-arrivee">Ville d'arrivée *</label>
+          <input
+            class="qf__input"
+            type="text"
+            id="qf-arrivee"
+            name="arrivee_ville"
+            placeholder="Paris"
+            required
+            autocomplete="address-level2"
+          />
+        </div>
+      </div>
+
+      <div class="qf__row">
+        <div class="qf__field">
+          <label class="qf__label" for="qf-date">Date souhaitée</label>
+          <input
+            class="qf__input"
+            type="date"
+            id="qf-date"
+            name="date"
+            autocomplete="off"
+          />
+        </div>
+      </div>
+
+      <div class="qf__row">
+        <div class="qf__field">
+          <label class="qf__label" for="qf-message">Informations complémentaires</label>
+          <textarea
+            class="qf__input qf__textarea"
+            id="qf-message"
+            name="message"
+            rows="4"
+            placeholder="Surface habitable, étage, ascenseur, objets spéciaux (piano, coffre-fort…)"
+          ></textarea>
+        </div>
+      </div>
+
+      <div class="qf__row">
+        <button type="submit" class="qf__submit btn btn--primary btn--lg">
+          Envoyer ma demande de devis →
+        </button>
+      </div>
+
+      <p class="qf__legal">
+        Vos données sont utilisées uniquement pour répondre à votre demande.
+        Aucun démarchage.
+      </p>
+    </form>
+  </div>
+</section>
+
+<style>
+  .qf-section {
+    padding: 80px 0;
+    background: var(--color-bg-alt);
+  }
+  .qf-header {
+    text-align: center;
+    margin-bottom: 48px;
+  }
+
+  .qf {
+    max-width: 720px;
+    margin: 0 auto;
+    background: var(--color-white);
+    border-radius: var(--radius-lg);
+    padding: 40px;
+    box-shadow: var(--shadow-lg);
+  }
+
+  .qf__honeypot { display: none; }
+
+  .qf__row {
+    margin-bottom: 20px;
+  }
+  .qf__row--2 {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+  }
+
+  .qf__field {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+  }
+
+  .qf__label {
+    font-size: .85rem;
+    font-weight: 600;
+    color: var(--color-text);
+  }
+
+  .qf__input {
+    min-height: 48px;
+    padding: 12px 16px;
+    font-size: 16px;
+    font-family: var(--font-sans);
+    color: var(--color-text);
+    background: var(--color-bg);
+    border: 1.5px solid var(--color-border);
+    border-radius: var(--radius);
+    width: 100%;
+    transition: border-color .15s, box-shadow .15s;
+    appearance: none;
+    -webkit-appearance: none;
+  }
+  .qf__input:focus {
+    outline: none;
+    border-color: var(--color-navy);
+    box-shadow: 0 0 0 3px rgba(26,40,69,.08);
+  }
+  .qf__input::placeholder { color: var(--color-text-light); }
+
+  .qf__select {
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%23718096' stroke-width='2'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 12px center;
+    padding-right: 40px;
+    cursor: pointer;
+  }
+
+  .qf__textarea {
+    min-height: 100px;
+    resize: vertical;
+  }
+
+  .qf__submit {
+    width: 100%;
+    justify-content: center;
+    font-size: 1rem;
+  }
+
+  .qf__legal {
+    text-align: center;
+    font-size: .75rem;
+    color: var(--color-text-light);
+    margin-top: 12px;
+  }
+
+  @media (max-width: 600px) {
+    .qf { padding: 24px 16px; }
+    .qf__row--2 { grid-template-columns: 1fr; }
+  }
+</style>

@@ -1,0 +1,66 @@
+---
+import { SITE } from '../data/site.config';
+
+interface Props {
+  pageUrl?: string;
+  serviceName?: string;
+  serviceDescription?: string;
+}
+
+const { pageUrl, serviceName, serviceDescription } = Astro.props;
+
+const schema: Record<string, unknown> = {
+  '@context': 'https://schema.org',
+  '@type': 'MovingCompany',
+  '@id': `${SITE.url}/#business`,
+  name: SITE.name,
+  url: SITE.url,
+  telephone: SITE.phone,
+  email: SITE.email,
+  address: {
+    '@type': 'PostalAddress',
+    streetAddress: 'Carcassonne',
+    addressLocality: SITE.hq.city,
+    postalCode: SITE.hq.postalCode,
+    addressRegion: SITE.hq.region,
+    addressCountry: SITE.hq.country,
+  },
+  geo: {
+    '@type': 'GeoCoordinates',
+    latitude: SITE.geo.lat,
+    longitude: SITE.geo.lng,
+  },
+  openingHoursSpecification: [
+    { '@type': 'OpeningHoursSpecification', dayOfWeek: ['Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'], opens: '08:00', closes: '19:00' },
+  ],
+  priceRange: '€€',
+  currenciesAccepted: 'EUR',
+  paymentAccepted: 'Espèces, virement bancaire, chèque',
+  areaServed: {
+    '@type': 'GeoCircle',
+    geoMidpoint: { '@type': 'GeoCoordinates', latitude: SITE.geo.lat, longitude: SITE.geo.lng },
+    geoRadius: `${SITE.serviceRadius * 1000}`,
+  },
+  sameAs: [`https://wa.me/${SITE.phoneWhatsapp}`],
+};
+
+if (serviceName) {
+  schema['hasOfferCatalog'] = {
+    '@type': 'OfferCatalog',
+    name: 'Services de déménagement',
+    itemListElement: [
+      {
+        '@type': 'Offer',
+        itemOffered: {
+          '@type': 'Service',
+          name: serviceName,
+          description: serviceDescription ?? '',
+          provider: { '@id': `${SITE.url}/#business` },
+        },
+      },
+    ],
+  };
+}
+---
+
+<script type="application/ld+json" set:html={JSON.stringify(schema)} />

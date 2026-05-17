@@ -1,0 +1,104 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Header from '../components/Header.astro';
+import Footer from '../components/Footer.astro';
+import { SITE } from '../data/site.config';
+
+const title = 'Mentions légales | TransDéménage Carcassonne';
+const description = 'Mentions légales du site transportcarcassonne.fr — TransDéménage Carcassonne.';
+---
+
+<BaseLayout title={title} description={description} noindex={true}>
+  <Header />
+
+  <section class="legal-hero">
+    <div class="container">
+      <h1>Mentions légales</h1>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container legal-content">
+
+      <h2>Éditeur du site</h2>
+      <p>
+        <strong>{SITE.name}</strong><br />
+        Siège social : {SITE.hq.city} ({SITE.hq.postalCode}), {SITE.hq.region}, France<br />
+        SIRET : {SITE.siret}<br />
+        Téléphone : <a href={`tel:${SITE.phone}`}>{SITE.phoneDisplay}</a><br />
+        Email : <a href={`mailto:${SITE.email}`}>{SITE.email}</a>
+      </p>
+
+      <h2>Hébergement</h2>
+      <p>
+        Ce site est hébergé par Netlify, Inc.<br />
+        44 Montgomery Street, Suite 300<br />
+        San Francisco, California 94104, USA<br />
+        <a href="https://www.netlify.com" target="_blank" rel="noopener noreferrer">www.netlify.com</a>
+      </p>
+
+      <h2>Propriété intellectuelle</h2>
+      <p>
+        L'ensemble du contenu de ce site (textes, images, graphismes, logos) est la propriété exclusive de {SITE.name},
+        sauf mention contraire. Toute reproduction, représentation, modification ou adaptation partielle ou totale
+        des éléments du site est strictement interdite sans l'accord préalable et écrit de {SITE.name}.
+      </p>
+
+      <h2>Responsabilité</h2>
+      <p>
+        Les informations contenues sur ce site sont données à titre indicatif et peuvent être modifiées à tout moment
+        sans préavis. {SITE.name} ne peut être tenu responsable des dommages directs ou indirects consécutifs
+        à l'utilisation de ce site.
+      </p>
+
+      <h2>Données personnelles</h2>
+      <p>
+        Les informations collectées via les formulaires de contact sont destinées exclusivement à {SITE.name}
+        et ne sont pas transmises à des tiers. Conformément à la loi Informatique et Libertés et au RGPD,
+        vous disposez d'un droit d'accès, de rectification et de suppression de vos données en nous contactant
+        à l'adresse <a href={`mailto:${SITE.email}`}>{SITE.email}</a>.
+      </p>
+      <p>
+        Pour plus d'informations, consultez notre <a href="/politique-confidentialite">politique de confidentialité</a>.
+      </p>
+
+      <h2>Cookies</h2>
+      <p>
+        Ce site utilise des cookies techniques nécessaires à son fonctionnement. Aucun cookie publicitaire
+        ou de tracking tiers n'est utilisé sans votre consentement.
+      </p>
+
+      <h2>Droit applicable</h2>
+      <p>
+        Les présentes mentions légales sont régies par le droit français. En cas de litige,
+        les tribunaux français seront seuls compétents.
+      </p>
+
+    </div>
+  </section>
+
+  <Footer />
+</BaseLayout>
+
+<style>
+  .legal-hero {
+    background: var(--color-navy);
+    color: white;
+    padding: 48px 0;
+  }
+  .legal-hero h1 { color: white; }
+
+  .legal-content { max-width: 760px; }
+  .legal-content h2 {
+    font-size: 1.3rem;
+    margin: 36px 0 12px;
+    color: var(--color-navy);
+  }
+  .legal-content p {
+    font-size: .95rem;
+    line-height: 1.75;
+    color: var(--color-text);
+    margin-bottom: 12px;
+  }
+  .legal-content a { color: var(--color-accent); text-decoration: underline; }
+</style>

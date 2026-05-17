@@ -1,0 +1,85 @@
+---
+interface Props {
+  aspectRatio?: string;
+  label?: string;
+  description?: string;
+  variant?: 'dark' | 'light';
+  photo?: string;
+  alt?: string;
+}
+
+const {
+  aspectRatio = '4/3',
+  label = 'Photo',
+  description,
+  variant = 'light',
+  photo,
+  alt,
+} = Astro.props;
+---
+
+{photo ? (
+  <img src={photo} alt={alt ?? label} class="photo-img" style={`aspect-ratio:${aspectRatio}`} loading="lazy" />
+) : (
+  <div class:list={['placeholder', `placeholder--${variant}`]} style={`aspect-ratio:${aspectRatio}`}>
+    <div class="placeholder-inner">
+      <svg class="placeholder-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+        <rect x="3" y="3" width="18" height="18" rx="2"/>
+        <circle cx="8.5" cy="8.5" r="1.5"/>
+        <path d="m21 15-5-5L5 21"/>
+      </svg>
+      <span class="placeholder-label">{label}</span>
+      {description && <span class="placeholder-desc">{description}</span>}
+    </div>
+  </div>
+)}
+
+<style>
+  .photo-img {
+    width: 100%;
+    height: auto;
+    object-fit: cover;
+    border-radius: var(--radius);
+  }
+
+  .placeholder {
+    width: 100%;
+    border-radius: var(--radius);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+  }
+  .placeholder--light {
+    background: var(--color-bg-alt);
+    border: 2px dashed var(--color-border);
+    color: var(--color-text-light);
+  }
+  .placeholder--dark {
+    background: rgba(255,255,255,.08);
+    border: 2px dashed rgba(255,255,255,.2);
+    color: rgba(255,255,255,.6);
+  }
+
+  .placeholder-inner {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+    padding: 32px 20px;
+    text-align: center;
+  }
+  .placeholder-icon {
+    width: 40px;
+    height: 40px;
+    opacity: .5;
+  }
+  .placeholder-label {
+    font-size: .85rem;
+    font-weight: 600;
+  }
+  .placeholder-desc {
+    font-size: .75rem;
+    opacity: .7;
+  }
+</style>

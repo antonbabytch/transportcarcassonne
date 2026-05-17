@@ -1,0 +1,89 @@
+---
+interface Props {
+  slug: string;
+  name: string;
+  distance: number;
+  population: number;
+  note?: string;
+}
+
+const { slug, name, distance, population, note } = Astro.props;
+---
+
+<a href={`/demenagement-${slug}`} class="city-card">
+  <div class="city-card__header">
+    <span class="city-card__name">{name}</span>
+    {distance === 0
+      ? <span class="city-card__badge city-card__badge--base">Base</span>
+      : <span class="city-card__dist">{distance} km</span>
+    }
+  </div>
+  <p class="city-card__pop">{population.toLocaleString('fr')} habitants</p>
+  {note && <p class="city-card__note">{note}</p>}
+  <span class="city-card__link">Déménagement {name} →</span>
+</a>
+
+<style>
+  .city-card {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    background: var(--color-white);
+    border: 1.5px solid var(--color-border);
+    border-radius: var(--radius);
+    padding: 20px;
+    text-decoration: none;
+    transition: border-color .2s, box-shadow .2s;
+  }
+  .city-card:hover {
+    border-color: var(--color-navy);
+    box-shadow: var(--shadow-sm);
+  }
+
+  .city-card__header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 8px;
+  }
+  .city-card__name {
+    font-weight: 700;
+    font-size: 1rem;
+    color: var(--color-navy);
+  }
+  .city-card__dist {
+    font-size: .78rem;
+    color: var(--color-text-light);
+    background: var(--color-bg-alt);
+    padding: 3px 8px;
+    border-radius: 100px;
+  }
+  .city-card__badge {
+    font-size: .7rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: .07em;
+    padding: 3px 8px;
+    border-radius: 100px;
+  }
+  .city-card__badge--base {
+    background: rgba(234,125,58,.15);
+    color: var(--color-accent);
+  }
+  .city-card__pop {
+    font-size: .82rem;
+    color: var(--color-text-light);
+  }
+  .city-card__note {
+    font-size: .75rem;
+    color: var(--color-text-light);
+    font-style: italic;
+  }
+  .city-card__link {
+    font-size: .82rem;
+    font-weight: 600;
+    color: var(--color-accent);
+    margin-top: 4px;
+  }
+  .city-card:hover .city-card__link { text-decoration: underline; }
+</style>

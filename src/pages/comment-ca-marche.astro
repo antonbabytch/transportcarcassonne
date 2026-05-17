@@ -1,0 +1,278 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Header from '../components/Header.astro';
+import Footer from '../components/Footer.astro';
+import CTA from '../components/CTA.astro';
+import { SITE } from '../data/site.config';
+
+const title = 'Comment ça marche | TransDéménage Carcassonne — Processus de déménagement';
+const description = `Découvrez comment se déroule un déménagement avec TransDéménage Carcassonne : devis, visite, jour J, livraison. Simple, transparent, professionnel. ${SITE.phoneDisplay}`;
+
+const steps = [
+  {
+    num: '01',
+    icon: '📋',
+    title: 'Demande de devis gratuit',
+    duration: 'Sous 2h',
+    content: `Tout commence par votre demande de devis. Vous pouvez nous contacter par téléphone au ${SITE.phoneDisplay}, via WhatsApp, par email ou en remplissant le formulaire en ligne. Nous vous répondons sous 2h du lundi au samedi de 8h à 19h.
+
+Pour établir un devis précis, nous aurons besoin de quelques informations : votre ville de départ et d'arrivée, le type et la surface de votre logement, une estimation du nombre de meubles et cartons, la présence ou non d'un ascenseur, et la date souhaitée pour le déménagement.`,
+    tips: ['Préparez un plan approximatif de votre logement', 'Listez les objets volumineux (piano, coffre-fort, etc.)', 'Vérifiez les conditions de stationnement à départ et arrivée'],
+  },
+  {
+    num: '02',
+    icon: '🏠',
+    title: 'Évaluation du volume',
+    duration: 'En visite ou à distance',
+    content: `Pour les déménagements importants, nous proposons une visite à votre domicile pour évaluer précisément le volume à transporter. Cette étape nous permet d'optimiser le chargement du fourgon et de vous proposer le meilleur tarif.
+
+Pour les petits volumes ou les déménagements simples, une estimation à distance basée sur vos informations suffit. Nous vous envoyons un devis détaillé par écrit avec le tarif fixe, les prestations incluses et les options disponibles.`,
+    tips: ['Le devis est gratuit et sans engagement', 'Le tarif est fixe : pas de surprise le jour J', 'Vous pouvez ajouter des options à tout moment'],
+  },
+  {
+    num: '03',
+    icon: '📦',
+    title: 'Préparation du déménagement',
+    duration: 'Avant le jour J',
+    content: `Une fois le devis accepté, nous planifions ensemble la date et les détails logistiques. Si vous avez opté pour le service d'emballage, notre équipe peut intervenir la veille ou le matin même pour emballer vos affaires avec du matériel professionnel.
+
+Nous vous conseillons sur les précautions à prendre : déconnecter les appareils électroménagers 24h avant, préparer un carton "arrivée" avec les essentiels (vaisselle, linge de nuit, médicaments), et protéger les objets fragiles que vous souhaitez transporter vous-même.`,
+    tips: ['Déconnectez réfrigérateur et congélateur 24h avant', 'Étiquetez les cartons par pièce de destination', 'Préparez les accès (codes, clés, codes parkings)'],
+  },
+  {
+    num: '04',
+    icon: '🚚',
+    title: 'Jour du déménagement',
+    duration: 'À l\'heure convenue',
+    content: `Le jour J, notre équipe arrive à l'heure convenue avec tout le matériel nécessaire : couvertures de déménagement, sangles de levage, filins, diables, matériel de calage et d'arrimage. Chaque meuble est protégé avant d'être chargé.
+
+Le chargement se fait méthodiquement pour optimiser l'espace et garantir la sécurité des objets pendant le transport. Les pièces lourdes et les appareils électroménagers sont arrimés en premier, les objets fragiles soigneusement calés.`,
+    tips: ['Soyez présent au départ et à l\'arrivée', 'Faites visiter votre logement à l\'équipe en arrivant', 'Signalez immédiatement tout objet fragile ou de valeur'],
+  },
+  {
+    num: '05',
+    icon: '🏡',
+    title: 'Livraison et installation',
+    duration: 'À destination',
+    content: `À l'arrivée dans votre nouveau logement, notre équipe décharge et dépose vos affaires dans les pièces que vous indiquez. Prenez le temps de diriger chaque meuble vers sa pièce finale — c'est beaucoup plus simple avec nous qu'après notre départ !
+
+Si vous avez opté pour le remontage des meubles, nos professionnels s'en chargent après le déchargement. Un état des lieux informel est effectué pour s'assurer que tout est arrivé en bon état. Avant de partir, nous récupérons nos protections et laissons votre logement propre.`,
+    tips: ['Vérifiez l\'état de vos affaires avant de signer', 'Signalez immédiatement tout dommage éventuel', 'Conservez le bon de livraison signé'],
+  },
+];
+---
+
+<BaseLayout title={title} description={description}>
+  <Header />
+
+  <section class="ccm-hero">
+    <div class="container">
+      <span class="section-label">Processus</span>
+      <h1>Comment se déroule votre déménagement</h1>
+      <p class="ccm-hero-sub">
+        De la demande de devis à la livraison, voici les 5 étapes de votre déménagement
+        avec TransDéménage Carcassonne.
+      </p>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container">
+      <div class="steps-list">
+        {steps.map((step, i) => (
+          <div class="step-detail">
+            <div class="step-detail__indicator">
+              <div class="step-detail__num">{step.num}</div>
+              {i < steps.length - 1 && <div class="step-detail__line"></div>}
+            </div>
+            <div class="step-detail__body">
+              <div class="step-detail__header">
+                <span class="step-detail__icon">{step.icon}</span>
+                <div>
+                  <h2 class="step-detail__title">{step.title}</h2>
+                  <span class="step-detail__duration">{step.duration}</span>
+                </div>
+              </div>
+              <div class="step-detail__content">
+                {step.content.split('\n\n').map(para => (
+                  <p>{para}</p>
+                ))}
+              </div>
+              <div class="step-detail__tips">
+                <strong>Conseils pratiques :</strong>
+                <ul>
+                  {step.tips.map(tip => <li>{tip}</li>)}
+                </ul>
+              </div>
+            </div>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- Guarantees -->
+  <section class="section section--alt">
+    <div class="container">
+      <div class="section-header" style="text-align:center;margin-bottom:48px">
+        <span class="section-label">Nos garanties</span>
+        <h2>Ce que vous pouvez attendre de nous</h2>
+      </div>
+      <div class="guarantees-grid">
+        <div class="guarantee-item">
+          <div class="guarantee-icon">🎯</div>
+          <h3>Ponctualité</h3>
+          <p>Nous arrivons à l'heure fixée. En cas d'imprévu, nous vous prévenons immédiatement.</p>
+        </div>
+        <div class="guarantee-item">
+          <div class="guarantee-icon">💶</div>
+          <h3>Prix fixe</h3>
+          <p>Le prix du devis est garanti. Sauf modification de vos besoins, aucun supplément ne sera appliqué.</p>
+        </div>
+        <div class="guarantee-item">
+          <div class="guarantee-icon">🛡️</div>
+          <h3>Assurance incluse</h3>
+          <p>Couverture grand standing jusqu'à 50 000 € sans franchise applicable sur tous nos déménagements.</p>
+        </div>
+        <div class="guarantee-item">
+          <div class="guarantee-icon">🤝</div>
+          <h3>Satisfaction garantie</h3>
+          <p>Nous ne partons pas tant que vous n'êtes pas satisfait du résultat.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <CTA
+    title="Prêt à commencer ?"
+    subtitle="Demandez votre devis en ligne — réponse garantie sous 2h."
+  />
+
+  <Footer />
+</BaseLayout>
+
+<style>
+  .ccm-hero {
+    background: var(--color-navy);
+    color: white;
+    padding: 64px 0;
+  }
+  .ccm-hero h1 { color: white; margin: 12px 0; }
+  .ccm-hero-sub { color: rgba(255,255,255,.75); font-size: 1.05rem; max-width: 560px; }
+
+  .steps-list { max-width: 800px; margin: 0 auto; }
+
+  .step-detail {
+    display: grid;
+    grid-template-columns: 80px 1fr;
+    gap: 32px;
+    position: relative;
+  }
+
+  .step-detail__indicator {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+  .step-detail__num {
+    width: 56px;
+    height: 56px;
+    border-radius: 50%;
+    background: var(--color-navy);
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1rem;
+    font-weight: 700;
+    flex-shrink: 0;
+    z-index: 1;
+  }
+  .step-detail__line {
+    width: 2px;
+    flex: 1;
+    background: var(--color-border);
+    margin: 8px 0;
+    min-height: 40px;
+  }
+
+  .step-detail__body { padding-bottom: 56px; }
+
+  .step-detail__header {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    margin-bottom: 20px;
+  }
+  .step-detail__icon { font-size: 2rem; }
+  .step-detail__title {
+    font-size: 1.4rem;
+    margin-bottom: 4px;
+  }
+  .step-detail__duration {
+    display: inline-block;
+    font-size: .78rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: .07em;
+    color: var(--color-accent);
+    background: rgba(234,125,58,.1);
+    padding: 3px 10px;
+    border-radius: 100px;
+  }
+
+  .step-detail__content p {
+    font-size: 1rem;
+    line-height: 1.75;
+    color: var(--color-text);
+    margin-bottom: 14px;
+  }
+
+  .step-detail__tips {
+    background: var(--color-bg-alt);
+    border-radius: var(--radius);
+    padding: 16px 20px;
+    margin-top: 16px;
+  }
+  .step-detail__tips strong {
+    display: block;
+    font-size: .82rem;
+    text-transform: uppercase;
+    letter-spacing: .06em;
+    color: var(--color-navy);
+    margin-bottom: 8px;
+  }
+  .step-detail__tips ul { display: flex; flex-direction: column; gap: 6px; }
+  .step-detail__tips li {
+    font-size: .88rem;
+    color: var(--color-text-light);
+    padding-left: 16px;
+    position: relative;
+  }
+  .step-detail__tips li::before { content: '✓'; position: absolute; left: 0; color: var(--color-accent); font-weight: 700; }
+
+  .guarantees-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 24px;
+  }
+  .guarantee-item {
+    background: var(--color-white);
+    border: 1.5px solid var(--color-border);
+    border-radius: var(--radius);
+    padding: 24px;
+    text-align: center;
+  }
+  .guarantee-icon { font-size: 1.8rem; margin-bottom: 12px; }
+  .guarantee-item h3 { font-family: var(--font-sans); font-size: 1rem; font-weight: 700; color: var(--color-navy); margin-bottom: 8px; }
+  .guarantee-item p { font-size: .88rem; color: var(--color-text-light); line-height: 1.5; }
+
+  @media (max-width: 900px) {
+    .guarantees-grid { grid-template-columns: 1fr 1fr; }
+  }
+  @media (max-width: 600px) {
+    .step-detail { grid-template-columns: 48px 1fr; gap: 20px; }
+    .step-detail__num { width: 44px; height: 44px; font-size: .88rem; }
+    .guarantees-grid { grid-template-columns: 1fr; }
+  }
+</style>

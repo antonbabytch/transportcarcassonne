@@ -1,0 +1,320 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Header from '../components/Header.astro';
+import Footer from '../components/Footer.astro';
+import CTA from '../components/CTA.astro';
+import { SITE } from '../data/site.config';
+
+const title = 'Tarifs déménagement Carcassonne | TransDéménage — Prix transparents';
+const description = `Tarifs clairs et transparents pour vos déménagements depuis Carcassonne. Studio à partir de 450 €, T2 à partir de 650 €. Devis gratuit sous 2h. ${SITE.phoneDisplay}`;
+
+const localPrices = [
+  { label: 'Studio / T1', price: 450, note: '≤ 30 m²' },
+  { label: 'T2', price: 650, note: '31–55 m²' },
+  { label: 'T3', price: 950, note: '56–75 m²' },
+  { label: 'T4 / T5', price: 1400, note: '76–100 m²' },
+  { label: 'Maison', price: 1900, note: '> 100 m²' },
+];
+
+const longDistancePrices = [
+  { label: 'Studio', price: 950, note: 'Toute la France' },
+  { label: 'T2 / T3', price: 1800, note: 'Toute la France' },
+  { label: 'Maison', price: 2800, note: 'Toute la France' },
+];
+
+const additionalServices = [
+  { label: 'Emballage — matériel', price: '120 €', unit: 'forfait' },
+  { label: 'Emballage — main d\'œuvre', price: '40 €/h', unit: 'ou 280 € au forfait' },
+  { label: 'Démontage / remontage meubles', price: '25 €', unit: 'par meuble (gratuit dès 3)' },
+  { label: 'Assurance grand standing (50 000 €)', price: 'Incluse', unit: 'dans tous les déménagements' },
+  { label: 'Garde-meuble', price: '80 €/mois', unit: 'pour 5 m³' },
+  { label: 'Piano droit', price: '350 €', unit: 'transport inclus' },
+  { label: 'Piano à queue', price: '550 €', unit: 'transport inclus' },
+  { label: 'Coffre-fort', price: 'À partir de 250 €', unit: 'selon poids et accès' },
+];
+---
+
+<BaseLayout title={title} description={description}>
+  <Header />
+
+  <!-- Hero -->
+  <section class="tarifs-hero">
+    <div class="container">
+      <span class="section-label">Tarifs 2025</span>
+      <h1>Prix clairs et sans surprise</h1>
+      <p class="tarifs-hero-sub">
+        Nos tarifs sont basés sur le volume réel, la distance et les options choisies.
+        Devis précis et gratuit sous 2h.
+      </p>
+    </div>
+  </section>
+
+  <main class="section">
+    <div class="container">
+
+      <!-- Local -->
+      <div class="tarif-block">
+        <div class="tarif-block__header">
+          <div class="tarif-block__icon">🏠</div>
+          <div>
+            <h2>Déménagement local</h2>
+            <p>Dans un rayon de 50 km autour de Carcassonne</p>
+          </div>
+        </div>
+        <div class="tarif-table">
+          <div class="tarif-table__head">
+            <span>Type de logement</span>
+            <span>Surface</span>
+            <span>Prix à partir de</span>
+            <span></span>
+          </div>
+          {localPrices.map((row, i) => (
+            <div class:list={['tarif-table__row', i % 2 === 0 && 'tarif-table__row--alt']}>
+              <span class="tarif-name">{row.label}</span>
+              <span class="tarif-note">{row.note}</span>
+              <span class="tarif-price">{row.price} €</span>
+              <a href="/contact" class="tarif-cta">Devis →</a>
+            </div>
+          ))}
+        </div>
+      </div>
+
+      <!-- Longue distance -->
+      <div class="tarif-block">
+        <div class="tarif-block__header">
+          <div class="tarif-block__icon">🚚</div>
+          <div>
+            <h2>Déménagement longue distance</h2>
+            <p>Carcassonne vers toute la France métropolitaine</p>
+          </div>
+        </div>
+        <div class="tarif-table">
+          <div class="tarif-table__head">
+            <span>Type de logement</span>
+            <span>Zone</span>
+            <span>Prix à partir de</span>
+            <span></span>
+          </div>
+          {longDistancePrices.map((row, i) => (
+            <div class:list={['tarif-table__row', i % 2 === 0 && 'tarif-table__row--alt']}>
+              <span class="tarif-name">{row.label}</span>
+              <span class="tarif-note">{row.note}</span>
+              <span class="tarif-price">{row.price} €</span>
+              <a href="/contact" class="tarif-cta">Devis →</a>
+            </div>
+          ))}
+        </div>
+      </div>
+
+      <!-- International -->
+      <div class="tarif-block tarif-block--accent">
+        <div class="tarif-block__header">
+          <div class="tarif-block__icon">🌍</div>
+          <div>
+            <h2>Déménagement international</h2>
+            <p>Espagne, Italie, Belgique et Europe depuis Carcassonne</p>
+          </div>
+        </div>
+        <div class="tarif-intl">
+          <div class="tarif-intl__price">
+            <span class="tarif-intl__from">À partir de</span>
+            <span class="tarif-intl__amount">2 500 €</span>
+            <span class="tarif-intl__range">(généralement 2 500 € – 5 000 €)</span>
+          </div>
+          <p class="tarif-intl__note">
+            Le tarif international dépend de la destination, du volume et des services choisis.
+            Devis personnalisé gratuit — réponse sous 2h.
+          </p>
+          <a href="/contact" class="btn btn--primary">Demander un devis international →</a>
+        </div>
+      </div>
+
+      <!-- Additional services -->
+      <div class="tarif-block">
+        <div class="tarif-block__header">
+          <div class="tarif-block__icon">➕</div>
+          <div>
+            <h2>Services complémentaires</h2>
+            <p>Options disponibles pour tous types de déménagement</p>
+          </div>
+        </div>
+        <div class="additional-table">
+          {additionalServices.map((row, i) => (
+            <div class:list={['additional-row', i % 2 === 0 && 'additional-row--alt']}>
+              <span class="add-label">{row.label}</span>
+              <span class="add-price">{row.price}</span>
+              <span class="add-unit">{row.unit}</span>
+            </div>
+          ))}
+        </div>
+      </div>
+
+      <!-- Notes -->
+      <div class="tarif-notes">
+        <h3>Conditions et précisions</h3>
+        <ul>
+          <li>Tous les tarifs sont <strong>indicatifs</strong> et peuvent varier selon les spécificités de votre déménagement (étage, accès difficile, objets volumineux).</li>
+          <li>L'<strong>assurance grand standing</strong> jusqu'à 50 000 € est <strong>toujours incluse</strong>, sans supplément.</li>
+          <li>Les tarifs s'entendent <strong>TTC</strong>, départ de Carcassonne.</li>
+          <li>Paiement accepté : espèces, virement bancaire, chèque.</li>
+          <li>Devis <strong>gratuit et sans engagement</strong> sous 2h (Lun–Sam 8h–19h).</li>
+        </ul>
+      </div>
+
+    </div>
+  </main>
+
+  <CTA
+    title="Obtenez votre devis précis"
+    subtitle="Remplissez le formulaire — réponse personnalisée sous 2h, gratuite et sans engagement."
+  />
+
+  <Footer />
+</BaseLayout>
+
+<style>
+  .tarifs-hero {
+    background: var(--color-navy);
+    color: white;
+    padding: 64px 0;
+    text-align: center;
+  }
+  .tarifs-hero h1 { color: white; margin: 12px 0; }
+  .tarifs-hero-sub { color: rgba(255,255,255,.75); font-size: 1.05rem; max-width: 540px; margin: 0 auto; }
+
+  .tarif-block {
+    background: var(--color-white);
+    border: 1.5px solid var(--color-border);
+    border-radius: var(--radius-lg);
+    overflow: hidden;
+    margin-bottom: 32px;
+  }
+  .tarif-block--accent { border-color: var(--color-accent); }
+
+  .tarif-block__header {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    padding: 24px 28px;
+    background: var(--color-bg-alt);
+    border-bottom: 1px solid var(--color-border);
+  }
+  .tarif-block__icon { font-size: 2rem; }
+  .tarif-block__header h2 {
+    font-size: 1.25rem;
+    font-family: var(--font-sans);
+    font-weight: 700;
+    color: var(--color-navy);
+    margin-bottom: 4px;
+  }
+  .tarif-block__header p { font-size: .88rem; color: var(--color-text-light); }
+
+  .tarif-table { padding: 0 28px 20px; }
+  .tarif-table__head {
+    display: grid;
+    grid-template-columns: 1.5fr 1fr 1fr 100px;
+    gap: 12px;
+    padding: 14px 0 10px;
+    border-bottom: 1px solid var(--color-border);
+    font-size: .75rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: .07em;
+    color: var(--color-text-light);
+  }
+  .tarif-table__row {
+    display: grid;
+    grid-template-columns: 1.5fr 1fr 1fr 100px;
+    gap: 12px;
+    padding: 16px 0;
+    border-bottom: 1px solid var(--color-border);
+    align-items: center;
+  }
+  .tarif-table__row:last-child { border-bottom: none; }
+  .tarif-table__row--alt { background: var(--color-bg); margin: 0 -28px; padding: 16px 28px; }
+  .tarif-name { font-weight: 600; color: var(--color-navy); font-size: .95rem; }
+  .tarif-note { font-size: .85rem; color: var(--color-text-light); }
+  .tarif-price {
+    font-family: var(--font-display);
+    font-size: 1.2rem;
+    font-weight: 700;
+    color: var(--color-accent);
+  }
+  .tarif-cta {
+    font-size: .85rem;
+    font-weight: 600;
+    color: var(--color-navy);
+    text-decoration: none;
+    text-align: right;
+  }
+  .tarif-cta:hover { color: var(--color-accent); }
+
+  .tarif-intl {
+    padding: 28px;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+  }
+  .tarif-intl__price { display: flex; align-items: baseline; gap: 12px; flex-wrap: wrap; }
+  .tarif-intl__from { font-size: .9rem; color: var(--color-text-light); }
+  .tarif-intl__amount {
+    font-family: var(--font-display);
+    font-size: 2rem;
+    font-weight: 700;
+    color: var(--color-accent);
+  }
+  .tarif-intl__range { font-size: .85rem; color: var(--color-text-light); }
+  .tarif-intl__note { font-size: .9rem; color: var(--color-text); line-height: 1.6; max-width: 560px; }
+
+  .additional-table { padding: 12px 28px 20px; }
+  .additional-row {
+    display: grid;
+    grid-template-columns: 1.5fr 1fr 1.5fr;
+    gap: 12px;
+    padding: 13px 0;
+    border-bottom: 1px solid var(--color-border);
+    align-items: center;
+    font-size: .9rem;
+  }
+  .additional-row:last-child { border-bottom: none; }
+  .additional-row--alt { background: var(--color-bg); margin: 0 -28px; padding: 13px 28px; }
+  .add-label { color: var(--color-text); font-weight: 500; }
+  .add-price { font-weight: 700; color: var(--color-navy); }
+  .add-unit { font-size: .82rem; color: var(--color-text-light); }
+
+  .tarif-notes {
+    background: var(--color-bg-alt);
+    border-radius: var(--radius);
+    padding: 28px 32px;
+    margin-top: 8px;
+  }
+  .tarif-notes h3 {
+    font-family: var(--font-sans);
+    font-size: 1rem;
+    font-weight: 700;
+    margin-bottom: 14px;
+    color: var(--color-navy);
+  }
+  .tarif-notes ul { display: flex; flex-direction: column; gap: 8px; }
+  .tarif-notes li {
+    font-size: .9rem;
+    color: var(--color-text);
+    padding-left: 16px;
+    position: relative;
+    line-height: 1.5;
+  }
+  .tarif-notes li::before { content: '→'; position: absolute; left: 0; color: var(--color-accent); }
+
+  @media (max-width: 700px) {
+    .tarif-table__head { display: none; }
+    .tarif-table__row {
+      grid-template-columns: 1fr 1fr;
+      grid-template-rows: auto auto;
+    }
+    .tarif-note { grid-column: 1; }
+    .tarif-price { grid-column: 2; text-align: right; }
+    .tarif-cta { grid-column: 1 / -1; text-align: left; }
+    .additional-row { grid-template-columns: 1fr; }
+    .add-price { font-size: 1rem; }
+  }
+</style>

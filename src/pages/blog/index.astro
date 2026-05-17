@@ -1,0 +1,89 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import Header from '../../components/Header.astro';
+import Footer from '../../components/Footer.astro';
+import CTA from '../../components/CTA.astro';
+import { SITE } from '../../data/site.config';
+
+const title = 'Blog déménagement | Conseils et astuces | TransDéménage Carcassonne';
+const description = `Conseils pratiques pour réussir votre déménagement à Carcassonne et dans l'Aude. Astuces, guides et informations par TransDéménage ${SITE.phoneDisplay}`;
+---
+
+<BaseLayout title={title} description={description}>
+  <Header />
+
+  <section class="blog-hero">
+    <div class="container">
+      <span class="section-label">Blog</span>
+      <h1>Conseils déménagement</h1>
+      <p class="blog-hero-sub">
+        Guides pratiques, astuces et informations pour réussir votre déménagement dans l'Aude.
+      </p>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container">
+      <div class="blog-coming-soon">
+        <div class="blog-cs-icon">✍️</div>
+        <h2>Articles à venir</h2>
+        <p>
+          Nos premiers articles de conseils seront bientôt publiés.
+          En attendant, n'hésitez pas à nous contacter directement pour
+          tout conseil personnalisé sur votre déménagement.
+        </p>
+        <div class="blog-cs-topics">
+          <h3>Prochains sujets :</h3>
+          <ul>
+            <li>Comment préparer son déménagement 4 semaines à l'avance</li>
+            <li>Les meilleures astuces d'emballage des professionnels</li>
+            <li>Déménager avec un piano : tout ce qu'il faut savoir</li>
+            <li>Guide du déménagement à Carcassonne : ruelles et accès</li>
+            <li>Comment choisir son déménageur dans l'Aude</li>
+          </ul>
+        </div>
+        <a href="/contact" class="btn btn--primary btn--lg">Demander un devis →</a>
+      </div>
+    </div>
+  </section>
+
+  <CTA />
+  <Footer />
+</BaseLayout>
+
+<style>
+  .blog-hero {
+    background: var(--color-navy);
+    color: white;
+    padding: 64px 0;
+  }
+  .blog-hero h1 { color: white; margin: 12px 0; }
+  .blog-hero-sub { color: rgba(255,255,255,.75); font-size: 1.05rem; }
+
+  .blog-coming-soon {
+    max-width: 640px;
+    margin: 0 auto;
+    text-align: center;
+    background: var(--color-white);
+    border: 1.5px solid var(--color-border);
+    border-radius: var(--radius-lg);
+    padding: 56px 48px;
+    box-shadow: var(--shadow);
+  }
+  .blog-cs-icon { font-size: 3rem; margin-bottom: 16px; }
+  .blog-coming-soon h2 { margin-bottom: 16px; }
+  .blog-coming-soon p {
+    font-size: 1rem;
+    color: var(--color-text-light);
+    line-height: 1.7;
+    margin-bottom: 32px;
+  }
+  .blog-cs-topics { text-align: left; margin-bottom: 36px; }
+  .blog-cs-topics h3 { font-family: var(--font-sans); font-size: .9rem; font-weight: 700; color: var(--color-navy); margin-bottom: 12px; }
+  .blog-cs-topics ul { display: flex; flex-direction: column; gap: 8px; list-style: disc; padding-left: 20px; }
+  .blog-cs-topics li { font-size: .9rem; color: var(--color-text-light); }
+
+  @media (max-width: 560px) {
+    .blog-coming-soon { padding: 36px 20px; }
+  }
+</style>

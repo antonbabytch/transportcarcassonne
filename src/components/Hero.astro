@@ -1,0 +1,140 @@
+---
+import PhotoPlaceholder from './PhotoPlaceholder.astro';
+
+interface Props {
+  title: string;
+  subtitle?: string;
+  badge?: string;
+  image?: string;
+  imageAlt?: string;
+  ctaPrimary?: { href: string; label: string };
+  ctaSecondary?: { href: string; label: string };
+  phone?: string;
+  phoneDisplay?: string;
+}
+
+const {
+  title,
+  subtitle,
+  badge,
+  image,
+  imageAlt,
+  ctaPrimary = { href: '/contact', label: 'Devis gratuit' },
+  ctaSecondary,
+  phone,
+  phoneDisplay,
+} = Astro.props;
+---
+
+<section class="hero">
+  <div class="hero-bg"></div>
+  <div class="container hero-layout">
+    <div class="hero-content">
+      {badge && <div class="hero-badge">{badge}</div>}
+      <h1 class="hero-title" set:html={title} />
+      {subtitle && <p class="hero-subtitle">{subtitle}</p>}
+      <div class="hero-ctas">
+        <a href={ctaPrimary.href} class="btn btn--primary btn--lg">{ctaPrimary.label}</a>
+        {ctaSecondary && (
+          <a href={ctaSecondary.href} class="btn btn--white btn--lg">{ctaSecondary.label}</a>
+        )}
+        {phone && (
+          <a href={`tel:${phone}`} class="hero-phone">
+            <span class="hero-phone-icon">📞</span>
+            <span>{phoneDisplay ?? phone}</span>
+          </a>
+        )}
+      </div>
+    </div>
+    <div class="hero-media">
+      <PhotoPlaceholder
+        aspectRatio="4/3"
+        label={imageAlt ?? 'Équipe TransDéménage'}
+        description="equipe-hero.jpg"
+        variant="dark"
+        photo={image}
+        alt={imageAlt}
+      />
+    </div>
+  </div>
+</section>
+
+<style>
+  .hero {
+    position: relative;
+    background: var(--color-navy);
+    color: white;
+    overflow: hidden;
+    padding: 80px 0 72px;
+  }
+  .hero-bg {
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(ellipse at 70% 50%, rgba(234,125,58,.15) 0%, transparent 60%);
+    pointer-events: none;
+  }
+
+  .hero-layout {
+    position: relative;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 56px;
+    align-items: center;
+  }
+
+  .hero-badge {
+    display: inline-block;
+    background: rgba(234,125,58,.2);
+    color: var(--color-accent);
+    border: 1px solid rgba(234,125,58,.35);
+    font-size: .78rem;
+    font-weight: 700;
+    letter-spacing: .1em;
+    text-transform: uppercase;
+    padding: 6px 14px;
+    border-radius: 100px;
+    margin-bottom: 20px;
+  }
+
+  .hero-title {
+    color: white;
+    margin-bottom: 20px;
+    font-size: clamp(2rem, 4.5vw, 3rem);
+  }
+  .hero-title :global(.highlight) { color: var(--color-accent); }
+
+  .hero-subtitle {
+    font-size: 1.1rem;
+    line-height: 1.65;
+    color: rgba(255,255,255,.8);
+    margin-bottom: 36px;
+    max-width: 480px;
+  }
+
+  .hero-ctas {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 14px;
+    align-items: center;
+  }
+
+  .hero-phone {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    color: rgba(255,255,255,.85);
+    font-size: 1.05rem;
+    font-weight: 600;
+    transition: color .15s;
+  }
+  .hero-phone:hover { color: white; }
+  .hero-phone-icon { font-size: 1.1em; }
+
+  .hero-media { border-radius: var(--radius-lg); overflow: hidden; }
+
+  @media (max-width: 860px) {
+    .hero-layout { grid-template-columns: 1fr; gap: 40px; }
+    .hero-media { order: -1; max-width: 480px; margin: 0 auto; width: 100%; }
+    .hero { padding: 56px 0 48px; }
+  }
+</style>

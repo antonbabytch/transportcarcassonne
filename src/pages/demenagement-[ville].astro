@@ -1,0 +1,304 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Header from '../components/Header.astro';
+import Footer from '../components/Footer.astro';
+import PhotoPlaceholder from '../components/PhotoPlaceholder.astro';
+import QuoteForm from '../components/QuoteForm.astro';
+import CTA from '../components/CTA.astro';
+import ServiceCard from '../components/ServiceCard.astro';
+import SchemaLocalBusiness from '../components/SchemaLocalBusiness.astro';
+import { CITIES } from '../data/cities';
+import { SERVICES } from '../data/services';
+import { SITE } from '../data/site.config';
+
+export function getStaticPaths() {
+  return CITIES.map(c => ({ params: { ville: c.slug }, props: { city: c } }));
+}
+
+const { city } = Astro.props;
+
+const isBase = city.distance === 0;
+const distanceText = isBase ? 'notre ville de base' : `à ${city.distance} km de Carcassonne`;
+
+const title = `Déménagement ${city.name} | TransDéménage Carcassonne`;
+const description = `Déménageur professionnel à ${city.name} (${city.distance > 0 ? `${city.distance} km de Carcassonne` : 'Aude'}). Déménagement local, transport meubles, évacuation. Assurance incluse. Devis gratuit sous 2h. ${SITE.phoneDisplay}`;
+
+const cityContent: Record<string, { intro: string; specifics: string; note?: string }> = {
+  carcassonne: {
+    intro: `Carcassonne, chef-lieu de l'Aude et ville de base de TransDéménage, est notre terrain de prédilection. Nous connaissons parfaitement les spécificités de la ville : les ruelles médiévales de la Cité, les immeubles haussmanniens du centre-ville, les quartiers résidentiels de Grazailles, Montredon et les zones pavillonnaires périphériques.`,
+    specifics: `Déménager à Carcassonne nécessite souvent une connaissance fine des contraintes locales : zones piétonnes, réglementations de stationnement, accès difficiles dans la Cité historique classée UNESCO. Notre équipe maîtrise toutes ces particularités pour organiser votre déménagement sans accroc.`,
+  },
+  trebes: {
+    intro: `Trèbes, commune de l'Aude située à seulement 8 km à l'est de Carcassonne le long du Canal du Midi, est l'une de nos zones d'intervention privilégiées. Cette commune résidentielle de 5 500 habitants attire de nombreuses familles cherchant la tranquillité tout en restant proche de Carcassonne.`,
+    specifics: `Les déménagements à Trèbes sont généralement facilités par l'urbanisme accessible de la commune : maisons individuelles avec accès direct, lotissements avec voirie large. Nous intervenons régulièrement pour les mutations de fonctionnaires et les déménagements locaux depuis ou vers Carcassonne.`,
+  },
+  limoux: {
+    intro: `Limoux, sous-préfecture de l'Aude à 25 km au sud de Carcassonne dans la vallée de l'Aude, est un bassin de vie important avec ses 9 700 habitants. Connue pour la Blanquette de Limoux et son carnaval, la ville attire résidents permanents et résidences secondaires.`,
+    specifics: `Le centre historique de Limoux, avec ses ruelles et son architecture traditionnelle, peut présenter des défis logistiques pour les déménagements. Notre expérience des centres-villes audois nous permet d'anticiper ces contraintes et de les surmonter efficacement.`,
+  },
+  castelnaudary: {
+    intro: `Castelnaudary, capitale mondiale du cassoulet et sous-préfecture de l'Aude, se situe à 38 km à l'ouest de Carcassonne sur l'axe Toulouse-Méditerranée. Sa population de 11 700 habitants en fait l'une des principales villes de notre zone d'intervention.`,
+    specifics: `Bien desservie par l'autoroute A61, Castelnaudary est facile d'accès pour nos fourgons. La ville dispose d'un tissu mixte : maisons de ville dans le centre historique, quartiers pavillonnaires en périphérie. Notre équipe s'adapte à toutes les configurations.`,
+  },
+  narbonne: {
+    intro: `Narbonne, avec ses 54 000 habitants, est la plus grande ville que nous desservons. Bien qu'elle se situe légèrement au-delà de notre rayon habituel de 50 km (60 km de Carcassonne), nous intervenons régulièrement à Narbonne en raison de la forte demande.`,
+    specifics: `Pour les déménagements vers ou depuis Narbonne, un léger supplément de distance peut s'appliquer selon le volume. Narbonne est une ville dynamique avec un marché immobilier actif : nous intervenons aussi bien dans les quartiers résidentiels que dans les copropriétés de la zone portuaire.`,
+    note: 'Supplément de distance possible selon le volume. Devis personnalisé recommandé.',
+  },
+  'lezignan-corbieres': {
+    intro: `Lézignan-Corbières, cœur du vignoble des Corbières avec ses 11 000 habitants, est situé à 35 km au nord-est de Carcassonne. Cette ville viticole en plein développement attire de nouveaux résidents chaque année.`,
+    specifics: `Lézignan-Corbières présente un parc immobilier varié : maisons vigneronnes traditionnelles, pavillons récents, appartements en copropriété. Nous connaissons bien ce secteur et intervenons régulièrement pour les déménagements liés aux mutations professionnelles dans la viticulture.`,
+  },
+  bram: {
+    intro: `Bram, commune audoise de 3 500 habitants à 23 km à l'ouest de Carcassonne sur la plaine lauragaise, est un village typique du Lauragais avec son plan circulaire médiéval unique.`,
+    specifics: `Le centre historique circulaire de Bram peut présenter des particularités d'accès. Notre équipe connaît bien cette commune et s'adapte aux contraintes locales pour réaliser votre déménagement sans difficulté.`,
+  },
+  capendu: {
+    intro: `Capendu, village de 1 500 habitants à 18 km au sud-est de Carcassonne, est idéalement situé entre Carcassonne et Narbonne. Le village offre un cadre de vie tranquille très prisé des familles.`,
+    specifics: `Capendu dispose d'un tissu résidentiel principalement composé de maisons individuelles et de mas. Les accès sont généralement faciles pour nos fourgons, et nous intervenons régulièrement dans ce secteur.`,
+  },
+  pezens: {
+    intro: `Pezens, commune rurale de 1 700 habitants à 10 km au nord-ouest de Carcassonne, est une commune résidentielle appréciée pour sa proximité avec Carcassonne tout en offrant un cadre de vie plus calme.`,
+    specifics: `Proche de Carcassonne, Pezens est particulièrement bien desservie par nos équipes. Les déménagements depuis ou vers Pezens sont souvent combinés avec d'autres livraisons dans le secteur, ce qui nous permet d'optimiser les coûts.`,
+  },
+  alzonne: {
+    intro: `Alzonne, village de 1 400 habitants à 15 km à l'ouest de Carcassonne sur la plaine lauragaise, est une commune résidentielle tranquille avec un tissu pavillonnaire bien développé.`,
+    specifics: `Le tissu résidentiel d'Alzonne est principalement composé de maisons individuelles avec jardin, ce qui facilite généralement les opérations de déménagement. Notre équipe intervient régulièrement dans ce secteur.`,
+  },
+};
+
+const content = cityContent[city.slug] ?? {
+  intro: `${city.name} est une commune de l'Aude où TransDéménage Carcassonne intervient régulièrement. Situé ${distanceText}, ce secteur fait partie intégrante de notre zone d'intervention.`,
+  specifics: `Nous organisons régulièrement des déménagements à ${city.name} et ses environs. Notre équipe connaît les spécificités locales et s'adapte aux contraintes de chaque logement.`,
+};
+---
+
+<BaseLayout title={title} description={description}>
+  <SchemaLocalBusiness slot="head" />
+  <Header />
+
+  <!-- Hero -->
+  <section class="city-hero">
+    <div class="city-hero-bg"></div>
+    <div class="container city-hero-inner">
+      <div class="city-hero-content">
+        <div class="city-badge">
+          📍 {isBase ? 'Notre ville' : `${city.distance} km de Carcassonne`}
+        </div>
+        <h1>Déménagement à {city.name}</h1>
+        <p class="city-hero-sub">
+          TransDéménage Carcassonne intervient à {city.name} et dans un rayon de {SITE.serviceRadius} km.
+          Équipe locale, assurance incluse, devis gratuit sous 2h.
+        </p>
+        <div class="city-hero-ctas">
+          <a href="/contact" class="btn btn--primary btn--lg">Devis gratuit →</a>
+          <a href={`tel:${SITE.phone}`} class="btn btn--white btn--lg">📞 {SITE.phoneDisplay}</a>
+        </div>
+      </div>
+      <div class="city-hero-media">
+        <PhotoPlaceholder
+          aspectRatio="4/3"
+          label={`Déménagement ${city.name}`}
+          description="demenagement-action.jpg"
+          variant="dark"
+        />
+      </div>
+    </div>
+  </section>
+
+  <!-- City description -->
+  <section class="section">
+    <div class="container city-layout">
+      <div class="city-body">
+        <h2>Votre déménageur à {city.name}</h2>
+        <p class="city-para">{content.intro}</p>
+        <p class="city-para">{content.specifics}</p>
+
+        {content.note && (
+          <div class="city-notice">
+            <strong>ℹ️ À noter :</strong> {content.note}
+          </div>
+        )}
+
+        <!-- Key facts -->
+        <div class="city-facts">
+          <div class="city-fact">
+            <strong>{city.population.toLocaleString('fr')}</strong>
+            <span>habitants</span>
+          </div>
+          <div class="city-fact">
+            <strong>{isBase ? 'Base' : `${city.distance} km`}</strong>
+            <span>de Carcassonne</span>
+          </div>
+          <div class="city-fact">
+            <strong>Aude (11)</strong>
+            <span>Occitanie</span>
+          </div>
+          <div class="city-fact">
+            <strong>6j/7</strong>
+            <span>disponibilité</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Sidebar -->
+      <aside class="city-sidebar">
+        <div class="city-cta-block">
+          <h3>Devis pour {city.name}</h3>
+          <p>Gratuit et sans engagement. Réponse sous 2h.</p>
+          <a href="/contact" class="btn btn--primary" style="width:100%;justify-content:center;margin-bottom:10px">
+            Demander un devis
+          </a>
+          <a href={`tel:${SITE.phone}`} class="btn btn--outline" style="width:100%;justify-content:center">
+            📞 {SITE.phoneDisplay}
+          </a>
+        </div>
+
+        <div class="city-trust">
+          <div class="city-trust-item">✅ Équipe locale Carcassonne</div>
+          <div class="city-trust-item">🛡️ Assurance 50 000 € incluse</div>
+          <div class="city-trust-item">💶 Devis fixe garanti</div>
+          <div class="city-trust-item">⚡ Intervention sous 48h</div>
+        </div>
+      </aside>
+    </div>
+  </section>
+
+  <!-- Services available -->
+  <section class="section section--alt">
+    <div class="container">
+      <div class="section-header">
+        <span class="section-label">Nos services à {city.name}</span>
+        <h2 class="section-title">Toutes nos prestations disponibles</h2>
+      </div>
+      <div class="grid-3">
+        {SERVICES.map(s => <ServiceCard {...s} />)}
+      </div>
+    </div>
+  </section>
+
+  <QuoteForm
+    title={`Devis déménagement ${city.name}`}
+    subtitle={`Réponse sous 2h pour ${city.name} et ses environs`}
+    prefilledCity={city.name}
+  />
+
+  <CTA
+    title={`Déménagement à ${city.name} ?`}
+    subtitle="Devis gratuit, réponse sous 2h, intervention possible sous 48h."
+  />
+
+  <Footer />
+</BaseLayout>
+
+<style>
+  .city-hero {
+    background: var(--color-navy);
+    color: white;
+    padding: 72px 0;
+    position: relative;
+    overflow: hidden;
+  }
+  .city-hero-bg {
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(ellipse at 70% 40%, rgba(234,125,58,.12) 0%, transparent 60%);
+    pointer-events: none;
+  }
+  .city-hero-inner {
+    position: relative;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 56px;
+    align-items: center;
+  }
+  .city-badge {
+    display: inline-block;
+    background: rgba(234,125,58,.2);
+    color: var(--color-accent);
+    border: 1px solid rgba(234,125,58,.3);
+    font-size: .78rem;
+    font-weight: 700;
+    padding: 5px 12px;
+    border-radius: 100px;
+    margin-bottom: 18px;
+    letter-spacing: .06em;
+    text-transform: uppercase;
+  }
+  .city-hero-content h1 { color: white; margin-bottom: 16px; }
+  .city-hero-sub { color: rgba(255,255,255,.8); font-size: 1.05rem; line-height: 1.6; margin-bottom: 32px; }
+  .city-hero-ctas { display: flex; gap: 14px; flex-wrap: wrap; }
+  .city-hero-media { border-radius: var(--radius-lg); overflow: hidden; }
+
+  .city-layout {
+    display: grid;
+    grid-template-columns: 1fr 300px;
+    gap: 56px;
+    align-items: start;
+  }
+  .city-body h2 { margin-bottom: 20px; }
+  .city-para {
+    font-size: 1rem;
+    line-height: 1.75;
+    color: var(--color-text);
+    margin-bottom: 16px;
+  }
+  .city-notice {
+    background: rgba(234,125,58,.08);
+    border-left: 3px solid var(--color-accent);
+    padding: 14px 18px;
+    border-radius: 0 var(--radius) var(--radius) 0;
+    font-size: .9rem;
+    color: var(--color-text);
+    margin: 20px 0;
+  }
+  .city-facts {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 16px;
+    margin-top: 32px;
+    padding: 24px;
+    background: var(--color-bg-alt);
+    border-radius: var(--radius);
+  }
+  .city-fact { text-align: center; }
+  .city-fact strong { display: block; font-family: var(--font-display); font-size: 1.3rem; color: var(--color-navy); }
+  .city-fact span { font-size: .75rem; color: var(--color-text-light); }
+
+  .city-sidebar { position: sticky; top: 80px; display: flex; flex-direction: column; gap: 16px; }
+  .city-cta-block {
+    background: var(--color-white);
+    border: 1.5px solid var(--color-border);
+    border-radius: var(--radius-lg);
+    padding: 24px;
+    box-shadow: var(--shadow);
+  }
+  .city-cta-block h3 {
+    font-family: var(--font-sans);
+    font-size: 1rem;
+    font-weight: 700;
+    color: var(--color-navy);
+    margin-bottom: 6px;
+  }
+  .city-cta-block p { font-size: .85rem; color: var(--color-text-light); margin-bottom: 18px; }
+  .city-trust {
+    background: var(--color-bg-alt);
+    border-radius: var(--radius);
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+  .city-trust-item { font-size: .88rem; color: var(--color-text); font-weight: 500; }
+
+  @media (max-width: 900px) {
+    .city-hero-inner { grid-template-columns: 1fr; gap: 32px; }
+    .city-hero-media { order: -1; }
+    .city-layout { grid-template-columns: 1fr; }
+    .city-sidebar { position: static; }
+    .city-facts { grid-template-columns: repeat(2, 1fr); }
+  }
+  @media (max-width: 600px) {
+    .city-facts { grid-template-columns: 1fr 1fr; }
+  }
+</style>

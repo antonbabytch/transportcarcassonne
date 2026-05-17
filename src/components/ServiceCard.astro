@@ -1,0 +1,76 @@
+---
+interface Props {
+  slug: string;
+  name: string;
+  description: string;
+  priceFrom: number;
+  icon: string;
+}
+
+const { slug, name, description, priceFrom, icon } = Astro.props;
+---
+
+<a href={`/services/${slug}`} class="service-card">
+  <div class="service-card__icon">{icon}</div>
+  <h3 class="service-card__name">{name}</h3>
+  <p class="service-card__desc">{description}</p>
+  <div class="service-card__footer">
+    <span class="service-card__price">À partir de {priceFrom} €</span>
+    <span class="service-card__arrow">→</span>
+  </div>
+</a>
+
+<style>
+  .service-card {
+    display: flex;
+    flex-direction: column;
+    background: var(--color-white);
+    border: 1.5px solid var(--color-border);
+    border-radius: var(--radius-lg);
+    padding: 28px 24px;
+    text-decoration: none;
+    transition: border-color .2s, box-shadow .2s, transform .2s;
+  }
+  .service-card:hover {
+    border-color: var(--color-accent);
+    box-shadow: var(--shadow);
+    transform: translateY(-3px);
+  }
+
+  .service-card__icon {
+    font-size: 2.2rem;
+    margin-bottom: 16px;
+  }
+  .service-card__name {
+    font-size: 1.1rem;
+    font-family: var(--font-sans);
+    font-weight: 700;
+    color: var(--color-navy);
+    margin-bottom: 8px;
+  }
+  .service-card__desc {
+    font-size: .88rem;
+    color: var(--color-text-light);
+    line-height: 1.5;
+    flex: 1;
+    margin-bottom: 20px;
+  }
+  .service-card__footer {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding-top: 16px;
+    border-top: 1px solid var(--color-border);
+  }
+  .service-card__price {
+    font-size: .9rem;
+    font-weight: 600;
+    color: var(--color-accent);
+  }
+  .service-card__arrow {
+    color: var(--color-navy);
+    font-size: 1.1rem;
+    transition: transform .15s;
+  }
+  .service-card:hover .service-card__arrow { transform: translateX(4px); }
+</style>

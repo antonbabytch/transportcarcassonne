@@ -1,0 +1,44 @@
+---
+interface Props {
+  formHref?: string;
+}
+const { formHref = '#devis' } = Astro.props;
+---
+
+<div class="calc-placeholder">
+  <div class="calc-placeholder__icon">🧮</div>
+  <h3 class="calc-placeholder__title">Calculatrice de devis</h3>
+  <p class="calc-placeholder__text">
+    Bientôt disponible. En attendant, demandez un devis gratuit sous 2h.
+  </p>
+  <a href={formHref} class="btn btn--primary">
+    Demander un devis gratuit →
+  </a>
+</div>
+
+<style>
+  .calc-placeholder {
+    background: var(--color-white);
+    border: 2px dashed var(--color-border);
+    border-radius: var(--radius-lg);
+    padding: 36px 28px;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 12px;
+  }
+  .calc-placeholder__icon { font-size: 2.4rem; }
+  .calc-placeholder__title {
+    font-family: var(--font-sans);
+    font-size: 1.1rem;
+    font-weight: 700;
+    color: var(--color-navy);
+  }
+  .calc-placeholder__text {
+    font-size: .9rem;
+    color: var(--color-text-light);
+    line-height: 1.5;
+    max-width: 300px;
+  }
+</style>

@@ -1,0 +1,128 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Header from '../components/Header.astro';
+import Footer from '../components/Footer.astro';
+import { SITE } from '../data/site.config';
+
+const title = 'Merci pour votre demande | TransDéménage Carcassonne';
+const description = 'Votre demande de devis a bien été reçue. Nous vous contactons sous 2h.';
+---
+
+<BaseLayout title={title} description={description} noindex={true}>
+  <Header />
+
+  <section class="merci-section">
+    <div class="container merci-inner">
+      <div class="merci-card">
+        <div class="merci-icon">✅</div>
+        <h1>Demande reçue !</h1>
+        <p class="merci-main">
+          Merci pour votre demande de devis. Notre équipe vous contacte
+          <strong>sous 2h</strong> du lundi au samedi de 8h à 19h.
+        </p>
+
+        <div class="merci-contact">
+          <p>Besoin de nous joindre immédiatement ?</p>
+          <div class="merci-contact-btns">
+            <a href={`tel:${SITE.phone}`} class="btn btn--primary">
+              📞 {SITE.phoneDisplay}
+            </a>
+            <a
+              href={`https://wa.me/${SITE.phoneWhatsapp}`}
+              class="btn btn--outline"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              💬 WhatsApp
+            </a>
+          </div>
+        </div>
+
+        <div class="merci-next">
+          <h2>Prochaines étapes</h2>
+          <ol class="merci-steps">
+            <li>Notre conseiller étudie votre demande</li>
+            <li>Vous recevez un appel ou SMS de notre part</li>
+            <li>Nous établissons un devis précis et gratuit</li>
+            <li>Vous décidez librement, sans engagement</li>
+          </ol>
+        </div>
+
+        <a href="/" class="merci-home">← Retour à l'accueil</a>
+      </div>
+    </div>
+  </section>
+
+  <Footer />
+</BaseLayout>
+
+<style>
+  .merci-section {
+    min-height: 70vh;
+    display: flex;
+    align-items: center;
+    padding: 80px 0;
+    background: var(--color-bg-alt);
+  }
+  .merci-inner { display: flex; justify-content: center; }
+  .merci-card {
+    background: var(--color-white);
+    border: 1.5px solid var(--color-border);
+    border-radius: var(--radius-lg);
+    padding: 56px 48px;
+    max-width: 560px;
+    width: 100%;
+    text-align: center;
+    box-shadow: var(--shadow-lg);
+  }
+  .merci-icon { font-size: 3.5rem; margin-bottom: 20px; }
+  .merci-card h1 { margin-bottom: 16px; font-size: 2.2rem; }
+  .merci-main { font-size: 1.05rem; color: var(--color-text-light); line-height: 1.65; margin-bottom: 32px; }
+  .merci-main strong { color: var(--color-navy); }
+
+  .merci-contact {
+    background: var(--color-bg-alt);
+    border-radius: var(--radius);
+    padding: 24px;
+    margin-bottom: 32px;
+  }
+  .merci-contact p { font-size: .9rem; color: var(--color-text-light); margin-bottom: 16px; }
+  .merci-contact-btns { display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; }
+
+  .merci-next { text-align: left; margin-bottom: 32px; }
+  .merci-next h2 { font-size: 1.2rem; margin-bottom: 16px; }
+  .merci-steps { display: flex; flex-direction: column; gap: 10px; list-style: none; counter-reset: steps; }
+  .merci-steps li {
+    counter-increment: steps;
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    font-size: .92rem;
+    color: var(--color-text);
+  }
+  .merci-steps li::before {
+    content: counter(steps);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    background: var(--color-navy);
+    color: white;
+    font-size: .78rem;
+    font-weight: 700;
+    flex-shrink: 0;
+  }
+
+  .merci-home {
+    font-size: .9rem;
+    font-weight: 600;
+    color: var(--color-accent);
+  }
+  .merci-home:hover { text-decoration: underline; }
+
+  @media (max-width: 560px) {
+    .merci-card { padding: 36px 20px; }
+  }
+</style>
