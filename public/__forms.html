@@ -1,0 +1,19 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <title>Netlify Forms detection</title>
+</head>
+<body>
+  <form name="devis-transport" netlify netlify-honeypot="bot-field" hidden>
+    <input type="text" name="nom" />
+    <input type="tel" name="telephone" />
+    <select name="type_demenagement"></select>
+    <input type="text" name="depart_ville" />
+    <input type="text" name="arrivee_ville" />
+    <input type="date" name="date" />
+    <textarea name="message"></textarea>
+    <input name="bot-field" />
+  </form>
+</body>
+</html>
