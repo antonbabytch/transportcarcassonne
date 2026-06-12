@@ -20,12 +20,12 @@ const { city } = Astro.props;
 const isBase = city.distance === 0;
 const distanceText = isBase ? 'notre ville de base' : `à ${city.distance} km de Carcassonne`;
 
-const title = `Déménagement ${city.name} | TransDéménage Carcassonne`;
+const title = `Déménagement ${city.name} | Transport Carcassonne`;
 const description = `Déménageur professionnel à ${city.name} (${city.distance > 0 ? `${city.distance} km de Carcassonne` : 'Aude'}). Déménagement local, transport meubles, évacuation. Assurance incluse. Devis gratuit sous 2h. ${SITE.phoneDisplay}`;
 
 const cityContent: Record<string, { intro: string; specifics: string; note?: string }> = {
   carcassonne: {
-    intro: `Carcassonne, chef-lieu de l'Aude et ville de base de TransDéménage, est notre terrain de prédilection. Nous connaissons parfaitement les spécificités de la ville : les ruelles médiévales de la Cité, les immeubles haussmanniens du centre-ville, les quartiers résidentiels de Grazailles, Montredon et les zones pavillonnaires périphériques.`,
+    intro: `Carcassonne, chef-lieu de l'Aude et ville de base de Transport Carcassonne, est notre terrain de prédilection. Nous connaissons parfaitement les spécificités de la ville : les ruelles médiévales de la Cité, les immeubles haussmanniens du centre-ville, les quartiers résidentiels de Grazailles, Montredon et les zones pavillonnaires périphériques.`,
     specifics: `Déménager à Carcassonne nécessite souvent une connaissance fine des contraintes locales : zones piétonnes, réglementations de stationnement, accès difficiles dans la Cité historique classée UNESCO. Notre équipe maîtrise toutes ces particularités pour organiser votre déménagement sans accroc.`,
   },
   trebes: {
@@ -68,7 +68,7 @@ const cityContent: Record<string, { intro: string; specifics: string; note?: str
 };
 
 const content = cityContent[city.slug] ?? {
-  intro: `${city.name} est une commune de l'Aude où TransDéménage Carcassonne intervient régulièrement. Situé ${distanceText}, ce secteur fait partie intégrante de notre zone d'intervention.`,
+  intro: `${city.name} est une commune de l'Aude où Transport Carcassonne intervient régulièrement. Situé ${distanceText}, ce secteur fait partie intégrante de notre zone d'intervention.`,
   specifics: `Nous organisons régulièrement des déménagements à ${city.name} et ses environs. Notre équipe connaît les spécificités locales et s'adapte aux contraintes de chaque logement.`,
 };
 ---
@@ -87,7 +87,7 @@ const content = cityContent[city.slug] ?? {
         </div>
         <h1>Déménagement à {city.name}</h1>
         <p class="city-hero-sub">
-          TransDéménage Carcassonne intervient à {city.name} et dans un rayon de {SITE.serviceRadius} km.
+          Transport Carcassonne intervient à {city.name} et dans un rayon de {SITE.serviceRadius} km.
           Équipe locale, assurance incluse, devis gratuit sous 2h.
         </p>
         <div class="city-hero-ctas">

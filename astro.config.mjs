@@ -3,5 +3,11 @@ import sitemap from '@astrojs/sitemap';
 
 export default defineConfig({
   site: 'https://transportcarcassonne.fr',
-  integrations: [sitemap()],
+  integrations: [
+    sitemap({
+      filter: (page) =>
+        !page.includes('/merci') &&
+        !page.includes('/__forms'),
+    }),
+  ],
 });
