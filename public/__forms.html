@@ -2,10 +2,20 @@
 <html lang="fr">
 <head>
   <meta charset="utf-8">
-  <title>Netlify Forms detection</title>
+  <title>Netlify Forms detection — do not visit</title>
 </head>
 <body>
-  <form name="devis-transport" netlify netlify-honeypot="bot-field" hidden>
+  <!-- Форма devis-transport (используется на: главная, /tarifs/, /contact/,
+       /petit-demenagement/, /services/[service]/, /demenagement-[ville]/) -->
+  <form
+    name="devis-transport"
+    method="POST"
+    action="/merci/"
+    data-netlify="true"
+    netlify-honeypot="bot-field"
+    hidden
+  >
+    <input type="hidden" name="form-name" value="devis-transport" />
     <input type="text" name="nom" />
     <input type="tel" name="telephone" />
     <select name="type_demenagement"></select>
