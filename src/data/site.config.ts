@@ -1,5 +1,5 @@
 export const SITE = {
-  name: 'TransDéménage Carcassonne',
+  name: 'Transport Carcassonne',
   url: 'https://transportcarcassonne.fr',
   phone: '+33 6 26 17 82 37',
   phoneDisplay: '06 26 17 82 37',

@@ -92,7 +92,7 @@ const schemaOrg = {
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
-      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Playfair+Display:wght@700;800&display=swap"
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Instrument+Serif:ital@0;1&family=Playfair+Display:wght@700;800&display=swap"
       rel="stylesheet"
     />
 
@@ -131,24 +131,42 @@ const schemaOrg = {
   *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
   :root {
-    --color-navy: #1a2845;
-    --color-navy-dark: #111d33;
-    --color-navy-light: #2a3f6f;
-    --color-accent: #ea7d3a;
-    --color-accent-dark: #d06020;
-    --color-bg: #fafaf7;
-    --color-bg-alt: #f3f0ea;
-    --color-text: #2d3748;
-    --color-text-light: #718096;
-    --color-border: #e5e0d8;
-    --color-white: #ffffff;
+    /* ─── MAISON FORTE — unified design tokens (synced with debarras-carcassonne.fr) ─── */
+    --bg: #FAFAF7;
+    --bg-card: #FFFFFF;
+    --bg-soft: #F2F0EB;
+    --bg-dark: #15191C;
+    --bg-dark-alt: #1E2326;
+    --text: #15191C;
+    --text-muted: #5C6470;
+    --text-on-dark: #FAFAF7;
+    --text-on-dark-muted: #9CA3AC;
+    --accent: #A8703F;
+    --accent-deep: #6B4422;
+    --accent-soft: rgba(168, 112, 63, 0.08);
+    --line: #E5E1D8;
+    --line-strong: #15191C;
+    --line-dark: #2D3338;
+
+    /* ─── Legacy aliases — keep existing components working ─── */
+    --color-navy: var(--bg-dark);
+    --color-navy-dark: #0c0f11;
+    --color-navy-light: #2a3338;
+    --color-accent: var(--accent);
+    --color-accent-dark: var(--accent-deep);
+    --color-bg: var(--bg);
+    --color-bg-alt: var(--bg-soft);
+    --color-text: var(--text);
+    --color-text-light: var(--text-muted);
+    --color-border: var(--line);
+    --color-white: var(--bg-card);
     --font-sans: 'Inter', system-ui, -apple-system, sans-serif;
-    --font-display: 'Playfair Display', Georgia, serif;
-    --radius: 8px;
-    --radius-lg: 16px;
-    --shadow-sm: 0 1px 3px rgba(0,0,0,.08), 0 1px 2px rgba(0,0,0,.06);
-    --shadow: 0 4px 12px rgba(0,0,0,.1);
-    --shadow-lg: 0 10px 40px rgba(0,0,0,.12);
+    --font-display: 'Instrument Serif', Georgia, serif;
+    --radius: 4px;
+    --radius-lg: 12px;
+    --shadow-sm: 0 1px 3px rgba(21, 25, 28, 0.06);
+    --shadow: 0 4px 16px rgba(21, 25, 28, 0.08);
+    --shadow-lg: 0 16px 40px rgba(21, 25, 28, 0.12);
     --max-width: 1160px;
   }
 

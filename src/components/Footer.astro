@@ -4,83 +4,72 @@ import { SERVICES } from '../data/services';
 import { CITIES } from '../data/cities';
 ---
 
-<footer class="footer">
-  <div class="container footer-grid">
-    <!-- Col 1: About -->
-    <div class="footer-col">
-      <div class="footer-logo">
-        <div class="footer-logo-icon">T</div>
-        <div>
-          <div class="footer-logo-name">{SITE.name}</div>
-          <div class="footer-logo-sub">Déménageur professionnel</div>
-        </div>
+<footer class="site-footer">
+  <div class="container">
+    <div class="footer-grid">
+      <div class="footer-brand">
+        <a href="/" class="logo">
+          <span class="logo-mark"></span>
+          <span class="logo-text">
+            <strong>Transport Carcassonne</strong>
+            <small>Déménagement &amp; transport</small>
+          </span>
+        </a>
+        <p>
+          Spécialiste du déménagement et du transport à Carcassonne et dans
+          l'Aude. SIRET {SITE.siret}. Entreprise déclarée et assurée.
+        </p>
+        <p class="sister-site">
+          Besoin d'un débarras ou d'un vide maison&nbsp;? Voir notre activité
+          <a href="https://debarras-carcassonne.fr/" rel="noopener">
+            Débarras Carcassonne
+          </a>
+          — un artisan local, deux expertises.
+        </p>
       </div>
-      <p class="footer-about">
-        Spécialiste du déménagement à Carcassonne et dans l'Aude depuis plusieurs années.
-        Service local, prix transparents, équipe professionnelle.
-      </p>
-      <div class="footer-siret">SIRET : {SITE.siret}</div>
-      <div class="footer-hours">🕐 {SITE.hours}</div>
+
+      <div>
+        <h4>Services</h4>
+        <ul>
+          {SERVICES.map(s => (
+            <li><a href={`/services/${s.slug}`}>{s.name}</a></li>
+          ))}
+          <li><a href="/tarifs">Nos tarifs</a></li>
+        </ul>
+      </div>
+
+      <div>
+        <h4>Zone</h4>
+        <ul>
+          {CITIES.slice(0, 6).map(c => (
+            <li><a href={`/demenagement-${c.slug}`}>{c.name}</a></li>
+          ))}
+        </ul>
+      </div>
+
+      <div>
+        <h4>Contact</h4>
+        <ul>
+          <li><a href={`tel:${SITE.phone}`}>{SITE.phoneDisplay}</a></li>
+          <li>
+            <a
+              href={`https://wa.me/${SITE.phoneWhatsapp}`}
+              target="_blank"
+              rel="noopener noreferrer"
+            >WhatsApp</a>
+          </li>
+          <li><a href={`mailto:${SITE.email}`}>{SITE.email}</a></li>
+          <li>{SITE.hours}</li>
+          <li>{SITE.hq.city}, {SITE.hq.region} ({SITE.hq.postalCode})</li>
+        </ul>
+      </div>
     </div>
 
-    <!-- Col 2: Services -->
-    <div class="footer-col">
-      <h4 class="footer-heading">Nos services</h4>
-      <ul class="footer-links">
-        {SERVICES.map(s => (
-          <li><a href={`/services/${s.slug}`}>{s.name}</a></li>
-        ))}
-        <li><a href="/tarifs">Nos tarifs</a></li>
-      </ul>
-    </div>
-
-    <!-- Col 3: Zone -->
-    <div class="footer-col">
-      <h4 class="footer-heading">Zone d'intervention</h4>
-      <ul class="footer-links">
-        {CITIES.map(c => (
-          <li><a href={`/demenagement-${c.slug}`}>{c.name}</a></li>
-        ))}
-      </ul>
-    </div>
-
-    <!-- Col 4: Contact -->
-    <div class="footer-col">
-      <h4 class="footer-heading">Contact</h4>
-      <ul class="footer-contact-list">
-        <li>
-          <a href={`tel:${SITE.phone}`} class="footer-contact-link">
-            📞 {SITE.phoneDisplay}
-          </a>
-        </li>
-        <li>
-          <a
-            href={`https://wa.me/${SITE.phoneWhatsapp}`}
-            class="footer-contact-link"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            💬 WhatsApp
-          </a>
-        </li>
-        <li>
-          <a href={`mailto:${SITE.email}`} class="footer-contact-link">
-            ✉️ {SITE.email}
-          </a>
-        </li>
-        <li class="footer-address">
-          📍 {SITE.hq.city} {SITE.hq.postalCode}, {SITE.hq.region}
-        </li>
-      </ul>
-      <a href="/contact" class="footer-devis-btn">Devis gratuit →</a>
-    </div>
-  </div>
-
-  <div class="footer-bottom">
-    <div class="container footer-bottom-inner">
-      <span>© {new Date().getFullYear()} {SITE.name} — Tous droits réservés</span>
-      <div class="footer-legal-links">
+    <div class="footer-bottom">
+      <div>© {new Date().getFullYear()} {SITE.name} · SIRET {SITE.siret}</div>
+      <div class="footer-legal">
         <a href="/mentions-legales">Mentions légales</a>
+        <span>·</span>
         <a href="/politique-confidentialite">Politique de confidentialité</a>
       </div>
     </div>
@@ -88,121 +77,152 @@ import { CITIES } from '../data/cities';
 </footer>
 
 <style>
-  .footer {
-    background: var(--color-navy-dark, #111d33);
-    color: rgba(255,255,255,.8);
-    padding: 64px 0 0;
-    font-size: .9rem;
+  .site-footer {
+    background: var(--bg-dark);
+    color: var(--text-on-dark);
+    padding: 64px 0 32px;
+    border-top: 1px solid var(--line-dark);
   }
 
   .footer-grid {
     display: grid;
-    grid-template-columns: 1.4fr 1fr 1fr 1fr;
-    gap: 48px;
-    padding-bottom: 48px;
-    border-bottom: 1px solid rgba(255,255,255,.1);
+    grid-template-columns: 2fr 1fr 1fr 1fr;
+    gap: 60px;
+    margin-bottom: 60px;
   }
 
-  .footer-logo {
+  .footer-brand .logo {
     display: flex;
     align-items: center;
-    gap: 12px;
-    margin-bottom: 16px;
+    gap: 14px;
+    text-decoration: none;
+    color: var(--text-on-dark);
+    margin-bottom: 20px;
   }
-  .footer-logo-icon {
+
+  .footer-brand .logo-mark {
     width: 38px;
     height: 38px;
-    background: var(--color-accent);
-    color: white;
-    border-radius: 8px;
+    background: var(--accent);
+    border-radius: 4px;
+    flex-shrink: 0;
     display: flex;
     align-items: center;
     justify-content: center;
-    font-family: var(--font-display);
-    font-size: 1.2rem;
-    font-weight: 700;
-    flex-shrink: 0;
+    font-family: 'Instrument Serif', serif;
+    color: var(--bg-dark);
+    font-size: 22px;
+    font-weight: 400;
   }
-  .footer-logo-name {
-    font-family: var(--font-display);
-    font-size: 1rem;
-    font-weight: 700;
-    color: white;
+
+  .footer-brand .logo-mark::after {
+    content: 'AB';
+  }
+
+  .footer-brand .logo-text {
+    display: flex;
+    flex-direction: column;
     line-height: 1.1;
   }
-  .footer-logo-sub { font-size: .72rem; opacity: .6; margin-top: 2px; }
 
-  .footer-about {
-    font-size: .85rem;
-    line-height: 1.6;
-    opacity: .75;
-    margin-bottom: 12px;
+  .footer-brand .logo-text strong {
+    font-weight: 500;
+    font-size: 16px;
   }
-  .footer-siret { font-size: .78rem; opacity: .5; margin-bottom: 6px; }
-  .footer-hours { font-size: .82rem; opacity: .65; }
 
-  .footer-heading {
-    font-family: var(--font-sans);
-    font-size: .75rem;
-    font-weight: 700;
-    letter-spacing: .1em;
+  .footer-brand .logo-text small {
+    font-family: 'Inter', sans-serif;
+    font-size: 10px;
+    color: var(--text-on-dark-muted);
+    letter-spacing: 0.14em;
     text-transform: uppercase;
-    color: var(--color-accent);
-    margin-bottom: 16px;
+    margin-top: 3px;
   }
 
-  .footer-links { display: flex; flex-direction: column; gap: 8px; }
-  .footer-links a {
-    color: rgba(255,255,255,.7);
-    font-size: .88rem;
-    transition: color .15s;
+  .footer-brand p {
+    color: var(--text-on-dark-muted);
+    font-size: 14px;
+    line-height: 1.65;
+    max-width: 340px;
   }
-  .footer-links a:hover { color: white; }
 
-  .footer-contact-list { display: flex; flex-direction: column; gap: 10px; margin-bottom: 20px; }
-  .footer-contact-link {
-    color: rgba(255,255,255,.75);
-    font-size: .88rem;
-    transition: color .15s;
+  .footer-brand .sister-site {
+    margin-top: 16px;
+    padding-top: 16px;
+    border-top: 1px solid var(--line-dark);
+    font-size: 13px;
+  }
+
+  .footer-brand .sister-site a {
+    color: var(--accent);
+    font-weight: 500;
+    text-decoration: underline;
+    text-underline-offset: 3px;
+  }
+
+  .footer-brand .sister-site a:hover {
+    color: var(--text-on-dark);
+  }
+
+  h4 {
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.18em;
+    color: var(--accent);
+    margin-bottom: 22px;
+    font-weight: 500;
+  }
+
+  ul {
+    list-style: none;
+  }
+
+  li {
+    margin-bottom: 11px;
+  }
+
+  a {
+    color: var(--text-on-dark);
+    text-decoration: none;
+    font-size: 14px;
+    transition: color 0.2s;
+  }
+
+  a:hover {
+    color: var(--accent);
+  }
+
+  .footer-bottom {
+    border-top: 1px solid var(--line-dark);
+    padding-top: 24px;
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 12px;
+    color: var(--text-on-dark-muted);
+    font-size: 13px;
+  }
+
+  .footer-bottom a {
+    color: var(--text-on-dark-muted);
+  }
+
+  .footer-legal {
     display: flex;
     gap: 8px;
     align-items: center;
   }
-  .footer-contact-link:hover { color: white; }
-  .footer-address { font-size: .84rem; opacity: .6; }
-
-  .footer-devis-btn {
-    display: inline-block;
-    padding: 10px 20px;
-    background: var(--color-accent);
-    color: white;
-    border-radius: var(--radius);
-    font-size: .88rem;
-    font-weight: 600;
-    transition: background .15s;
-  }
-  .footer-devis-btn:hover { background: var(--color-accent-dark); }
-
-  .footer-bottom {
-    padding: 20px 0;
-    font-size: .78rem;
-    opacity: .5;
-  }
-  .footer-bottom-inner {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    gap: 16px;
-    flex-wrap: wrap;
-  }
-  .footer-legal-links { display: flex; gap: 20px; }
-  .footer-legal-links a:hover { opacity: 1; text-decoration: underline; }
 
   @media (max-width: 900px) {
-    .footer-grid { grid-template-columns: 1fr 1fr; gap: 32px; }
+    .footer-grid {
+      grid-template-columns: 1fr 1fr;
+      gap: 32px;
+    }
   }
-  @media (max-width: 560px) {
-    .footer-grid { grid-template-columns: 1fr; gap: 28px; }
-    .footer-bottom-inner { flex-direction: column; align-items: flex-start; }
+
+  @media (max-width: 600px) {
+    .footer-grid {
+      grid-template-columns: 1fr;
+    }
   }
 </style>
