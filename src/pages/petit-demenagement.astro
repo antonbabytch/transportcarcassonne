@@ -1,0 +1,413 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Header from '../components/Header.astro';
+import Footer from '../components/Footer.astro';
+import CTA from '../components/CTA.astro';
+import ComboOffer from '../components/ComboOffer.astro';
+import QuoteForm from '../components/QuoteForm.astro';
+import { SITE } from '../data/site.config';
+
+const title = 'Petit déménagement Carcassonne — Prix dès 150€ | Transport Carcassonne';
+const description = `Petit déménagement à Carcassonne et dans l'Aude : studio, 1-2 meubles, déménagement étudiant. Prix dès 150€, devis gratuit sous 2h. ${SITE.phoneDisplay}`;
+
+const cases = [
+  {
+    icon: '🛏',
+    title: 'Studio ou T1',
+    price: 'dès 250 €',
+    desc: 'Studio meublé ou non, déménagement étudiant, mobilier compact. Camion 12 m³, 2 déménageurs.',
+  },
+  {
+    icon: '🛋',
+    title: '1 à 3 meubles',
+    price: 'dès 150 €',
+    desc: 'Canapé, lit, armoire ou table à transporter ? Idéal pour les achats Le Bon Coin, Vinted, IKEA.',
+  },
+  {
+    icon: '🎓',
+    title: 'Déménagement étudiant',
+    price: 'dès 220 €',
+    desc: 'Chambre d\'étudiant, kitchenette : nous adaptons le service à votre budget. Remise -5 %.',
+  },
+  {
+    icon: '🏢',
+    title: 'Cabinet ou bureau',
+    price: 'dès 280 €',
+    desc: 'Petit bureau, cabinet médical, kinésithérapeute : déménagement le weekend possible.',
+  },
+];
+
+const priceMatrix = [
+  { type: '1 meuble (< 200 kg)', distance: '≤ 15 km', price: '150 €' },
+  { type: '2-3 meubles', distance: '≤ 30 km', price: '220 €' },
+  { type: 'Studio meublé', distance: '≤ 30 km', price: '280 €' },
+  { type: 'Studio + cartons', distance: '≤ 50 km', price: '350 €' },
+  { type: '5 m³ (chambre étudiant)', distance: '≤ 50 km', price: '320 €' },
+  { type: '8 m³ (mini-T1)', distance: '≤ 50 km', price: '420 €' },
+];
+
+const faqs = [
+  {
+    q: 'Quel est le prix minimum d\'un petit déménagement ?',
+    a: 'Notre tarif minimum d\'intervention est de 150 € pour un seul meuble ou un transport ponctuel à Carcassonne ou dans un rayon de 15 km. Au-delà, le prix dépend du volume (m³) et de la distance.',
+  },
+  {
+    q: 'Faites-vous des déménagements le weekend ?',
+    a: 'Oui, nous intervenons le samedi sans supplément, et le dimanche avec un supplément de 50 € pour répondre aux contraintes des étudiants et des actifs.',
+  },
+  {
+    q: 'Pouvez-vous déménager un seul meuble (canapé, armoire) ?',
+    a: 'Bien sûr. Beaucoup de nos clients font appel à nous pour livrer un meuble acheté sur Le Bon Coin, Vinted ou IKEA. Devis sous 2h, intervention possible le jour même.',
+  },
+  {
+    q: 'Faut-il prévoir les cartons ?',
+    a: 'Vous pouvez utiliser vos propres cartons ou nous demander un kit de cartons (10 cartons = 30 €, 20 cartons = 50 €). Nous fournissons toujours couvertures et sangles de protection.',
+  },
+  {
+    q: 'Quels sont les délais d\'intervention pour un petit déménagement ?',
+    a: 'Pour un petit déménagement urgent, nous intervenons sous 24 à 48h selon notre planning. Pour une planification anticipée, prévoyez 3 à 7 jours.',
+  },
+  {
+    q: 'Y a-t-il une remise pour les étudiants ?',
+    a: 'Oui, nous proposons une remise de 5 % sur tous les déménagements étudiants (sur présentation de la carte étudiante).',
+  },
+];
+---
+
+<BaseLayout title={title} description={description}>
+  <Header />
+
+  <!-- Hero -->
+  <section class="petit-hero">
+    <div class="container">
+      <span class="section-label">Petit déménagement</span>
+      <h1>Petit déménagement<br/><span class="highlight">à Carcassonne</span></h1>
+      <p class="petit-hero-sub">
+        Studio, étudiant, 1 ou 2 meubles, livraison Le Bon Coin : nous nous adaptons
+        à votre budget. <strong>Prix dès 150 €</strong>, devis gratuit sous 2h.
+      </p>
+      <div class="petit-hero-cta">
+        <a href="/contact" class="btn btn--primary btn--lg">Devis gratuit →</a>
+        <a href={`tel:${SITE.phone}`} class="btn btn--outline btn--lg">📞 {SITE.phoneDisplay}</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Cas typiques -->
+  <section class="section">
+    <div class="container">
+      <div class="section-header" style="text-align:center;margin-bottom:48px">
+        <span class="section-label">Pour qui ?</span>
+        <h2 class="section-title">4 cas typiques de petit déménagement</h2>
+        <p class="section-subtitle">À chaque besoin, un tarif adapté. Pas de minimum déraisonnable.</p>
+      </div>
+      <div class="grid-2 cases-grid">
+        {cases.map(c => (
+          <div class="case-card">
+            <div class="case-icon">{c.icon}</div>
+            <h3 class="case-title">{c.title}</h3>
+            <div class="case-price">{c.price}</div>
+            <p class="case-desc">{c.desc}</p>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- Matrice des prix -->
+  <section class="section section--alt">
+    <div class="container">
+      <div class="section-header" style="text-align:center;margin-bottom:32px">
+        <span class="section-label">Tarifs transparents</span>
+        <h2 class="section-title">Grille tarifaire petit déménagement</h2>
+        <p class="section-subtitle">Tarifs indicatifs TTC, valables au départ de Carcassonne.</p>
+      </div>
+      <div class="price-table">
+        <div class="price-table__head">
+          <span>Type d'intervention</span>
+          <span>Distance</span>
+          <span>Prix à partir de</span>
+        </div>
+        {priceMatrix.map((row, i) => (
+          <div class:list={['price-table__row', i % 2 === 0 && 'price-table__row--alt']}>
+            <span class="pt-type">{row.type}</span>
+            <span class="pt-distance">{row.distance}</span>
+            <span class="pt-price">{row.price}</span>
+          </div>
+        ))}
+      </div>
+      <p class="price-disclaimer">
+        💡 Tous les prix incluent : camion + 2 déménageurs + carburant + couvertures
+        + sangles + assurance jusqu'à 50 000 €. Aucun frais caché.
+      </p>
+    </div>
+  </section>
+
+  <!-- Ce qui change -->
+  <section class="section">
+    <div class="container">
+      <div class="section-header" style="text-align:center;margin-bottom:48px">
+        <span class="section-label">Notre approche</span>
+        <h2 class="section-title">Petit déménagement, gros respect</h2>
+      </div>
+      <div class="grid-3">
+        <div class="approach-card">
+          <div class="approach-icon">⚡</div>
+          <h3>Intervention rapide</h3>
+          <p>Sous 24-48h pour les urgences. Devis téléphonique en 5 minutes.</p>
+        </div>
+        <div class="approach-card">
+          <div class="approach-icon">💼</div>
+          <h3>Sans minimum déraisonnable</h3>
+          <p>Un seul meuble ? Pas de problème. Tarif honnête dès 150 €.</p>
+        </div>
+        <div class="approach-card">
+          <div class="approach-icon">🛡️</div>
+          <h3>Assurance complète</h3>
+          <p>Même un petit déménagement bénéficie de notre assurance 50 000 €.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FAQ -->
+  <section class="section section--alt">
+    <div class="container">
+      <div class="section-header" style="text-align:center;margin-bottom:48px">
+        <span class="section-label">FAQ</span>
+        <h2 class="section-title">Petites questions, vraies réponses</h2>
+      </div>
+      <div class="faq-list">
+        {faqs.map(f => (
+          <details class="faq-item">
+            <summary class="faq-q">{f.q}</summary>
+            <p class="faq-a">{f.a}</p>
+          </details>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <ComboOffer />
+
+  <QuoteForm title="Devis pour votre petit déménagement" subtitle="Réponse sous 2h · Aucune obligation" />
+
+  <CTA
+    title="Un seul meuble ou un studio à déménager ?"
+    subtitle="Appelez-nous, nous vous donnons un prix par téléphone en 5 minutes."
+  />
+
+  <Footer />
+</BaseLayout>
+
+<!-- FAQ Schema -->
+<script type="application/ld+json" set:html={JSON.stringify({
+  '@context': 'https://schema.org',
+  '@type': 'FAQPage',
+  'mainEntity': faqs.map(f => ({
+    '@type': 'Question',
+    'name': f.q,
+    'acceptedAnswer': { '@type': 'Answer', 'text': f.a },
+  })),
+})} />
+
+<!-- Service Schema -->
+<script type="application/ld+json" set:html={JSON.stringify({
+  '@context': 'https://schema.org',
+  '@type': 'Service',
+  'serviceType': 'Petit déménagement',
+  'provider': {
+    '@type': 'MovingCompany',
+    'name': SITE.name,
+    'url': SITE.url,
+    'telephone': SITE.phone,
+  },
+  'areaServed': {
+    '@type': 'GeoCircle',
+    'geoMidpoint': { '@type': 'GeoCoordinates', latitude: SITE.geo.lat, longitude: SITE.geo.lng },
+    'geoRadius': SITE.serviceRadius * 1000,
+  },
+  'offers': {
+    '@type': 'Offer',
+    'priceCurrency': 'EUR',
+    'price': '150',
+    'priceSpecification': { '@type': 'PriceSpecification', 'minPrice': '150', 'priceCurrency': 'EUR' },
+  },
+})} />
+
+<style>
+  .petit-hero {
+    background: var(--color-navy);
+    color: white;
+    padding: 80px 0;
+    text-align: center;
+  }
+  .petit-hero h1 {
+    color: white;
+    margin: 14px 0 20px;
+    font-size: clamp(2.2rem, 5.5vw, 3.5rem);
+  }
+  .petit-hero .highlight { color: var(--color-accent); }
+  .petit-hero-sub {
+    color: rgba(255,255,255,.78);
+    font-size: 1.1rem;
+    line-height: 1.6;
+    max-width: 620px;
+    margin: 0 auto 32px;
+  }
+  .petit-hero-sub strong { color: var(--color-accent); }
+  .petit-hero-cta {
+    display: flex;
+    gap: 14px;
+    justify-content: center;
+    flex-wrap: wrap;
+  }
+
+  /* Cases */
+  .cases-grid { gap: 24px; }
+  .case-card {
+    background: var(--color-white);
+    border: 1.5px solid var(--color-border);
+    border-radius: var(--radius-lg);
+    padding: 32px;
+    transition: border-color .2s, transform .2s;
+  }
+  .case-card:hover {
+    border-color: var(--color-accent);
+    transform: translateY(-2px);
+  }
+  .case-icon { font-size: 2.2rem; margin-bottom: 14px; }
+  .case-title {
+    font-family: var(--font-display);
+    font-size: 1.35rem;
+    color: var(--color-navy);
+    margin-bottom: 8px;
+  }
+  .case-price {
+    font-family: var(--font-display);
+    font-size: 1.6rem;
+    font-weight: 700;
+    color: var(--color-accent);
+    margin-bottom: 12px;
+  }
+  .case-desc { color: var(--color-text-light); line-height: 1.6; }
+
+  /* Price table */
+  .price-table {
+    background: var(--color-white);
+    border: 1.5px solid var(--color-border);
+    border-radius: var(--radius-lg);
+    overflow: hidden;
+    max-width: 820px;
+    margin: 0 auto;
+  }
+  .price-table__head {
+    display: grid;
+    grid-template-columns: 2fr 1fr 1fr;
+    gap: 16px;
+    padding: 16px 28px;
+    background: var(--color-bg-alt);
+    font-size: .75rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: .07em;
+    color: var(--color-text-light);
+    border-bottom: 1px solid var(--color-border);
+  }
+  .price-table__row {
+    display: grid;
+    grid-template-columns: 2fr 1fr 1fr;
+    gap: 16px;
+    padding: 16px 28px;
+    align-items: center;
+    border-bottom: 1px solid var(--color-border);
+  }
+  .price-table__row:last-child { border-bottom: none; }
+  .price-table__row--alt { background: var(--color-bg); }
+  .pt-type { font-weight: 500; color: var(--color-navy); }
+  .pt-distance { color: var(--color-text-light); font-size: .9rem; }
+  .pt-price {
+    font-family: var(--font-display);
+    font-size: 1.2rem;
+    font-weight: 700;
+    color: var(--color-accent);
+  }
+  .price-disclaimer {
+    max-width: 820px;
+    margin: 24px auto 0;
+    padding: 14px 20px;
+    background: rgba(168, 112, 63, 0.08);
+    border-radius: var(--radius);
+    font-size: .88rem;
+    color: var(--color-text);
+    line-height: 1.55;
+  }
+
+  /* Approach */
+  .approach-card {
+    text-align: center;
+    padding: 24px;
+  }
+  .approach-icon {
+    font-size: 2rem;
+    width: 60px;
+    height: 60px;
+    background: rgba(168, 112, 63, 0.1);
+    border-radius: 12px;
+    margin: 0 auto 16px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .approach-card h3 {
+    font-family: var(--font-sans);
+    font-size: 1.05rem;
+    font-weight: 700;
+    color: var(--color-navy);
+    margin-bottom: 8px;
+  }
+  .approach-card p { color: var(--color-text-light); line-height: 1.55; font-size: .92rem; }
+
+  /* FAQ */
+  .faq-list { max-width: 800px; margin: 0 auto; display: flex; flex-direction: column; gap: 8px; }
+  .faq-item {
+    background: var(--color-white);
+    border: 1.5px solid var(--color-border);
+    border-radius: var(--radius);
+    overflow: hidden;
+  }
+  .faq-q {
+    padding: 18px 24px;
+    font-weight: 600;
+    font-size: .95rem;
+    color: var(--color-navy);
+    cursor: pointer;
+    list-style: none;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  .faq-q::-webkit-details-marker { display: none; }
+  .faq-q::after {
+    content: '+';
+    font-size: 1.2rem;
+    color: var(--color-accent);
+    flex-shrink: 0;
+  }
+  details[open] .faq-q::after { content: '−'; }
+  .faq-a {
+    padding: 0 24px 18px;
+    font-size: .9rem;
+    color: var(--color-text);
+    line-height: 1.65;
+  }
+
+  @media (max-width: 700px) {
+    .price-table__head { display: none; }
+    .price-table__row {
+      grid-template-columns: 1fr;
+      gap: 6px;
+    }
+    .pt-price { font-size: 1.4rem; }
+  }
+</style>

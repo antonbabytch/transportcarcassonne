@@ -17,9 +17,9 @@ import { CITIES } from '../data/cities';
 
     <ul class="nav-links">
       <li><a href="/services/demenagement-local">Déménagement</a></li>
+      <li><a href="/petit-demenagement">Petit déménagement</a></li>
       <li><a href="/tarifs">Tarifs</a></li>
       <li><a href="/comment-ca-marche">Méthode</a></li>
-      <li><a href="/a-propos">À propos</a></li>
       <li><a href="/contact">Contact</a></li>
     </ul>
 
@@ -59,6 +59,7 @@ import { CITIES } from '../data/cities';
     <nav class="mobile-section">
       <p class="mobile-section-title">Nos services</p>
       <ul>
+        <li><a href="/petit-demenagement" class="mobile-menu-link">Petit déménagement (dès 150 €)</a></li>
         {SERVICES.map(s => (
           <li><a href={`/services/${s.slug}`} class="mobile-menu-link">{s.name}</a></li>
         ))}

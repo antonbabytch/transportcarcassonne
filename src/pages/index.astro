@@ -19,9 +19,59 @@ const description = `Déménageur professionnel à Carcassonne et dans l'Aude. D
 
 const stats = [
   { value: '2', label: 'Fourgons', sub: '12 et 20 m³' },
-  { value: '50 km', label: 'Zone', sub: 'autour de Carcassonne' },
+  { value: '50 k', label: 'Assurance', sub: '50 000 € incluse' },
+  { value: '< 2h', label: 'Réponse', sub: 'devis sous 2 heures' },
   { value: '6j/7', label: 'Disponibilité', sub: 'Lun–Sam 8h–19h' },
-  { value: '100%', label: 'Assurance', sub: 'incluse jusqu\'à 50 000 €' },
+];
+
+const fourgons = [
+  {
+    name: 'Fourgon 12 m³',
+    desc: 'Idéal pour studios, T1, T2 et petits déménagements. Capacité 12 m³, charge utile 1 200 kg, hayon élévateur.',
+    cap: '12 m³',
+    payload: '1 200 kg',
+    icon: '🚐',
+  },
+  {
+    name: 'Fourgon 20 m³',
+    desc: 'Pour T3, T4 et maisons familiales. Capacité 20 m³, charge utile 1 800 kg, hayon élévateur, sangles intégrées.',
+    cap: '20 m³',
+    payload: '1 800 kg',
+    icon: '🚚',
+  },
+];
+
+const garanties = [
+  {
+    icon: '🛡️',
+    title: 'Assurance 50 000 €',
+    desc: 'Couverture grand standing incluse dans chaque déménagement, sans supplément ni franchise cachée.',
+  },
+  {
+    icon: '📋',
+    title: 'Devis fixe écrit',
+    desc: 'Le prix annoncé sur le devis est le prix final. Aucun frais le jour J, aucune mauvaise surprise.',
+  },
+  {
+    icon: '🧾',
+    title: 'Facture et SIRET',
+    desc: `Entreprise déclarée SIRET ${SITE.siret}. Facture conforme remise à chaque intervention.`,
+  },
+  {
+    icon: '⏱️',
+    title: 'Ponctualité garantie',
+    desc: 'Nous arrivons à l\'heure convenue. Si nous avons plus de 30 min de retard, vous bénéficiez d\'une remise.',
+  },
+  {
+    icon: '👥',
+    title: 'Équipe formée',
+    desc: 'Déménageurs expérimentés, formés à la manutention, au démontage et à la protection des meubles fragiles.',
+  },
+  {
+    icon: '♻️',
+    title: 'Geste écologique',
+    desc: 'Optimisation des trajets, mutualisation des transports, cartons réutilisables sur demande.',
+  },
 ];
 
 const whyUs = [
@@ -49,12 +99,23 @@ const faqs = [
   { q: 'Intervenez-vous hors de Carcassonne ?', a: `Oui, nous intervenons dans un rayon de ${SITE.serviceRadius} km autour de Carcassonne : Limoux, Castelnaudary, Lézignan-Corbières, Narbonne, Trèbes, Bram et environs. Nous réalisons aussi des déménagements longue distance vers toute la France.` },
   { q: 'Proposez-vous l\'emballage des cartons ?', a: 'Oui, nous proposons le service d\'emballage complet (matériel + main d\'œuvre) en option, à partir de 120 € pour les matériaux et 40 €/h ou 280 € au forfait pour la main d\'œuvre.' },
   { q: 'Avez-vous une assurance pour les objets transportés ?', a: 'Oui, une assurance grand standing couvrant jusqu\'à 50 000 € est incluse dans tous nos déménagements, sans supplément.' },
+  { q: 'Faites-vous un petit déménagement (1-2 meubles) ?', a: 'Oui, nous prenons en charge les petits déménagements à partir de 150 €. Idéal pour la livraison d\'un canapé acheté sur Le Bon Coin, un mini-déménagement étudiant ou un cabinet professionnel.' },
+  { q: 'Transportez-vous les pianos et objets lourds ?', a: 'Oui, nous sommes équipés pour transporter les pianos droits (350 €), pianos à queue (550 €), coffres-forts (dès 250 €) et autres objets lourds. Sangles spéciales et formation à la manutention lourde.' },
   { q: 'Comment obtenir un devis ?', a: 'Remplissez le formulaire sur cette page ou appelez-nous directement au ' + SITE.phoneDisplay + '. Vous recevrez une réponse sous 2h (Lun–Sam, 8h–19h).' },
 ];
 ---
 
 <BaseLayout title={title} description={description}>
   <SchemaLocalBusiness slot="head" />
+  <script slot="head" type="application/ld+json" set:html={JSON.stringify({
+    '@context': 'https://schema.org',
+    '@type': 'FAQPage',
+    'mainEntity': faqs.map(f => ({
+      '@type': 'Question',
+      'name': f.q,
+      'acceptedAnswer': { '@type': 'Answer', 'text': f.a },
+    })),
+  })} />
   <Header />
 
   <!-- HERO -->
@@ -114,6 +175,60 @@ const faqs = [
               <h3 class="why-title">{item.title}</h3>
               <p class="why-desc">{item.desc}</p>
             </div>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- NOTRE FLOTTE -->
+  <section class="section flotte-section">
+    <div class="container">
+      <div class="section-header" style="text-align:center;margin-bottom:48px">
+        <span class="section-label">Notre matériel</span>
+        <h2 class="section-title">Une flotte adaptée à chaque déménagement</h2>
+        <p class="section-subtitle">Deux fourgons professionnels équipés de hayon élévateur, sangles et protections.</p>
+      </div>
+      <div class="grid-2">
+        {fourgons.map(f => (
+          <div class="fourgon-card">
+            <div class="fourgon-icon">{f.icon}</div>
+            <h3 class="fourgon-name">{f.name}</h3>
+            <p class="fourgon-desc">{f.desc}</p>
+            <div class="fourgon-specs">
+              <div class="spec">
+                <span class="spec-label">Capacité</span>
+                <span class="spec-value">{f.cap}</span>
+              </div>
+              <div class="spec">
+                <span class="spec-label">Charge utile</span>
+                <span class="spec-value">{f.payload}</span>
+              </div>
+            </div>
+          </div>
+        ))}
+      </div>
+      <p class="flotte-note">
+        Pour les volumes supérieurs à 20 m³, nous combinons les deux fourgons
+        ou effectuons plusieurs rotations. Pas de limite de volume.
+      </p>
+    </div>
+  </section>
+
+  <!-- GARANTIES & ENGAGEMENTS -->
+  <section class="section section--alt garanties-section">
+    <div class="container">
+      <div class="section-header" style="text-align:center;margin-bottom:48px">
+        <span class="section-label">Nos engagements</span>
+        <h2 class="section-title">6 garanties pour votre tranquillité</h2>
+        <p class="section-subtitle">Notre métier, ce n'est pas seulement transporter. C'est vous garantir une expérience sans stress.</p>
+      </div>
+      <div class="garanties-grid">
+        {garanties.map(g => (
+          <div class="garantie-card">
+            <div class="garantie-icon">{g.icon}</div>
+            <h3 class="garantie-title">{g.title}</h3>
+            <p class="garantie-desc">{g.desc}</p>
           </div>
         ))}
       </div>
@@ -342,6 +457,110 @@ const faqs = [
   .testimonial-author { display: flex; flex-direction: column; gap: 2px; }
   .testimonial-author strong { font-size: .9rem; color: var(--color-navy); }
   .testimonial-author span { font-size: .8rem; color: var(--color-text-light); }
+
+  /* Flotte */
+  .flotte-section { padding: 80px 0; }
+  .fourgon-card {
+    background: var(--color-white);
+    border: 1.5px solid var(--color-border);
+    border-radius: var(--radius-lg);
+    padding: 36px 32px;
+    transition: border-color .2s, transform .2s;
+  }
+  .fourgon-card:hover {
+    border-color: var(--color-accent);
+    transform: translateY(-2px);
+  }
+  .fourgon-icon {
+    font-size: 2.4rem;
+    margin-bottom: 18px;
+  }
+  .fourgon-name {
+    font-family: var(--font-display);
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: var(--color-navy);
+    margin-bottom: 14px;
+  }
+  .fourgon-desc {
+    font-size: .95rem;
+    color: var(--color-text-light);
+    line-height: 1.65;
+    margin-bottom: 22px;
+  }
+  .fourgon-specs {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0;
+    border-top: 1px solid var(--color-border);
+    padding-top: 18px;
+  }
+  .spec { display: flex; flex-direction: column; gap: 4px; }
+  .spec + .spec { border-left: 1px solid var(--color-border); padding-left: 18px; }
+  .spec-label {
+    font-size: .7rem;
+    text-transform: uppercase;
+    letter-spacing: .1em;
+    color: var(--color-text-light);
+  }
+  .spec-value {
+    font-family: var(--font-display);
+    font-size: 1.4rem;
+    font-weight: 700;
+    color: var(--color-accent);
+  }
+  .flotte-note {
+    text-align: center;
+    margin-top: 40px;
+    font-size: .9rem;
+    color: var(--color-text-light);
+    font-style: italic;
+    max-width: 640px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  /* Garanties */
+  .garanties-section { padding: 80px 0; }
+  .garanties-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 24px;
+  }
+  .garantie-card {
+    background: var(--color-white);
+    border: 1.5px solid var(--color-border);
+    border-radius: var(--radius-lg);
+    padding: 28px 24px;
+    text-align: left;
+    transition: border-color .2s;
+  }
+  .garantie-card:hover {
+    border-color: var(--color-accent);
+  }
+  .garantie-icon {
+    font-size: 1.8rem;
+    margin-bottom: 14px;
+  }
+  .garantie-title {
+    font-family: var(--font-sans);
+    font-size: 1.05rem;
+    font-weight: 700;
+    color: var(--color-navy);
+    margin-bottom: 8px;
+  }
+  .garantie-desc {
+    font-size: .88rem;
+    color: var(--color-text-light);
+    line-height: 1.55;
+  }
+
+  @media (max-width: 900px) {
+    .garanties-grid { grid-template-columns: 1fr 1fr; }
+  }
+  @media (max-width: 600px) {
+    .garanties-grid { grid-template-columns: 1fr; }
+  }
 
   /* FAQ */
   .faq-list { max-width: 800px; margin: 0 auto; display: flex; flex-direction: column; gap: 8px; }

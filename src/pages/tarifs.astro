@@ -33,9 +33,49 @@ const additionalServices = [
   { label: 'Piano à queue', price: '550 €', unit: 'transport inclus' },
   { label: 'Coffre-fort', price: 'À partir de 250 €', unit: 'selon poids et accès' },
 ];
+
+const inclus = [
+  'Camion adapté au volume (12 m³ ou 20 m³)',
+  'Équipe professionnelle (2 déménageurs)',
+  'Carburant et trajets',
+  'Couvertures et sangles de protection',
+  'Démontage/remontage simple (lit, table)',
+  'Assurance grand standing jusqu\'à 50 000 €',
+  'Devis fixe écrit, sans frais cachés',
+  'Facture conforme avec SIRET',
+];
+
+const nonInclus = [
+  'Cartons et matériel d\'emballage (en option : 120 €)',
+  'Main d\'œuvre d\'emballage des cartons (en option)',
+  'Démontage complexe (cuisine équipée, dressing sur mesure)',
+  'Frais de péage hors France métropolitaine',
+  'Garde-meuble (80 €/mois pour 5 m³ en option)',
+  'Transport d\'animaux',
+  'Pourboire (à votre discrétion, non obligatoire)',
+];
+
+const tarifFaqs = [
+  { q: 'Comment calculez-vous le prix d\'un déménagement ?', a: 'Le prix dépend de 3 facteurs principaux : le volume à transporter (en m³), la distance entre les deux adresses, et les options choisies (emballage, démontage complexe, étages sans ascenseur). Lors du devis, nous évaluons précisément ces éléments pour vous donner un prix fixe.' },
+  { q: 'Le prix annoncé sur le devis est-il définitif ?', a: 'Oui, à 100 %. Tous nos devis sont écrits, fixes et engagent notre entreprise. Aucun supplément le jour J, sauf modification du périmètre de votre part (volume très différent de celui annoncé, ajout d\'options).' },
+  { q: 'Y a-t-il un acompte à verser ?', a: 'Aucun acompte n\'est demandé à la signature du devis. Le paiement s\'effectue à la fin du déménagement, une fois la prestation terminée à votre satisfaction.' },
+  { q: 'Quel est le tarif pour un petit déménagement (1 ou 2 meubles) ?', a: 'Pour un petit déménagement ou un transport de quelques meubles, comptez à partir de 150 € selon le volume et la distance. Voir notre page transport de meubles pour plus de détails.' },
+  { q: 'Faites-vous des remises pour les étudiants ou seniors ?', a: 'Nous proposons une remise de 5 % pour les étudiants (sur présentation de la carte) et les seniors (+ 65 ans). Cumulable avec notre offre Combo Débarras + Déménagement (-10 %).' },
+  { q: 'Que se passe-t-il si le volume réel est supérieur à celui annoncé ?', a: 'Si l\'écart est faible (< 15 %), nous absorbons la différence sans surcoût. Au-delà, nous appliquons le tarif au prorata des m³ supplémentaires, avec votre accord avant l\'intervention.' },
+  { q: 'Acceptez-vous le paiement par carte bancaire ?', a: 'Nous acceptons les espèces, virements bancaires et chèques. Le paiement par carte bancaire est possible sur demande (frais 1,5 % en sus pour les montants > 500 €).' },
+];
 ---
 
 <BaseLayout title={title} description={description}>
+  <script slot="head" type="application/ld+json" set:html={JSON.stringify({
+    '@context': 'https://schema.org',
+    '@type': 'FAQPage',
+    'mainEntity': tarifFaqs.map(f => ({
+      '@type': 'Question',
+      'name': f.q,
+      'acceptedAnswer': { '@type': 'Answer', 'text': f.a },
+    })),
+  })} />
   <Header />
 
   <!-- Hero -->
@@ -150,6 +190,31 @@ const additionalServices = [
         </div>
       </div>
 
+      <!-- Inclus / Non inclus -->
+      <div class="tarif-block inclus-block">
+        <div class="tarif-block__header">
+          <div class="tarif-block__icon">✅</div>
+          <div>
+            <h2>Ce qui est inclus dans le prix</h2>
+            <p>Tout ce que vous obtenez pour le tarif annoncé</p>
+          </div>
+        </div>
+        <div class="inclus-grid">
+          <div class="inclus-col inclus-col--yes">
+            <h3 class="inclus-col__title">✓ Inclus dans le forfait</h3>
+            <ul>
+              {inclus.map(item => <li>{item}</li>)}
+            </ul>
+          </div>
+          <div class="inclus-col inclus-col--no">
+            <h3 class="inclus-col__title">✗ En option (à la carte)</h3>
+            <ul>
+              {nonInclus.map(item => <li>{item}</li>)}
+            </ul>
+          </div>
+        </div>
+      </div>
+
       <!-- Notes -->
       <div class="tarif-notes">
         <h3>Conditions et précisions</h3>
@@ -160,6 +225,22 @@ const additionalServices = [
           <li>Paiement accepté : espèces, virement bancaire, chèque.</li>
           <li>Devis <strong>gratuit et sans engagement</strong> sous 2h (Lun–Sam 8h–19h).</li>
         </ul>
+      </div>
+
+      <!-- FAQ -->
+      <div class="tarif-faq">
+        <div class="tarif-faq__header">
+          <span class="section-label">FAQ</span>
+          <h2>Questions sur nos tarifs</h2>
+        </div>
+        <div class="tarif-faq__list">
+          {tarifFaqs.map(faq => (
+            <details class="tarif-faq__item">
+              <summary class="tarif-faq__q">{faq.q}</summary>
+              <p class="tarif-faq__a">{faq.a}</p>
+            </details>
+          ))}
+        </div>
       </div>
 
     </div>
@@ -308,6 +389,86 @@ const additionalServices = [
   }
   .tarif-notes li::before { content: '→'; position: absolute; left: 0; color: var(--color-accent); }
 
+  /* Inclus / Non inclus */
+  .inclus-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0;
+    padding: 0;
+  }
+  .inclus-col { padding: 28px 32px; }
+  .inclus-col + .inclus-col { border-left: 1px solid var(--color-border); }
+  .inclus-col--yes { background: rgba(168, 112, 63, 0.04); }
+  .inclus-col--no { background: var(--color-bg-alt); }
+  .inclus-col__title {
+    font-family: var(--font-sans);
+    font-size: .85rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: .08em;
+    color: var(--color-accent);
+    margin-bottom: 16px;
+  }
+  .inclus-col--no .inclus-col__title { color: var(--color-text-light); }
+  .inclus-col ul { display: flex; flex-direction: column; gap: 10px; }
+  .inclus-col li {
+    font-size: .9rem;
+    color: var(--color-text);
+    line-height: 1.5;
+    padding-left: 4px;
+  }
+
+  /* Tarif FAQ */
+  .tarif-faq { margin-top: 48px; }
+  .tarif-faq__header {
+    text-align: center;
+    margin-bottom: 32px;
+  }
+  .tarif-faq__header h2 {
+    font-family: var(--font-display);
+    font-size: 1.8rem;
+    color: var(--color-navy);
+    margin-top: 8px;
+  }
+  .tarif-faq__list {
+    max-width: 820px;
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+  .tarif-faq__item {
+    background: var(--color-white);
+    border: 1.5px solid var(--color-border);
+    border-radius: var(--radius);
+    overflow: hidden;
+  }
+  .tarif-faq__q {
+    padding: 18px 24px;
+    font-weight: 600;
+    font-size: .95rem;
+    color: var(--color-navy);
+    cursor: pointer;
+    list-style: none;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  .tarif-faq__q::-webkit-details-marker { display: none; }
+  .tarif-faq__q::after {
+    content: '+';
+    font-size: 1.2rem;
+    color: var(--color-accent);
+    flex-shrink: 0;
+  }
+  details[open] .tarif-faq__q::after { content: '−'; }
+  .tarif-faq__a {
+    padding: 0 24px 18px;
+    font-size: .9rem;
+    color: var(--color-text);
+    line-height: 1.65;
+  }
+
   @media (max-width: 700px) {
     .tarif-table__head { display: none; }
     .tarif-table__row {
@@ -319,5 +480,7 @@ const additionalServices = [
     .tarif-cta { grid-column: 1 / -1; text-align: left; }
     .additional-row { grid-template-columns: 1fr; }
     .add-price { font-size: 1rem; }
+    .inclus-grid { grid-template-columns: 1fr; }
+    .inclus-col + .inclus-col { border-left: none; border-top: 1px solid var(--color-border); }
   }
 </style>
