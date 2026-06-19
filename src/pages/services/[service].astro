@@ -62,7 +62,7 @@ const serviceContent: Record<string, ServiceContent> = {
       { q: 'Faut-il être présent pendant tout le déménagement ?', a: 'Idéalement oui, pour répondre à nos questions sur le placement des meubles et signer le procès-verbal. Mais nous pouvons aussi déménager en votre absence avec les clés laissées chez un voisin ou au notaire.' },
       { q: 'Mes meubles seront-ils protégés des chocs et rayures ?', a: 'Oui, nous utilisons systématiquement des couvertures professionnelles, du film plastique pour les surfaces vernies et des sangles pour fixer chaque meuble dans le camion. Les électroménagers et écrans sont emballés à part.' },
     ],
-    image: 'demenagement-action.jpg',
+    image: '/images/transport.webp',
   },
   'demenagement-longue-distance': {
     title: 'Déménagement longue distance depuis Carcassonne',
@@ -98,7 +98,7 @@ const serviceContent: Record<string, ServiceContent> = {
       { q: 'Comment garantissez-vous la sécurité de mes meubles sur un long trajet ?', a: 'Chaque meuble est arrimé avec des sangles professionnelles et calé pour éviter tout mouvement. Notre camion est équipé d\'un système d\'amortisseurs renforcé pour les longs trajets. Aucun cas de dommage sur les 12 derniers mois.' },
       { q: 'Faut-il un déménagement aller-retour si je suis seul ?', a: 'Non, nous pouvons faire un trajet aller-simple Carcassonne → destination. Le prix inclut le retour à vide du camion. Pas besoin d\'organiser quoi que ce soit côté retour.' },
     ],
-    image: 'fourgon-20m3.jpg',
+    image: '/images/demenagement-longue-distance.webp',
   },
   'demenagement-international': {
     title: 'Déménagement international depuis Carcassonne',
@@ -129,7 +129,7 @@ const serviceContent: Record<string, ServiceContent> = {
       { q: 'Faut-il un inventaire douanier pour déménager en Espagne ?', a: 'Pour les ressortissants de l\'UE déménageant entre pays membres, les formalités douanières sont simplifiées. Cependant, un inventaire détaillé reste recommandé pour votre assurance.' },
       { q: 'Quel est le délai de livraison vers l\'Espagne ?', a: 'Un déménagement vers Barcelone peut être réalisé en 1-2 jours. Vers Madrid, comptez 2-3 jours selon le volume et les conditions de circulation.' },
     ],
-    image: 'fourgon-12m3.jpg',
+    image: '/images/demenagement-international.webp',
   },
   'transport-meubles': {
     title: 'Transport de meubles à Carcassonne et dans l\'Aude',
@@ -163,7 +163,7 @@ const serviceContent: Record<string, ServiceContent> = {
       { q: 'Mon canapé passera-t-il par mon escalier ?', a: 'Lors du devis, nous vérifions les dimensions du meuble et celles de votre escalier/porte. Si le passage est impossible, nous proposons un monte-meuble (location en supplément). Mais 95 % des cas se règlent sans cela.' },
       { q: 'Acceptez-vous les transports inter-villes (ex: Carcassonne → Béziers) ?', a: 'Oui, nous livrons vers toutes les villes de la région Occitanie. Comptez +60 € au-delà de 50 km par tranche de 25 km supplémentaires.' },
     ],
-    image: 'demenagement-action.jpg',
+    image: '/images/transport-meubles.webp',
   },
   'transport-piano': {
     title: 'Transport piano et objets lourds à Carcassonne',
@@ -197,7 +197,7 @@ const serviceContent: Record<string, ServiceContent> = {
       { q: 'Comment protéger un piano de grande valeur ?', a: 'Pour les pianos de grande valeur (Steinway, Bösendorfer, antiquités), nous vous conseillons de souscrire une assurance à valeur agréée auprès de votre assureur — précisez la valeur lors du devis, nous adaptons l\'emballage et la manutention en conséquence.' },
       { q: 'Combien coûte le transport d\'un piano sur longue distance ?', a: 'Pour un piano droit Carcassonne → Paris : à partir de 700 €. Carcassonne → Lyon ou Marseille : 500 €. Carcassonne → Toulouse ou Montpellier : 380 €. Le tarif inclut le transport et la manutention spécialisée.' },
     ],
-    image: 'piano-transport.jpg',
+    image: '/images/transport-piano.webp',
   },
   'evacuation-dechets-metaux': {
     title: 'Évacuation de déchets et métaux à Carcassonne',
@@ -228,7 +228,7 @@ const serviceContent: Record<string, ServiceContent> = {
       { q: 'Intervenez-vous pour les professionnels ?', a: 'Oui, nous travaillons avec les artisans, les entreprises du bâtiment et les industries locales pour l\'évacuation régulière de déchets métalliques et encombrants.' },
       { q: 'Vous chargez-vous du nettoyage après évacuation ?', a: 'Nous évacuons les déchets mais le nettoyage de la zone n\'est pas inclus par défaut. Nous pouvons le proposer en option sur demande.' },
     ],
-    image: 'fourgon-12m3.jpg',
+    image: '/images/evacuation-dechets-metaux.webp',
   },
 };
 
@@ -308,12 +308,21 @@ const pageDescription = content?.metaDescription ?? service.description;
         </div>
       </div>
       <div class="svc-hero-media">
-        <PhotoPlaceholder
-          aspectRatio="4/3"
-          label={service.name}
-          description={content?.image ?? 'photo.jpg'}
-          variant="dark"
-        />
+        {content?.image?.startsWith('/')
+          ? <img
+              src={content.image}
+              alt={`${content?.title ?? service.name} — Transport Carcassonne`}
+              width="1376"
+              height="768"
+              loading="eager"
+              style="width:100%;height:auto;display:block;border-radius:12px"
+            />
+          : <PhotoPlaceholder
+              aspectRatio="4/3"
+              label={service.name}
+              description={content?.image ?? 'photo.jpg'}
+              variant="dark"
+            />}
       </div>
     </div>
   </section>
