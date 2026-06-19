@@ -64,10 +64,17 @@ const schemaOrg = {
     <meta name="format-detection" content="telephone=no" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
 
+    <!-- Enable scroll-reveal only when JS is on and motion is allowed (no-JS = content visible) -->
+    <script is:inline>
+      if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+        document.documentElement.classList.add('anim');
+      }
+    </script>
+
     <title>{title}</title>
     <meta name="description" content={description} />
     <link rel="canonical" href={canonicalURL} />
-    {noindex && <meta name="robots" content="noindex, nofollow" />}
+    {noindex && <meta name="robots" content="noindex, follow" />}
 
     <!-- Open Graph -->
     <meta property="og:type" content={ogType} />
@@ -100,14 +107,45 @@ const schemaOrg = {
     <!-- JSON-LD MovingCompany -->
     <script type="application/ld+json" set:html={JSON.stringify(schemaOrg)} />
 
-    <!-- Google Analytics 4 -->
-    <script async src="https://www.googletagmanager.com/gtag/js?id=G-L13KXVLMMY"></script>
+    <!-- Google Consent Mode v2 — all denied by default; GA loads only after consent -->
     <script is:inline>
       window.dataLayer = window.dataLayer || [];
       function gtag(){dataLayer.push(arguments);}
-      gtag('js', new Date());
-      gtag('config', 'G-L13KXVLMMY', { anonymize_ip: true });
       window.gtag = gtag;
+      gtag('consent', 'default', {
+        ad_storage: 'denied',
+        ad_user_data: 'denied',
+        ad_personalization: 'denied',
+        analytics_storage: 'denied',
+        functionality_storage: 'granted',
+        security_storage: 'granted',
+        wait_for_update: 500
+      });
+      gtag('js', new Date());
+
+      var GA_ID = 'G-L13KXVLMMY';
+      window.__loadGA = function () {
+        if (window.__gaLoaded) return; window.__gaLoaded = true;
+        var s = document.createElement('script');
+        s.async = true; s.src = 'https://www.googletagmanager.com/gtag/js?id=' + GA_ID;
+        document.head.appendChild(s);
+        gtag('config', GA_ID, { anonymize_ip: true });
+      };
+      window.__ccGrant = function () {
+        try { localStorage.setItem('cc-consent', 'granted'); } catch (e) {}
+        gtag('consent', 'update', { analytics_storage: 'granted' });
+        window.__loadGA();
+      };
+      window.__ccDeny = function () {
+        try { localStorage.setItem('cc-consent', 'denied'); } catch (e) {}
+        gtag('consent', 'update', { analytics_storage: 'denied' });
+      };
+      try {
+        if (localStorage.getItem('cc-consent') === 'granted') {
+          gtag('consent', 'update', { analytics_storage: 'granted' });
+          window.__loadGA();
+        }
+      } catch (e) {}
     </script>
 
     <slot name="head" />
@@ -176,6 +214,66 @@ const schemaOrg = {
           });
         });
       });
+    </script>
+
+    <!-- Scroll-reveal engine (Intersection Observer) — all pages -->
+    <script is:inline>
+      (function () {
+        const root = document.documentElement;
+        if (!root.classList.contains('anim') || !('IntersectionObserver' in window)) {
+          document.querySelectorAll('.reveal').forEach(el => el.classList.add('is-visible'));
+          return;
+        }
+        const io = new IntersectionObserver((entries) => {
+          entries.forEach((e) => {
+            if (!e.isIntersecting) return;
+            const el = e.target;
+            const i = parseInt(el.getAttribute('data-i') || '0', 10);
+            el.style.transitionDelay = Math.min(i * 70, 420) + 'ms';
+            el.classList.add('is-visible');
+            io.unobserve(el);
+          });
+        }, { threshold: 0.12, rootMargin: '0px 0px -8% 0px' });
+        document.querySelectorAll('.reveal').forEach(el => io.observe(el));
+      })();
+    </script>
+
+    <!-- Cookie consent banner (CNIL / Consent Mode v2) -->
+    <style is:global>
+      .cc-banner { position: fixed; left: 16px; right: 16px; bottom: 16px; z-index: 1000; max-width: 720px; margin: 0 auto;
+        background: var(--bg-dark, #15191C); color: var(--text-on-dark, #FAFAF7); border: 1px solid var(--line-dark, #2D3338);
+        border-radius: 12px; padding: 18px 20px; display: flex; gap: 16px; align-items: center; flex-wrap: wrap;
+        box-shadow: 0 24px 60px -18px rgba(0,0,0,.6); }
+      .cc-banner[hidden] { display: none; }
+      .cc-text { font-size: 13.5px; line-height: 1.55; color: var(--text-on-dark-muted, #9CA3AC); flex: 1; min-width: 240px; margin: 0; }
+      .cc-text a { color: var(--accent, #A8703F); text-decoration: underline; text-underline-offset: 2px; }
+      .cc-actions { display: flex; gap: 10px; flex-shrink: 0; }
+      .cc-btn { padding: 10px 18px; border-radius: 6px; font-size: 13px; font-weight: 600; cursor: pointer; border: 1px solid transparent; font-family: inherit; }
+      .cc-btn--primary { background: var(--accent, #A8703F); color: #15100A; border-color: var(--accent, #A8703F); }
+      .cc-btn--ghost { background: transparent; color: var(--text-on-dark, #FAFAF7); border-color: var(--line-dark, #2D3338); }
+      .cc-btn--ghost:hover { border-color: var(--accent, #A8703F); }
+      @media (max-width: 560px) { .cc-banner { flex-direction: column; align-items: stretch; } .cc-actions { justify-content: flex-end; } }
+    </style>
+    <div class="cc-banner" id="cc-banner" role="dialog" aria-label="Consentement aux cookies" hidden>
+      <p class="cc-text">
+        Nous utilisons des cookies de mesure d'audience (Google Analytics) pour améliorer le site.
+        Ils ne sont déposés qu'avec votre accord. <a href="/politique-confidentialite">En savoir plus</a>.
+      </p>
+      <div class="cc-actions">
+        <button type="button" class="cc-btn cc-btn--ghost" id="cc-refuse">Refuser</button>
+        <button type="button" class="cc-btn cc-btn--primary" id="cc-accept">Accepter</button>
+      </div>
+    </div>
+    <script is:inline>
+      (function () {
+        var b = document.getElementById('cc-banner'); if (!b) return;
+        var stored = null; try { stored = localStorage.getItem('cc-consent'); } catch (e) {}
+        if (!stored) b.removeAttribute('hidden');
+        var a = document.getElementById('cc-accept'), r = document.getElementById('cc-refuse');
+        a && a.addEventListener('click', function () { window.__ccGrant && window.__ccGrant(); b.setAttribute('hidden', ''); });
+        r && r.addEventListener('click', function () { window.__ccDeny && window.__ccDeny(); b.setAttribute('hidden', ''); });
+        window.__ccManage = function () { b.removeAttribute('hidden'); };
+      })();
     </script>
   </body>
 </html>
@@ -338,4 +436,41 @@ const schemaOrg = {
   .float-cta__btn--phone { background: var(--color-accent); color: white; }
 
   @media (min-width: 1024px) { .float-cta { display: none; } }
+
+  /* ───────────────────────── MOTION LAYER (global, all pages) ───────────────────────── */
+  :root {
+    --ease-out: cubic-bezier(.22, .61, .36, 1);
+    --ease-soft: cubic-bezier(.4, 0, .2, 1);
+    --shadow-soft: 0 18px 40px -14px rgba(0, 0, 0, .55);
+    --shadow-soft-light: 0 18px 38px -16px rgba(21, 25, 28, .22);
+  }
+
+  /* Scroll-reveal — active only when <html class="anim"> (JS on, motion allowed) */
+  .anim .reveal {
+    opacity: 0;
+    transform: translateY(22px);
+    transition: opacity .7s var(--ease-out), transform .7s var(--ease-out);
+    will-change: opacity, transform;
+  }
+  .anim .reveal.is-visible { opacity: 1; transform: none; }
+
+  /* Hero load stagger — children appear in sequence (title → text → actions) */
+  .anim .hero-stagger > * { opacity: 0; animation: heroIn .85s var(--ease-out) both; }
+  .anim .hero-stagger > *:nth-child(1) { animation-delay: .10s; }
+  .anim .hero-stagger > *:nth-child(2) { animation-delay: .24s; }
+  .anim .hero-stagger > *:nth-child(3) { animation-delay: .38s; }
+  .anim .hero-stagger > *:nth-child(4) { animation-delay: .52s; }
+  @keyframes heroIn {
+    from { opacity: 0; transform: translateY(18px); }
+    to { opacity: 1; transform: none; }
+  }
+
+  /* Smooth easing for interactive lifts everywhere */
+  .btn { transition: background .2s var(--ease-out), color .2s var(--ease-out), border-color .2s var(--ease-out), transform .25s var(--ease-out), box-shadow .25s var(--ease-out); }
+
+  @media (prefers-reduced-motion: reduce) {
+    .anim .reveal, .anim .reveal.is-visible { opacity: 1 !important; transform: none !important; transition: none !important; }
+    .anim .hero-stagger > * { opacity: 1 !important; animation: none !important; }
+    * { animation-duration: .001ms !important; animation-iteration-count: 1 !important; scroll-behavior: auto !important; }
+  }
 </style>

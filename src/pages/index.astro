@@ -2,14 +2,11 @@
 import BaseLayout from '../layouts/BaseLayout.astro';
 import Header from '../components/Header.astro';
 import Footer from '../components/Footer.astro';
-import Hero from '../components/Hero.astro';
-import ServiceCard from '../components/ServiceCard.astro';
-import CityCard from '../components/CityCard.astro';
+import DeliveryHero from '../components/DeliveryHero.astro';
+import RoadDivider from '../components/RoadDivider.astro';
 import QuoteForm from '../components/QuoteForm.astro';
-import CTA from '../components/CTA.astro';
-import CalculatorPlaceholder from '../components/CalculatorPlaceholder.astro';
-import SchemaLocalBusiness from '../components/SchemaLocalBusiness.astro';
 import ComboOffer from '../components/ComboOffer.astro';
+import SchemaLocalBusiness from '../components/SchemaLocalBusiness.astro';
 import { SITE } from '../data/site.config';
 import { SERVICES } from '../data/services';
 import { CITIES } from '../data/cities';
@@ -18,91 +15,51 @@ const title = 'Déménagement Carcassonne | Transport Carcassonne — Devis Grat
 const description = `Déménageur professionnel à Carcassonne et dans l'Aude. Déménagement local, longue distance, transport piano, évacuation déchets. 2 fourgons jusqu'à 20 m³. Devis gratuit sous 2h. ${SITE.phoneDisplay}`;
 
 const stats = [
-  { value: '2', label: 'Fourgons', sub: '12 et 20 m³' },
-  { value: '50 k', label: 'Assurance', sub: '50 000 € incluse' },
-  { value: '< 2h', label: 'Réponse', sub: 'devis sous 2 heures' },
-  { value: '6j/7', label: 'Disponibilité', sub: 'Lun–Sam 8h–19h' },
-];
-
-const fourgons = [
-  {
-    name: 'Fourgon 12 m³',
-    desc: 'Idéal pour studios, T1, T2 et petits déménagements. Capacité 12 m³, charge utile 1 200 kg, hayon élévateur.',
-    cap: '12 m³',
-    payload: '1 200 kg',
-    icon: '🚐',
-  },
-  {
-    name: 'Fourgon 20 m³',
-    desc: 'Pour T3, T4 et maisons familiales. Capacité 20 m³, charge utile 1 800 kg, hayon élévateur, sangles intégrées.',
-    cap: '20 m³',
-    payload: '1 800 kg',
-    icon: '🚚',
-  },
+  { value: '2', sup: '', label: 'Fourgons 12 & 20 m³' },
+  { value: '48', sup: 'h', label: 'Intervention possible' },
+  { value: '2', sup: 'h', label: 'Réponse à votre devis' },
+  { value: '6', sup: 'j/7', label: 'Lun–Sam · 8h–19h' },
 ];
 
 const garanties = [
-  {
-    icon: '🛡️',
-    title: 'Assurance 50 000 €',
-    desc: 'Couverture grand standing incluse dans chaque déménagement, sans supplément ni franchise cachée.',
-  },
-  {
-    icon: '📋',
-    title: 'Devis fixe écrit',
-    desc: 'Le prix annoncé sur le devis est le prix final. Aucun frais le jour J, aucune mauvaise surprise.',
-  },
-  {
-    icon: '🧾',
-    title: 'Facture et SIRET',
-    desc: `Entreprise déclarée SIRET ${SITE.siret}. Facture conforme remise à chaque intervention.`,
-  },
-  {
-    icon: '⏱️',
-    title: 'Ponctualité garantie',
-    desc: 'Nous arrivons à l\'heure convenue. Si nous avons plus de 30 min de retard, vous bénéficiez d\'une remise.',
-  },
-  {
-    icon: '👥',
-    title: 'Équipe formée',
-    desc: 'Déménageurs expérimentés, formés à la manutention, au démontage et à la protection des meubles fragiles.',
-  },
-  {
-    icon: '♻️',
-    title: 'Geste écologique',
-    desc: 'Optimisation des trajets, mutualisation des transports, cartons réutilisables sur demande.',
-  },
+  { num: '01', title: 'Matériel professionnel', desc: 'Hayon élévateur, sangles, couvertures et housses : vos meubles protégés et calés à chaque trajet.' },
+  { num: '02', title: 'Devis fixe écrit', desc: 'Le prix annoncé sur le devis est le prix final. Aucun frais le jour J, aucune mauvaise surprise.' },
+  { num: '03', title: 'Facture & SIRET', desc: `Entreprise déclarée SIRET ${SITE.siret}. Facture conforme remise à chaque intervention.` },
+  { num: '04', title: 'Ponctualité garantie', desc: "Nous arrivons à l'heure convenue. Plus de 30 min de retard : vous bénéficiez d'une remise." },
+  { num: '05', title: 'Équipe formée', desc: 'Déménageurs expérimentés, formés à la manutention, au démontage et à la protection des meubles fragiles.' },
+  { num: '06', title: 'Geste écologique', desc: 'Optimisation des trajets, mutualisation des transports, cartons réutilisables sur demande.' },
 ];
 
-const whyUs = [
-  { icon: '📍', title: 'Équipe locale', desc: 'Basés à Carcassonne, nous connaissons l\'Aude mieux que quiconque.' },
-  { icon: '💶', title: 'Prix transparent', desc: 'Devis détaillé par écrit, sans surprise ni frais cachés le jour J.' },
-  { icon: '🛡️', title: 'Assurance incluse', desc: 'Couverture jusqu\'à 50 000 € incluse dans tous nos déménagements.' },
-  { icon: '⚡', title: 'Réactivité', desc: 'Réponse sous 2h à votre devis, intervention possible sous 48h.' },
+const fourgons = [
+  { name: 'Fourgon 12 m³', desc: 'Idéal pour studios, T1, T2 et petits déménagements. Hayon élévateur.', cap: '12 m³', payload: '1 200 kg' },
+  { name: 'Fourgon 20 m³', desc: 'Pour T3, T4 et maisons familiales. Hayon élévateur, sangles intégrées.', cap: '20 m³', payload: '1 800 kg' },
 ];
 
 const steps = [
   { num: '01', title: 'Demandez un devis', desc: 'Remplissez le formulaire ou appelez-nous. Devis sous 2h, gratuit et sans engagement.' },
   { num: '02', title: 'Visite ou inventaire', desc: 'Nous évaluons le volume à transporter pour vous proposer le meilleur tarif.' },
-  { num: '03', title: 'Jour du déménagement', desc: 'Notre équipe arrive à l\'heure, emballe si besoin et charge avec soin.' },
+  { num: '03', title: 'Jour du déménagement', desc: "Notre équipe arrive à l'heure, emballe si besoin et charge avec soin." },
   { num: '04', title: 'Livraison & installation', desc: 'Livraison à l\'adresse convenue, remontage des meubles si souhaité.' },
 ];
 
 const testimonials = [
-  { name: 'Marie L.', city: 'Carcassonne', text: 'Équipe professionnelle, ponctuelle et très soigneuse avec nos affaires. Je recommande sans hésiter !', stars: 5 },
-  { name: 'Thomas R.', city: 'Limoux', text: 'Déménagement de Limoux vers Toulouse impeccable. Prix correct, aucun dommage, personnel sympathique.', stars: 5 },
-  { name: 'Sophie M.', city: 'Narbonne', text: 'Transport de piano réalisé avec expertise. L\'instrument est arrivé en parfait état. Merci !', stars: 5 },
+  { name: 'Marie L.', city: 'Carcassonne', text: 'Équipe professionnelle, ponctuelle et très soigneuse avec nos affaires. Je recommande sans hésiter !' },
+  { name: 'Thomas R.', city: 'Limoux', text: 'Déménagement de Limoux vers Toulouse impeccable. Prix correct, aucun dommage, personnel sympathique.' },
+  { name: 'Sophie M.', city: 'Narbonne', text: "Transport de piano réalisé avec expertise. L'instrument est arrivé en parfait état. Merci !" },
 ];
 
 const faqs = [
   { q: 'Combien coûte un déménagement à Carcassonne ?', a: 'Un déménagement local (≤ 50 km) commence à 450 € pour un studio et 650 € pour un T2. Le prix exact dépend du volume, de l\'étage et des options choisies. Devis gratuit sous 2h.' },
   { q: 'Intervenez-vous hors de Carcassonne ?', a: `Oui, nous intervenons dans un rayon de ${SITE.serviceRadius} km autour de Carcassonne : Limoux, Castelnaudary, Lézignan-Corbières, Narbonne, Trèbes, Bram et environs. Nous réalisons aussi des déménagements longue distance vers toute la France.` },
   { q: 'Proposez-vous l\'emballage des cartons ?', a: 'Oui, nous proposons le service d\'emballage complet (matériel + main d\'œuvre) en option, à partir de 120 € pour les matériaux et 40 €/h ou 280 € au forfait pour la main d\'œuvre.' },
-  { q: 'Avez-vous une assurance pour les objets transportés ?', a: 'Oui, une assurance grand standing couvrant jusqu\'à 50 000 € est incluse dans tous nos déménagements, sans supplément.' },
+  { q: 'Comment protégez-vous les objets transportés ?', a: 'Vos biens sont manipulés avec le plus grand soin : démontage maîtrisé, protection des meubles fragiles (couvertures, housses), calage et sanglage dans le fourgon. Pour une couverture spécifique sur des objets de grande valeur, parlons-en lors du devis.' },
   { q: 'Faites-vous un petit déménagement (1-2 meubles) ?', a: 'Oui, nous prenons en charge les petits déménagements à partir de 150 €. Idéal pour la livraison d\'un canapé acheté sur Le Bon Coin, un mini-déménagement étudiant ou un cabinet professionnel.' },
   { q: 'Transportez-vous les pianos et objets lourds ?', a: 'Oui, nous sommes équipés pour transporter les pianos droits (350 €), pianos à queue (550 €), coffres-forts (dès 250 €) et autres objets lourds. Sangles spéciales et formation à la manutention lourde.' },
   { q: 'Comment obtenir un devis ?', a: 'Remplissez le formulaire sur cette page ou appelez-nous directement au ' + SITE.phoneDisplay + '. Vous recevrez une réponse sous 2h (Lun–Sam, 8h–19h).' },
 ];
+
+const marquee = ['Déménagement local', 'Longue distance', 'International', 'Transport de meubles', 'Piano & objets lourds', 'Évacuation déchets', 'Petit déménagement'];
+const priceFmt = (n: number) => new Intl.NumberFormat('fr-FR').format(n) + ' €';
 ---
 
 <BaseLayout title={title} description={description}>
@@ -110,503 +67,314 @@ const faqs = [
   <script slot="head" type="application/ld+json" set:html={JSON.stringify({
     '@context': 'https://schema.org',
     '@type': 'FAQPage',
-    'mainEntity': faqs.map(f => ({
-      '@type': 'Question',
-      'name': f.q,
-      'acceptedAnswer': { '@type': 'Answer', 'text': f.a },
-    })),
+    'mainEntity': faqs.map(f => ({ '@type': 'Question', 'name': f.q, 'acceptedAnswer': { '@type': 'Answer', 'text': f.a } })),
   })} />
   <Header />
 
-  <!-- HERO -->
-  <Hero
-    badge="Déménageur professionnel · Carcassonne"
-    title="Déménagement &amp; Transport<br/><span class='highlight'>à Carcassonne et dans l'Aude</span>"
-    subtitle="2 fourgons jusqu'à 20 m³, équipe locale, assurance incluse. Devis gratuit sous 2h."
-    ctaPrimary={{ href: '/contact', label: 'Devis gratuit →' }}
-    ctaSecondary={{ href: `tel:${SITE.phone}`, label: `📞 ${SITE.phoneDisplay}` }}
-    phone={SITE.phone}
-    phoneDisplay={SITE.phoneDisplay}
-  />
+  <!-- ============ DELIVERY HERO (corner video card, scrubbed) ============ -->
+  <DeliveryHero />
 
-  <!-- STATS -->
-  <section class="section stats-section">
-    <div class="container stats-grid">
-      {stats.map(s => (
-        <div class="stat-item">
-          <div class="stat-value">{s.value}</div>
+  <!-- ============ MARQUEE ============ -->
+  <div class="marquee">
+    <div class="marquee-in">
+      <span>{marquee.map(m => (<>{m} <i class="dot">·</i> </>))}</span>
+      <span>{marquee.map(m => (<>{m} <i class="dot">·</i> </>))}</span>
+    </div>
+  </div>
+
+  <!-- ============ STATS ============ -->
+  <section class="d-stats">
+    <div class="container stats-row">
+      {stats.map((s, i) => (
+        <div class="stat reveal" data-i={i}>
+          <div class="stat-num">{s.value}<sup>{s.sup}</sup></div>
           <div class="stat-label">{s.label}</div>
-          <div class="stat-sub">{s.sub}</div>
         </div>
       ))}
     </div>
   </section>
 
-  <!-- SERVICES -->
-  <section class="section section--alt">
+  <!-- ============ SERVICES ============ -->
+  <section class="d-section" id="services">
     <div class="container">
-      <div class="section-header">
-        <span class="section-label">Nos prestations</span>
-        <h2 class="section-title">Tous vos besoins de transport</h2>
-        <p class="section-subtitle">Du déménagement local au transport international, nous avons la solution adaptée.</p>
+      <div class="d-head reveal">
+        <h2 class="display">Nos <em>prestations.</em></h2>
+        <p>Du déménagement local au transport international, nous avons la solution adaptée — particuliers comme professionnels.</p>
       </div>
-      <div class="grid-3">
-        {SERVICES.map(s => <ServiceCard {...s} />)}
-      </div>
-    </div>
-  </section>
-
-  <!-- WHY US -->
-  <section class="section">
-    <div class="container why-layout">
-      <div class="why-left">
-        <span class="section-label">Pourquoi nous</span>
-        <h2 class="section-title">Le choix de la sérénité</h2>
-        <p class="section-subtitle">
-          Transport Carcassonne, c'est une équipe locale qui traite vos affaires comme les siennes.
-        </p>
-        <a href="/a-propos" class="btn btn--outline" style="margin-top:28px">En savoir plus →</a>
-      </div>
-      <div class="why-right">
-        {whyUs.map(item => (
-          <div class="why-item">
-            <div class="why-icon">{item.icon}</div>
-            <div>
-              <h3 class="why-title">{item.title}</h3>
-              <p class="why-desc">{item.desc}</p>
-            </div>
-          </div>
+      <div class="svc-grid">
+        {SERVICES.map((s, i) => (
+          <a href={`/services/${s.slug}`} class="svc-item reveal" data-i={i}>
+            <div class="svc-num">— {String(i + 1).padStart(2, '0')}</div>
+            <h3>{s.name}</h3>
+            <p>{s.description}</p>
+            <div class="svc-price">à partir de {priceFmt(s.priceFrom)}</div>
+            <span class="svc-link">En savoir plus</span>
+          </a>
         ))}
+        <a href="/contact" class="svc-item svc-item--dark reveal" data-i={6}>
+          <div class="svc-num">— Cas particulier ?</div>
+          <h3>Décrivez votre<br/>situation.</h3>
+          <p>Volume hors normes, objet fragile, longue distance : en cinq ans nous avons presque tout vu. Nous trouverons une solution.</p>
+          <span class="svc-link">Nous contacter</span>
+        </a>
       </div>
     </div>
   </section>
 
-  <!-- NOTRE FLOTTE -->
-  <section class="section flotte-section">
+  <RoadDivider />
+
+  <!-- ============ FLOTTE ============ -->
+  <section class="d-section d-section--alt">
     <div class="container">
-      <div class="section-header" style="text-align:center;margin-bottom:48px">
-        <span class="section-label">Notre matériel</span>
-        <h2 class="section-title">Une flotte adaptée à chaque déménagement</h2>
-        <p class="section-subtitle">Deux fourgons professionnels équipés de hayon élévateur, sangles et protections.</p>
-      </div>
-      <div class="grid-2">
-        {fourgons.map(f => (
-          <div class="fourgon-card">
-            <div class="fourgon-icon">{f.icon}</div>
-            <h3 class="fourgon-name">{f.name}</h3>
-            <p class="fourgon-desc">{f.desc}</p>
-            <div class="fourgon-specs">
-              <div class="spec">
-                <span class="spec-label">Capacité</span>
-                <span class="spec-value">{f.cap}</span>
-              </div>
-              <div class="spec">
-                <span class="spec-label">Charge utile</span>
-                <span class="spec-value">{f.payload}</span>
+      <div class="fleet-grid reveal">
+        <div class="fleet-left">
+          <span class="mono-label">Notre matériel</span>
+          <h2 class="display">Une flotte adaptée<br/>à <em>chaque volume.</em></h2>
+          <p>Deux fourgons professionnels équipés de hayon élévateur, sangles et protections. Au-delà de 20 m³, nous combinons les véhicules ou effectuons plusieurs rotations — pas de limite de volume.</p>
+        </div>
+        <div class="fleet-cards">
+          {fourgons.map(f => (
+            <div class="fleet-card">
+              <h3>{f.name}</h3>
+              <p>{f.desc}</p>
+              <div class="fleet-specs">
+                <div><span class="spec-k">Capacité</span><span class="spec-v">{f.cap}</span></div>
+                <div><span class="spec-k">Charge utile</span><span class="spec-v">{f.payload}</span></div>
               </div>
             </div>
-          </div>
-        ))}
-      </div>
-      <p class="flotte-note">
-        Pour les volumes supérieurs à 20 m³, nous combinons les deux fourgons
-        ou effectuons plusieurs rotations. Pas de limite de volume.
-      </p>
-    </div>
-  </section>
-
-  <!-- GARANTIES & ENGAGEMENTS -->
-  <section class="section section--alt garanties-section">
-    <div class="container">
-      <div class="section-header" style="text-align:center;margin-bottom:48px">
-        <span class="section-label">Nos engagements</span>
-        <h2 class="section-title">6 garanties pour votre tranquillité</h2>
-        <p class="section-subtitle">Notre métier, ce n'est pas seulement transporter. C'est vous garantir une expérience sans stress.</p>
-      </div>
-      <div class="garanties-grid">
-        {garanties.map(g => (
-          <div class="garantie-card">
-            <div class="garantie-icon">{g.icon}</div>
-            <h3 class="garantie-title">{g.title}</h3>
-            <p class="garantie-desc">{g.desc}</p>
-          </div>
-        ))}
-      </div>
-    </div>
-  </section>
-
-  <!-- CALCULATOR + CITIES -->
-  <section class="section section--alt">
-    <div class="container zone-layout">
-      <div class="zone-left">
-        <span class="section-label">Zone d'intervention</span>
-        <h2 class="section-title">Carcassonne et environs</h2>
-        <p class="section-subtitle">Nous intervenons dans un rayon de {SITE.serviceRadius} km autour de Carcassonne.</p>
-        <div class="cities-grid">
-          {CITIES.map(c => <CityCard {...c} />)}
+          ))}
         </div>
       </div>
-      <div class="zone-right">
-        <CalculatorPlaceholder formHref="/contact" />
+    </div>
+  </section>
+
+  <!-- ============ GARANTIES ============ -->
+  <section class="d-section d-dark">
+    <div class="container">
+      <div class="d-head d-head--center reveal">
+        <h2 class="display">Six garanties,<br/>une <em>tranquillité.</em></h2>
+        <p>Notre métier, ce n'est pas seulement transporter — c'est vous garantir une expérience sans stress.</p>
+      </div>
+      <div class="gar-grid">
+        {garanties.map((g, i) => (
+          <div class="gar reveal" data-i={i}>
+            <div class="gar-num">— {g.num}</div>
+            <h3>{g.title}</h3>
+            <p>{g.desc}</p>
+          </div>
+        ))}
       </div>
     </div>
   </section>
 
-  <!-- HOW IT WORKS -->
-  <section class="section">
+  <!-- ============ ZONE ============ -->
+  <section class="d-section">
     <div class="container">
-      <div class="section-header" style="text-align:center;margin-bottom:56px">
-        <span class="section-label">Simple et rapide</span>
-        <h2 class="section-title">Comment ça marche</h2>
+      <div class="zone-grid">
+        <div class="zone-left reveal">
+          <span class="mono-label">Zone d'intervention</span>
+          <h2 class="display">Carcassonne<br/>et <em>environs.</em></h2>
+          <p>Nous intervenons dans un rayon de {SITE.serviceRadius} km autour de Carcassonne, et bien au-delà pour la longue distance. Cliquez sur votre commune pour votre page dédiée.</p>
+        </div>
+        <div class="zone-cities">
+          {CITIES.map((c, i) => (
+            <a href={`/demenagement-${c.slug}`} class={(i < 5 ? 'zone-city main' : 'zone-city') + ' reveal'} data-i={i}>{c.name}</a>
+          ))}
+        </div>
       </div>
+    </div>
+  </section>
+
+  <!-- ============ METHODE ============ -->
+  <section class="d-section d-section--alt">
+    <div class="container">
+      <div class="d-head reveal"><h2 class="display">Notre <em>méthode.</em></h2><p>Un processus simple et transparent en quatre étapes, du premier appel à l'installation chez vous.</p></div>
       <div class="steps-grid">
-        {steps.map(step => (
-          <div class="step-item">
-            <div class="step-num">{step.num}</div>
-            <h3 class="step-title">{step.title}</h3>
-            <p class="step-desc">{step.desc}</p>
-          </div>
-        ))}
-      </div>
-      <div style="text-align:center;margin-top:48px">
-        <a href="/comment-ca-marche" class="btn btn--outline">Voir le processus complet →</a>
-      </div>
-    </div>
-  </section>
-
-  <!-- TESTIMONIALS -->
-  <section class="section section--alt">
-    <div class="container">
-      <div class="section-header" style="text-align:center;margin-bottom:48px">
-        <span class="section-label">Avis clients</span>
-        <h2 class="section-title">Ils nous font confiance</h2>
-      </div>
-      <div class="grid-3">
-        {testimonials.map(t => (
-          <div class="testimonial-card">
-            <div class="testimonial-stars">{'⭐'.repeat(t.stars)}</div>
-            <p class="testimonial-text">"{t.text}"</p>
-            <div class="testimonial-author">
-              <strong>{t.name}</strong>
-              <span>{t.city}</span>
-            </div>
+        {steps.map((s, i) => (
+          <div class="step reveal" data-i={i}>
+            <div class="step-num">— Étape {s.num}</div>
+            <h3>{s.title}</h3>
+            <p>{s.desc}</p>
           </div>
         ))}
       </div>
     </div>
   </section>
 
-  <!-- FAQ -->
-  <section class="section">
+  <!-- ============ TESTIMONIALS ============ -->
+  <section class="d-section d-dark">
     <div class="container">
-      <div class="section-header" style="text-align:center;margin-bottom:48px">
-        <span class="section-label">FAQ</span>
-        <h2 class="section-title">Questions fréquentes</h2>
+      <div class="d-head reveal"><h2 class="display">Ils nous font<br/><em>confiance.</em></h2><p>Particuliers et professionnels témoignent de leur déménagement avec Transport Carcassonne.</p></div>
+      <div class="tst-grid">
+        {testimonials.map((t, i) => (
+          <div class="tst reveal" data-i={i}>
+            <span class="tst-q">"</span>
+            <p>{t.text}</p>
+            <div class="tst-author"><div class="tst-name">{t.name}</div><div class="tst-meta">{t.city}</div></div>
+          </div>
+        ))}
       </div>
+    </div>
+  </section>
+
+  <!-- ============ FAQ ============ -->
+  <section class="d-section">
+    <div class="container">
+      <div class="d-head d-head--center reveal"><h2 class="display">Questions <em>fréquentes.</em></h2></div>
       <div class="faq-list">
-        {faqs.map(faq => (
-          <details class="faq-item">
-            <summary class="faq-question">{faq.q}</summary>
-            <p class="faq-answer">{faq.a}</p>
+        {faqs.map((f, i) => (
+          <details class="faq reveal" data-i={i}>
+            <summary>{f.q}</summary>
+            <p>{f.a}</p>
           </details>
         ))}
       </div>
     </div>
   </section>
 
+  <RoadDivider />
+
   <ComboOffer />
-
-  <QuoteForm title="Demandez votre devis gratuit" subtitle="Réponse sous 2h · Lun-Sam 8h-19h" />
-
-  <CTA title="Prêt à déménager ?" subtitle="Contactez-nous dès aujourd'hui pour un devis gratuit et sans engagement." />
-
+  <QuoteForm title="Demandez votre devis gratuit" subtitle="Réponse sous 2h · Lun–Sam 8h–19h" />
   <Footer />
 </BaseLayout>
 
 <style>
-  /* Stats */
-  .stats-section { padding: 48px 0; background: var(--color-navy); }
-  .stats-grid {
-    display: grid;
-    grid-template-columns: repeat(4, 1fr);
-    gap: 0;
-    text-align: center;
-  }
-  .stat-item {
-    padding: 20px;
-    border-right: 1px solid rgba(255,255,255,.12);
-  }
-  .stat-item:last-child { border-right: none; }
-  .stat-value {
-    font-family: var(--font-display);
-    font-size: clamp(1.8rem, 4vw, 2.6rem);
-    font-weight: 700;
-    color: var(--color-accent);
-    line-height: 1;
-  }
-  .stat-label {
-    font-size: .9rem;
-    font-weight: 600;
-    color: white;
-    margin: 4px 0 2px;
-  }
-  .stat-sub { font-size: .75rem; color: rgba(255,255,255,.55); }
+  .display { font-family: 'Instrument Serif', serif; font-weight: 400; letter-spacing: -.02em; line-height: 1; }
+  .display em, em { font-style: italic; color: var(--accent); }
+  .mono-label { font-size: 11px; text-transform: uppercase; letter-spacing: .2em; color: var(--accent); font-weight: 500; display: block; margin-bottom: 22px; }
 
-  /* Section header */
-  .section-header { margin-bottom: 48px; }
+  /* HERO content (over 3D scene) */
+  .hero-content { position: relative; max-width: 600px; }
+  .hero-screen { position: absolute; max-width: 620px; }
+  .hero-eyebrow { display: flex; align-items: center; gap: 13px; font-size: 11px; letter-spacing: .2em; text-transform: uppercase; color: var(--accent); margin-bottom: 26px; }
+  .hero-eyebrow span { width: 32px; height: 1px; background: var(--accent); }
+  .hero-title { font-family: 'Instrument Serif', serif; font-weight: 400; color: var(--text-on-dark); font-size: clamp(52px, 7vw, 102px); line-height: .97; letter-spacing: -.02em; margin-bottom: 24px; }
+  .hero-sub { font-size: 18px; color: var(--text-on-dark-muted); max-width: 460px; margin-bottom: 34px; }
+  .hero-actions { display: flex; gap: 14px; flex-wrap: wrap; }
+  .btn-hero-ghost { background: transparent; color: var(--text-on-dark); border: 1px solid var(--line-dark); }
+  .btn-hero-ghost:hover { border-color: var(--accent); color: var(--accent); }
 
-  /* Why us */
-  .why-layout {
-    display: grid;
-    grid-template-columns: 1fr 1.4fr;
-    gap: 80px;
-    align-items: center;
-  }
-  .why-right { display: flex; flex-direction: column; gap: 24px; }
-  .why-item { display: flex; gap: 20px; align-items: flex-start; }
-  .why-icon {
-    font-size: 1.8rem;
-    width: 52px;
-    height: 52px;
-    background: rgba(234,125,58,.1);
-    border-radius: 12px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    flex-shrink: 0;
-  }
-  .why-title {
-    font-family: var(--font-sans);
-    font-size: 1rem;
-    font-weight: 700;
-    color: var(--color-navy);
-    margin-bottom: 4px;
-  }
-  .why-desc { font-size: .9rem; color: var(--color-text-light); line-height: 1.5; }
+  /* MARQUEE */
+  .marquee { background: var(--bg-dark); border-top: 1px solid var(--line-dark); border-bottom: 1px solid var(--line-dark); padding: 18px 0; overflow: hidden; }
+  .marquee-in { display: flex; gap: 46px; white-space: nowrap; animation: marq 40s linear infinite; color: var(--text-on-dark-muted); font-size: 14px; }
+  .marquee-in span { display: flex; align-items: center; gap: 46px; padding-right: 46px; }
+  .marquee .dot { color: var(--accent); font-style: normal; }
+  @keyframes marq { to { transform: translateX(-50%); } }
 
-  /* Zone */
-  .zone-layout {
-    display: grid;
-    grid-template-columns: 1fr 340px;
-    gap: 64px;
-    align-items: start;
-  }
-  .cities-grid {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 12px;
-    margin-top: 28px;
-  }
+  /* SECTION SHELL */
+  .d-section { padding: 120px 0; background: var(--bg); }
+  .d-section--alt { background: var(--bg-soft); }
+  .d-dark { background: var(--bg-dark); color: var(--text-on-dark); }
+  .d-head { display: grid; grid-template-columns: 1fr 1.1fr; gap: 56px; align-items: end; margin-bottom: 64px; }
+  .d-head h2 { font-size: clamp(38px, 5vw, 68px); line-height: 1; }
+  .d-head p { color: var(--text-muted); font-size: 17px; max-width: 480px; }
+  .d-dark .d-head p { color: var(--text-on-dark-muted); }
+  .d-head--center { grid-template-columns: 1fr; text-align: center; justify-items: center; }
+  .d-head--center p { margin: 0 auto; }
 
-  /* Steps */
-  .steps-grid {
-    display: grid;
-    grid-template-columns: repeat(4, 1fr);
-    gap: 32px;
-    position: relative;
-  }
-  .steps-grid::before {
-    content: '';
-    position: absolute;
-    top: 30px;
-    left: calc(12.5% + 20px);
-    right: calc(12.5% + 20px);
-    height: 2px;
-    background: var(--color-border);
-  }
-  .step-item { text-align: center; }
-  .step-num {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    width: 56px;
-    height: 56px;
-    border-radius: 50%;
-    background: var(--color-navy);
-    color: white;
-    font-size: 1rem;
-    font-weight: 700;
-    margin: 0 auto 16px;
-    position: relative;
-    z-index: 1;
-  }
-  .step-title {
-    font-family: var(--font-sans);
-    font-size: 1rem;
-    font-weight: 700;
-    color: var(--color-navy);
-    margin-bottom: 8px;
-  }
-  .step-desc { font-size: .85rem; color: var(--color-text-light); line-height: 1.5; }
+  /* STATS */
+  .d-stats { background: var(--bg-dark); color: var(--text-on-dark); }
+  .stats-row { display: grid; grid-template-columns: repeat(4, 1fr); }
+  .stat { padding: 44px 24px; border-right: 1px solid var(--line-dark); text-align: center; }
+  .stat:last-child { border-right: none; }
+  .stat-num { font-family: 'Instrument Serif', serif; font-size: 60px; line-height: 1; color: var(--text-on-dark); }
+  .stat-num sup { font-size: 20px; color: var(--accent); font-style: italic; margin-left: 2px; }
+  .stat-label { font-size: 13px; color: var(--text-on-dark-muted); margin-top: 10px; }
 
-  /* Testimonials */
-  .testimonial-card {
-    background: var(--color-white);
-    border: 1.5px solid var(--color-border);
-    border-radius: var(--radius-lg);
-    padding: 28px 24px;
-  }
-  .testimonial-stars { font-size: 1rem; margin-bottom: 14px; }
-  .testimonial-text {
-    font-size: .95rem;
-    line-height: 1.65;
-    color: var(--color-text);
-    margin-bottom: 16px;
-    font-style: italic;
-  }
-  .testimonial-author { display: flex; flex-direction: column; gap: 2px; }
-  .testimonial-author strong { font-size: .9rem; color: var(--color-navy); }
-  .testimonial-author span { font-size: .8rem; color: var(--color-text-light); }
+  /* SERVICES */
+  .svc-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1px; background: var(--line); border: 1px solid var(--line); }
+  .svc-item { position: relative; background: var(--bg); padding: 42px 34px; min-height: 300px; display: flex; flex-direction: column; text-decoration: none; color: inherit; transition: background .3s var(--ease-out), transform .35s var(--ease-out), box-shadow .35s var(--ease-out); }
+  .svc-item:hover { background: var(--bg-card); transform: translateY(-4px); box-shadow: var(--shadow-soft-light); z-index: 1; }
+  .svc-num { font-family: 'Instrument Serif', serif; font-style: italic; font-size: 13px; color: var(--text-muted); margin-bottom: 32px; }
+  .svc-item h3 { font-family: 'Instrument Serif', serif; font-weight: 400; font-size: 29px; line-height: 1.08; margin-bottom: 14px; }
+  .svc-item p { color: var(--text-muted); font-size: 14px; flex: 1; }
+  .svc-price { font-family: 'Instrument Serif', serif; font-style: italic; color: var(--accent); font-size: 18px; margin: 18px 0; }
+  .svc-link { font-size: 11px; text-transform: uppercase; letter-spacing: .18em; display: inline-flex; align-items: center; gap: 8px; }
+  .svc-link::after { content: '→'; transition: transform .3s; }
+  .svc-item:hover .svc-link::after { transform: translateX(4px); }
+  .svc-item--dark { background: var(--bg-dark); color: var(--text-on-dark); }
+  .svc-item--dark:hover { background: var(--bg-dark-alt); box-shadow: var(--shadow-soft); }
+  .svc-item--dark h3 { color: var(--text-on-dark); }
+  .svc-item--dark p { color: var(--text-on-dark-muted); }
+  .svc-item--dark .svc-num, .svc-item--dark .svc-link { color: var(--accent); }
 
-  /* Flotte */
-  .flotte-section { padding: 80px 0; }
-  .fourgon-card {
-    background: var(--color-white);
-    border: 1.5px solid var(--color-border);
-    border-radius: var(--radius-lg);
-    padding: 36px 32px;
-    transition: border-color .2s, transform .2s;
-  }
-  .fourgon-card:hover {
-    border-color: var(--color-accent);
-    transform: translateY(-2px);
-  }
-  .fourgon-icon {
-    font-size: 2.4rem;
-    margin-bottom: 18px;
-  }
-  .fourgon-name {
-    font-family: var(--font-display);
-    font-size: 1.5rem;
-    font-weight: 700;
-    color: var(--color-navy);
-    margin-bottom: 14px;
-  }
-  .fourgon-desc {
-    font-size: .95rem;
-    color: var(--color-text-light);
-    line-height: 1.65;
-    margin-bottom: 22px;
-  }
-  .fourgon-specs {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 0;
-    border-top: 1px solid var(--color-border);
-    padding-top: 18px;
-  }
-  .spec { display: flex; flex-direction: column; gap: 4px; }
-  .spec + .spec { border-left: 1px solid var(--color-border); padding-left: 18px; }
-  .spec-label {
-    font-size: .7rem;
-    text-transform: uppercase;
-    letter-spacing: .1em;
-    color: var(--color-text-light);
-  }
-  .spec-value {
-    font-family: var(--font-display);
-    font-size: 1.4rem;
-    font-weight: 700;
-    color: var(--color-accent);
-  }
-  .flotte-note {
-    text-align: center;
-    margin-top: 40px;
-    font-size: .9rem;
-    color: var(--color-text-light);
-    font-style: italic;
-    max-width: 640px;
-    margin-left: auto;
-    margin-right: auto;
-  }
+  /* FLEET */
+  .fleet-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 64px; align-items: center; }
+  .fleet-left h2 { font-size: clamp(34px, 4.4vw, 56px); line-height: 1.04; margin-bottom: 26px; }
+  .fleet-left p { color: var(--text-muted); font-size: 16px; line-height: 1.65; }
+  .fleet-cards { display: grid; gap: 16px; }
+  .fleet-card { background: var(--bg-card); border: 1px solid var(--line); padding: 30px; transition: transform .35s var(--ease-out), box-shadow .35s var(--ease-out), border-color .35s var(--ease-out); }
+  .fleet-card:hover { transform: translateY(-4px); box-shadow: var(--shadow-soft-light); border-color: var(--accent); }
+  .fleet-card h3 { font-family: 'Instrument Serif', serif; font-weight: 400; font-size: 26px; margin-bottom: 10px; }
+  .fleet-card p { color: var(--text-muted); font-size: 14px; margin-bottom: 22px; }
+  .fleet-specs { display: grid; grid-template-columns: 1fr 1fr; border-top: 1px solid var(--line); padding-top: 18px; }
+  .fleet-specs div { display: flex; flex-direction: column; gap: 4px; }
+  .spec-k { font-size: 11px; text-transform: uppercase; letter-spacing: .12em; color: var(--text-muted); }
+  .spec-v { font-family: 'Instrument Serif', serif; font-size: 26px; color: var(--accent); }
 
-  /* Garanties */
-  .garanties-section { padding: 80px 0; }
-  .garanties-grid {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 24px;
-  }
-  .garantie-card {
-    background: var(--color-white);
-    border: 1.5px solid var(--color-border);
-    border-radius: var(--radius-lg);
-    padding: 28px 24px;
-    text-align: left;
-    transition: border-color .2s;
-  }
-  .garantie-card:hover {
-    border-color: var(--color-accent);
-  }
-  .garantie-icon {
-    font-size: 1.8rem;
-    margin-bottom: 14px;
-  }
-  .garantie-title {
-    font-family: var(--font-sans);
-    font-size: 1.05rem;
-    font-weight: 700;
-    color: var(--color-navy);
-    margin-bottom: 8px;
-  }
-  .garantie-desc {
-    font-size: .88rem;
-    color: var(--color-text-light);
-    line-height: 1.55;
-  }
+  /* GARANTIES */
+  .gar-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1px; background: var(--line-dark); border: 1px solid var(--line-dark); }
+  .gar { position: relative; background: var(--bg-dark); padding: 38px 32px; transition: background .3s var(--ease-out), transform .35s var(--ease-out), box-shadow .35s var(--ease-out); }
+  .gar:hover { background: var(--bg-dark-alt); transform: translateY(-4px); box-shadow: var(--shadow-soft); z-index: 1; }
+  .gar-num { font-family: 'Instrument Serif', serif; font-style: italic; font-size: 13px; color: var(--accent); margin-bottom: 26px; }
+  .gar h3 { font-family: 'Instrument Serif', serif; font-weight: 400; font-size: 24px; color: var(--text-on-dark); margin-bottom: 14px; }
+  .gar p { font-size: 14px; color: var(--text-on-dark-muted); line-height: 1.6; }
 
-  @media (max-width: 900px) {
-    .garanties-grid { grid-template-columns: 1fr 1fr; }
-  }
-  @media (max-width: 600px) {
-    .garanties-grid { grid-template-columns: 1fr; }
-  }
+  /* ZONE */
+  .zone-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 72px; align-items: start; }
+  .zone-left h2 { font-size: clamp(34px, 4.6vw, 60px); line-height: 1; margin-bottom: 24px; }
+  .zone-left p { color: var(--text-muted); font-size: 16px; line-height: 1.65; }
+  .zone-cities { display: flex; flex-wrap: wrap; gap: 8px; align-content: flex-start; }
+  .zone-city { border: 1px solid var(--line); padding: 10px 18px; border-radius: 4px; font-size: 13px; color: var(--text); text-decoration: none; transition: all .2s; }
+  .zone-city:hover { background: var(--text); color: var(--bg); border-color: var(--text); }
+  .zone-city.main { background: var(--bg-dark); color: var(--text-on-dark); border-color: var(--bg-dark); }
+  .zone-city.main:hover { background: var(--accent); border-color: var(--accent); color: var(--bg-dark); }
+
+  /* STEPS */
+  .steps-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 40px; }
+  .step { border-top: 2px solid var(--text); padding-top: 26px; }
+  .step-num { font-family: 'Instrument Serif', serif; font-style: italic; font-size: 14px; color: var(--accent); margin-bottom: 70px; }
+  .step h3 { font-family: 'Instrument Serif', serif; font-weight: 400; font-size: 26px; margin-bottom: 12px; }
+  .step p { color: var(--text-muted); font-size: 14px; line-height: 1.6; }
+
+  /* TESTIMONIALS */
+  .tst-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; }
+  .tst { background: var(--bg-dark-alt); border: 1px solid var(--line-dark); padding: 38px 34px; transition: border-color .3s var(--ease-out), transform .35s var(--ease-out), box-shadow .35s var(--ease-out); }
+  .tst:hover { border-color: var(--accent); transform: translateY(-4px); box-shadow: var(--shadow-soft); }
+  .tst-q { font-family: 'Instrument Serif', serif; font-style: italic; font-size: 70px; line-height: .4; color: var(--accent); display: inline-block; margin-bottom: 26px; }
+  .tst p { font-family: 'Instrument Serif', serif; font-size: 19px; line-height: 1.45; color: var(--text-on-dark); margin-bottom: 28px; }
+  .tst-author { border-top: 1px solid var(--line-dark); padding-top: 18px; }
+  .tst-name { font-size: 14px; font-weight: 500; color: var(--text-on-dark); }
+  .tst-meta { font-size: 12px; color: var(--text-on-dark-muted); text-transform: uppercase; letter-spacing: .1em; margin-top: 4px; }
 
   /* FAQ */
-  .faq-list { max-width: 800px; margin: 0 auto; display: flex; flex-direction: column; gap: 8px; }
-  .faq-item {
-    background: var(--color-white);
-    border: 1.5px solid var(--color-border);
-    border-radius: var(--radius);
-    overflow: hidden;
-  }
-  .faq-question {
-    padding: 20px 24px;
-    font-weight: 600;
-    font-size: .95rem;
-    color: var(--color-navy);
-    cursor: pointer;
-    list-style: none;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-  }
-  .faq-question::-webkit-details-marker { display: none; }
-  .faq-question::after {
-    content: '+';
-    font-size: 1.2rem;
-    color: var(--color-accent);
-    flex-shrink: 0;
-  }
-  details[open] .faq-question::after { content: '−'; }
-  .faq-answer {
-    padding: 0 24px 20px;
-    font-size: .9rem;
-    color: var(--color-text-light);
-    line-height: 1.65;
-  }
+  .faq-list { max-width: 820px; margin: 0 auto; display: flex; flex-direction: column; gap: 8px; }
+  .faq { border: 1px solid var(--line); border-radius: 4px; background: var(--bg-card); overflow: hidden; transition: border-color .3s var(--ease-out), box-shadow .3s var(--ease-out); }
+  .faq:hover { border-color: var(--accent); box-shadow: var(--shadow-soft-light); }
+  .faq summary { padding: 20px 24px; font-weight: 500; font-size: 15px; cursor: pointer; list-style: none; display: flex; justify-content: space-between; align-items: center; gap: 16px; }
+  .faq summary::-webkit-details-marker { display: none; }
+  .faq summary::after { content: '+'; font-size: 20px; color: var(--accent); flex-shrink: 0; }
+  .faq[open] summary::after { content: '−'; }
+  .faq p { padding: 0 24px 20px; font-size: 14px; color: var(--text-muted); line-height: 1.65; }
 
-  @media (max-width: 900px) {
-    .stats-grid { grid-template-columns: repeat(2, 1fr); }
-    .stat-item:nth-child(2) { border-right: none; }
-    .why-layout { grid-template-columns: 1fr; gap: 40px; }
-    .zone-layout { grid-template-columns: 1fr; }
-    .steps-grid { grid-template-columns: 1fr 1fr; }
-    .steps-grid::before { display: none; }
+  @media (max-width: 1024px) {
+    .hero-screen { max-width: 88%; }
   }
-  @media (max-width: 600px) {
-    .stats-grid { grid-template-columns: 1fr 1fr; }
-    .cities-grid { grid-template-columns: 1fr; }
+  @media (max-width: 900px) {
+    .d-section { padding: 72px 0; }
+    .d-head { grid-template-columns: 1fr; gap: 18px; margin-bottom: 44px; }
+    .stats-row { grid-template-columns: 1fr 1fr; }
+    .stat:nth-child(2) { border-right: none; }
+    .stat { border-bottom: 1px solid var(--line-dark); }
+    .svc-grid, .gar-grid { grid-template-columns: 1fr; }
+    .fleet-grid, .zone-grid { grid-template-columns: 1fr; gap: 36px; }
+    .steps-grid { grid-template-columns: 1fr 1fr; gap: 28px; }
+    .tst-grid { grid-template-columns: 1fr; }
+  }
+  @media (max-width: 560px) {
     .steps-grid { grid-template-columns: 1fr; }
+    .stats-row { grid-template-columns: 1fr; }
+    .stat { border-right: none; }
   }
 </style>

@@ -16,14 +16,14 @@ const {
 
 <section class="qf-section">
   <div class="container">
-    <div class="qf-header">
+    <div class="qf-header reveal">
       <span class="section-label">Devis gratuit</span>
       <h2 class="section-title">{title}</h2>
       <p class="section-subtitle">{subtitle}</p>
     </div>
 
     <form
-      class="qf"
+      class="qf reveal"
       name="devis-transport"
       method="POST"
       action="/merci/"
@@ -139,7 +139,8 @@ const {
 
       <p class="qf__legal">
         Vos données sont utilisées uniquement pour répondre à votre demande.
-        Aucun démarchage.
+        Aucun démarchage. Voir notre
+        <a href="/politique-confidentialite" style="color:var(--accent);text-decoration:underline;text-underline-offset:2px">politique de confidentialité</a>.
       </p>
     </form>
   </div>
@@ -147,21 +148,24 @@ const {
 
 <style>
   .qf-section {
-    padding: 80px 0;
-    background: var(--color-bg-alt);
+    padding: 100px 0;
+    background: var(--bg-dark);
+    color: var(--text-on-dark);
   }
   .qf-header {
     text-align: center;
     margin-bottom: 48px;
   }
+  .qf-header :global(.section-title) { color: var(--text-on-dark); }
+  .qf-header :global(.section-subtitle) { color: var(--text-on-dark-muted); margin-left: auto; margin-right: auto; }
 
   .qf {
     max-width: 720px;
     margin: 0 auto;
-    background: var(--color-white);
+    background: var(--bg-dark-alt);
+    border: 1px solid var(--line-dark);
     border-radius: var(--radius-lg);
     padding: 40px;
-    box-shadow: var(--shadow-lg);
   }
 
   .qf__honeypot { display: none; }
@@ -182,9 +186,11 @@ const {
   }
 
   .qf__label {
-    font-size: .85rem;
-    font-weight: 600;
-    color: var(--color-text);
+    font-size: 11px;
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: .14em;
+    color: var(--text-on-dark-muted);
   }
 
   .qf__input {
@@ -192,9 +198,9 @@ const {
     padding: 12px 16px;
     font-size: 16px;
     font-family: var(--font-sans);
-    color: var(--color-text);
-    background: var(--color-bg);
-    border: 1.5px solid var(--color-border);
+    color: var(--text-on-dark);
+    background: transparent;
+    border: 1px solid var(--line-dark);
     border-radius: var(--radius);
     width: 100%;
     transition: border-color .15s, box-shadow .15s;
@@ -203,10 +209,11 @@ const {
   }
   .qf__input:focus {
     outline: none;
-    border-color: var(--color-navy);
-    box-shadow: 0 0 0 3px rgba(26,40,69,.08);
+    border-color: var(--accent);
+    box-shadow: 0 0 0 3px rgba(198,138,78,.12);
   }
-  .qf__input::placeholder { color: var(--color-text-light); }
+  .qf__input::placeholder { color: rgba(156,163,172,.5); }
+  .qf__select option { background: var(--bg-dark); color: var(--text-on-dark); }
 
   .qf__select {
     background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%23718096' stroke-width='2'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E");
@@ -230,7 +237,7 @@ const {
   .qf__legal {
     text-align: center;
     font-size: .75rem;
-    color: var(--color-text-light);
+    color: var(--text-on-dark-muted);
     margin-top: 12px;
   }
 

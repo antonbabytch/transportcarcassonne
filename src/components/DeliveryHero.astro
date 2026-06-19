@@ -1,0 +1,91 @@
+---
+// Light hero: the branded delivery clip auto-plays on a loop on its own light
+// background (#F2F4E9), seamlessly — no scroll-scrub, no pinning, so visitors are
+// never stuck scrolling. Van sits large on the right; dark readable text on the left.
+import { SITE } from '../data/site.config';
+const BG = '#F2F4E9';
+---
+
+<section class="dhero" style={`--vbg:${BG}`}>
+  <div class="dhero-inner">
+    <video
+      class="dvan"
+      id="dvan"
+      autoplay
+      muted
+      loop
+      playsinline
+      preload="auto"
+      poster="/video/poster.jpg"
+      aria-hidden="true"
+    ></video>
+
+    <div class="dhero-overlay">
+      <div class="container">
+        <div class="dhero-text hero-stagger">
+          <div class="dh-eyebrow"><span></span>Déménageur professionnel · Carcassonne</div>
+          <h1 class="dh-title">Votre déménagement,<br/><em>en mouvement.</em></h1>
+          <p class="dh-sub">2 fourgons jusqu'à 20 m³, équipe locale, prix fixe garanti. Devis gratuit sous 2h.</p>
+          <div class="dh-actions">
+            <a href="/contact" class="btn btn--primary btn--lg">Demander un devis →</a>
+            <a href={`tel:${SITE.phone}`} class="btn btn--outline btn--lg">{SITE.phoneDisplay}</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+  .dhero { position: relative; min-height: 600px; height: 92svh; max-height: 860px; background: var(--vbg); overflow: hidden; }
+  .dhero-inner { position: relative; height: 100%; }
+
+  .dvan {
+    position: absolute; top: 0; right: -2vw; height: 100%;
+    width: clamp(440px, 52vw, 1000px); object-fit: contain; display: block; background: var(--vbg);
+    -webkit-mask-image: linear-gradient(90deg, transparent 0, #000 14%, #000 100%);
+    mask-image: linear-gradient(90deg, transparent 0, #000 14%, #000 100%);
+  }
+
+  .dhero-overlay { position: absolute; inset: 0; display: flex; align-items: center; z-index: 2; }
+  .dhero-overlay .container { width: 100%; }
+  .dhero-text { max-width: 540px; }
+
+  .dh-eyebrow { display: flex; align-items: center; gap: 13px; font-size: 11px; letter-spacing: .2em; text-transform: uppercase; color: var(--accent); margin-bottom: 24px; }
+  .dh-eyebrow span { width: 32px; height: 1px; background: var(--accent); }
+  .dh-title { font-family: 'Instrument Serif', serif; font-weight: 400; color: var(--text); font-size: clamp(46px, 6vw, 92px); line-height: .98; letter-spacing: -.02em; margin-bottom: 22px; }
+  .dh-title em { font-style: italic; color: var(--accent); }
+  .dh-sub { font-size: 18px; color: var(--text-muted); max-width: 430px; margin-bottom: 32px; }
+  .dh-actions { display: flex; gap: 14px; flex-wrap: wrap; }
+
+  @media (max-width: 920px) {
+    .dhero { height: auto; max-height: none; min-height: 0; }
+    .dhero-inner { display: flex; flex-direction: column; padding-top: 10vh; }
+    .dvan { position: relative; right: 0; width: 100%; height: 56vw; max-height: 56vh;
+      -webkit-mask-image: none; mask-image: none; }
+    .dhero-overlay { position: relative; inset: auto; padding: 8px 0 6vh; }
+    .dhero-text { max-width: 100%; }
+  }
+</style>
+
+<script is:inline>
+  (function () {
+    var v = document.getElementById('dvan');
+    if (!v) return;
+    // Pick a light clip on phones, full quality on desktop (chosen once, at load).
+    var mobile = window.matchMedia('(max-width: 920px)').matches;
+    var s = document.createElement('source');
+    s.src = mobile ? '/video/delivery-mobile.mp4' : '/video/delivery.mp4';
+    s.type = 'video/mp4';
+    v.appendChild(s);
+    v.load();
+    // Respect reduced motion: pause the loop and keep the poster/first frame.
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+      v.removeAttribute('autoplay');
+      v.removeAttribute('loop');
+      var stop = function () { try { v.pause(); v.currentTime = 0; } catch (e) {} };
+      stop();
+      v.addEventListener('play', stop);
+    }
+  })();
+</script>

@@ -7,7 +7,7 @@ import { CITIES } from '../data/cities';
 <footer class="site-footer">
   <div class="container">
     <div class="footer-grid">
-      <div class="footer-brand">
+      <div class="footer-brand reveal" data-i="0">
         <a href="/" class="logo">
           <span class="logo-mark"></span>
           <span class="logo-text">
@@ -28,7 +28,7 @@ import { CITIES } from '../data/cities';
         </p>
       </div>
 
-      <div>
+      <div class="reveal" data-i="1">
         <h4>Services</h4>
         <ul>
           <li><a href="/petit-demenagement">Petit déménagement</a></li>
@@ -39,7 +39,7 @@ import { CITIES } from '../data/cities';
         </ul>
       </div>
 
-      <div>
+      <div class="reveal" data-i="2">
         <h4>Zone</h4>
         <ul>
           {CITIES.slice(0, 6).map(c => (
@@ -48,7 +48,7 @@ import { CITIES } from '../data/cities';
         </ul>
       </div>
 
-      <div>
+      <div class="reveal" data-i="3">
         <h4>Contact</h4>
         <ul>
           <li><a href={`tel:${SITE.phone}`}>{SITE.phoneDisplay}</a></li>
@@ -72,6 +72,8 @@ import { CITIES } from '../data/cities';
         <a href="/mentions-legales">Mentions légales</a>
         <span>·</span>
         <a href="/politique-confidentialite">Politique de confidentialité</a>
+        <span>·</span>
+        <button type="button" class="footer-cookie" onclick="window.__ccManage&&window.__ccManage()">Gérer les cookies</button>
       </div>
     </div>
   </div>
@@ -212,7 +214,20 @@ import { CITIES } from '../data/cities';
     display: flex;
     gap: 8px;
     align-items: center;
+    flex-wrap: wrap;
   }
+  .footer-cookie {
+    background: none;
+    border: none;
+    padding: 0;
+    font: inherit;
+    font-size: 13px;
+    color: var(--text-on-dark-muted);
+    cursor: pointer;
+    text-decoration: underline;
+    text-underline-offset: 2px;
+  }
+  .footer-cookie:hover { color: var(--accent); }
 
   @media (max-width: 900px) {
     .footer-grid {

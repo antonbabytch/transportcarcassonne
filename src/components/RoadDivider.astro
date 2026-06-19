@@ -1,0 +1,81 @@
+---
+// Signature transport motion: a hairline road with flowing lane markings and a
+// minimal line-art van that glides across. Pure CSS/SVG, respects reduced-motion.
+interface Props { label?: string; }
+const { label = '' } = Astro.props;
+---
+
+<div class="road" role="presentation" aria-hidden="true">
+  <div class="road-line"></div>
+  <div class="road-dash"></div>
+  <div class="van">
+    <svg width="96" height="46" viewBox="0 0 96 46" fill="none">
+      <rect class="vl" x="2" y="8" width="56" height="25" rx="3" />
+      <path class="vl" d="M58 14 H74 L85 24 V33 H58 Z" />
+      <rect class="vl" x="62" y="17" width="13" height="7" rx="1" />
+      <line class="vl" x1="2" y1="33" x2="85" y2="33" />
+      <circle class="vw" cx="20" cy="34" r="6.5" />
+      <circle class="vw" cx="73" cy="34" r="6.5" />
+    </svg>
+  </div>
+  {label && <span class="road-label">{label}</span>}
+</div>
+
+<style>
+  .road {
+    position: relative;
+    height: 96px;
+    overflow: hidden;
+    background: var(--bg-dark);
+  }
+  .road-line {
+    position: absolute;
+    left: 0; right: 0; bottom: 30px;
+    height: 1px;
+    background: var(--line-dark);
+  }
+  .road-dash {
+    position: absolute;
+    left: 0; right: 0; bottom: 29px;
+    height: 2px;
+    background-image: repeating-linear-gradient(90deg,
+      rgba(198, 138, 78, .55) 0 22px, transparent 22px 52px);
+    background-size: 52px 100%;
+    opacity: .6;
+    animation: roadflow 1.1s linear infinite;
+  }
+  @keyframes roadflow { to { background-position: -52px 0; } }
+
+  .van {
+    position: absolute;
+    bottom: 23px;
+    left: -120px;
+    animation: drive 19s linear infinite;
+  }
+  @keyframes drive {
+    from { left: -120px; }
+    to { left: 100%; }
+  }
+  .vl { stroke: var(--accent); stroke-width: 2; stroke-linejoin: round; stroke-linecap: round; }
+  .vw { fill: var(--bg-dark); stroke: var(--accent); stroke-width: 2; }
+
+  .road-label {
+    position: absolute;
+    left: 50%; top: 18px;
+    transform: translateX(-50%);
+    font-size: 10px;
+    letter-spacing: .22em;
+    text-transform: uppercase;
+    color: var(--text-on-dark-muted);
+  }
+
+  @media (max-width: 600px) {
+    .road { height: 78px; }
+    .van { transform: scale(.82); transform-origin: bottom left; }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .road-dash { animation: none; }
+    .van { animation: none; left: 8%; }
+  }
+</style>

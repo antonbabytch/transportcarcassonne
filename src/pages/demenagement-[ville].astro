@@ -7,6 +7,7 @@ import QuoteForm from '../components/QuoteForm.astro';
 import CTA from '../components/CTA.astro';
 import ServiceCard from '../components/ServiceCard.astro';
 import SchemaLocalBusiness from '../components/SchemaLocalBusiness.astro';
+import Breadcrumbs from '../components/Breadcrumbs.astro';
 import { CITIES } from '../data/cities';
 import { SERVICES } from '../data/services';
 import { SITE } from '../data/site.config';
@@ -21,7 +22,7 @@ const isBase = city.distance === 0;
 const distanceText = isBase ? 'notre ville de base' : `à ${city.distance} km de Carcassonne`;
 
 const title = `Déménagement ${city.name} | Transport Carcassonne`;
-const description = `Déménageur professionnel à ${city.name} (${city.distance > 0 ? `${city.distance} km de Carcassonne` : 'Aude'}). Déménagement local, transport meubles, évacuation. Assurance incluse. Devis gratuit sous 2h. ${SITE.phoneDisplay}`;
+const description = `Déménageur à ${city.name} (${city.distance > 0 ? `${city.distance} km de Carcassonne` : 'Aude'}) : déménagement, transport de meubles, évacuation. Devis gratuit sous 2h. ${SITE.phoneDisplay}`;
 
 const cityContent: Record<string, { intro: string; specifics: string; note?: string }> = {
   carcassonne: {
@@ -71,11 +72,91 @@ const content = cityContent[city.slug] ?? {
   intro: `${city.name} est une commune de l'Aude où Transport Carcassonne intervient régulièrement. Situé ${distanceText}, ce secteur fait partie intégrante de notre zone d'intervention.`,
   specifics: `Nous organisons régulièrement des déménagements à ${city.name} et ses environs. Notre équipe connaît les spécificités locales et s'adapte aux contraintes de chaque logement.`,
 };
+
+type Extra = { quartiers: string[]; acces: string; routes: { to: string; price: string }[]; faq: { q: string; a: string }[] };
+const cityExtra: Record<string, Extra> = {
+  carcassonne: {
+    quartiers: ['La Cité', 'Bastide Saint-Louis', 'Grazailles', 'La Conte', 'Montredon', 'Maquens', 'Le Viguier'],
+    acces: "Zones piétonnes et stationnement réglementé autour de la Cité et de la Bastide : nous repérons les emplacements de chargement à l'avance et gérons les autorisations de voirie si nécessaire.",
+    routes: [{ to: 'Toulouse', price: 'dès 600 €' }, { to: 'Narbonne', price: 'dès 350 €' }, { to: 'Montpellier', price: 'dès 750 €' }],
+    faq: [{ q: 'Pouvez-vous déménager dans la Cité médiévale ?', a: "Oui. L'accès véhicule y est restreint : nous organisons le portage depuis les points autorisés et, si besoin, une navette avec un véhicule plus petit." }],
+  },
+  trebes: {
+    quartiers: ['Centre / Canal du Midi', 'Les Bordes', 'Millepetit', 'Lotissements est'],
+    acces: "Urbanisme accessible : maisons individuelles avec accès direct et voiries larges dans les lotissements. Stationnement aisé au pied du logement dans la majorité des cas.",
+    routes: [{ to: 'Carcassonne', price: 'dès 350 €' }, { to: 'Narbonne', price: 'dès 400 €' }, { to: 'Toulouse', price: 'dès 650 €' }],
+    faq: [{ q: 'Intervenez-vous le long du Canal du Midi à Trèbes ?', a: 'Oui, y compris pour les habitations proches des berges où l\'accès est plus étroit. Nous adaptons le véhicule et le portage.' }],
+  },
+  limoux: {
+    quartiers: ['Centre / Place de la République', 'Flassian', 'Saint-Antoine', 'Pont Neuf'],
+    acces: "Centre historique aux ruelles étroites : nous privilégions un stationnement au plus proche et un portage maîtrisé. Les quartiers récents sont d'accès facile.",
+    routes: [{ to: 'Carcassonne', price: 'dès 380 €' }, { to: 'Toulouse', price: 'dès 700 €' }, { to: 'Perpignan', price: 'dès 650 €' }],
+    faq: [{ q: 'Déménagez-vous dans le centre ancien de Limoux ?', a: 'Oui. Les ruelles autour de la Place de la République demandent une organisation du stationnement et du portage, que nous préparons lors du devis.' }],
+  },
+  castelnaudary: {
+    quartiers: ['Centre / Grand Bassin', 'En Tourre', 'La Capelle', 'Zones pavillonnaires'],
+    acces: "Ville bien desservie par l'A61, accès facile pour nos fourgons. Centre historique aux rues plus étroites, périphérie pavillonnaire sans contrainte particulière.",
+    routes: [{ to: 'Carcassonne', price: 'dès 420 €' }, { to: 'Toulouse', price: 'dès 550 €' }, { to: 'Castres', price: 'dès 600 €' }],
+    faq: [{ q: 'Le trajet Castelnaudary–Toulouse est-il fréquent ?', a: 'Oui, c\'est l\'un de nos axes les plus demandés via l\'A61. Comptez à partir de 550 € selon le volume.' }],
+  },
+  narbonne: {
+    quartiers: ['Centre / Les Halles', 'Razimbaud', 'Saint-Jean Saint-Pierre', 'Bourg', 'Cité'],
+    acces: "Grande ville au marché immobilier actif : copropriétés avec étages et stationnement contraint en centre. Nous anticipons monte-meuble et autorisations si besoin.",
+    routes: [{ to: 'Carcassonne', price: 'dès 400 €' }, { to: 'Montpellier', price: 'dès 600 €' }, { to: 'Perpignan', price: 'dès 550 €' }],
+    faq: [{ q: 'Narbonne est à 60 km : y a-t-il un supplément ?', a: 'Un léger supplément de distance peut s\'appliquer selon le volume. Nous établissons un devis personnalisé pour Narbonne et ses quartiers.' }],
+  },
+  'lezignan-corbieres': {
+    quartiers: ['Centre / Cours de la République', 'Avenue des Vignerons', 'Quartiers récents'],
+    acces: "Parc immobilier varié (maisons vigneronnes, pavillons, copropriétés). Accès généralement aisé, sauf certaines ruelles du cœur ancien que nous repérons en amont.",
+    routes: [{ to: 'Carcassonne', price: 'dès 420 €' }, { to: 'Narbonne', price: 'dès 350 €' }, { to: 'Béziers', price: 'dès 500 €' }],
+    faq: [{ q: 'Déménagez-vous les maisons vigneronnes des Corbières ?', a: 'Oui, fréquemment. Les caves et dépendances demandent parfois une manutention spécifique que nous intégrons au devis.' }],
+  },
+  bram: {
+    quartiers: ['Circulade (centre médiéval)', 'Périphérie pavillonnaire', 'Route de Fanjeaux'],
+    acces: "Le plan circulaire (circulade) du centre présente des ruelles concentriques étroites : stationnement et portage organisés au plus proche. Périphérie d'accès facile.",
+    routes: [{ to: 'Carcassonne', price: 'dès 380 €' }, { to: 'Castelnaudary', price: 'dès 350 €' }, { to: 'Toulouse', price: 'dès 600 €' }],
+    faq: [{ q: 'Comment gérez-vous l\'accès à la circulade de Bram ?', a: 'Nous repérons le point de chargement le plus proche et adaptons le véhicule ; le portage dans les ruelles concentriques est prévu au devis.' }],
+  },
+  capendu: {
+    quartiers: ['Centre village', 'Lotissements', 'Mas et maisons isolées'],
+    acces: "Tissu résidentiel de maisons individuelles et de mas, accès généralement faciles pour nos fourgons. Position idéale entre Carcassonne et Narbonne.",
+    routes: [{ to: 'Carcassonne', price: 'dès 350 €' }, { to: 'Narbonne', price: 'dès 350 €' }, { to: 'Lézignan-Corbières', price: 'dès 330 €' }],
+    faq: [{ q: 'Intervenez-vous pour les mas isolés autour de Capendu ?', a: 'Oui. Les accès par chemins et l\'éloignement éventuel sont pris en compte dans le devis, sans surprise le jour J.' }],
+  },
+  pezens: {
+    quartiers: ['Centre village', 'Lotissements', 'Route de Toulouse'],
+    acces: "Commune proche de Carcassonne, très bien desservie. Accès faciles ; les déménagements sont souvent mutualisés avec d'autres interventions du secteur pour réduire les coûts.",
+    routes: [{ to: 'Carcassonne', price: 'dès 320 €' }, { to: 'Toulouse', price: 'dès 600 €' }, { to: 'Castelnaudary', price: 'dès 380 €' }],
+    faq: [{ q: 'Pezens étant proche de Carcassonne, le tarif est-il réduit ?', a: 'La courte distance limite le coût. Nous mutualisons souvent les trajets dans le secteur, ce qui optimise encore le prix.' }],
+  },
+  alzonne: {
+    quartiers: ['Centre village', 'Zones pavillonnaires', 'Plaine lauragaise'],
+    acces: "Tissu pavillonnaire avec maisons à jardin facilitant les opérations. Accès directs et stationnement aisé dans la plupart des cas.",
+    routes: [{ to: 'Carcassonne', price: 'dès 350 €' }, { to: 'Bram', price: 'dès 320 €' }, { to: 'Toulouse', price: 'dès 600 €' }],
+    faq: [{ q: 'Faut-il réserver à l\'avance pour Alzonne ?', a: 'En période chargée (été, fins de mois), oui. Hors période, une intervention sous 48h est généralement possible.' }],
+  },
+};
+const extra: Extra | undefined = cityExtra[city.slug];
+
+const nearby = CITIES
+  .filter(c => c.slug !== city.slug)
+  .sort((a, b) => Math.abs(a.distance - city.distance) - Math.abs(b.distance - city.distance))
+  .slice(0, 4);
+
+const cityFaq = extra?.faq ?? [];
 ---
 
 <BaseLayout title={title} description={description}>
   <SchemaLocalBusiness slot="head" />
+  {cityFaq.length > 0 && (
+    <script slot="head" type="application/ld+json" set:html={JSON.stringify({
+      '@context': 'https://schema.org',
+      '@type': 'FAQPage',
+      mainEntity: cityFaq.map(f => ({ '@type': 'Question', name: f.q, acceptedAnswer: { '@type': 'Answer', text: f.a } })),
+    })} />
+  )}
   <Header />
+  <Breadcrumbs items={[{ name: 'Accueil', href: '/' }, { name: `Déménagement ${city.name}` }]} />
 
   <!-- Hero -->
   <section class="city-hero">
@@ -88,7 +169,7 @@ const content = cityContent[city.slug] ?? {
         <h1>Déménagement à {city.name}</h1>
         <p class="city-hero-sub">
           Transport Carcassonne intervient à {city.name} et dans un rayon de {SITE.serviceRadius} km.
-          Équipe locale, assurance incluse, devis gratuit sous 2h.
+          Équipe locale, prix fixe garanti, devis gratuit sous 2h.
         </p>
         <div class="city-hero-ctas">
           <a href="/contact" class="btn btn--primary btn--lg">Devis gratuit →</a>
@@ -156,7 +237,7 @@ const content = cityContent[city.slug] ?? {
 
         <div class="city-trust">
           <div class="city-trust-item">✅ Équipe locale Carcassonne</div>
-          <div class="city-trust-item">🛡️ Assurance 50 000 € incluse</div>
+          <div class="city-trust-item">🛡️ Meubles protégés &amp; calés</div>
           <div class="city-trust-item">💶 Devis fixe garanti</div>
           <div class="city-trust-item">⚡ Intervention sous 48h</div>
         </div>
@@ -164,8 +245,53 @@ const content = cityContent[city.slug] ?? {
     </div>
   </section>
 
+  <!-- Unique local content -->
+  {extra && (
+    <section class="section section--alt city-extra">
+      <div class="container">
+        <div class="ce-grid">
+          <div class="ce-quartiers">
+            <span class="section-label">Quartiers desservis</span>
+            <h2>Tous les quartiers de {city.name}</h2>
+            <div class="ce-chips">
+              {extra.quartiers.map(q => <span class="ce-chip">{q}</span>)}
+            </div>
+            <p class="ce-acces"><strong>Accès &amp; stationnement —</strong> {extra.acces}</p>
+          </div>
+          <div class="ce-routes">
+            <h3>Trajets fréquents depuis {city.name}</h3>
+            <ul>
+              {extra.routes.map(r => (
+                <li><span>{city.name} → {r.to}</span><strong>{r.price}</strong></li>
+              ))}
+            </ul>
+            <a href="/tarifs" class="ce-link">Voir tous nos tarifs →</a>
+          </div>
+        </div>
+
+        {cityFaq.length > 0 && (
+          <div class="ce-faq">
+            <h3>Questions fréquentes — {city.name}</h3>
+            {cityFaq.map(f => (
+              <details class="ce-faq-item"><summary>{f.q}</summary><p>{f.a}</p></details>
+            ))}
+          </div>
+        )}
+
+        <div class="ce-nearby">
+          <h3>Communes voisines</h3>
+          <div class="ce-nearby-row">
+            {nearby.map(c => (
+              <a href={`/demenagement-${c.slug}`}>Déménagement {c.name}</a>
+            ))}
+          </div>
+        </div>
+      </div>
+    </section>
+  )}
+
   <!-- Services available -->
-  <section class="section section--alt">
+  <section class="section">
     <div class="container">
       <div class="section-header">
         <span class="section-label">Nos services à {city.name}</span>
@@ -301,4 +427,31 @@ const content = cityContent[city.slug] ?? {
   @media (max-width: 600px) {
     .city-facts { grid-template-columns: 1fr 1fr; }
   }
+
+  /* Unique local content */
+  .ce-grid { display: grid; grid-template-columns: 1.4fr 1fr; gap: 48px; align-items: start; }
+  .ce-quartiers h2 { margin: 12px 0 18px; }
+  .ce-chips { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 20px; }
+  .ce-chip { background: var(--color-white); border: 1px solid var(--color-border); border-radius: 100px; padding: 7px 15px; font-size: .85rem; color: var(--color-navy); }
+  .ce-acces { font-size: .95rem; line-height: 1.7; color: var(--color-text); }
+  .ce-acces strong { color: var(--color-navy); }
+  .ce-routes { background: var(--color-white); border: 1.5px solid var(--color-border); border-radius: var(--radius-lg); padding: 24px; }
+  .ce-routes h3 { font-family: var(--font-sans); font-size: 1rem; font-weight: 700; color: var(--color-navy); margin-bottom: 14px; }
+  .ce-routes ul { list-style: none; display: flex; flex-direction: column; }
+  .ce-routes li { display: flex; justify-content: space-between; gap: 12px; padding: 11px 0; border-bottom: 1px solid var(--color-border); font-size: .92rem; }
+  .ce-routes li:last-of-type { border-bottom: none; }
+  .ce-routes li strong { color: var(--color-accent); white-space: nowrap; }
+  .ce-link { display: inline-block; margin-top: 14px; font-size: .88rem; font-weight: 600; color: var(--color-navy); }
+  .ce-faq { margin-top: 40px; max-width: 760px; }
+  .ce-faq > h3 { font-family: var(--font-display); margin-bottom: 14px; }
+  .ce-faq-item { background: var(--color-white); border: 1px solid var(--color-border); border-radius: var(--radius); margin-bottom: 8px; }
+  .ce-faq-item summary { padding: 16px 20px; font-weight: 600; font-size: .95rem; color: var(--color-navy); cursor: pointer; list-style: none; }
+  .ce-faq-item summary::-webkit-details-marker { display: none; }
+  .ce-faq-item p { padding: 0 20px 16px; font-size: .9rem; color: var(--color-text-light); line-height: 1.65; }
+  .ce-nearby { margin-top: 40px; }
+  .ce-nearby h3 { font-family: var(--font-sans); font-size: .9rem; font-weight: 700; text-transform: uppercase; letter-spacing: .08em; color: var(--color-text-light); margin-bottom: 14px; }
+  .ce-nearby-row { display: flex; flex-wrap: wrap; gap: 10px; }
+  .ce-nearby-row a { background: var(--color-navy); color: white; border-radius: 100px; padding: 9px 18px; font-size: .85rem; text-decoration: none; transition: background .2s; }
+  .ce-nearby-row a:hover { background: var(--color-accent); }
+  @media (max-width: 900px) { .ce-grid { grid-template-columns: 1fr; gap: 28px; } }
 </style>

@@ -3,6 +3,7 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
 import Header from '../../components/Header.astro';
 import Footer from '../../components/Footer.astro';
 import CTA from '../../components/CTA.astro';
+import Breadcrumbs from '../../components/Breadcrumbs.astro';
 import { SITE } from '../../data/site.config';
 
 const title = 'Blog déménagement | Conseils et astuces | Transport Carcassonne';
@@ -11,6 +12,7 @@ const description = `Conseils pratiques pour réussir votre déménagement à Ca
 
 <BaseLayout title={title} description={description}>
   <Header />
+  <Breadcrumbs items={[{ name: 'Accueil', href: '/' }, { name: 'Blog' }]} />
 
   <section class="blog-hero">
     <div class="container">
