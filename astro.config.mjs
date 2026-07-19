@@ -7,6 +7,8 @@ export default defineConfig({
     sitemap({
       filter: (page) =>
         !page.includes('/merci') &&
+        !page.includes('/avis') &&
+        !page.includes('/realisations') &&
         !page.includes('/__forms') &&
         !page.includes('/mentions-legales') &&
         !page.includes('/politique-confidentialite'),

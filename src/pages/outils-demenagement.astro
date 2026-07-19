@@ -1,0 +1,100 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Header from '../components/Header.astro';
+import Footer from '../components/Footer.astro';
+import Breadcrumbs from '../components/Breadcrumbs.astro';
+import CTA from '../components/CTA.astro';
+
+const title = 'Outils gratuits pour préparer un déménagement';
+const description = 'Calculez votre volume et vos cartons, suivez une checklist interactive et consultez les possibilités de trajets groupés depuis Carcassonne.';
+const tools = [
+  {
+    number: '01',
+    title: 'Calculateur de volume',
+    text: 'Créez un inventaire pièce par pièce et obtenez une estimation en m³ ainsi qu’un premier repère de véhicule.',
+    href: '/calculateur-volume-demenagement/',
+    cta: 'Calculer mon volume',
+  },
+  {
+    number: '02',
+    title: 'Calculateur de cartons',
+    text: 'Estimez les cartons et les principaux matériaux à prévoir selon le logement et le nombre d’occupants.',
+    href: '/calculateur-cartons-demenagement/',
+    cta: 'Préparer mes cartons',
+  },
+  {
+    number: '03',
+    title: 'Checklist interactive',
+    text: 'Suivez vingt actions essentielles, enregistrez votre progression sur l’appareil et imprimez la liste.',
+    href: '/checklist-demenagement/',
+    cta: 'Ouvrir la checklist',
+  },
+  {
+    number: '04',
+    title: 'Trajets groupés',
+    text: 'Consultez uniquement les places réellement publiées ou proposez un trajet si vos dates sont flexibles.',
+    href: '/trajets-groupes/',
+    cta: 'Voir les trajets',
+  },
+];
+---
+
+<BaseLayout title={title} description={description}>
+  <Header />
+  <Breadcrumbs items={[{ name: 'Accueil', href: '/' }, { name: 'Outils' }]} />
+  <main>
+    <section class="tools-hero">
+      <div class="container">
+        <span class="section-label">Préparation autonome</span>
+        <h1>Les outils pour cadrer votre déménagement</h1>
+        <p>Des repères pratiques avant le devis : volume, matériel, organisation et possibilités de groupage. Les résultats restent indicatifs jusqu’à vérification du projet.</p>
+      </div>
+    </section>
+
+    <section class="section section--alt">
+      <div class="container tools-grid">
+        {tools.map((tool) => (
+          <article class="tool-card">
+            <span>{tool.number}</span>
+            <h2>{tool.title}</h2>
+            <p>{tool.text}</p>
+            <a href={tool.href}>{tool.cta} →</a>
+          </article>
+        ))}
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="container limits">
+        <div>
+          <span class="section-label">Ce que les outils ne voient pas</span>
+          <h2>Les accès restent déterminants</h2>
+        </div>
+        <p>Un même volume peut demander une organisation très différente selon les étages, la largeur des passages, l’ascenseur, le stationnement et les objets lourds. Ajoutez ces informations et quelques photos dans le devis intelligent pour obtenir une réponse adaptée.</p>
+      </div>
+    </section>
+
+    <CTA
+      title="Vos premières estimations sont prêtes ?"
+      subtitle="Réunissez-les dans une seule demande avec le trajet, la date et les accès."
+      btnLabel="Ouvrir le devis intelligent →"
+      btnHref="/devis/?source=outils"
+    />
+  </main>
+  <Footer />
+</BaseLayout>
+
+<style>
+  .tools-hero { background: var(--bg-dark); color: var(--text-on-dark); padding: 76px 0; text-align: center; }
+  .tools-hero h1 { color: var(--text-on-dark); max-width: 760px; margin: 0 auto 16px; }
+  .tools-hero p { color: var(--text-on-dark-muted); max-width: 720px; margin: 0 auto; }
+  .tools-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+  .tool-card { display: flex; flex-direction: column; min-height: 280px; padding: 30px; background: var(--bg-card); border: 1px solid var(--line); border-radius: var(--radius-lg); }
+  .tool-card > span { color: var(--accent); font-size: .75rem; font-weight: 800; letter-spacing: .1em; }
+  .tool-card h2 { font-size: 1.65rem; margin: 20px 0 12px; }
+  .tool-card p { color: var(--text-muted); line-height: 1.7; }
+  .tool-card a { color: var(--accent-deep); font-weight: 700; margin-top: auto; padding-top: 24px; }
+  .limits { display: grid; grid-template-columns: .8fr 1.2fr; gap: 56px; align-items: center; }
+  .limits p { color: var(--text-muted); line-height: 1.75; }
+  @media (max-width: 720px) { .tools-grid, .limits { grid-template-columns: 1fr; } .limits { gap: 22px; } }
+</style>

@@ -1,0 +1,12 @@
+---
+import MovingRouteLanding from '../components/MovingRouteLanding.astro';
+import { MOVING_ROUTES, type MovingRoute } from '../data/movingRoutes';
+
+export function getStaticPaths() {
+  return MOVING_ROUTES.map(route => ({ params: { destination: route.slug }, props: { route } }));
+}
+
+const { route } = Astro.props as { route: MovingRoute };
+---
+
+<MovingRouteLanding route={route} />

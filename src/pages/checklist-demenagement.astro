@@ -1,0 +1,45 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Header from '../components/Header.astro';
+import Footer from '../components/Footer.astro';
+import Breadcrumbs from '../components/Breadcrumbs.astro';
+import MovingChecklist from '../components/MovingChecklist.astro';
+
+const title = 'Checklist déménagement interactive | Carcassonne';
+const description = 'Checklist de déménagement gratuite et interactive : 20 actions à suivre de quatre semaines avant le départ jusqu’à la livraison. Progression enregistrée.';
+---
+
+<BaseLayout title={title} description={description}>
+  <Header />
+  <Breadcrumbs items={[{ name: 'Accueil', href: '/' }, { name: 'Checklist déménagement' }]} />
+  <main>
+    <section class="check-hero">
+      <div class="container">
+        <span class="section-label">Outil de préparation</span>
+        <h1>Checklist déménagement interactive</h1>
+        <p>Cochez les actions au fur et à mesure, retrouvez votre progression sur cet appareil et imprimez la liste si vous préférez travailler sur papier.</p>
+      </div>
+    </section>
+    <section class="section section--alt"><div class="container"><MovingChecklist /></div></section>
+    <section class="section">
+      <div class="container article-link">
+        <div>
+          <span class="section-label">Besoin de détails ?</span>
+          <h2>Le guide complet sur quatre semaines</h2>
+          <p>Notre guide explique chaque étape, de l’autorisation de stationnement aux documents à garder avec vous le jour du départ.</p>
+        </div>
+        <a class="btn btn--outline" href="/blog/checklist-demenagement-4-semaines/">Lire le guide complet →</a>
+      </div>
+    </section>
+  </main>
+  <Footer />
+</BaseLayout>
+
+<style>
+  .check-hero { padding: 72px 0; text-align: center; background: var(--bg-dark); color: var(--text-on-dark); }
+  .check-hero h1 { color: var(--text-on-dark); margin-bottom: 16px; }
+  .check-hero p { color: var(--text-on-dark-muted); max-width: 720px; margin: 0 auto; }
+  .article-link { display: flex; align-items: center; justify-content: space-between; gap: 40px; }
+  .article-link p { color: var(--text-muted); max-width: 650px; margin-top: 12px; }
+  @media (max-width: 720px) { .article-link { align-items: flex-start; flex-direction: column; } }
+</style>

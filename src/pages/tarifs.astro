@@ -3,13 +3,12 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 import Header from '../components/Header.astro';
 import Footer from '../components/Footer.astro';
 import CTA from '../components/CTA.astro';
-import ComboOffer from '../components/ComboOffer.astro';
 import Calculator from '../components/Calculator.astro';
 import Breadcrumbs from '../components/Breadcrumbs.astro';
 import { SITE } from '../data/site.config';
 
-const title = 'Tarifs déménagement Carcassonne | Prix transparents';
-const description = `Tarifs clairs et transparents pour vos déménagements depuis Carcassonne. Studio à partir de 450 €, T2 à partir de 650 €. Devis gratuit sous 2h. ${SITE.phoneDisplay}`;
+const title = 'Tarifs indicatifs de déménagement à Carcassonne';
+const description = `Tarifs indicatifs de déménagement à Carcassonne selon le volume, les accès, le trajet et les options. Prix confirmé uniquement sur devis. ${SITE.phoneDisplay}`;
 
 const localPrices = [
   { label: 'Studio / T1', price: 450, note: '≤ 30 m²' },
@@ -26,50 +25,48 @@ const longDistancePrices = [
 ];
 
 const additionalServices = [
-  { label: 'Emballage — matériel', price: '120 €', unit: 'forfait' },
-  { label: 'Emballage — main d\'œuvre', price: '40 €/h', unit: 'ou 280 € au forfait' },
-  { label: 'Démontage / remontage meubles', price: '25 €', unit: 'par meuble (gratuit dès 3)' },
-  { label: 'Protection meubles (couvertures, housses, calage)', price: 'Incluse', unit: 'dans toutes nos prestations' },
-  { label: 'Garde-meuble', price: '80 €/mois', unit: 'pour 5 m³' },
-  { label: 'Piano droit', price: '350 €', unit: 'transport inclus' },
-  { label: 'Piano à queue', price: '550 €', unit: 'transport inclus' },
-  { label: 'Coffre-fort', price: 'À partir de 250 €', unit: 'selon poids et accès' },
+  { label: 'Fournitures d’emballage', price: 'Sur devis', unit: 'selon nature et quantité' },
+  { label: 'Main-d’œuvre d’emballage', price: 'Sur devis', unit: 'selon volume et niveau de préparation' },
+  { label: 'Démontage / remontage de meubles', price: 'Sur devis', unit: 'selon nombre et complexité' },
+  { label: 'Protections des meubles', price: 'Selon devis', unit: 'matériel et périmètre précisés par écrit' },
+  { label: 'Piano ou objet lourd', price: 'Sur étude', unit: 'selon poids, accès et trajet' },
+  { label: 'Coffre-fort', price: 'Sur étude', unit: 'selon poids, accès et moyens nécessaires' },
 ];
 
 const inclus = [
-  'Camion adapté au volume (12 m³ ou 20 m³)',
-  'Équipe professionnelle (2 déménageurs)',
-  'Carburant et trajets',
-  'Couvertures et sangles de protection',
-  'Démontage/remontage simple (lit, table)',
-  'Meubles protégés, calés et sanglés',
-  'Devis fixe écrit, sans frais cachés',
-  'Facture conforme avec SIRET',
+  'Adresse de départ et adresse d’arrivée',
+  'Volume et mobilier déclarés',
+  'Moyens humains et véhicule prévus',
+  'Trajet et créneau convenus',
+  'Protections et manutention prévues',
+  'Options expressément retenues',
+  'Prix et conditions applicables',
+  'Coordonnées de l’entreprise sur les documents',
 ];
 
 const nonInclus = [
-  'Cartons et matériel d\'emballage (en option : 120 €)',
-  'Main d\'œuvre d\'emballage des cartons (en option)',
-  'Démontage complexe (cuisine équipée, dressing sur mesure)',
-  'Frais de péage hors France métropolitaine',
-  'Garde-meuble (80 €/mois pour 5 m³ en option)',
-  'Transport d\'animaux',
-  'Pourboire (à votre discrétion, non obligatoire)',
+  'Tout objet, volume ou adresse non déclaré',
+  'Emballage, démontage ou remontage non retenu',
+  'Contraintes d’accès non signalées',
+  'Stationnement, péages ou formalités non prévus',
+  'Prestations de stockage non mentionnées au devis',
+  'Transport d’animaux',
+  'Toute option qui ne figure pas sur le devis accepté',
 ];
 
 const tarifFaqs = [
-  { q: 'Comment calculez-vous le prix d\'un déménagement ?', a: 'Le prix dépend de 3 facteurs principaux : le volume à transporter (en m³), la distance entre les deux adresses, et les options choisies (emballage, démontage complexe, étages sans ascenseur). Lors du devis, nous évaluons précisément ces éléments pour vous donner un prix fixe.' },
-  { q: 'Le prix annoncé sur le devis est-il définitif ?', a: 'Oui, à 100 %. Tous nos devis sont écrits, fixes et engagent notre entreprise. Aucun supplément le jour J, sauf modification du périmètre de votre part (volume très différent de celui annoncé, ajout d\'options).' },
-  { q: 'Y a-t-il un acompte à verser ?', a: 'Aucun acompte n\'est demandé à la signature du devis. Le paiement s\'effectue à la fin du déménagement, une fois la prestation terminée à votre satisfaction.' },
-  { q: 'Quel est le tarif pour un petit déménagement (1 ou 2 meubles) ?', a: 'Pour un petit déménagement ou un transport de quelques meubles, comptez à partir de 150 € selon le volume et la distance. Voir notre page transport de meubles pour plus de détails.' },
-  { q: 'Faites-vous des remises pour les étudiants ou seniors ?', a: 'Nous proposons une remise de 5 % pour les étudiants (sur présentation de la carte) et les seniors (+ 65 ans). Cumulable avec notre offre Combo Débarras + Déménagement (-10 %).' },
-  { q: 'Que se passe-t-il si le volume réel est supérieur à celui annoncé ?', a: 'Si l\'écart est faible (< 15 %), nous absorbons la différence sans surcoût. Au-delà, nous appliquons le tarif au prorata des m³ supplémentaires, avec votre accord avant l\'intervention.' },
-  { q: 'Acceptez-vous le paiement par carte bancaire ?', a: 'Nous acceptons les espèces, virements bancaires et chèques. Le paiement par carte bancaire est possible sur demande (frais 1,5 % en sus pour les montants > 500 €).' },
+  { q: 'Comment calculez-vous le prix d\'un déménagement ?', a: 'Le prix dépend notamment du volume, de la distance, des accès, du stationnement, de la date et des options choisies. Ces éléments sont recueillis avant l’émission d’un devis personnalisé.' },
+  { q: 'Le prix affiché sur cette page est-il définitif ?', a: 'Non. Les montants de cette page sont des repères indicatifs et non contractuels. Seul le devis écrit précise le prix, le périmètre et les conditions applicables au projet.' },
+  { q: 'Y a-t-il un acompte à verser ?', a: 'Les modalités d’acompte et de règlement doivent être vérifiées sur le devis et les conditions qui vous sont remis avant acceptation.' },
+  { q: 'Quel est le tarif pour un petit déménagement (1 ou 2 meubles) ?', a: 'Le repère affiché commence à 150 €, mais le montant varie selon la manutention, les accès et le trajet. Demandez un devis pour obtenir un prix adapté au projet.' },
+  { q: 'Faites-vous des remises pour les étudiants ou seniors ?', a: 'Toute remise éventuellement proposée doit figurer explicitement sur le devis. Cette page ne promet aucune réduction générale ou cumul automatique.' },
+  { q: 'Que se passe-t-il si le volume réel est supérieur à celui annoncé ?', a: 'Signalez toute modification avant l’intervention. Ses conséquences éventuelles sur les moyens, le planning ou le prix doivent être convenues par écrit.' },
+  { q: 'Quels moyens de paiement acceptez-vous ?', a: 'Les moyens, échéances et éventuels frais de paiement applicables sont précisés dans les documents remis avant acceptation.' },
 ];
 ---
 
 <BaseLayout title={title} description={description}>
-  <script slot="head" type="application/ld+json" set:html={JSON.stringify({
+  <script is:inline slot="head" type="application/ld+json" set:html={JSON.stringify({
     '@context': 'https://schema.org',
     '@type': 'FAQPage',
     'mainEntity': tarifFaqs.map(f => ({
@@ -84,11 +81,11 @@ const tarifFaqs = [
   <!-- Hero -->
   <section class="tarifs-hero">
     <div class="container">
-      <span class="section-label">Tarifs 2025</span>
-      <h1>Prix clairs et sans surprise</h1>
+      <span class="section-label">Repères tarifaires</span>
+      <h1>Estimer le budget de votre déménagement</h1>
       <p class="tarifs-hero-sub">
         Nos tarifs sont basés sur le volume réel, la distance et les options choisies.
-        Devis précis et gratuit sous 2h.
+        Les montants ci-dessous sont indicatifs et non contractuels ; seul le devis écrit confirme le prix.
       </p>
     </div>
   </section>
@@ -111,7 +108,7 @@ const tarifFaqs = [
           <div class="tarif-table__head">
             <span>Type de logement</span>
             <span>Surface</span>
-            <span>Prix à partir de</span>
+            <span>Repère indicatif</span>
             <span></span>
           </div>
           {localPrices.map((row, i) => (
@@ -119,7 +116,7 @@ const tarifFaqs = [
               <span class="tarif-name">{row.label}</span>
               <span class="tarif-note">{row.note}</span>
               <span class="tarif-price">{row.price} €</span>
-              <a href="/contact" class="tarif-cta">Devis →</a>
+              <a href={`/devis/?logement=${encodeURIComponent(row.label)}&distance=local&source=tarifs`} class="tarif-cta">Devis →</a>
             </div>
           ))}
         </div>
@@ -138,7 +135,7 @@ const tarifFaqs = [
           <div class="tarif-table__head">
             <span>Type de logement</span>
             <span>Zone</span>
-            <span>Prix à partir de</span>
+            <span>Repère indicatif</span>
             <span></span>
           </div>
           {longDistancePrices.map((row, i) => (
@@ -146,7 +143,7 @@ const tarifFaqs = [
               <span class="tarif-name">{row.label}</span>
               <span class="tarif-note">{row.note}</span>
               <span class="tarif-price">{row.price} €</span>
-              <a href="/contact" class="tarif-cta">Devis →</a>
+              <a href={`/devis/?logement=${encodeURIComponent(row.label)}&distance=longue&source=tarifs`} class="tarif-cta">Devis →</a>
             </div>
           ))}
         </div>
@@ -163,15 +160,15 @@ const tarifFaqs = [
         </div>
         <div class="tarif-intl">
           <div class="tarif-intl__price">
-            <span class="tarif-intl__from">À partir de</span>
+            <span class="tarif-intl__from">Repère indicatif dès</span>
             <span class="tarif-intl__amount">2 500 €</span>
-            <span class="tarif-intl__range">(généralement 2 500 € – 5 000 €)</span>
+            <span class="tarif-intl__range">(exemple de fourchette non contractuelle : 2 500 € – 5 000 €)</span>
           </div>
           <p class="tarif-intl__note">
             Le tarif international dépend de la destination, du volume et des services choisis.
-            Devis personnalisé gratuit — réponse sous 2h.
+            Le montant et les conditions sont confirmés sur devis selon les informations du projet.
           </p>
-          <a href="/contact" class="btn btn--primary">Demander un devis international →</a>
+          <a href="/devis/?service=demenagement-international&source=tarifs" class="btn btn--primary">Demander un devis international →</a>
         </div>
       </div>
 
@@ -200,19 +197,19 @@ const tarifFaqs = [
         <div class="tarif-block__header">
           <div class="tarif-block__icon">✅</div>
           <div>
-            <h2>Ce qui est inclus dans le prix</h2>
-            <p>Tout ce que vous obtenez pour le tarif annoncé</p>
+            <h2>Ce que le devis doit préciser</h2>
+            <p>Vérifiez le périmètre écrit avant d’accepter la proposition</p>
           </div>
         </div>
         <div class="inclus-grid">
           <div class="inclus-col inclus-col--yes">
-            <h3 class="inclus-col__title">✓ Inclus dans le forfait</h3>
+            <h3 class="inclus-col__title">✓ À faire figurer au devis</h3>
             <ul>
               {inclus.map(item => <li>{item}</li>)}
             </ul>
           </div>
           <div class="inclus-col inclus-col--no">
-            <h3 class="inclus-col__title">✗ En option (à la carte)</h3>
+            <h3 class="inclus-col__title">✗ Non inclus sauf mention écrite</h3>
             <ul>
               {nonInclus.map(item => <li>{item}</li>)}
             </ul>
@@ -224,11 +221,11 @@ const tarifFaqs = [
       <div class="tarif-notes">
         <h3>Conditions et précisions</h3>
         <ul>
-          <li>Tous les tarifs sont <strong>indicatifs</strong> et peuvent varier selon les spécificités de votre déménagement (étage, accès difficile, objets volumineux).</li>
-          <li>La <strong>protection de vos meubles</strong> (couvertures, housses, calage) est <strong>toujours incluse</strong>, sans supplément.</li>
-          <li>Les tarifs s'entendent <strong>TTC</strong>, départ de Carcassonne.</li>
-          <li>Paiement accepté : espèces, virement bancaire, chèque.</li>
-          <li>Devis <strong>gratuit et sans engagement</strong> sous 2h (Lun–Sam 8h–19h).</li>
+          <li>Tous les montants affichés sont des <strong>repères indicatifs et non contractuels</strong>.</li>
+          <li>Le devis doit préciser le matériel de protection, la manutention et les options effectivement retenus.</li>
+          <li>Le traitement fiscal applicable et le montant total sont indiqués sur le devis.</li>
+          <li>Les modalités d’acompte et de paiement sont celles indiquées dans les documents remis avant acceptation.</li>
+          <li>La demande est étudiée selon les informations transmises et les disponibilités.</li>
         </ul>
       </div>
 
@@ -251,11 +248,9 @@ const tarifFaqs = [
     </div>
   </main>
 
-  <ComboOffer />
-
   <CTA
-    title="Obtenez votre devis précis"
-    subtitle="Remplissez le formulaire — réponse personnalisée sous 2h, gratuite et sans engagement."
+    title="Obtenez un devis adapté à votre projet"
+    subtitle="Indiquez le volume, les accès, le trajet et la date souhaitée pour recevoir une proposition personnalisée."
   />
 
   <Footer />

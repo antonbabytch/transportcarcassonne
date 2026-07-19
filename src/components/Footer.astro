@@ -16,31 +16,35 @@ import { CITIES } from '../data/cities';
           </span>
         </a>
         <p>
-          Spécialiste du déménagement et du transport à Carcassonne et dans
-          l'Aude. SIRET {SITE.siret}. Entreprise déclarée et assurée.
+          Déménagement et transport à Carcassonne et dans l'Aude. Entreprise
+          identifiée sous le SIRET {SITE.siret}.
         </p>
         <p class="sister-site">
-          Besoin d'un débarras ou d'un vide maison&nbsp;? Voir notre activité
+          Besoin d'un débarras ou d'un vide maison&nbsp;? Consulter le site
           <a href="https://debarras-carcassonne.fr/" rel="noopener">
             Débarras Carcassonne
           </a>
-          — un artisan local, deux expertises.
+          pour étudier cette prestation séparément.
         </p>
       </div>
 
       <div class="reveal" data-i="1">
-        <h4>Services</h4>
+        <p class="footer-title">Services</p>
         <ul>
           <li><a href="/petit-demenagement">Petit déménagement</a></li>
           {SERVICES.map(s => (
             <li><a href={`/services/${s.slug}`}>{s.name}</a></li>
           ))}
+          <li><a href="/demenagement-entreprise-carcassonne">Déménagement d’entreprise</a></li>
+          <li><a href="/demenagement-senior-carcassonne">Déménagement senior</a></li>
+          <li><a href="/emballage-cartons-carcassonne">Emballage et cartons</a></li>
+          <li><a href="/formules">Nos formules</a></li>
           <li><a href="/tarifs">Nos tarifs</a></li>
         </ul>
       </div>
 
       <div class="reveal" data-i="2">
-        <h4>Zone</h4>
+        <p class="footer-title">Zone</p>
         <ul>
           {CITIES.slice(0, 6).map(c => (
             <li><a href={`/demenagement-${c.slug}`}>{c.name}</a></li>
@@ -49,7 +53,21 @@ import { CITIES } from '../data/cities';
       </div>
 
       <div class="reveal" data-i="3">
-        <h4>Contact</h4>
+        <p class="footer-title">Ressources</p>
+        <ul>
+          <li><a href="/outils-demenagement">Tous les outils</a></li>
+          <li><a href="/calculateur-volume-demenagement">Calculateur de volume</a></li>
+          <li><a href="/calculateur-cartons-demenagement">Calculateur de cartons</a></li>
+          <li><a href="/checklist-demenagement">Checklist interactive</a></li>
+          <li><a href="/trajets-groupes">Trajets groupés</a></li>
+          <li><a href="/realisations">Réalisations</a></li>
+          <li><a href="/nos-garanties">Nos garanties</a></li>
+          <li><a href="/blog">Conseils déménagement</a></li>
+        </ul>
+      </div>
+
+      <div class="reveal" data-i="4">
+        <p class="footer-title">Contact</p>
         <ul>
           <li><a href={`tel:${SITE.phone}`}>{SITE.phoneDisplay}</a></li>
           <li>
@@ -61,7 +79,7 @@ import { CITIES } from '../data/cities';
           </li>
           <li><a href={`mailto:${SITE.email}`}>{SITE.email}</a></li>
           <li>{SITE.hours}</li>
-          <li>{SITE.hq.city}, {SITE.hq.region} ({SITE.hq.postalCode})</li>
+          <li>{SITE.hq.streetAddress}, {SITE.hq.postalCode} {SITE.hq.city}</li>
         </ul>
       </div>
     </div>
@@ -89,8 +107,8 @@ import { CITIES } from '../data/cities';
 
   .footer-grid {
     display: grid;
-    grid-template-columns: 2fr 1fr 1fr 1fr;
-    gap: 60px;
+    grid-template-columns: 1.6fr 1fr 1fr 1fr 1fr;
+    gap: 42px;
     margin-bottom: 60px;
   }
 
@@ -119,7 +137,7 @@ import { CITIES } from '../data/cities';
   }
 
   .footer-brand .logo-mark::after {
-    content: 'AB';
+    content: 'TC';
   }
 
   .footer-brand .logo-text {
@@ -167,7 +185,7 @@ import { CITIES } from '../data/cities';
     color: var(--text-on-dark);
   }
 
-  h4 {
+  .footer-title {
     font-size: 11px;
     text-transform: uppercase;
     letter-spacing: 0.18em;

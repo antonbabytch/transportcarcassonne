@@ -18,14 +18,15 @@ import { CITIES } from '../data/cities';
     <ul class="nav-links">
       <li><a href="/services/demenagement-local">Déménagement</a></li>
       <li><a href="/petit-demenagement">Petit déménagement</a></li>
+      <li><a href="/formules">Formules</a></li>
       <li><a href="/tarifs">Tarifs</a></li>
-      <li><a href="/comment-ca-marche">Méthode</a></li>
-      <li><a href="/contact">Contact</a></li>
+      <li><a href="/outils-demenagement">Outils</a></li>
+      <li><a href="/blog">Conseils</a></li>
     </ul>
 
     <div class="nav-cta">
       <a href={`tel:${SITE.phone}`} class="nav-phone">{SITE.phoneDisplay}</a>
-      <a href="/contact" class="btn btn-primary">Devis gratuit</a>
+      <a href="/devis/?source=navigation" class="btn btn-primary">Devis gratuit</a>
     </div>
 
     <button
@@ -50,7 +51,12 @@ import { CITIES } from '../data/cities';
       <ul>
         <li><a href="/" class="mobile-menu-link">Accueil</a></li>
         <li><a href="/tarifs" class="mobile-menu-link">Tarifs</a></li>
+        <li><a href="/formules" class="mobile-menu-link">Formules</a></li>
         <li><a href="/comment-ca-marche" class="mobile-menu-link">Méthode</a></li>
+        <li><a href="/realisations" class="mobile-menu-link">Réalisations</a></li>
+        <li><a href="/nos-garanties" class="mobile-menu-link">Nos garanties</a></li>
+        <li><a href="/outils-demenagement" class="mobile-menu-link">Outils gratuits</a></li>
+        <li><a href="/blog" class="mobile-menu-link">Conseils</a></li>
         <li><a href="/a-propos" class="mobile-menu-link">À propos</a></li>
         <li><a href="/contact" class="mobile-menu-link">Contact</a></li>
       </ul>
@@ -59,7 +65,7 @@ import { CITIES } from '../data/cities';
     <nav class="mobile-section">
       <p class="mobile-section-title">Nos services</p>
       <ul>
-        <li><a href="/petit-demenagement" class="mobile-menu-link">Petit déménagement (dès 150 €)</a></li>
+        <li><a href="/petit-demenagement" class="mobile-menu-link">Petit déménagement</a></li>
         {SERVICES.map(s => (
           <li><a href={`/services/${s.slug}`} class="mobile-menu-link">{s.name}</a></li>
         ))}
@@ -79,7 +85,7 @@ import { CITIES } from '../data/cities';
       <a href={`tel:${SITE.phone}`} class="btn btn-primary btn-large mobile-menu-link">
         📞 {SITE.phoneDisplay}
       </a>
-      <a href="/contact" class="btn btn-outline-light btn-large mobile-menu-link">
+      <a href="/devis/?source=menu-mobile" class="btn btn-outline-light btn-large mobile-menu-link">
         Devis gratuit
       </a>
     </div>
@@ -135,7 +141,7 @@ import { CITIES } from '../data/cities';
   }
 
   .logo-mark::after {
-    content: 'AB';
+    content: 'TC';
   }
 
   .logo-text {
@@ -163,7 +169,7 @@ import { CITIES } from '../data/cities';
   /* ── Desktop nav links ────────────────────── */
   .nav-links {
     display: flex;
-    gap: 32px;
+    gap: 24px;
     list-style: none;
   }
 

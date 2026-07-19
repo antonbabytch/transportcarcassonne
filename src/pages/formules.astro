@@ -1,0 +1,230 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Header from '../components/Header.astro';
+import Footer from '../components/Footer.astro';
+import Breadcrumbs from '../components/Breadcrumbs.astro';
+import TrustStrip from '../components/TrustStrip.astro';
+import CTA from '../components/CTA.astro';
+
+const title = 'Formules de déménagement à Carcassonne | Transport Carcassonne';
+const description = 'Comparez trois niveaux d’accompagnement pour votre déménagement : Essentielle, Confort et Clé en main. Contenu et prix confirmés sur devis.';
+
+const formulas = [
+  {
+    name: 'Essentielle',
+    kicker: 'Vous préparez, nous transportons',
+    description: 'Une base adaptée si vos cartons sont prêts et si vous pouvez prendre en charge la préparation du mobilier.',
+    featured: false,
+    items: [
+      'Chargement, transport et déchargement',
+      'Protection de transport prévue au devis',
+      'Mise en place dans les pièces indiquées',
+      'Cartons et démontage à votre charge',
+    ],
+  },
+  {
+    name: 'Confort',
+    kicker: 'Un équilibre entre autonomie et aide',
+    description: 'Pour déléguer les opérations techniques tout en gardant la préparation de vos effets personnels.',
+    featured: true,
+    items: [
+      'Prestations de la formule Essentielle',
+      'Démontage et remontage convenus au devis',
+      'Emballage des éléments fragiles identifiés',
+      'Cartons personnels préparés par vos soins',
+    ],
+  },
+  {
+    name: 'Clé en main',
+    kicker: 'Un accompagnement plus complet',
+    description: 'La préparation peut être largement déléguée, avec un périmètre défini après inventaire ou visite.',
+    featured: false,
+    items: [
+      'Prestations de la formule Confort',
+      'Emballage des effets prévu dans l’inventaire',
+      'Déballage convenu et mise à disposition',
+      'Gestion des éléments particuliers sur devis',
+    ],
+  },
+];
+
+const faq = [
+  {
+    q: 'Ces formules ont-elles un prix fixe ?',
+    a: 'Non. Le prix dépend notamment du volume, de la distance, des étages, des accès, de la date et des options retenues. Le montant applicable est celui du devis personnalisé accepté.',
+  },
+  {
+    q: 'Puis-je composer une formule sur mesure ?',
+    a: 'Oui. Les trois formules servent de repères. Les prestations réellement incluses ou laissées à votre charge sont détaillées ligne par ligne dans le devis.',
+  },
+  {
+    q: 'Comment choisir sans connaître mon volume ?',
+    a: 'Décrivez votre logement et les principaux meubles dans la demande de devis. Une visite ou un échange avec photos peut être proposé lorsque le volume ou les accès doivent être confirmés.',
+  },
+];
+
+const faqSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'FAQPage',
+  mainEntity: faq.map((item) => ({
+    '@type': 'Question',
+    name: item.q,
+    acceptedAnswer: { '@type': 'Answer', text: item.a },
+  })),
+};
+---
+
+<BaseLayout title={title} description={description}>
+  <Header />
+  <Breadcrumbs items={[{ name: 'Accueil', href: '/' }, { name: 'Formules' }]} />
+  <script slot="head" is:inline type="application/ld+json" set:html={JSON.stringify(faqSchema)} />
+
+  <main>
+    <section class="plans-hero">
+      <div class="container plans-hero__inner">
+        <span class="section-label">Trois niveaux d’accompagnement</span>
+        <h1>Une formule claire, ajustée à votre déménagement</h1>
+        <p>Choisissez un point de départ. Le contenu définitif, les options et le prix sont toujours confirmés dans un devis personnalisé avant tout engagement.</p>
+      </div>
+    </section>
+
+    <TrustStrip />
+
+    <section class="section" aria-labelledby="plans-title">
+      <div class="container">
+        <div class="section-heading">
+          <span class="section-label">Comparer</span>
+          <h2 id="plans-title">Quelle aide souhaitez-vous déléguer ?</h2>
+          <p>Les mentions ci-dessous décrivent l’esprit de chaque formule. Elles ne remplacent pas le devis.</p>
+        </div>
+
+        <div class="plans-grid">
+          {formulas.map((formula) => (
+            <article class:list={['plan-card', { 'plan-card--featured': formula.featured }]}>
+              {formula.featured && <span class="plan-card__badge">Le plus équilibré</span>}
+              <p class="plan-card__kicker">{formula.kicker}</p>
+              <h3>{formula.name}</h3>
+              <p class="plan-card__description">{formula.description}</p>
+              <p class="plan-card__price">Prix personnalisé <span>selon devis</span></p>
+              <ul>
+                {formula.items.map((item) => (
+                  <li><span aria-hidden="true">✓</span>{item}</li>
+                ))}
+              </ul>
+              <a href={`/devis/?formule=${formula.name.toLowerCase().replaceAll(' ', '-')}&source=formules`} class:list={['btn', formula.featured ? 'btn--primary' : 'btn--outline']}>
+                Demander cette formule
+              </a>
+            </article>
+          ))}
+        </div>
+
+        <div class="scope-note">
+          <div aria-hidden="true" class="scope-note__mark">i</div>
+          <div>
+            <h3>Ce qui fait foi</h3>
+            <p>Le devis précise les adresses, le volume, les accès, les dates, la distance, les prestations incluses, les options, les conditions de paiement et le prix. Toute prestation non écrite doit être clarifiée avant acceptation.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section section--alt">
+      <div class="container compare-wrap">
+        <div class="section-heading">
+          <span class="section-label">Repères rapides</span>
+          <h2>Comparer les responsabilités</h2>
+        </div>
+        <div class="compare-scroll" tabindex="0" role="region" aria-label="Tableau comparatif des formules">
+          <table>
+            <thead>
+              <tr><th>Prestation</th><th>Essentielle</th><th>Confort</th><th>Clé en main</th></tr>
+            </thead>
+            <tbody>
+              <tr><th>Chargement et transport</th><td>Prévu</td><td>Prévu</td><td>Prévu</td></tr>
+              <tr><th>Démontage / remontage</th><td>À votre charge</td><td>Selon devis</td><td>Selon devis</td></tr>
+              <tr><th>Emballage du fragile</th><td>À votre charge</td><td>Selon devis</td><td>Selon devis</td></tr>
+              <tr><th>Emballage des autres effets</th><td>À votre charge</td><td>À votre charge</td><td>Selon inventaire</td></tr>
+              <tr><th>Déballage</th><td>À votre charge</td><td>À votre charge</td><td>Selon devis</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <p class="compare-caption">« Prévu » signifie prévu dans le principe de la formule ; le devis reste le seul document qui confirme la prestation.</p>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="container faq-wrap">
+        <div class="section-heading">
+          <span class="section-label">Questions fréquentes</span>
+          <h2>Avant de choisir</h2>
+        </div>
+        <div class="faq-list">
+          {faq.map((item) => (
+            <details>
+              <summary>{item.q}</summary>
+              <p>{item.a}</p>
+            </details>
+          ))}
+        </div>
+        <p class="tariffs-link">Vous cherchez des repères de budget ? <a href="/tarifs">Consultez les tarifs indicatifs</a>.</p>
+      </div>
+    </section>
+
+    <CTA title="Définissons la bonne formule" subtitle="Décrivez votre projet : le devis précisera ce qui est inclus et ce qui reste à votre charge." />
+  </main>
+
+  <Footer />
+</BaseLayout>
+
+<style>
+  .plans-hero { background: var(--color-navy); color: white; padding: 76px 0; }
+  .plans-hero__inner { max-width: 780px; }
+  .plans-hero h1 { color: white; margin: 14px 0 18px; }
+  .plans-hero p { color: rgba(255,255,255,.76); font-size: 1.08rem; line-height: 1.75; max-width: 700px; }
+  .section-heading { text-align: center; max-width: 700px; margin: 0 auto 38px; }
+  .section-heading h2 { margin: 10px 0; }
+  .section-heading > p { color: var(--color-text-light); }
+  .plans-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; align-items: stretch; }
+  .plan-card { background: var(--color-white); border: 1.5px solid var(--color-border); border-radius: var(--radius-lg); padding: 32px 28px; display: flex; flex-direction: column; position: relative; }
+  .plan-card--featured { border-color: var(--color-accent); box-shadow: var(--shadow-lg); transform: translateY(-8px); }
+  .plan-card__badge { position: absolute; top: 0; right: 24px; transform: translateY(-50%); background: var(--color-accent); color: #15100a; padding: 6px 11px; border-radius: 99px; font-size: .72rem; font-weight: 800; text-transform: uppercase; letter-spacing: .05em; }
+  .plan-card__kicker { color: var(--color-accent); font-size: .75rem; font-weight: 800; letter-spacing: .07em; text-transform: uppercase; }
+  .plan-card h3 { margin: 7px 0 12px; font-size: 2rem; }
+  .plan-card__description { color: var(--color-text-light); line-height: 1.65; min-height: 106px; }
+  .plan-card__price { margin: 24px 0 20px; padding-block: 15px; border-block: 1px solid var(--color-border); color: var(--color-navy); font-weight: 800; }
+  .plan-card__price span { display: block; color: var(--color-text-light); font-size: .76rem; font-weight: 500; }
+  .plan-card ul { display: grid; gap: 12px; margin-bottom: 28px; flex: 1; }
+  .plan-card li { display: flex; gap: 10px; color: var(--color-text); font-size: .91rem; line-height: 1.5; }
+  .plan-card li span { color: var(--color-accent); font-weight: 800; }
+  .plan-card .btn { width: 100%; justify-content: center; padding-inline: 14px; }
+  .scope-note { margin-top: 38px; display: flex; gap: 18px; background: var(--color-bg-alt); border: 1px solid var(--color-border); padding: 24px; border-radius: var(--radius-lg); }
+  .scope-note__mark { width: 34px; height: 34px; border: 2px solid var(--color-accent); color: var(--color-accent); border-radius: 50%; display: grid; place-items: center; flex: 0 0 auto; font-weight: 800; }
+  .scope-note h3 { font-family: var(--font-sans); font-size: 1rem; margin-bottom: 5px; }
+  .scope-note p { color: var(--color-text-light); font-size: .9rem; line-height: 1.65; }
+  .compare-wrap, .faq-wrap { max-width: 960px; }
+  .compare-scroll { overflow-x: auto; background: white; border: 1px solid var(--color-border); border-radius: var(--radius-lg); }
+  table { width: 100%; border-collapse: collapse; min-width: 680px; }
+  th, td { text-align: left; padding: 16px 18px; border-bottom: 1px solid var(--color-border); font-size: .9rem; }
+  thead th { background: var(--color-navy); color: white; font-size: .78rem; letter-spacing: .05em; text-transform: uppercase; }
+  tbody th { color: var(--color-navy); }
+  tbody td { color: var(--color-text-light); }
+  tbody tr:last-child > * { border-bottom: 0; }
+  .compare-caption { color: var(--color-text-light); font-size: .78rem; margin-top: 12px; }
+  .faq-list { display: grid; gap: 10px; }
+  details { border: 1px solid var(--color-border); border-radius: var(--radius); background: white; }
+  summary { padding: 18px 22px; cursor: pointer; color: var(--color-navy); font-weight: 700; }
+  details p { padding: 0 22px 20px; color: var(--color-text-light); line-height: 1.7; }
+  .tariffs-link { text-align: center; margin-top: 25px; color: var(--color-text-light); }
+  .tariffs-link a { color: var(--color-accent); text-decoration: underline; text-underline-offset: 3px; }
+
+  @media (max-width: 900px) {
+    .plans-grid { grid-template-columns: 1fr; max-width: 620px; margin-inline: auto; }
+    .plan-card--featured { transform: none; }
+    .plan-card__description { min-height: 0; }
+  }
+  @media (max-width: 560px) {
+    .plans-hero { padding: 56px 0; }
+    .plan-card { padding: 28px 20px; }
+    .scope-note { flex-direction: column; }
+  }
+</style>

@@ -1,0 +1,234 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Header from '../components/Header.astro';
+import Footer from '../components/Footer.astro';
+import Breadcrumbs from '../components/Breadcrumbs.astro';
+import TrustStrip from '../components/TrustStrip.astro';
+import CTA from '../components/CTA.astro';
+import { SITE } from '../data/site.config';
+
+const title = 'Nos garanties de transparence | Transport Carcassonne';
+const description = `Identité vérifiable, devis détaillé et documents à contrôler avant un déménagement. Transport Carcassonne, SIRET ${SITE.siret}.`;
+
+const commitments = [
+  {
+    number: '01',
+    title: 'Une identité vérifiable',
+    text: `Le site affiche la même identité d’entreprise, le SIRET ${SITE.siret}, un contact direct et une localisation à Carcassonne. Ces informations sont également reprises dans nos mentions légales.`,
+  },
+  {
+    number: '02',
+    title: 'Un devis avant engagement',
+    text: 'La demande initiale et les estimations du site ne constituent pas un contrat. Les caractéristiques et le prix applicables sont ceux du devis personnalisé accepté par les parties.',
+  },
+  {
+    number: '03',
+    title: 'Un périmètre écrit',
+    text: 'La préparation, l’emballage, le démontage, les accès, les objets particuliers et les options doivent être indiqués clairement. En cas de doute, ils sont clarifiés avant signature.',
+  },
+  {
+    number: '04',
+    title: 'Aucune preuve inventée',
+    text: 'Nous ne publions pas de faux avis, de faux labels ou de réalisations reconstituées. Un témoignage ou une photo de chantier ne sera ajouté qu’avec une source et l’accord nécessaire.',
+  },
+];
+
+const contractChecks = [
+  ['Identité', 'Références de l’entreprise et coordonnées du client.'],
+  ['Projet', 'Lieux, distance, date ou période, volume et conditions d’accès.'],
+  ['Prestation', 'Formule retenue, tâches incluses, options et éventuelle sous-traitance.'],
+  ['Prix', 'Montants HT/TTC, modalités de paiement et durée de validité de l’offre.'],
+  ['Biens', 'Déclaration de valeur et règles applicables aux objets signalés.'],
+  ['Transport', 'Lettre de voiture et bulletin de livraison pour le suivi de l’opération.'],
+  ['Responsabilité', 'Conditions contractuelles, plafonds applicables et procédure de réserves.'],
+];
+---
+
+<BaseLayout title={title} description={description}>
+  <Header />
+  <Breadcrumbs items={[{ name: 'Accueil', href: '/' }, { name: 'Nos garanties' }]} />
+
+  <main>
+    <section class="guarantees-hero">
+      <div class="container guarantees-hero__grid">
+        <div>
+          <span class="section-label">Confiance vérifiable</span>
+          <h1>Des engagements précis, pas des promesses vagues</h1>
+          <p>Cette page distingue les informations vérifiables, les engagements de transparence et les documents qui doivent encadrer votre déménagement.</p>
+        </div>
+        <div class="identity-card">
+          <span class="identity-card__label">Identité affichée sur le site</span>
+          <strong>{SITE.legalName}</strong>
+          <dl>
+            <div><dt>Statut</dt><dd>{SITE.legalForm}</dd></div>
+            <div><dt>SIRET</dt><dd>{SITE.siret}</dd></div>
+            <div><dt>RCS</dt><dd>{SITE.rcs}</dd></div>
+            <div><dt>Siège</dt><dd>{SITE.hq.streetAddress}, {SITE.hq.postalCode} {SITE.hq.city}</dd></div>
+            <div><dt>Contact</dt><dd><a href={`tel:${SITE.phone}`}>{SITE.phoneDisplay}</a></dd></div>
+          </dl>
+          <a href="/mentions-legales" class="identity-card__link">Consulter les mentions légales →</a>
+        </div>
+      </div>
+    </section>
+
+    <TrustStrip />
+
+    <section class="section">
+      <div class="container">
+        <div class="intro-heading">
+          <span class="section-label">Nos engagements publics</span>
+          <h2>Ce que vous pouvez contrôler</h2>
+          <p>Chaque point est formulé pour pouvoir être vérifié, avant ou après la prestation.</p>
+        </div>
+        <div class="commitments-grid">
+          {commitments.map((item) => (
+            <article class="commitment-card">
+              <span>{item.number}</span>
+              <h3>{item.title}</h3>
+              <p>{item.text}</p>
+            </article>
+          ))}
+        </div>
+      </div>
+    </section>
+
+    <section class="section section--alt">
+      <div class="container contract-layout">
+        <div class="contract-intro">
+          <span class="section-label">Avant de signer</span>
+          <h2>La checklist du contrat</h2>
+          <p>Pour une prestation de déménagement, le devis, la déclaration de valeur et la lettre de voiture apportent des informations essentielles. Le contenu exact dépend du projet et des conditions contractuelles.</p>
+          <a href="https://www.economie.gouv.fr/dgccrf/les-fiches-pratiques/demenagement" target="_blank" rel="noopener noreferrer" class="official-link">Lire la fiche officielle de la DGCCRF ↗</a>
+        </div>
+        <ol class="contract-list">
+          {contractChecks.map(([title, text], index) => (
+            <li>
+              <span>{String(index + 1).padStart(2, '0')}</span>
+              <div><strong>{title}</strong><p>{text}</p></div>
+            </li>
+          ))}
+        </ol>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="container proof-grid">
+        <article class="proof-card">
+          <span class="proof-card__icon" aria-hidden="true">✓</span>
+          <h2>Ce qui est déjà public</h2>
+          <ul>
+            <li>Identité et SIRET de l’entreprise</li>
+            <li>Téléphone, email et horaires de contact</li>
+            <li>Zone d’intervention annoncée</li>
+            <li>Tarifs présentés comme indicatifs</li>
+            <li>Politique de confidentialité du site</li>
+          </ul>
+          <div class="proof-card__links">
+            <a href="/a-propos">À propos</a>
+            <a href="/tarifs">Tarifs</a>
+            <a href="/formules">Formules</a>
+            <a href="/realisations">Réalisations</a>
+            <a href="/politique-confidentialite">Confidentialité</a>
+          </div>
+        </article>
+
+        <article class="proof-card proof-card--caution">
+          <span class="proof-card__icon" aria-hidden="true">?</span>
+          <h2>Ce qu’il faut confirmer pour votre dossier</h2>
+          <ul>
+            <li>Inventaire et volume retenus</li>
+            <li>Accès, stationnement et manutention particulière</li>
+            <li>Références d’assurance et conditions applicables</li>
+            <li>Valeur déclarée des biens</li>
+            <li>Recours éventuel à un partenaire ou sous-traitant</li>
+          </ul>
+          <p>Ces éléments ne doivent pas être déduits d’un slogan : demandez leur confirmation écrite avant d’accepter le devis.</p>
+        </article>
+      </div>
+    </section>
+
+    <section class="section section--navy verification-section">
+      <div class="container verification-inner">
+        <div>
+          <span class="section-label">Une question avant de décider ?</span>
+          <h2>Demandez le justificatif ou la précision qui vous manque</h2>
+          <p>Une demande légitime sur le devis, les documents, l’assurance ou l’organisation mérite une réponse claire.</p>
+        </div>
+        <div class="verification-actions">
+          <a href={`mailto:${SITE.email}?subject=Question%20avant%20devis`} class="btn btn--white">Écrire par email</a>
+          <a href={`tel:${SITE.phone}`} class="verification-phone">{SITE.phoneDisplay}</a>
+        </div>
+      </div>
+    </section>
+
+    <CTA title="Un projet à cadrer clairement ?" subtitle="Présentez-nous le trajet, le volume et les accès. Le détail confirmé figurera dans votre devis." />
+  </main>
+
+  <Footer />
+</BaseLayout>
+
+<style>
+  .guarantees-hero { background: var(--color-navy); color: white; padding: 72px 0; }
+  .guarantees-hero__grid { display: grid; grid-template-columns: minmax(0, 1.45fr) minmax(280px, .75fr); gap: 64px; align-items: center; }
+  .guarantees-hero h1 { color: white; margin: 14px 0 18px; max-width: 720px; }
+  .guarantees-hero p { color: rgba(255,255,255,.75); max-width: 680px; font-size: 1.07rem; line-height: 1.75; }
+  .identity-card { background: rgba(255,255,255,.06); border: 1px solid rgba(255,255,255,.18); border-radius: var(--radius-lg); padding: 27px; }
+  .identity-card__label { display: block; color: rgba(255,255,255,.55); font-size: .7rem; text-transform: uppercase; letter-spacing: .08em; margin-bottom: 7px; }
+  .identity-card > strong { display: block; font-family: var(--font-display); font-size: 1.45rem; color: white; margin-bottom: 20px; }
+  .identity-card dl { display: grid; gap: 10px; }
+  .identity-card dl div { display: flex; justify-content: space-between; gap: 16px; border-top: 1px solid rgba(255,255,255,.12); padding-top: 10px; }
+  .identity-card dt { color: rgba(255,255,255,.54); font-size: .78rem; }
+  .identity-card dd { color: white; font-size: .86rem; font-weight: 600; text-align: right; }
+  .identity-card__link { display: inline-block; color: #d7a879; margin-top: 20px; font-size: .82rem; font-weight: 700; }
+  .intro-heading { max-width: 690px; margin-bottom: 36px; }
+  .intro-heading h2 { margin: 10px 0; }
+  .intro-heading p { color: var(--color-text-light); }
+  .commitments-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 18px; }
+  .commitment-card { border: 1px solid var(--color-border); border-radius: var(--radius-lg); padding: 30px; background: white; }
+  .commitment-card > span { display: inline-block; color: var(--color-accent); font-size: .74rem; font-weight: 800; letter-spacing: .1em; margin-bottom: 18px; }
+  .commitment-card h3 { font-size: 1.45rem; margin-bottom: 10px; }
+  .commitment-card p { color: var(--color-text-light); font-size: .92rem; line-height: 1.7; }
+  .contract-layout { display: grid; grid-template-columns: .85fr 1.15fr; gap: 70px; align-items: start; }
+  .contract-intro { position: sticky; top: 96px; }
+  .contract-intro h2 { margin: 10px 0 14px; }
+  .contract-intro p { color: var(--color-text-light); line-height: 1.75; }
+  .official-link { display: inline-block; margin-top: 20px; color: var(--color-accent); font-weight: 700; text-decoration: underline; text-underline-offset: 3px; }
+  .contract-list { list-style: none; display: grid; }
+  .contract-list li { display: grid; grid-template-columns: 44px 1fr; gap: 18px; padding: 20px 0; border-bottom: 1px solid var(--color-border); }
+  .contract-list li:first-child { padding-top: 0; }
+  .contract-list > li > span { color: var(--color-accent); font-family: var(--font-display); font-size: 1.3rem; }
+  .contract-list strong { display: block; color: var(--color-navy); margin-bottom: 3px; }
+  .contract-list p { color: var(--color-text-light); font-size: .9rem; line-height: 1.6; }
+  .proof-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 22px; }
+  .proof-card { border: 1px solid var(--color-border); border-radius: var(--radius-lg); padding: 34px; background: var(--color-bg-alt); }
+  .proof-card--caution { background: white; }
+  .proof-card__icon { width: 38px; height: 38px; border-radius: 50%; display: grid; place-items: center; background: var(--color-accent); color: #15100a; font-weight: 800; margin-bottom: 18px; }
+  .proof-card--caution .proof-card__icon { background: var(--color-navy); color: white; }
+  .proof-card h2 { font-size: 1.5rem; margin-bottom: 18px; }
+  .proof-card ul { display: grid; gap: 9px; margin-bottom: 20px; }
+  .proof-card li { color: var(--color-text); font-size: .91rem; padding-left: 18px; position: relative; }
+  .proof-card li::before { content: '—'; position: absolute; left: 0; color: var(--color-accent); }
+  .proof-card > p { color: var(--color-text-light); font-size: .86rem; line-height: 1.65; }
+  .proof-card__links { display: flex; gap: 16px; flex-wrap: wrap; }
+  .proof-card__links a { color: var(--color-accent); text-decoration: underline; text-underline-offset: 3px; font-size: .86rem; font-weight: 700; }
+  .verification-section { border-bottom: 1px solid var(--line-dark); }
+  .verification-inner { display: flex; justify-content: space-between; align-items: center; gap: 40px; }
+  .verification-inner h2 { max-width: 700px; margin: 10px 0; }
+  .verification-inner p { color: rgba(255,255,255,.7); }
+  .verification-actions { display: flex; flex-direction: column; align-items: center; gap: 13px; flex: 0 0 auto; }
+  .verification-phone { color: white; font-weight: 700; }
+
+  @media (max-width: 900px) {
+    .guarantees-hero__grid, .contract-layout { grid-template-columns: 1fr; gap: 36px; }
+    .contract-intro { position: static; }
+    .verification-inner { align-items: flex-start; flex-direction: column; }
+    .verification-actions { align-items: flex-start; }
+  }
+  @media (max-width: 680px) {
+    .commitments-grid, .proof-grid { grid-template-columns: 1fr; }
+    .guarantees-hero { padding: 56px 0; }
+    .identity-card { padding: 22px; }
+    .identity-card dl div { flex-direction: column; gap: 3px; }
+    .identity-card dd { text-align: left; }
+  }
+</style>

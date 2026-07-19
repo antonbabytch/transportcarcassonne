@@ -1,0 +1,135 @@
+---
+import { getCollection, render, type CollectionEntry } from 'astro:content';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import Header from '../../components/Header.astro';
+import Footer from '../../components/Footer.astro';
+import CTA from '../../components/CTA.astro';
+import Breadcrumbs from '../../components/Breadcrumbs.astro';
+import { SITE } from '../../data/site.config';
+
+export async function getStaticPaths() {
+  const posts = await getCollection('blog', ({ data }) => !data.draft);
+  return posts.map(post => ({
+    params: { slug: post.id.replace(/\.(md|mdx)$/, '') },
+    props: { post },
+  }));
+}
+
+const { post } = Astro.props as { post: CollectionEntry<'blog'> };
+const { Content } = await render(post);
+const postSlug = post.id.replace(/\.(md|mdx)$/, '');
+const canonical = `${SITE.url}/blog/${postSlug}/`;
+const articleSources: Record<string, string> = {
+  'autorisation-stationnement-demenagement-carcassonne': 'article-stationnement',
+  'calcul-volume-demenagement-m3': 'article-volume',
+  'checklist-demenagement-4-semaines': 'article-checklist',
+  'demenagement-ete-haute-saison': 'article-ete',
+  'emballer-objets-fragiles-vaisselle-tableaux': 'article-fragiles',
+  'prix-demenagement-carcassonne-scenarios': 'article-prix',
+  'verifier-demenageur-legal-documents': 'article-verification',
+};
+const quoteHref = `/devis/?${new URLSearchParams({
+  source: articleSources[postSlug] ?? 'article-blog',
+  service: 'demenagement-local',
+  depart: 'Carcassonne',
+}).toString()}`;
+const image = post.data.image ?? '/images/og-default.jpg';
+const imageUrl = new URL(image, SITE.url).href;
+const modified = post.data.updatedDate ?? post.data.pubDate;
+const formatDate = (date: Date) => new Intl.DateTimeFormat('fr-FR', {
+  day: 'numeric', month: 'long', year: 'numeric', timeZone: 'Europe/Paris',
+}).format(date);
+---
+
+<BaseLayout
+  title={post.data.title}
+  description={post.data.description}
+  canonical={canonical}
+  ogImage={image}
+  ogImageAlt={post.data.imageAlt ?? post.data.title}
+  ogType="article"
+>
+  <script is:inline slot="head" type="application/ld+json" set:html={JSON.stringify({
+    '@context': 'https://schema.org',
+    '@type': 'Article',
+    '@id': `${canonical}#article`,
+    headline: post.data.title,
+    description: post.data.description,
+    image: imageUrl,
+    datePublished: post.data.pubDate.toISOString(),
+    dateModified: modified.toISOString(),
+    inLanguage: 'fr-FR',
+    mainEntityOfPage: { '@id': `${canonical}#webpage` },
+    author: { '@id': `${SITE.url}/#business` },
+    publisher: { '@id': `${SITE.url}/#business` },
+  })} />
+  <Header />
+  <Breadcrumbs items={[
+    { name: 'Accueil', href: '/' },
+    { name: 'Conseils', href: '/blog/' },
+    { name: post.data.title },
+  ]} />
+
+  <main>
+    <article class="article">
+      <header class="article-hero">
+        <div class="container article-hero__inner">
+          <div class="article-meta">
+            <time datetime={post.data.pubDate.toISOString()}>Publié le {formatDate(post.data.pubDate)}</time>
+            {post.data.updatedDate && <span>· Mis à jour le {formatDate(post.data.updatedDate)}</span>}
+          </div>
+          <h1>{post.data.title}</h1>
+          <p>{post.data.description}</p>
+        </div>
+      </header>
+
+      <div class="container article-layout">
+        <div class="article-body">
+          <Content />
+        </div>
+        <aside class="article-aside" aria-label="Contact rapide">
+          <div class="article-cta">
+            <p class="article-cta__label">Besoin d'un prix précis ?</p>
+            <h2>Demandez un devis personnalisé</h2>
+            <p>Indiquez le volume, les deux adresses et les conditions d'accès.</p>
+            <a class="btn btn--primary" href={quoteHref}>Demander un devis</a>
+            <a class="article-phone" href={`tel:${SITE.phone}`}>{SITE.phoneDisplay}</a>
+          </div>
+        </aside>
+      </div>
+    </article>
+  </main>
+
+  <CTA title="Vous préparez votre déménagement ?" subtitle="Parlons de votre trajet, de votre volume et de vos accès." btnHref={quoteHref} />
+  <Footer />
+</BaseLayout>
+
+<style>
+  .article-hero { background: var(--color-navy); color: white; padding: 72px 0; }
+  .article-hero__inner { max-width: 900px; }
+  .article-hero h1 { color: white; margin: 14px 0 18px; font-size: clamp(2rem, 5vw, 3.5rem); }
+  .article-hero p { color: rgba(255,255,255,.78); max-width: 760px; font-size: 1.08rem; }
+  .article-meta { color: #D09A67; font-size: .78rem; text-transform: uppercase; letter-spacing: .08em; }
+  .article-layout { display: grid; grid-template-columns: minmax(0, 760px) 280px; gap: 64px; padding-top: 72px; padding-bottom: 88px; align-items: start; }
+  .article-body { min-width: 0; }
+  .article-body :global(h2) { margin: 44px 0 16px; font-size: 1.85rem; }
+  .article-body :global(h3) { margin: 30px 0 12px; font-size: 1.3rem; }
+  .article-body :global(p) { margin-bottom: 18px; line-height: 1.78; }
+  .article-body :global(ul), .article-body :global(ol) { list-style: revert; padding-left: 24px; margin: 0 0 22px; }
+  .article-body :global(li) { margin-bottom: 8px; line-height: 1.65; }
+  .article-body :global(a) { color: var(--color-accent-deep); text-decoration: underline; text-underline-offset: 3px; font-weight: 600; }
+  .article-body :global(blockquote) { border-left: 4px solid var(--color-accent); background: var(--color-bg-alt); padding: 18px 22px; margin: 28px 0; }
+  .article-body :global(blockquote p) { margin: 0; }
+  .article-body :global(strong) { color: var(--color-navy); }
+  .article-aside { position: sticky; top: 104px; }
+  .article-cta { background: var(--color-bg-alt); border: 1px solid var(--color-border); border-radius: var(--radius-lg); padding: 26px; }
+  .article-cta__label { color: var(--color-accent-deep); font-size: .75rem; text-transform: uppercase; letter-spacing: .08em; font-weight: 700; }
+  .article-cta h2 { font-size: 1.45rem; margin: 8px 0 10px; }
+  .article-cta > p:not(.article-cta__label) { color: var(--color-text-light); font-size: .9rem; margin-bottom: 18px; }
+  .article-cta .btn { width: 100%; justify-content: center; padding: 12px 16px; }
+  .article-phone { display: block; text-align: center; color: var(--color-navy); font-weight: 700; margin-top: 14px; text-decoration: underline; text-underline-offset: 3px; }
+  @media (max-width: 900px) {
+    .article-layout { grid-template-columns: 1fr; gap: 36px; }
+    .article-aside { position: static; }
+  }
+</style>

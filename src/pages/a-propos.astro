@@ -2,12 +2,11 @@
 import BaseLayout from '../layouts/BaseLayout.astro';
 import Header from '../components/Header.astro';
 import Footer from '../components/Footer.astro';
-import PhotoPlaceholder from '../components/PhotoPlaceholder.astro';
 import CTA from '../components/CTA.astro';
 import { SITE } from '../data/site.config';
 
-const title = 'À propos | Transport Carcassonne — Déménageur local depuis plusieurs années';
-const description = `Découvrez Transport Carcassonne : équipe locale, 2 fourgons, prix fixe garanti. SIRET ${SITE.siret}. Déménageur professionnel dans l'Aude.`;
+const title = 'À propos | Transport Carcassonne — Déménageur dans l’Aude';
+const description = `Découvrez Transport Carcassonne, son organisation et les informations à vérifier avant une prestation de déménagement ou de transport. SIRET ${SITE.siret}.`;
 ---
 
 <BaseLayout title={title} description={description}>
@@ -18,8 +17,8 @@ const description = `Découvrez Transport Carcassonne : équipe locale, 2 fourgo
       <span class="section-label">À propos</span>
       <h1>Une entreprise locale à votre service</h1>
       <p class="about-hero-sub">
-        Fondée à Carcassonne, Transport Carcassonne est une entreprise audoise de proximité,
-        engagée pour un service de qualité à prix transparent.
+        Transport Carcassonne présente ses services depuis Carcassonne et détaille par écrit
+        le périmètre, les moyens prévus et le prix de chaque proposition.
       </p>
     </div>
   </section>
@@ -28,41 +27,41 @@ const description = `Découvrez Transport Carcassonne : équipe locale, 2 fourgo
     <div class="container about-layout">
       <div class="about-body">
         <h2>Notre histoire</h2>
-        <p>Transport Carcassonne est une entreprise de déménagement et de transport basée à Carcassonne, dans l'Aude. Depuis notre création, nous accompagnons les particuliers et les professionnels dans leurs projets de déménagement local, longue distance et international.</p>
-        <p>Notre ancrage local est notre force. Nous connaissons l'Aude dans ses moindres détails : les ruelles médiévales de la Cité de Carcassonne, les zones pavillonnaires des communes environnantes, les axes de circulation, les contraintes saisonnières. Cette connaissance du terrain nous permet d'organiser des déménagements efficaces et sans stress.</p>
+        <p>Transport Carcassonne est une entreprise de déménagement et de transport basée à Carcassonne, dans l'Aude. Les demandes de particuliers et de professionnels sont étudiées selon le trajet, le volume, les accès et les disponibilités.</p>
+        <p>Un projet local demande d’anticiper les ruelles et zones à accès limité, le stationnement, les étages, les périodes chargées et les conditions de circulation. Ces contraintes sont recueillies avant le devis afin de définir une organisation adaptée.</p>
 
-        <h2 style="margin-top:40px">Notre flotte</h2>
+        <h2 style="margin-top:40px">Capacités de véhicule à étudier</h2>
         <div class="fleet-grid">
           <div class="fleet-item">
-            <img src="/images/fourgon-12m3.webp" alt="Fourgon 12 m³ — Transport Carcassonne" width="1200" height="675" loading="lazy" style="width:100%;height:auto;display:block;border-radius:12px" />
+            <img src="/images/fourgon-12m3.webp" alt="Exemple de véhicule pour un petit volume" width="1200" height="675" loading="lazy" style="width:100%;height:auto;display:block;border-radius:12px" />
             <div class="fleet-info">
-              <h3>Fourgon 12 m³</h3>
-              <p>Idéal pour les studios, T1, T2 et petits T3. Parfait pour les accès difficiles et les centres-villes.</p>
+              <h3>Petit volume</h3>
+              <p>Une capacité compacte peut convenir à certains studios, petits logements ou accès contraints.</p>
               <ul class="fleet-specs">
-                <li>Volume : 12 m³</li>
-                <li>Charge utile : 1 200 kg</li>
-                <li>Hayon élévateur disponible</li>
+                <li>Capacité à confirmer après estimation</li>
+                <li>Charge utile adaptée au poids déclaré</li>
+                <li>Équipement précisé sur le devis</li>
               </ul>
             </div>
           </div>
           <div class="fleet-item">
-            <img src="/images/fourgon-20m3.webp" alt="Fourgon 20 m³ — Transport Carcassonne" width="1200" height="675" loading="lazy" style="width:100%;height:auto;display:block;border-radius:12px" />
+            <img src="/images/fourgon-20m3.webp" alt="Exemple de véhicule pour un volume plus important" width="1200" height="675" loading="lazy" style="width:100%;height:auto;display:block;border-radius:12px" />
             <div class="fleet-info">
-              <h3>Fourgon 20 m³</h3>
-              <p>Conçu pour les T3, T4, maisons et déménagements longue distance. Grande capacité de chargement.</p>
+              <h3>Volume plus important</h3>
+              <p>Les logements plus grands ou trajets longs peuvent nécessiter une capacité et une organisation différentes.</p>
               <ul class="fleet-specs">
-                <li>Volume : 20 m³</li>
-                <li>Charge utile : 2 000 kg</li>
-                <li>Hayon élévateur</li>
+                <li>Capacité déterminée selon l’inventaire</li>
+                <li>Poids et répartition contrôlés</li>
+                <li>Équipement précisé avant acceptation</li>
               </ul>
             </div>
           </div>
         </div>
 
-        <h2 style="margin-top:40px">Notre équipe</h2>
-        <p>Notre équipe est composée de professionnels formés et expérimentés. Manutentionnaires, chauffeurs, responsables d'opérations : chaque membre connaît son rôle et applique les meilleures pratiques du secteur.</p>
+        <h2 style="margin-top:40px">Organisation de la prestation</h2>
+        <p>Le devis doit préciser les moyens humains prévus, les rôles nécessaires, le véhicule et les éventuels partenaires intervenant sur le projet. Demandez ces informations avant d’accepter la proposition.</p>
         <div class="team-placeholder">
-          <img src="/images/equipe.webp" alt="L'équipe de Transport Carcassonne" width="1200" height="675" loading="lazy" style="width:100%;height:auto;display:block;border-radius:12px" />
+          <img src="/images/equipe.webp" alt="Illustration d’une organisation de déménagement" width="1200" height="675" loading="lazy" style="width:100%;height:auto;display:block;border-radius:12px" />
         </div>
 
         <h2 style="margin-top:40px">Nos engagements</h2>
@@ -70,22 +69,22 @@ const description = `Découvrez Transport Carcassonne : équipe locale, 2 fourgo
           <div class="engagement-item">
             <div class="engagement-icon">💶</div>
             <h3>Prix transparents</h3>
-            <p>Devis détaillé par écrit avant chaque prestation. Pas de frais cachés, pas de mauvaise surprise.</p>
+            <p>Le devis écrit précise le prix, le périmètre déclaré, les options et les conditions applicables.</p>
           </div>
           <div class="engagement-item">
             <div class="engagement-icon">🛡️</div>
             <h3>Meubles protégés</h3>
-            <p>Couvertures, housses, sangles et calage soigné : vos biens manipulés avec le plus grand soin.</p>
+            <p>Les protections et précautions prévues pour les biens sont à préciser avant l’intervention.</p>
           </div>
           <div class="engagement-item">
             <div class="engagement-icon">📍</div>
             <h3>Ancrage local</h3>
-            <p>Entreprise audoise, nous intervenons en priorité dans notre région avec des équipes locales.</p>
+            <p>Le siège est indiqué à Carcassonne ; chaque zone d’intervention reste soumise au trajet et aux disponibilités.</p>
           </div>
           <div class="engagement-item">
             <div class="engagement-icon">♻️</div>
             <h3>Éco-responsabilité</h3>
-            <p>Nous orientons les déchets métaux et ferraille vers des filières de recyclage agréées.</p>
+            <p>Pour tout débarras, la filière envisagée doit être adaptée au type de déchets et précisée dans la proposition.</p>
           </div>
         </div>
       </div>
@@ -95,12 +94,16 @@ const description = `Découvrez Transport Carcassonne : équipe locale, 2 fourgo
         <div class="about-info-block">
           <h3>Informations légales</h3>
           <dl class="about-dl">
-            <dt>Raison sociale</dt>
-            <dd>{SITE.name}</dd>
+            <dt>Entrepreneur</dt>
+            <dd>{SITE.legalName} — {SITE.legalForm}</dd>
+            <dt>Nom commercial</dt>
+            <dd>{SITE.tradeName}</dd>
+            <dt>RCS</dt>
+            <dd>{SITE.rcs}</dd>
             <dt>SIRET</dt>
             <dd>{SITE.siret}</dd>
             <dt>Siège social</dt>
-            <dd>{SITE.hq.city} ({SITE.hq.postalCode})</dd>
+            <dd>{SITE.hq.streetAddress}<br />{SITE.hq.postalCode} {SITE.hq.city}</dd>
             <dt>Région</dt>
             <dd>{SITE.hq.region}</dd>
             <dt>Activité</dt>

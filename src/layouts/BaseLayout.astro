@@ -1,13 +1,16 @@
 ---
 import { SITE } from '../data/site.config';
+import { SERVICES } from '../data/services';
 
 interface Props {
   title: string;
   description: string;
   canonical?: string;
   ogImage?: string;
+  ogImageAlt?: string;
   ogType?: string;
   noindex?: boolean;
+  preloadImage?: string;
 }
 
 const {
@@ -15,8 +18,10 @@ const {
   description,
   canonical,
   ogImage = '/images/og-default.jpg',
+  ogImageAlt = 'Transport Carcassonne — déménagement et transport dans l’Aude',
   ogType = 'website',
   noindex = false,
+  preloadImage,
 } = Astro.props;
 
 const canonicalURL = canonical ?? new URL(Astro.url.pathname, SITE.url).href;
@@ -24,35 +29,89 @@ const ogImageURL = ogImage.startsWith('http') ? ogImage : new URL(ogImage, SITE.
 
 const schemaOrg = {
   '@context': 'https://schema.org',
-  '@type': 'MovingCompany',
-  name: SITE.name,
-  url: SITE.url,
-  telephone: SITE.phone,
-  email: SITE.email,
-  address: {
-    '@type': 'PostalAddress',
-    addressLocality: SITE.hq.city,
-    postalCode: SITE.hq.postalCode,
-    addressRegion: SITE.hq.region,
-    addressCountry: SITE.hq.country,
-  },
-  geo: {
-    '@type': 'GeoCoordinates',
-    latitude: SITE.geo.lat,
-    longitude: SITE.geo.lng,
-  },
-  openingHours: 'Mo-Sa 08:00-19:00',
-  areaServed: {
-    '@type': 'GeoCircle',
-    geoMidpoint: {
-      '@type': 'GeoCoordinates',
-      latitude: SITE.geo.lat,
-      longitude: SITE.geo.lng,
+  '@graph': [
+    {
+      '@type': 'MovingCompany',
+      '@id': `${SITE.url}/#business`,
+      name: SITE.name,
+      legalName: SITE.legalName,
+      url: SITE.url,
+      logo: `${SITE.url}/apple-touch-icon.png`,
+      image: `${SITE.url}/images/og-default.jpg`,
+      telephone: SITE.phone,
+      email: SITE.email,
+      foundingDate: SITE.foundingDate,
+      identifier: {
+        '@type': 'PropertyValue',
+        propertyID: 'SIRET',
+        value: SITE.siret.replaceAll(' ', ''),
+      },
+      address: {
+        '@type': 'PostalAddress',
+        streetAddress: SITE.hq.streetAddress,
+        addressLocality: SITE.hq.city,
+        postalCode: SITE.hq.postalCode,
+        addressRegion: SITE.hq.region,
+        addressCountry: SITE.hq.country,
+      },
+      openingHoursSpecification: [{
+        '@type': 'OpeningHoursSpecification',
+        dayOfWeek: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'],
+        opens: '00:00',
+        closes: '23:59',
+      }],
+      areaServed: [
+        { '@type': 'City', name: 'Carcassonne' },
+        { '@type': 'AdministrativeArea', name: 'Aude' },
+        { '@type': 'AdministrativeArea', name: 'Occitanie' },
+      ],
+      priceRange: '€€',
+      currenciesAccepted: 'EUR',
+      contactPoint: {
+        '@type': 'ContactPoint',
+        telephone: SITE.phone,
+        email: SITE.email,
+        contactType: 'customer service',
+        areaServed: 'FR',
+        availableLanguage: ['fr'],
+      },
+      hasOfferCatalog: {
+        '@type': 'OfferCatalog',
+        name: 'Services de déménagement et transport',
+        itemListElement: SERVICES.map(service => ({
+          '@type': 'Offer',
+          url: `${SITE.url}/services/${service.slug}/`,
+          itemOffered: {
+            '@type': 'Service',
+            name: service.name,
+            description: service.description,
+          },
+        })),
+      },
     },
-    geoRadius: SITE.serviceRadius * 1000,
-  },
-  priceRange: '€€',
-  image: ogImageURL,
+    {
+      '@type': 'WebSite',
+      '@id': `${SITE.url}/#website`,
+      url: SITE.url,
+      name: SITE.name,
+      inLanguage: 'fr-FR',
+      publisher: { '@id': `${SITE.url}/#business` },
+    },
+    {
+      '@type': 'WebPage',
+      '@id': `${canonicalURL}#webpage`,
+      url: canonicalURL,
+      name: title,
+      description,
+      inLanguage: 'fr-FR',
+      isPartOf: { '@id': `${SITE.url}/#website` },
+      about: { '@id': `${SITE.url}/#business` },
+      primaryImageOfPage: {
+        '@type': 'ImageObject',
+        url: ogImageURL,
+      },
+    },
+  ],
 };
 ---
 
@@ -63,6 +122,7 @@ const schemaOrg = {
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="format-detection" content="telephone=no" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="theme-color" content="#15191C" />
 
     <!-- Enable scroll-reveal only when JS is on and motion is allowed (no-JS = content visible) -->
     <script is:inline>
@@ -74,7 +134,13 @@ const schemaOrg = {
     <title>{title}</title>
     <meta name="description" content={description} />
     <link rel="canonical" href={canonicalURL} />
-    {noindex && <meta name="robots" content="noindex, follow" />}
+    <meta
+      name="robots"
+      content={noindex
+        ? 'noindex, follow'
+        : 'index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1'}
+    />
+    {preloadImage && <link rel="preload" as="image" href={preloadImage} fetchpriority="high" />}
 
     <!-- Open Graph -->
     <meta property="og:type" content={ogType} />
@@ -82,6 +148,7 @@ const schemaOrg = {
     <meta property="og:description" content={description} />
     <meta property="og:url" content={canonicalURL} />
     <meta property="og:image" content={ogImageURL} />
+    <meta property="og:image:alt" content={ogImageAlt} />
     <meta property="og:site_name" content={SITE.name} />
     <meta property="og:locale" content="fr_FR" />
 
@@ -90,22 +157,15 @@ const schemaOrg = {
     <meta name="twitter:title" content={title} />
     <meta name="twitter:description" content={description} />
     <meta name="twitter:image" content={ogImageURL} />
+    <meta name="twitter:image:alt" content={ogImageAlt} />
 
     <!-- Favicons -->
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <link rel="icon" type="image/x-icon" href="/favicon.ico" />
     <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
 
-    <!-- Fonts -->
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link
-      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Instrument+Serif:ital@0;1&family=Playfair+Display:wght@700;800&display=swap"
-      rel="stylesheet"
-    />
-
-    <!-- JSON-LD MovingCompany -->
-    <script type="application/ld+json" set:html={JSON.stringify(schemaOrg)} />
+    <!-- Entity, website and page JSON-LD -->
+    <script is:inline type="application/ld+json" set:html={JSON.stringify(schemaOrg)} />
 
     <!-- Google Consent Mode v2 — all denied by default; GA loads only after consent -->
     <script is:inline>
@@ -246,7 +306,7 @@ const schemaOrg = {
         box-shadow: 0 24px 60px -18px rgba(0,0,0,.6); }
       .cc-banner[hidden] { display: none; }
       .cc-text { font-size: 13.5px; line-height: 1.55; color: var(--text-on-dark-muted, #9CA3AC); flex: 1; min-width: 240px; margin: 0; }
-      .cc-text a { color: var(--accent, #A8703F); text-decoration: underline; text-underline-offset: 2px; }
+      .cc-text a { color: #D09A67; text-decoration: underline; text-underline-offset: 2px; }
       .cc-actions { display: flex; gap: 10px; flex-shrink: 0; }
       .cc-btn { padding: 10px 18px; border-radius: 6px; font-size: 13px; font-weight: 600; cursor: pointer; border: 1px solid transparent; font-family: inherit; }
       .cc-btn--primary { background: var(--accent, #A8703F); color: #15100A; border-color: var(--accent, #A8703F); }
@@ -280,6 +340,28 @@ const schemaOrg = {
 
 <style is:global>
   *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  @font-face {
+    font-family: 'Inter';
+    src: url('/fonts/inter-latin.woff2') format('woff2');
+    font-style: normal;
+    font-weight: 400 700;
+    font-display: swap;
+  }
+  @font-face {
+    font-family: 'Instrument Serif';
+    src: url('/fonts/instrument-serif-latin.woff2') format('woff2');
+    font-style: normal;
+    font-weight: 400;
+    font-display: swap;
+  }
+  @font-face {
+    font-family: 'Instrument Serif';
+    src: url('/fonts/instrument-serif-italic-latin.woff2') format('woff2');
+    font-style: italic;
+    font-weight: 400;
+    font-display: swap;
+  }
 
   :root {
     /* ─── MAISON FORTE — unified design tokens (synced with debarras-carcassonne.fr) ─── */
@@ -364,7 +446,7 @@ const schemaOrg = {
   }
   .btn--primary {
     background: var(--color-accent);
-    color: var(--color-white);
+    color: #15100A;
   }
   .btn--primary:hover { background: var(--color-accent-dark); transform: translateY(-1px); box-shadow: var(--shadow); }
   .btn--outline {
