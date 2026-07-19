@@ -15,19 +15,19 @@ const BG = '#F2F4E9';
       muted
       loop
       playsinline
-      preload="auto"
-      poster="/video/poster.jpg"
+      preload="none"
+      poster="/video/poster.webp"
       aria-hidden="true"
     ></video>
 
     <div class="dhero-overlay">
       <div class="container">
         <div class="dhero-text hero-stagger">
-          <div class="dh-eyebrow"><span></span>Déménageur professionnel · Carcassonne</div>
-          <h1 class="dh-title">Votre déménagement,<br/><em>en mouvement.</em></h1>
-          <p class="dh-sub">2 fourgons jusqu'à 20 m³, équipe locale, prix fixe garanti. Devis gratuit sous 2h.</p>
+          <div class="dh-eyebrow"><span></span>Déménagement &amp; transport · Carcassonne</div>
+          <h1 class="dh-title">Déménageur à Carcassonne,<br/><em>votre projet en mouvement.</em></h1>
+          <p class="dh-sub">Estimation guidée, accès détaillés et devis écrit après vérification de votre projet.</p>
           <div class="dh-actions">
-            <a href="/contact" class="btn btn--primary btn--lg">Demander un devis →</a>
+            <a href="/devis/?source=service-hero" class="btn btn--primary btn--lg">Demander un devis →</a>
             <a href={`tel:${SITE.phone}`} class="btn btn--outline btn--lg">{SITE.phoneDisplay}</a>
           </div>
         </div>
@@ -51,8 +51,8 @@ const BG = '#F2F4E9';
   .dhero-overlay .container { width: 100%; }
   .dhero-text { max-width: 540px; }
 
-  .dh-eyebrow { display: flex; align-items: center; gap: 13px; font-size: 11px; letter-spacing: .2em; text-transform: uppercase; color: var(--accent); margin-bottom: 24px; }
-  .dh-eyebrow span { width: 32px; height: 1px; background: var(--accent); }
+  .dh-eyebrow { display: flex; align-items: center; gap: 13px; font-size: 11px; letter-spacing: .2em; text-transform: uppercase; color: var(--accent-deep); margin-bottom: 24px; }
+  .dh-eyebrow span { width: 32px; height: 1px; background: var(--accent-deep); }
   .dh-title { font-family: 'Instrument Serif', serif; font-weight: 400; color: var(--text); font-size: clamp(46px, 6vw, 92px); line-height: .98; letter-spacing: -.02em; margin-bottom: 22px; }
   .dh-title em { font-style: italic; color: var(--accent); }
   .dh-sub { font-size: 18px; color: var(--text-muted); max-width: 430px; margin-bottom: 32px; }
@@ -77,8 +77,13 @@ const BG = '#F2F4E9';
     var s = document.createElement('source');
     s.src = mobile ? '/video/delivery-mobile.mp4' : '/video/delivery.mp4';
     s.type = 'video/mp4';
-    v.appendChild(s);
-    v.load();
+    var loadVideo = function () {
+      if (v.querySelector('source')) return;
+      v.appendChild(s);
+      v.load();
+    };
+    if (document.readyState === 'complete') loadVideo();
+    else window.addEventListener('load', loadVideo, { once: true });
     // Respect reduced motion: pause the loop and keep the poster/first frame.
     if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
       v.removeAttribute('autoplay');

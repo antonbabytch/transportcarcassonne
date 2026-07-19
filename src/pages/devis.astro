@@ -1,0 +1,89 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Header from '../components/Header.astro';
+import Footer from '../components/Footer.astro';
+import Breadcrumbs from '../components/Breadcrumbs.astro';
+import QuoteWizard from '../components/QuoteWizard.astro';
+import { SITE } from '../data/site.config';
+
+const title = 'Devis déménagement en ligne à Carcassonne | Estimation gratuite';
+const description = `Estimez votre déménagement à Carcassonne et dans l'Aude : trajet, volume, accès et options. Demande gratuite et sans engagement. ${SITE.phoneDisplay}`;
+---
+
+<BaseLayout title={title} description={description}>
+  <Header />
+  <Breadcrumbs items={[{ name: 'Accueil', href: '/' }, { name: 'Devis en ligne' }]} />
+
+  <main>
+    <section class="devis-hero">
+      <div class="container devis-hero__inner">
+        <div>
+          <span class="section-label">Estimation personnalisée</span>
+          <h1>Votre déménagement, mieux estimé dès le départ</h1>
+          <p>
+            Décrivez votre trajet, vos accès et votre volume. Vous obtenez une première fourchette immédiatement,
+            puis nous vérifions les informations avant tout devis ferme.
+          </p>
+        </div>
+        <ul aria-label="Avantages du devis en ligne">
+          <li><strong>3 à 5 min</strong><span>Formulaire guidé</span></li>
+          <li><strong>0 €</strong><span>Gratuit, sans engagement</span></li>
+          <li><strong>Direct</strong><span>Sans revente de votre demande</span></li>
+        </ul>
+      </div>
+    </section>
+
+    <QuoteWizard />
+
+    <section class="devis-reassurance">
+      <div class="container">
+        <div class="devis-reassurance__grid">
+          <article>
+            <span>01</span>
+            <h2>Une estimation, pas une promesse artificielle</h2>
+            <p>La fourchette aide à vous situer. Le devis écrit est établi seulement après contrôle du volume, des accès et de la date.</p>
+          </article>
+          <article>
+            <span>02</span>
+            <h2>Vos photos restent facultatives</h2>
+            <p>Elles permettent d'identifier un escalier, une rue étroite ou un meuble lourd sans imposer une visite à domicile.</p>
+          </article>
+          <article>
+            <span>03</span>
+            <h2>Un échange humain</h2>
+            <p>Votre demande arrive directement à Transport Carcassonne. Elle n'est pas vendue à plusieurs prestataires.</p>
+          </article>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <Footer />
+</BaseLayout>
+
+<style>
+  .devis-hero { padding: 72px 0; color: white; background: var(--color-navy); }
+  .devis-hero__inner { display: grid; grid-template-columns: minmax(0, 1fr) 370px; align-items: end; gap: 64px; }
+  .devis-hero h1 { max-width: 760px; margin: 12px 0 16px; color: white; }
+  .devis-hero p { max-width: 690px; color: rgba(255,255,255,.75); font-size: 1.02rem; line-height: 1.7; }
+  .devis-hero ul { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; padding: 0; list-style: none; }
+  .devis-hero li { padding: 16px 12px; border: 1px solid rgba(255,255,255,.15); border-radius: var(--radius); background: rgba(255,255,255,.04); }
+  .devis-hero li strong, .devis-hero li span { display: block; }
+  .devis-hero li strong { color: var(--color-accent); font-family: var(--font-display); font-size: 1.35rem; }
+  .devis-hero li span { margin-top: 3px; color: rgba(255,255,255,.65); font-size: .68rem; line-height: 1.35; }
+  .devis-reassurance { padding: 80px 0; background: var(--color-white); }
+  .devis-reassurance__grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 26px; }
+  .devis-reassurance article { padding-top: 20px; border-top: 2px solid var(--color-border); }
+  .devis-reassurance article > span { color: var(--color-accent); font-size: .72rem; font-weight: 700; letter-spacing: .12em; }
+  .devis-reassurance h2 { margin: 10px 0; font-family: var(--font-sans); font-size: 1rem; line-height: 1.4; }
+  .devis-reassurance p { color: var(--color-text-light); font-size: .85rem; line-height: 1.65; }
+  @media (max-width: 900px) {
+    .devis-hero__inner { grid-template-columns: 1fr; gap: 32px; }
+    .devis-hero ul { max-width: 600px; }
+  }
+  @media (max-width: 640px) {
+    .devis-hero { padding: 52px 0; }
+    .devis-hero ul, .devis-reassurance__grid { grid-template-columns: 1fr; }
+    .devis-hero li { display: flex; align-items: baseline; gap: 10px; }
+  }
+</style>

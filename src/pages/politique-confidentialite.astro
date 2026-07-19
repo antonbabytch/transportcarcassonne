@@ -14,7 +14,7 @@ const description = 'Politique de confidentialité et protection des données pe
   <section class="legal-hero">
     <div class="container">
       <h1>Politique de confidentialité</h1>
-      <p class="legal-date">Dernière mise à jour : mai 2025</p>
+      <p class="legal-date">Dernière mise à jour : juillet 2026</p>
     </div>
   </section>
 
@@ -23,38 +23,52 @@ const description = 'Politique de confidentialité et protection des données pe
 
       <h2>1. Responsable du traitement</h2>
       <p>
-        {SITE.name}, SIRET {SITE.siret}, {SITE.hq.city} ({SITE.hq.postalCode}), France.<br />
+        {SITE.legalName}, {SITE.legalForm}, exerçant sous le nom commercial {SITE.tradeName}, SIRET {SITE.siret}.<br />
+        {SITE.hq.streetAddress}, {SITE.hq.postalCode} {SITE.hq.city}, France.<br />
         Contact : <a href={`mailto:${SITE.email}`}>{SITE.email}</a>
       </p>
 
       <h2>2. Données collectées</h2>
-      <p>Nous collectons uniquement les données que vous nous transmettez volontairement via nos formulaires :</p>
+      <p>Selon le formulaire et les options que vous utilisez, les catégories suivantes peuvent être collectées :</p>
       <ul>
-        <li>Nom et prénom</li>
-        <li>Numéro de téléphone</li>
-        <li>Adresses de départ et d'arrivée</li>
-        <li>Type de prestation souhaitée</li>
-        <li>Date souhaitée</li>
-        <li>Message libre</li>
+        <li>Identité et contact : nom, téléphone, email et préférence de contact</li>
+        <li>Projet : villes ou adresses de départ et d'arrivée, date et flexibilité</li>
+        <li>Logements et accès : type, surface, étages, ascenseurs et stationnement</li>
+        <li>Inventaire : volume estimé, mobilier, cartons, objets particuliers et options souhaitées</li>
+        <li>Préférence pour un rendez-vous vidéo ; aucune vidéo n'est enregistrée par le formulaire</li>
+        <li>Message libre et informations nécessaires au suivi de la demande</li>
+        <li>Données d'attribution : page d'entrée, référent, source et paramètres UTM lorsqu'ils existent</li>
       </ul>
+      <p>Ne saisissez pas de pièce d'identité, de donnée bancaire ni d'information sensible dans le champ libre. Le formulaire ne permet pas de joindre des fichiers.</p>
+
+      <h3>Brouillon du devis intelligent</h3>
+      <p>
+        Le devis intelligent peut conserver temporairement dans la session du navigateur les étapes
+        non sensibles déjà remplies afin d'éviter de les ressaisir. Les coordonnées de contact ne sont
+        pas enregistrées dans ce brouillon. Il est supprimé après une soumission réussie ou à la fermeture de la session de l'onglet.
+      </p>
 
       <h2>3. Finalité du traitement</h2>
       <p>
-        Les données collectées sont utilisées exclusivement pour répondre à vos demandes de devis
-        et assurer le suivi de notre relation commerciale. Elles ne sont jamais revendues ni
-        transmises à des tiers à des fins commerciales.
+        Les données servent à évaluer le projet, préparer et suivre le devis, organiser un éventuel
+        rendez-vous, répondre à vos questions, sécuriser les formulaires et mesurer l'origine des
+        demandes. Elles ne sont jamais revendues ni transmises à des tiers à des fins de prospection.
       </p>
 
       <h2>4. Base légale</h2>
       <p>
-        Le traitement est fondé sur votre consentement explicite (soumission du formulaire)
-        et sur l'exécution d'un contrat ou de mesures précontractuelles (établissement du devis).
+        Les données nécessaires au devis sont traitées pour prendre, à votre demande, des mesures
+        précontractuelles puis, si le devis est accepté, pour exécuter la relation contractuelle.
+        La mesure d'audience Google Analytics repose séparément sur votre consentement, que vous
+        pouvez refuser ou retirer à tout moment via « Gérer les cookies ».
       </p>
 
       <h2>5. Durée de conservation</h2>
       <p>
-        Vos données sont conservées pour une durée maximale de 3 ans à compter du dernier contact,
-        sauf obligation légale contraire (données de facturation conservées 10 ans).
+        Les demandes de prospects sont conservées au maximum 3 ans à compter du dernier contact,
+        sauf demande d'effacement ou obligation légale contraire.
+        Les documents liés à une prestation et à la facturation suivent les durées légales applicables,
+        notamment 10 ans pour les pièces comptables.
       </p>
 
       <h2>6. Vos droits</h2>
@@ -78,7 +92,20 @@ const description = 'Politique de confidentialité et protection des données pe
         Aucun cookie publicitaire ou de tracking n'est déposé sans votre accord.
       </p>
 
-      <h2>8. Sécurité</h2>
+      <h2>8. Hébergement et destinataires</h2>
+      <p>
+        Les demandes sont reçues par {SITE.name} et traitées par les seules personnes qui en ont besoin.
+        Le site et ses formulaires sont hébergés par Netlify, prestataire technique qui stocke les
+        soumissions pour notre compte. Les notifications sont acheminées vers notre messagerie Hostinger
+        et peuvent transiter par l'automatisation Make configurée pour le suivi des demandes. Consultez la
+        <a href="https://www.netlify.com/privacy/" target="_blank" rel="noopener noreferrer">politique de confidentialité de Netlify</a>.
+        Google Analytics ne reçoit des données de mesure qu'après acceptation des cookies. Ces prestataires
+        peuvent traiter certaines données hors de l'Espace économique européen selon leurs garanties
+        contractuelles et mécanismes de transfert applicables. Les données ne sont ni vendues ni utilisées
+        par ces prestataires pour une prospection commerciale propre à notre activité.
+      </p>
+
+      <h2>9. Sécurité</h2>
       <p>
         Nous mettons en œuvre des mesures techniques et organisationnelles appropriées
         pour protéger vos données contre tout accès non autorisé, perte ou divulgation.

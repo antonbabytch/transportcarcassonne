@@ -1,0 +1,36 @@
+---
+import { SITE } from '../data/site.config';
+---
+
+<aside class="trust-strip" aria-label="Repères de confiance">
+  <div class="container trust-strip__grid">
+    <div class="trust-strip__item">
+      <span class="trust-strip__eyebrow">Entreprise identifiée</span>
+      <strong>SIRET {SITE.siret}</strong>
+    </div>
+    <div class="trust-strip__item">
+      <span class="trust-strip__eyebrow">Avant engagement</span>
+      <strong>Devis gratuit et détaillé</strong>
+    </div>
+    <div class="trust-strip__item">
+      <span class="trust-strip__eyebrow">Contact direct</span>
+      <a href={`tel:${SITE.phone}`}>{SITE.phoneDisplay}</a>
+    </div>
+  </div>
+</aside>
+
+<style>
+  .trust-strip { background: var(--color-bg-alt); border-block: 1px solid var(--color-border); }
+  .trust-strip__grid { display: grid; grid-template-columns: repeat(3, 1fr); }
+  .trust-strip__item { padding: 20px 28px; display: flex; flex-direction: column; gap: 3px; }
+  .trust-strip__item + .trust-strip__item { border-left: 1px solid var(--color-border); }
+  .trust-strip__eyebrow { color: var(--color-text-light); font-size: .72rem; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; }
+  .trust-strip strong, .trust-strip a { color: var(--color-navy); font-size: .94rem; font-weight: 700; }
+  .trust-strip a:hover { color: var(--color-accent); }
+
+  @media (max-width: 720px) {
+    .trust-strip__grid { grid-template-columns: 1fr; }
+    .trust-strip__item { padding-inline: 0; }
+    .trust-strip__item + .trust-strip__item { border-left: 0; border-top: 1px solid var(--color-border); }
+  }
+</style>

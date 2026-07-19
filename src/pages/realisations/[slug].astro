@@ -1,0 +1,168 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import Header from '../../components/Header.astro';
+import Footer from '../../components/Footer.astro';
+import Breadcrumbs from '../../components/Breadcrumbs.astro';
+import CTA from '../../components/CTA.astro';
+import { getPublishedRealisations, type Realisation } from '../../data/realisations';
+import { SITE } from '../../data/site.config';
+
+export function getStaticPaths() {
+  return getPublishedRealisations().map((realisation) => ({
+    params: { slug: realisation.slug },
+    props: { realisation },
+  }));
+}
+
+interface Props { realisation: Realisation }
+const { realisation } = Astro.props;
+const firstImage = realisation.images[0];
+const publishedDate = new Intl.DateTimeFormat('fr-FR', { dateStyle: 'long' }).format(new Date(realisation.publishedAt));
+
+const articleSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'Article',
+  headline: realisation.title,
+  description: realisation.description,
+  datePublished: realisation.publishedAt,
+  dateModified: realisation.updatedAt ?? realisation.publishedAt,
+  image: realisation.images.map((image) => new URL(image.src, SITE.url).href),
+  author: { '@id': `${SITE.url}/#business` },
+  publisher: { '@id': `${SITE.url}/#business` },
+  mainEntityOfPage: `${SITE.url}/realisations/${realisation.slug}/`,
+};
+---
+
+<BaseLayout
+  title={`${realisation.title} | Transport Carcassonne`}
+  description={realisation.description}
+  ogType="article"
+  ogImage={firstImage?.src}
+  ogImageAlt={firstImage?.alt}
+>
+  <Header />
+  <Breadcrumbs items={[{ name: 'Accueil', href: '/' }, { name: 'Réalisations', href: '/realisations/' }, { name: realisation.title }]} />
+  <script slot="head" is:inline type="application/ld+json" set:html={JSON.stringify(articleSchema)} />
+
+  <main>
+    <article>
+      <header class="case-hero">
+        <div class="container case-hero__inner">
+          <p class="case-hero__eyebrow">{realisation.moveType} · Publié le {publishedDate}</p>
+          <h1>{realisation.title}</h1>
+          <p class="case-hero__description">{realisation.description}</p>
+          <dl class="case-facts">
+            <div><dt>Départ</dt><dd>{realisation.origin}</dd></div>
+            <div><dt>Arrivée</dt><dd>{realisation.destination}</dd></div>
+            {realisation.volumeM3 && <div><dt>Volume</dt><dd>{realisation.volumeM3} m³</dd></div>}
+            {realisation.durationLabel && <div><dt>Durée</dt><dd>{realisation.durationLabel}</dd></div>}
+            {realisation.teamSize && <div><dt>Équipe</dt><dd>{realisation.teamSize} personnes</dd></div>}
+          </dl>
+        </div>
+      </header>
+
+      {firstImage && (
+        <div class="container cover-image">
+          <img src={firstImage.src} alt={firstImage.alt} width={firstImage.width} height={firstImage.height} />
+          {firstImage.caption && <p>{firstImage.caption}</p>}
+        </div>
+      )}
+
+      <section class="section">
+        <div class="container case-layout">
+          <div class="case-main">
+            <section>
+              <span class="section-label">Situation constatée</span>
+              <h2>Les contraintes du projet</h2>
+              <ul>{realisation.constraints.map((item) => <li>{item}</li>)}</ul>
+            </section>
+            <section>
+              <span class="section-label">Organisation retenue</span>
+              <h2>La réponse mise en œuvre</h2>
+              <ul>{realisation.response.map((item) => <li>{item}</li>)}</ul>
+            </section>
+            {realisation.images.length > 1 && (
+              <section>
+                <span class="section-label">Photos autorisées</span>
+                <h2>Le déménagement en images</h2>
+                <div class="case-gallery">
+                  {realisation.images.slice(1).map((image) => (
+                    <figure>
+                      <img src={image.src} alt={image.alt} width={image.width} height={image.height} loading="lazy" />
+                      {image.caption && <figcaption>{image.caption}</figcaption>}
+                    </figure>
+                  ))}
+                </div>
+              </section>
+            )}
+            {realisation.review && (
+              <figure class="client-quote">
+                <blockquote>« {realisation.review.quote} »</blockquote>
+                <figcaption>
+                  {realisation.review.attribution}
+                  {realisation.review.sourceUrl && (
+                    <> · <a href={realisation.review.sourceUrl} target="_blank" rel="noopener noreferrer">{realisation.review.sourceLabel ?? 'Source'}</a></>
+                  )}
+                </figcaption>
+              </figure>
+            )}
+          </div>
+
+          <aside class="case-sidebar">
+            <h2>Prestations réalisées</h2>
+            <ul>{realisation.services.map((service) => <li>{service}</li>)}</ul>
+            <p>Ce récit décrit ce chantier précis. Les moyens, le délai et le prix d’un autre projet sont confirmés sur devis.</p>
+            <a href="/devis/?source=realisation" class="btn btn--primary">Demander un devis</a>
+          </aside>
+        </div>
+      </section>
+    </article>
+
+    <CTA title="Vous avez un projet comparable ?" subtitle="Décrivez le logement, le trajet et les accès pour recevoir une réponse adaptée à votre situation." />
+  </main>
+
+  <Footer />
+</BaseLayout>
+
+<style>
+  .case-hero { background: var(--color-navy); color: white; padding: 72px 0; }
+  .case-hero__inner { max-width: 900px; }
+  .case-hero__eyebrow { color: #d7a879; font-size: .76rem; font-weight: 800; text-transform: uppercase; letter-spacing: .08em; }
+  .case-hero h1 { color: white; margin: 13px 0 16px; }
+  .case-hero__description { color: rgba(255,255,255,.74); max-width: 720px; font-size: 1.06rem; line-height: 1.7; }
+  .case-facts { display: flex; flex-wrap: wrap; gap: 12px 36px; margin-top: 30px; padding-top: 22px; border-top: 1px solid rgba(255,255,255,.15); }
+  .case-facts div { min-width: 100px; }
+  .case-facts dt { color: rgba(255,255,255,.48); font-size: .7rem; text-transform: uppercase; letter-spacing: .08em; }
+  .case-facts dd { color: white; font-weight: 700; }
+  .cover-image { margin-top: 40px; }
+  .cover-image img { width: 100%; max-height: 620px; object-fit: cover; border-radius: var(--radius-lg); }
+  .cover-image p { color: var(--color-text-light); font-size: .78rem; margin-top: 8px; }
+  .case-layout { display: grid; grid-template-columns: minmax(0, 1fr) 300px; gap: 64px; align-items: start; }
+  .case-main { display: grid; gap: 52px; }
+  .case-main h2 { margin: 9px 0 18px; }
+  .case-main section > ul { display: grid; gap: 12px; }
+  .case-main section > ul li { padding: 15px 18px; background: var(--color-bg-alt); border-left: 3px solid var(--color-accent); color: var(--color-text); line-height: 1.65; }
+  .case-gallery { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+  .case-gallery img { width: 100%; aspect-ratio: 4 / 3; object-fit: cover; border-radius: var(--radius); }
+  .case-gallery figcaption { color: var(--color-text-light); font-size: .78rem; margin-top: 6px; }
+  .client-quote { padding: 32px; border-radius: var(--radius-lg); background: var(--color-navy); color: white; }
+  .client-quote blockquote { font-family: var(--font-display); font-size: 1.45rem; line-height: 1.45; }
+  .client-quote figcaption { margin-top: 18px; color: rgba(255,255,255,.6); font-size: .82rem; }
+  .client-quote a { color: #d7a879; text-decoration: underline; }
+  .case-sidebar { position: sticky; top: 90px; border: 1px solid var(--color-border); border-radius: var(--radius-lg); padding: 25px; }
+  .case-sidebar h2 { font-family: var(--font-sans); font-size: 1rem; margin-bottom: 15px; }
+  .case-sidebar ul { display: grid; gap: 8px; margin-bottom: 20px; }
+  .case-sidebar li { color: var(--color-text); font-size: .87rem; padding-left: 16px; position: relative; }
+  .case-sidebar li::before { content: '✓'; position: absolute; left: 0; color: var(--color-accent); }
+  .case-sidebar p { border-top: 1px solid var(--color-border); padding-top: 16px; color: var(--color-text-light); font-size: .78rem; line-height: 1.55; }
+  .case-sidebar .btn { width: 100%; justify-content: center; margin-top: 18px; padding-inline: 14px; }
+
+  @media (max-width: 800px) {
+    .case-layout { grid-template-columns: 1fr; gap: 40px; }
+    .case-sidebar { position: static; }
+  }
+  @media (max-width: 560px) {
+    .case-hero { padding: 54px 0; }
+    .case-gallery { grid-template-columns: 1fr; }
+  }
+</style>

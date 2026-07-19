@@ -5,7 +5,7 @@ import Footer from '../components/Footer.astro';
 import { SITE } from '../data/site.config';
 
 const title = 'Merci pour votre demande | Transport Carcassonne';
-const description = 'Votre demande de devis a bien été reçue. Nous vous contactons sous 2h.';
+const description = 'Votre demande de devis a bien été reçue. Elle sera étudiée par Transport Carcassonne.';
 ---
 
 <BaseLayout title={title} description={description} noindex={true}>
@@ -17,12 +17,12 @@ const description = 'Votre demande de devis a bien été reçue. Nous vous conta
         <div class="merci-icon">✅</div>
         <h1>Demande reçue !</h1>
         <p class="merci-main">
-          Merci pour votre demande de devis. Notre équipe vous contacte
-          <strong>sous 2h</strong> du lundi au samedi de 8h à 19h.
+          Merci pour votre demande de devis. Notre équipe l’étudie et revient vers vous
+          <strong>selon les disponibilités</strong>. Les interventions sont organisées sur rendez-vous, 24h/24 et 7j/7.
         </p>
 
         <div class="merci-contact">
-          <p>Besoin de nous joindre immédiatement ?</p>
+          <p>Vous souhaitez compléter votre demande ?</p>
           <div class="merci-contact-btns">
             <a href={`tel:${SITE.phone}`} class="btn btn--primary">
               📞 {SITE.phoneDisplay}
@@ -55,6 +55,14 @@ const description = 'Votre demande de devis a bien été reçue. Nous vous conta
 
   <Footer />
 </BaseLayout>
+
+<script>
+  try {
+    sessionStorage.removeItem('transport-carcassonne-devis-v1');
+  } catch {
+    // Le stockage de session peut être indisponible en navigation privée.
+  }
+</script>
 
 <style>
   .merci-section {

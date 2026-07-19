@@ -1,0 +1,149 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import Header from '../../components/Header.astro';
+import Footer from '../../components/Footer.astro';
+import Breadcrumbs from '../../components/Breadcrumbs.astro';
+import TrustStrip from '../../components/TrustStrip.astro';
+import CTA from '../../components/CTA.astro';
+import { getPublishedRealisations } from '../../data/realisations';
+
+const title = 'Réalisations de déménagement | Transport Carcassonne';
+const description = 'Découvrez, au fur et à mesure de leur publication, des déménagements documentés avec des informations vérifiables et l’accord des clients.';
+const realisations = getPublishedRealisations();
+---
+
+<BaseLayout title={title} description={description} noindex={realisations.length === 0}>
+  <Header />
+  <Breadcrumbs items={[{ name: 'Accueil', href: '/' }, { name: 'Réalisations' }]} />
+
+  <main>
+    <section class="works-hero">
+      <div class="container works-hero__inner">
+        <span class="section-label">Travail documenté</span>
+        <h1>Nos déménagements, racontés avec des faits</h1>
+        <p>Les futurs récits présenteront le type de projet, les contraintes et la solution mise en œuvre — uniquement lorsque les informations et les visuels peuvent être publiés avec l’accord nécessaire.</p>
+      </div>
+    </section>
+
+    <TrustStrip />
+
+    <section class="section">
+      <div class="container">
+        {realisations.length > 0 ? (
+          <div class="works-grid">
+            {realisations.map((item) => (
+              <article class="work-card">
+                <a href={`/realisations/${item.slug}/`} class="work-card__media" aria-label={`Lire : ${item.title}`}>
+                  {item.images[0] ? (
+                    <img
+                      src={item.images[0].src}
+                      alt={item.images[0].alt}
+                      width={item.images[0].width}
+                      height={item.images[0].height}
+                      loading="lazy"
+                    />
+                  ) : (
+                    <span>Récit vérifié</span>
+                  )}
+                </a>
+                <div class="work-card__body">
+                  <p class="work-card__meta">{item.moveType} · {item.origin} → {item.destination}</p>
+                  <h2><a href={`/realisations/${item.slug}/`}>{item.title}</a></h2>
+                  <p>{item.description}</p>
+                  <a href={`/realisations/${item.slug}/`} class="work-card__link">Voir le déroulé →</a>
+                </div>
+              </article>
+            ))}
+          </div>
+        ) : (
+          <div class="empty-state">
+            <div class="empty-state__mark" aria-hidden="true">01</div>
+            <div>
+              <span class="section-label">Espace en préparation</span>
+              <h2>Aucune réalisation n’est publiée pour le moment</h2>
+              <p>Nous préférons commencer avec une page vide plutôt que d’utiliser un chantier fictif, une image de démonstration ou un témoignage sans source. Les premiers cas seront ajoutés lorsque les faits, les photos et les autorisations de publication auront été réunis.</p>
+              <div class="empty-state__actions">
+                <a href="/devis/?source=realisations" class="btn btn--primary">Parler de mon projet</a>
+                <a href="/nos-garanties" class="text-link">Voir nos engagements →</a>
+              </div>
+            </div>
+          </div>
+        )}
+      </div>
+    </section>
+
+    <section class="section section--alt">
+      <div class="container publication-layout">
+        <div class="publication-intro">
+          <span class="section-label">Notre méthode de publication</span>
+          <h2>Ce qu’un récit de chantier doit apporter</h2>
+          <p>Une réalisation utile aide un futur client à comprendre une situation comparable. Elle ne doit exposer ni l’adresse exacte, ni les biens personnels, ni l’identité complète du client.</p>
+        </div>
+        <div class="publication-grid">
+          <article><span>01</span><h3>Le contexte</h3><p>Type de logement ou d’activité, villes du trajet et volume confirmé.</p></article>
+          <article><span>02</span><h3>Les contraintes</h3><p>Étages, accès, stationnement, objets particuliers et calendrier.</p></article>
+          <article><span>03</span><h3>La réponse</h3><p>Organisation, prestations réellement exécutées et moyens employés.</p></article>
+          <article><span>04</span><h3>Les preuves autorisées</h3><p>Photos datées, retour fidèle et accord explicite avant publication.</p></article>
+        </div>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="container privacy-box">
+        <div>
+          <span class="section-label">Respect de la vie privée</span>
+          <h2>Un client peut refuser d’apparaître</h2>
+        </div>
+        <p>La réalisation d’une prestation ne vaut jamais autorisation de publier. Un cas peut rester entièrement privé, être anonymisé, ou être retiré si l’autorisation donnée le prévoit. La collecte via le site est décrite dans notre <a href="/politique-confidentialite">politique de confidentialité</a>.</p>
+      </div>
+    </section>
+
+    <CTA title="Votre déménagement commence par un échange" subtitle="Expliquez-nous le trajet, le volume et les contraintes d’accès. La demande de devis est gratuite." />
+  </main>
+
+  <Footer />
+</BaseLayout>
+
+<style>
+  .works-hero { background: var(--color-navy); color: white; padding: 76px 0; }
+  .works-hero__inner { max-width: 780px; }
+  .works-hero h1 { color: white; margin: 14px 0 18px; }
+  .works-hero p { color: rgba(255,255,255,.76); line-height: 1.75; font-size: 1.06rem; }
+  .works-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 24px; }
+  .work-card { border: 1px solid var(--color-border); border-radius: var(--radius-lg); overflow: hidden; background: white; }
+  .work-card__media { aspect-ratio: 16 / 9; display: grid; place-items: center; background: var(--color-navy); color: rgba(255,255,255,.7); font-size: .8rem; text-transform: uppercase; letter-spacing: .1em; }
+  .work-card__media img { width: 100%; height: 100%; object-fit: cover; }
+  .work-card__body { padding: 25px; }
+  .work-card__meta { color: var(--color-accent); text-transform: uppercase; letter-spacing: .06em; font-size: .72rem; font-weight: 800; }
+  .work-card h2 { font-size: 1.5rem; margin: 8px 0; }
+  .work-card__body > p:not(.work-card__meta) { color: var(--color-text-light); line-height: 1.65; }
+  .work-card__link { display: inline-block; margin-top: 18px; color: var(--color-accent); font-weight: 700; }
+  .empty-state { max-width: 900px; margin-inline: auto; border: 1px solid var(--color-border); border-radius: var(--radius-lg); padding: 48px; display: grid; grid-template-columns: 88px 1fr; gap: 30px; background: white; }
+  .empty-state__mark { width: 72px; height: 72px; border-radius: 50%; background: var(--color-bg-alt); color: var(--color-accent); display: grid; place-items: center; font-family: var(--font-display); font-size: 1.5rem; }
+  .empty-state h2 { margin: 9px 0 13px; }
+  .empty-state p { color: var(--color-text-light); line-height: 1.75; max-width: 690px; }
+  .empty-state__actions { margin-top: 25px; display: flex; gap: 20px; align-items: center; flex-wrap: wrap; }
+  .text-link { color: var(--color-accent); font-weight: 700; }
+  .publication-layout { display: grid; grid-template-columns: .75fr 1.25fr; gap: 64px; align-items: start; }
+  .publication-intro h2 { margin: 10px 0 14px; }
+  .publication-intro p { color: var(--color-text-light); line-height: 1.75; }
+  .publication-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+  .publication-grid article { background: white; border: 1px solid var(--color-border); padding: 24px; border-radius: var(--radius-lg); }
+  .publication-grid article > span { color: var(--color-accent); font-size: .7rem; font-weight: 800; letter-spacing: .08em; }
+  .publication-grid h3 { font-family: var(--font-sans); font-size: 1rem; margin: 9px 0 6px; }
+  .publication-grid p { color: var(--color-text-light); font-size: .85rem; line-height: 1.6; }
+  .privacy-box { display: grid; grid-template-columns: .8fr 1.2fr; gap: 50px; align-items: center; border-left: 3px solid var(--color-accent); padding-block: 12px; }
+  .privacy-box h2 { margin-top: 8px; }
+  .privacy-box > p { color: var(--color-text-light); line-height: 1.75; }
+  .privacy-box a { color: var(--color-accent); text-decoration: underline; text-underline-offset: 3px; }
+
+  @media (max-width: 820px) {
+    .publication-layout, .privacy-box { grid-template-columns: 1fr; gap: 28px; }
+    .works-grid { grid-template-columns: 1fr; }
+  }
+  @media (max-width: 600px) {
+    .works-hero { padding: 56px 0; }
+    .empty-state { padding: 28px 22px; grid-template-columns: 1fr; }
+    .publication-grid { grid-template-columns: 1fr; }
+  }
+</style>

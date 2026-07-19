@@ -1,0 +1,986 @@
+---
+interface Props {
+  title?: string;
+  subtitle?: string;
+}
+
+const {
+  title = 'Décrivez votre déménagement',
+  subtitle = 'Une estimation immédiate, puis un devis écrit après vérification du volume et des accès.',
+} = Astro.props;
+---
+
+<section class="wizard-section" aria-labelledby="devis-wizard-title">
+  <div class="container">
+    <div class="wizard-heading">
+      <span class="section-label">Devis intelligent</span>
+      <h2 id="devis-wizard-title">{title}</h2>
+      <p>{subtitle}</p>
+    </div>
+
+    <form
+      class="wizard"
+      id="devis-intelligent"
+      name="devis-intelligent"
+      method="POST"
+      action="/merci/"
+      data-netlify="true"
+      netlify-honeypot="bot-field"
+    >
+      <input type="hidden" name="form-name" value="devis-intelligent" />
+      <input type="hidden" name="form_version" value="smart-devis-v1" />
+      <input type="hidden" name="lead_status" value="nouveau" />
+      <input type="hidden" name="lead_source" value="site-web" />
+      <input type="hidden" name="request_context" value="devis-standard" />
+      <input type="hidden" name="volume_offer_max" value="" />
+      <input type="hidden" name="formule_prefill" value="" />
+      <input type="hidden" name="distance_prefill" value="" />
+      <input type="hidden" name="cartons_total" value="" />
+      <input type="hidden" name="cartons_petits" value="" />
+      <input type="hidden" name="cartons_grands" value="" />
+      <input type="hidden" name="cartons_livres" value="" />
+      <input type="hidden" name="landing_page" value="" />
+      <input type="hidden" name="referrer" value="" />
+      <input type="hidden" name="utm_source" value="" />
+      <input type="hidden" name="utm_medium" value="" />
+      <input type="hidden" name="utm_campaign" value="" />
+      <input type="hidden" name="utm_term" value="" />
+      <input type="hidden" name="utm_content" value="" />
+      <input type="hidden" name="estimation_min" value="" />
+      <input type="hidden" name="estimation_max" value="" />
+      <input type="hidden" name="estimation_volume_m3" value="" />
+      <input type="hidden" name="wizard_completed" value="non" />
+
+      <p class="wizard__honeypot" aria-hidden="true">
+        <label>Ne pas remplir : <input name="bot-field" tabindex="-1" autocomplete="off" /></label>
+      </p>
+
+      <nav class="wizard__progress" aria-label="Progression du devis">
+        <ol>
+          <li class="is-current" aria-current="step"><span>1</span><strong>Trajet</strong></li>
+          <li><span>2</span><strong>Accès</strong></li>
+          <li><span>3</span><strong>Volume</strong></li>
+          <li><span>4</span><strong>Visite</strong></li>
+          <li><span>5</span><strong>Contact</strong></li>
+        </ol>
+        <div class="wizard__progressbar" aria-hidden="true"><span></span></div>
+        <p class="wizard__progress-text" aria-live="polite">Étape 1 sur 5 · Trajet</p>
+      </nav>
+
+      <div class="wizard__layout">
+        <div class="wizard__main">
+          <div class="wizard__error" role="alert" tabindex="-1" hidden>
+            Vérifiez les champs signalés avant de continuer.
+          </div>
+
+          <fieldset class="wizard__step" data-step="0">
+            <legend tabindex="-1">
+              <span class="wizard__eyebrow">Étape 1 · Trajet</span>
+              Où et quand déménagez-vous ?
+            </legend>
+            <p class="wizard__intro">Les villes et la date nous permettent d'organiser le véhicule et la disponibilité.</p>
+
+            <div class="wizard__choice-grid wizard__choice-grid--3">
+              <label class="choice-card">
+                <input type="radio" name="type_trajet" value="local" required />
+                <span><strong>Local</strong><small>Jusqu'à 50 km</small></span>
+              </label>
+              <label class="choice-card">
+                <input type="radio" name="type_trajet" value="france" />
+                <span><strong>Longue distance</strong><small>France métropolitaine</small></span>
+              </label>
+              <label class="choice-card">
+                <input type="radio" name="type_trajet" value="international" />
+                <span><strong>International</strong><small>Depuis ou vers l'étranger</small></span>
+              </label>
+            </div>
+
+            <div class="wizard__grid wizard__grid--2">
+              <label class="field">
+                <span>Ville de départ *</span>
+                <input type="text" name="depart_ville" placeholder="Carcassonne" autocomplete="address-level2" required />
+              </label>
+              <label class="field">
+                <span>Code postal de départ</span>
+                <input type="text" name="depart_code_postal" placeholder="11000" autocomplete="postal-code" inputmode="numeric" maxlength="10" />
+              </label>
+              <label class="field">
+                <span>Ville d'arrivée *</span>
+                <input type="text" name="arrivee_ville" placeholder="Toulouse" autocomplete="address-level2" required />
+              </label>
+              <label class="field">
+                <span>Code postal / pays</span>
+                <input type="text" name="arrivee_code_postal_pays" placeholder="31000, France" autocomplete="postal-code" />
+              </label>
+              <label class="field">
+                <span>Date souhaitée *</span>
+                <input type="date" name="date_souhaitee" required />
+              </label>
+              <label class="field">
+                <span>Flexibilité</span>
+                <select name="flexibilite_date">
+                  <option value="date-fixe">Date fixe</option>
+                  <option value="plus-moins-3-jours">± 3 jours</option>
+                  <option value="plus-moins-1-semaine">± 1 semaine</option>
+                  <option value="tres-flexible">Très flexible</option>
+                </select>
+              </label>
+            </div>
+            <p class="wizard__notice" data-date-notice hidden>
+              Demande à moins de 7 jours : nous confirmerons la disponibilité avant tout engagement.
+            </p>
+
+            <div class="wizard__actions">
+              <span></span>
+              <button class="btn btn--primary wizard__next" type="button">Continuer vers les accès →</button>
+            </div>
+          </fieldset>
+
+          <fieldset class="wizard__step" data-step="1">
+            <legend tabindex="-1">
+              <span class="wizard__eyebrow">Étape 2 · Logements et accès</span>
+              Quelles sont les conditions sur place ?
+            </legend>
+            <p class="wizard__intro">Étage, ascenseur et stationnement peuvent modifier le temps de manutention.</p>
+
+            <div class="access-card">
+              <h3>Au départ</h3>
+              <div class="wizard__grid wizard__grid--2">
+                <label class="field">
+                  <span>Type de logement *</span>
+                  <select name="logement_depart" required>
+                    <option value="">Choisir…</option>
+                    <option value="petit-volume">Quelques meubles</option>
+                    <option value="studio">Studio / T1</option>
+                    <option value="t2">T2</option>
+                    <option value="t3">T3</option>
+                    <option value="t4">T4 / T5</option>
+                    <option value="maison">Maison</option>
+                    <option value="bureau">Bureau / local professionnel</option>
+                  </select>
+                </label>
+                <label class="field">
+                  <span>Surface approximative</span>
+                  <span class="field__suffix"><input type="number" name="surface_depart_m2" min="1" max="1000" inputmode="numeric" placeholder="65" /><em>m²</em></span>
+                </label>
+                <label class="field">
+                  <span>Étage</span>
+                  <select name="etage_depart">
+                    <option value="0">Rez-de-chaussée</option>
+                    <option value="1">1er étage</option>
+                    <option value="2">2e étage</option>
+                    <option value="3">3e étage</option>
+                    <option value="4">4e étage</option>
+                    <option value="5">5e étage ou plus</option>
+                  </select>
+                </label>
+                <label class="field">
+                  <span>Ascenseur</span>
+                  <select name="ascenseur_depart">
+                    <option value="non">Non</option>
+                    <option value="oui-grand">Oui, grand</option>
+                    <option value="oui-petit">Oui, petit</option>
+                    <option value="inconnu">Je ne sais pas</option>
+                  </select>
+                </label>
+                <label class="field">
+                  <span>Stationnement du véhicule</span>
+                  <select name="stationnement_depart">
+                    <option value="proche">Devant l'entrée / moins de 10 m</option>
+                    <option value="10-30m">Entre 10 et 30 m</option>
+                    <option value="plus-30m">Plus de 30 m</option>
+                    <option value="a-verifier">À vérifier</option>
+                  </select>
+                </label>
+                <label class="field">
+                  <span>Accès particulier</span>
+                  <select name="acces_depart">
+                    <option value="standard">Accès standard</option>
+                    <option value="rue-etroite">Rue étroite</option>
+                    <option value="escaliers-complexes">Escaliers complexes</option>
+                    <option value="cour-chemin">Cour / chemin privé</option>
+                    <option value="inconnu">Je ne sais pas</option>
+                  </select>
+                </label>
+              </div>
+            </div>
+
+            <div class="access-card">
+              <h3>À l'arrivée</h3>
+              <div class="wizard__grid wizard__grid--2">
+                <label class="field">
+                  <span>Type de logement</span>
+                  <select name="logement_arrivee">
+                    <option value="appartement">Appartement</option>
+                    <option value="maison">Maison</option>
+                    <option value="bureau">Bureau / local professionnel</option>
+                    <option value="stockage">Stockage / garde-meuble</option>
+                    <option value="autre">Autre</option>
+                  </select>
+                </label>
+                <label class="field">
+                  <span>Étage</span>
+                  <select name="etage_arrivee">
+                    <option value="0">Rez-de-chaussée</option>
+                    <option value="1">1er étage</option>
+                    <option value="2">2e étage</option>
+                    <option value="3">3e étage</option>
+                    <option value="4">4e étage</option>
+                    <option value="5">5e étage ou plus</option>
+                  </select>
+                </label>
+                <label class="field">
+                  <span>Ascenseur</span>
+                  <select name="ascenseur_arrivee">
+                    <option value="non">Non</option>
+                    <option value="oui-grand">Oui, grand</option>
+                    <option value="oui-petit">Oui, petit</option>
+                    <option value="inconnu">Je ne sais pas</option>
+                  </select>
+                </label>
+                <label class="field">
+                  <span>Stationnement du véhicule</span>
+                  <select name="stationnement_arrivee">
+                    <option value="proche">Devant l'entrée / moins de 10 m</option>
+                    <option value="10-30m">Entre 10 et 30 m</option>
+                    <option value="plus-30m">Plus de 30 m</option>
+                    <option value="a-verifier">À vérifier</option>
+                  </select>
+                </label>
+              </div>
+            </div>
+
+            <div class="wizard__actions">
+              <button class="btn btn--outline wizard__back" type="button">← Retour</button>
+              <button class="btn btn--primary wizard__next" type="button">Continuer vers le volume →</button>
+            </div>
+          </fieldset>
+
+          <fieldset class="wizard__step" data-step="2">
+            <legend tabindex="-1">
+              <span class="wizard__eyebrow">Étape 3 · Volume et services</span>
+              Que faut-il transporter ?
+            </legend>
+            <p class="wizard__intro">Vous pouvez donner un volume connu ou simplement quelques repères. Une vérification sera faite avant le devis ferme.</p>
+
+            <div class="wizard__grid wizard__grid--2">
+              <label class="field">
+                <span>Volume estimé, si connu</span>
+                <span class="field__suffix"><input type="number" name="volume_m3" min="1" max="120" step="1" inputmode="numeric" placeholder="20" /><em>m³</em></span>
+              </label>
+              <label class="field">
+                <span>Nombre de cartons</span>
+                <select name="nombre_cartons">
+                  <option value="0">Aucun / à déterminer</option>
+                  <option value="10">Environ 10</option>
+                  <option value="20">Environ 20</option>
+                  <option value="40">Environ 40</option>
+                  <option value="60">Environ 60</option>
+                  <option value="80">80 ou plus</option>
+                </select>
+              </label>
+              <label class="field">
+                <span>Meubles volumineux</span>
+                <input type="number" name="nombre_meubles_volumineux" min="0" max="50" inputmode="numeric" placeholder="Ex. 4" />
+              </label>
+              <label class="field">
+                <span>Gros électroménager</span>
+                <input type="number" name="nombre_electromenager" min="0" max="30" inputmode="numeric" placeholder="Ex. 3" />
+              </label>
+            </div>
+
+            <div class="wizard__group">
+              <h3>Objets particuliers</h3>
+              <div class="check-grid">
+                <label class="check-card"><input type="checkbox" name="objet_piano" value="oui" /><span>Piano</span></label>
+                <label class="check-card"><input type="checkbox" name="objet_lourd" value="oui" /><span>Coffre-fort / objet lourd</span></label>
+                <label class="check-card"><input type="checkbox" name="objet_fragile" value="oui" /><span>Œuvre / objet fragile</span></label>
+                <label class="check-card"><input type="checkbox" name="objet_tres_grand" value="oui" /><span>Meuble hors gabarit</span></label>
+              </div>
+            </div>
+
+            <div class="wizard__group">
+              <h3>Services souhaités</h3>
+              <div class="check-grid">
+                <label class="check-card"><input type="checkbox" name="service_cartons" value="oui" /><span>Cartons et matériel</span></label>
+                <label class="check-card"><input type="checkbox" name="service_emballage" value="oui" /><span>Emballage</span></label>
+                <label class="check-card"><input type="checkbox" name="service_demontage" value="oui" /><span>Démontage / remontage</span></label>
+                <label class="check-card"><input type="checkbox" name="service_deballage" value="oui" /><span>Déballage</span></label>
+              </div>
+            </div>
+
+            <label class="field">
+              <span>Liste ou précision utile</span>
+              <textarea name="inventaire_details" rows="4" placeholder="Ex. canapé 3 places, lit 160 cm, armoire, 25 cartons…"></textarea>
+            </label>
+
+            <div class="wizard__actions">
+              <button class="btn btn--outline wizard__back" type="button">← Retour</button>
+              <button class="btn btn--primary wizard__next" type="button">Voir mon estimation →</button>
+            </div>
+          </fieldset>
+
+          <fieldset class="wizard__step" data-step="3">
+            <legend tabindex="-1">
+              <span class="wizard__eyebrow">Étape 4 · Vérification</span>
+              Vérification et visite vidéo
+            </legend>
+            <p class="wizard__intro">Pour protéger vos données, aucune photo n'est transmise par ce formulaire. Si nécessaire, nous vous proposerons un canal adapté après le premier échange.</p>
+
+            <div class="estimate-panel estimate-panel--mobile" aria-live="polite">
+              <span>Votre estimation indicative</span>
+              <strong data-estimate-output>À calculer</strong>
+              <small data-volume-output></small>
+            </div>
+
+            <div class="wizard__group">
+              <h3>Souhaitez-vous une visite vidéo ?</h3>
+              <div class="wizard__choice-grid wizard__choice-grid--3">
+                <label class="choice-card">
+                  <input type="radio" name="visite_video" value="oui" />
+                  <span><strong>Oui</strong><small>À planifier ensemble</small></span>
+                </label>
+                <label class="choice-card">
+                  <input type="radio" name="visite_video" value="peut-etre" />
+                  <span><strong>Si nécessaire</strong><small>Après un premier échange</small></span>
+                </label>
+                <label class="choice-card">
+                  <input type="radio" name="visite_video" value="non" checked />
+                  <span><strong>Non</strong><small>Les informations suffisent</small></span>
+                </label>
+              </div>
+              <label class="field wizard__conditional" data-video-slot hidden>
+                <span>Créneau préféré pour la visite</span>
+                <input type="text" name="creneau_visite_video" placeholder="Ex. mardi après 17h" />
+              </label>
+            </div>
+
+            <p class="wizard__privacy-note">Ne transmettez jamais de pièce d'identité, de donnée bancaire ni de document personnel dans le champ libre.</p>
+
+            <div class="wizard__actions">
+              <button class="btn btn--outline wizard__back" type="button">← Retour</button>
+              <button class="btn btn--primary wizard__next" type="button">Finaliser ma demande →</button>
+            </div>
+          </fieldset>
+
+          <fieldset class="wizard__step" data-step="4">
+            <legend tabindex="-1">
+              <span class="wizard__eyebrow">Étape 5 · Contact</span>
+              Où vous envoyer la réponse ?
+            </legend>
+            <p class="wizard__intro">Nous vérifions votre demande avant d'établir un devis écrit et contractuel.</p>
+
+            <div class="estimate-panel estimate-panel--final" aria-live="polite">
+              <span>Estimation préliminaire</span>
+              <strong data-estimate-output>À calculer</strong>
+              <small data-volume-output></small>
+              <p>Fourchette non contractuelle. Le prix ferme dépend du volume réel, des adresses exactes, des accès et de la disponibilité.</p>
+            </div>
+
+            <div class="wizard__summary" aria-live="polite">
+              <h3>Récapitulatif</h3>
+              <ul data-summary></ul>
+              <button type="button" class="wizard__edit" data-edit-step="0">Modifier le trajet</button>
+            </div>
+
+            <div class="wizard__grid wizard__grid--2">
+              <label class="field">
+                <span>Nom et prénom *</span>
+                <input type="text" name="nom" autocomplete="name" required />
+              </label>
+              <label class="field">
+                <span>Téléphone *</span>
+                <input type="tel" name="telephone" autocomplete="tel" inputmode="tel" placeholder="06 00 00 00 00" minlength="8" required />
+              </label>
+              <label class="field">
+                <span>Email (obligatoire si contact par email)</span>
+                <input type="email" name="email" autocomplete="email" placeholder="vous@exemple.fr" />
+              </label>
+              <label class="field">
+                <span>Moyen de contact préféré</span>
+                <select name="contact_prefere">
+                  <option value="telephone">Téléphone</option>
+                  <option value="sms">SMS</option>
+                  <option value="whatsapp">WhatsApp</option>
+                  <option value="email">Email</option>
+                </select>
+              </label>
+              <label class="field field--full">
+                <span>Meilleur moment pour vous joindre</span>
+                <select name="creneau_rappel">
+                  <option value="des-que-possible">Dès que possible</option>
+                  <option value="8h-12h">8h–12h</option>
+                  <option value="12h-14h">12h–14h</option>
+                  <option value="14h-17h">14h–17h</option>
+                  <option value="18h-21h">18h–21h</option>
+                </select>
+              </label>
+            </div>
+
+            <label class="consent">
+              <input type="checkbox" name="consentement_confidentialite" value="oui" required />
+              <span>J'accepte que mes informations soient utilisées pour répondre à cette demande, conformément à la <a href="/politique-confidentialite/" target="_blank">politique de confidentialité</a>. *</span>
+            </label>
+
+            <div class="wizard__actions wizard__actions--submit">
+              <button class="btn btn--outline wizard__back" type="button">← Retour</button>
+              <button class="btn btn--primary btn--lg wizard__submit" type="submit">Envoyer ma demande →</button>
+            </div>
+            <p class="wizard__submit-note">Gratuit et sans engagement. Aucune réservation ni aucun paiement à cette étape.</p>
+            <p class="wizard__submit-note">Si vous renseignez votre numéro, vous pouvez vous inscrire gratuitement sur la liste d'opposition au démarchage téléphonique <a href="https://www.bloctel.gouv.fr/" target="_blank" rel="noopener noreferrer">Bloctel</a>.</p>
+          </fieldset>
+        </div>
+
+        <aside class="wizard__aside" aria-label="Estimation en cours">
+          <div class="estimate-card">
+            <span class="estimate-card__label">Estimation indicative</span>
+            <strong data-estimate-output>À calculer</strong>
+            <small data-volume-output>Complétez le logement ou le volume</small>
+            <hr />
+            <p>Le montant s'actualise avec vos réponses.</p>
+            <ul>
+              <li>Gratuit et sans engagement</li>
+              <li>Prix ferme après vérification</li>
+              <li>Données transmises directement à l'entreprise</li>
+            </ul>
+          </div>
+          <p class="wizard__draft-note">Votre brouillon est conservé uniquement dans cet onglet pendant votre visite.</p>
+        </aside>
+      </div>
+    </form>
+  </div>
+</section>
+
+<style>
+  .wizard-section { padding: 72px 0 96px; background: var(--color-bg-alt); }
+  .wizard-heading { max-width: 720px; margin: 0 auto 36px; text-align: center; }
+  .wizard-heading h2 { margin: 9px 0 10px; }
+  .wizard-heading p { color: var(--color-text-light); line-height: 1.65; }
+  .wizard { max-width: 1080px; margin: 0 auto; scroll-margin-top: 88px; }
+  .wizard__honeypot { display: none; }
+  .wizard__progress { background: var(--color-white); border: 1px solid var(--color-border); border-radius: var(--radius-lg) var(--radius-lg) 0 0; padding: 18px 30px 16px; }
+  .wizard__progress ol { display: grid; grid-template-columns: repeat(5, 1fr); list-style: none; margin: 0; padding: 0; }
+  .wizard__progress li { position: relative; display: flex; align-items: center; gap: 8px; color: var(--color-text-light); font-size: .78rem; }
+  .wizard__progress li span { display: grid; place-items: center; width: 28px; height: 28px; border: 1px solid var(--color-border); border-radius: 50%; background: var(--color-white); font-weight: 700; }
+  .wizard__progress li strong { font-weight: 600; }
+  .wizard__progress li.is-current, .wizard__progress li.is-complete { color: var(--color-navy); }
+  .wizard__progress li.is-current span { color: white; background: var(--color-accent); border-color: var(--color-accent); }
+  .wizard__progress li.is-complete span { color: white; background: var(--color-navy); border-color: var(--color-navy); }
+  .wizard__progressbar { height: 3px; margin-top: 14px; background: var(--color-border); border-radius: 999px; overflow: hidden; }
+  .wizard__progressbar span { display: block; width: 20%; height: 100%; background: var(--color-accent); transition: width .25s ease; }
+  .wizard__progress-text { margin: 9px 0 0; font-size: .72rem; color: var(--color-text-light); text-align: right; }
+  .wizard__layout { display: grid; grid-template-columns: minmax(0, 1fr) 300px; align-items: start; }
+  .wizard__main { min-width: 0; background: var(--color-white); border: 1px solid var(--color-border); border-top: 0; border-radius: 0 0 0 var(--radius-lg); padding: 38px; }
+  .wizard__aside { position: sticky; top: 86px; background: var(--color-navy); color: white; border-radius: 0 0 var(--radius-lg) 0; padding: 30px 25px; }
+  .wizard__step { min-width: 0; margin: 0 0 42px; padding: 0 0 42px; border: 0; border-bottom: 1px solid var(--color-border); }
+  .wizard__step:last-child { margin-bottom: 0; padding-bottom: 0; border: 0; }
+  .wizard.is-enhanced .wizard__step { margin: 0; padding: 0; border: 0; }
+  .wizard.is-enhanced .wizard__step[hidden] { display: none; }
+  .wizard__step legend { width: 100%; padding: 0; color: var(--color-navy); font-family: var(--font-display); font-size: clamp(1.65rem, 3vw, 2.15rem); line-height: 1.1; }
+  .wizard__step legend:focus { outline: none; }
+  .wizard__eyebrow { display: block; margin-bottom: 8px; color: var(--color-accent); font-family: var(--font-sans); font-size: .7rem; font-weight: 700; letter-spacing: .13em; text-transform: uppercase; }
+  .wizard__intro { margin: 10px 0 26px; color: var(--color-text-light); font-size: .92rem; line-height: 1.6; }
+  .wizard__grid { display: grid; gap: 16px; margin-top: 20px; }
+  .wizard__grid--2 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .field { display: flex; flex-direction: column; gap: 7px; color: var(--color-navy); font-size: .78rem; font-weight: 700; }
+  .field--full { grid-column: 1 / -1; }
+  .field input, .field select, .field textarea { width: 100%; min-height: 48px; padding: 11px 13px; border: 1.5px solid var(--color-border); border-radius: var(--radius); color: var(--color-text); background: var(--color-white); font: 400 16px/1.35 var(--font-sans); appearance: none; }
+  .field textarea { min-height: 100px; resize: vertical; }
+  .field input:focus, .field select:focus, .field textarea:focus { outline: 0; border-color: var(--color-accent); box-shadow: 0 0 0 3px rgba(168,112,63,.12); }
+  .field input:invalid.is-touched, .field select:invalid.is-touched { border-color: #b42318; }
+  .field__suffix { position: relative; display: block; }
+  .field__suffix input { padding-right: 48px; }
+  .field__suffix em { position: absolute; right: 13px; top: 50%; transform: translateY(-50%); color: var(--color-text-light); font-style: normal; font-weight: 600; }
+  .wizard__choice-grid { display: grid; gap: 10px; }
+  .wizard__choice-grid--3 { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+  .choice-card, .check-card { position: relative; display: flex; align-items: center; gap: 10px; min-height: 68px; padding: 13px; border: 1.5px solid var(--color-border); border-radius: var(--radius); cursor: pointer; transition: border-color .15s, background .15s, transform .15s; }
+  .choice-card:hover, .check-card:hover { border-color: var(--color-accent); transform: translateY(-1px); }
+  .choice-card:has(input:checked), .check-card:has(input:checked) { border-color: var(--color-accent); background: rgba(168,112,63,.07); box-shadow: inset 0 0 0 1px var(--color-accent); }
+  .choice-card:has(input:focus-visible), .check-card:has(input:focus-visible) { outline: 3px solid rgba(168,112,63,.32); outline-offset: 2px; }
+  .choice-card input, .check-card input { width: 18px; height: 18px; flex: 0 0 auto; accent-color: var(--color-accent); }
+  .choice-card span { display: flex; flex-direction: column; gap: 2px; }
+  .choice-card strong { color: var(--color-navy); font-size: .88rem; }
+  .choice-card small { color: var(--color-text-light); font-size: .7rem; line-height: 1.35; }
+  .access-card { margin-top: 18px; padding: 22px; border: 1px solid var(--color-border); border-radius: var(--radius-lg); background: var(--color-bg-alt); }
+  .access-card h3, .wizard__group h3, .wizard__summary h3 { margin: 0; color: var(--color-navy); font-family: var(--font-sans); font-size: .9rem; font-weight: 700; }
+  .access-card .field input, .access-card .field select { background: var(--color-white); }
+  .wizard__group { margin-top: 24px; }
+  .check-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; margin-top: 10px; }
+  .check-card { min-height: 52px; color: var(--color-text); font-size: .85rem; font-weight: 600; }
+  .wizard__notice, .wizard__privacy-note { margin: 18px 0 0; padding: 12px 14px; border-left: 3px solid var(--color-accent); background: rgba(168,112,63,.08); color: var(--color-text); font-size: .8rem; line-height: 1.5; }
+  .wizard__actions { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin-top: 30px; }
+  .wizard__next, .wizard__back { display: none; }
+  .wizard.is-enhanced .wizard__next, .wizard.is-enhanced .wizard__back { display: inline-flex; }
+  .wizard__error { margin-bottom: 20px; padding: 12px 14px; border: 1px solid #f0b4ad; border-radius: var(--radius); background: #fff4f2; color: #912018; font-size: .84rem; font-weight: 600; }
+  .estimate-card__label { display: block; color: rgba(255,255,255,.6); font-size: .68rem; font-weight: 700; letter-spacing: .12em; text-transform: uppercase; }
+  .estimate-card strong { display: block; margin: 8px 0 2px; color: var(--color-accent); font-family: var(--font-display); font-size: 2rem; line-height: 1.1; }
+  .estimate-card small { color: rgba(255,255,255,.72); font-size: .75rem; }
+  .estimate-card hr { margin: 20px 0; border: 0; border-top: 1px solid rgba(255,255,255,.14); }
+  .estimate-card p { margin-bottom: 14px; color: rgba(255,255,255,.72); font-size: .8rem; line-height: 1.55; }
+  .estimate-card ul { display: flex; flex-direction: column; gap: 9px; padding: 0; list-style: none; }
+  .estimate-card li { position: relative; padding-left: 18px; color: rgba(255,255,255,.86); font-size: .76rem; line-height: 1.4; }
+  .estimate-card li::before { content: '✓'; position: absolute; left: 0; color: var(--color-accent); }
+  .wizard__draft-note { margin: 20px 0 0; color: rgba(255,255,255,.5); font-size: .68rem; line-height: 1.5; }
+  .estimate-panel { padding: 20px; border: 1px solid var(--color-accent); border-radius: var(--radius-lg); background: rgba(168,112,63,.07); }
+  .estimate-panel--mobile { display: none; margin-bottom: 22px; }
+  .estimate-panel span, .estimate-panel small { display: block; color: var(--color-text-light); font-size: .75rem; }
+  .estimate-panel strong { display: block; margin: 4px 0; color: var(--color-accent); font-family: var(--font-display); font-size: 2rem; }
+  .estimate-panel p { margin: 12px 0 0; color: var(--color-text-light); font-size: .76rem; line-height: 1.5; }
+  .wizard__conditional { margin-top: 14px; }
+  .wizard__conditional[hidden] { display: none; }
+  .wizard__summary { margin: 18px 0 24px; padding: 18px; border-radius: var(--radius); background: var(--color-bg-alt); }
+  .wizard__summary ul { display: grid; grid-template-columns: 1fr 1fr; gap: 8px 18px; margin: 12px 0; padding: 0; list-style: none; }
+  .wizard__summary li { color: var(--color-text); font-size: .8rem; line-height: 1.45; }
+  .wizard__edit { padding: 0; border: 0; color: var(--color-accent); background: none; font: 600 .75rem var(--font-sans); text-decoration: underline; text-underline-offset: 3px; cursor: pointer; }
+  .consent { display: flex; align-items: flex-start; gap: 10px; margin-top: 20px; color: var(--color-text-light); font-size: .76rem; line-height: 1.5; }
+  .consent input { width: 18px; height: 18px; flex: 0 0 auto; margin-top: 1px; accent-color: var(--color-accent); }
+  .consent a { color: var(--color-accent); text-decoration: underline; text-underline-offset: 2px; }
+  .wizard__submit-note { margin: 10px 0 0; color: var(--color-text-light); font-size: .72rem; text-align: right; }
+
+  @media (max-width: 900px) {
+    .wizard__layout { grid-template-columns: 1fr; }
+    .wizard__main { border-radius: 0 0 var(--radius-lg) var(--radius-lg); }
+    .wizard__aside { display: none; }
+    .estimate-panel--mobile { display: block; }
+  }
+  @media (max-width: 680px) {
+    .wizard-section { padding: 52px 0 72px; }
+    .wizard__progress { padding: 14px 16px 12px; }
+    .wizard__progress li { justify-content: center; }
+    .wizard__progress li strong { display: none; }
+    .wizard__progress-text { text-align: center; }
+    .wizard__main { padding: 25px 17px; }
+    .wizard__grid--2, .wizard__choice-grid--3, .check-grid, .wizard__summary ul { grid-template-columns: 1fr; }
+    .access-card { padding: 17px 13px; }
+    .wizard__actions { align-items: stretch; flex-direction: column-reverse; }
+    .wizard__actions .btn { justify-content: center; width: 100%; }
+    .wizard__actions > span { display: none; }
+    .wizard__submit-note { text-align: center; }
+  }
+</style>
+
+<script>
+  const form = document.querySelector<HTMLFormElement>('#devis-intelligent');
+
+  if (form) {
+    const steps = Array.from(form.querySelectorAll<HTMLFieldSetElement>('.wizard__step'));
+    const progressItems = Array.from(form.querySelectorAll<HTMLElement>('.wizard__progress li'));
+    const progressBar = form.querySelector<HTMLElement>('.wizard__progressbar span');
+    const progressText = form.querySelector<HTMLElement>('.wizard__progress-text');
+    const errorBox = form.querySelector<HTMLElement>('.wizard__error');
+    const dateInput = form.elements.namedItem('date_souhaitee') as HTMLInputElement | null;
+    const dateNotice = form.querySelector<HTMLElement>('[data-date-notice]');
+    const emailInput = form.elements.namedItem('email') as HTMLInputElement | null;
+    const preferredContact = form.elements.namedItem('contact_prefere') as HTMLSelectElement | null;
+    const submitButton = form.querySelector<HTMLButtonElement>('.wizard__submit');
+    const videoSlot = form.querySelector<HTMLElement>('[data-video-slot]');
+    const stepNames = ['Trajet', 'Accès', 'Volume', 'Visite', 'Contact'];
+    const storageKey = 'transport-carcassonne-devis-v1';
+    let currentStep = 0;
+    let started = false;
+    let estimateViewed = false;
+
+    form.classList.add('is-enhanced');
+
+    const field = (name: string) => form.elements.namedItem(name) as HTMLInputElement | HTMLSelectElement | RadioNodeList | null;
+    const value = (name: string) => {
+      const item = field(name);
+      return item ? String(item.value || '') : '';
+    };
+    const checked = (name: string) => {
+      const item = form.elements.namedItem(name) as HTMLInputElement | null;
+      return Boolean(item && item.checked);
+    };
+    const setHidden = (name: string, nextValue: string) => {
+      const item = field(name);
+      if (item) item.value = nextValue;
+    };
+    const track = (eventName: string, params: Record<string, string | number> = {}) => {
+      const gtagFn = (window as Window & { gtag?: (...args: unknown[]) => void }).gtag;
+      if (typeof gtagFn === 'function') {
+        gtagFn('event', eventName, { event_category: 'devis', ...params });
+      }
+    };
+    const start = () => {
+      if (started) return;
+      started = true;
+      track('devis_wizard_start', { form_version: 'smart-devis-v1' });
+    };
+
+    const today = new Date();
+    const todayISO = new Date(today.getTime() - today.getTimezoneOffset() * 60000).toISOString().slice(0, 10);
+    if (dateInput) dateInput.min = todayISO;
+
+    const hydrateAttribution = () => {
+      const params = new URLSearchParams(window.location.search);
+      setHidden('landing_page', window.location.pathname.slice(0, 500));
+      if (document.referrer) {
+        try {
+          const referrerUrl = new URL(document.referrer);
+          setHidden('referrer', `${referrerUrl.origin}${referrerUrl.pathname}`.slice(0, 500));
+        } catch {
+          setHidden('referrer', '');
+        }
+      }
+      ['utm_source', 'utm_medium', 'utm_campaign', 'utm_term', 'utm_content'].forEach((key) => {
+        setHidden(key, (params.get(key) || '').slice(0, 150));
+      });
+      const source = params.get('source');
+      if (source) setHidden('lead_source', source.toLowerCase().replace(/[^a-z0-9_-]/g, '').slice(0, 100) || 'site-web');
+    };
+
+    const restoreDraft = () => {
+      try {
+        const raw = sessionStorage.getItem(storageKey);
+        if (!raw) return;
+        const draft = JSON.parse(raw) as Record<string, string | boolean>;
+        Object.entries(draft).forEach(([name, saved]) => {
+          const elements = Array.from(form.querySelectorAll<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>(`[name="${CSS.escape(name)}"]`));
+          elements.forEach((element) => {
+            if (element instanceof HTMLInputElement && (element.type === 'radio' || element.type === 'checkbox')) {
+              element.checked = saved === element.value || saved === true;
+            } else if (!(element instanceof HTMLInputElement && ['hidden', 'file'].includes(element.type))) {
+              element.value = String(saved);
+            }
+          });
+        });
+      } catch {
+        sessionStorage.removeItem(storageKey);
+      }
+    };
+
+    const saveDraft = () => {
+      try {
+        const draft: Record<string, string | boolean> = {};
+        form.querySelectorAll<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>('input, select, textarea').forEach((element) => {
+          if (!element.name || ['hidden', 'file'].includes(element.type) || ['nom', 'telephone', 'email', 'consentement_confidentialite', 'bot-field'].includes(element.name)) return;
+          if (element instanceof HTMLInputElement && (element.type === 'radio' || element.type === 'checkbox')) {
+            if (element.checked) draft[element.name] = element.value || true;
+          } else {
+            draft[element.name] = element.value;
+          }
+        });
+        sessionStorage.setItem(storageKey, JSON.stringify(draft));
+      } catch {
+        // Storage can be unavailable in privacy mode; the form still works normally.
+      }
+    };
+
+    const setRadio = (name: string, nextValue: string) => {
+      const target = form.querySelector<HTMLInputElement>(`input[name="${CSS.escape(name)}"][value="${CSS.escape(nextValue)}"]`);
+      if (target) target.checked = true;
+    };
+
+    const applyQueryPrefill = () => {
+      const params = new URLSearchParams(window.location.search);
+      const prefills: Record<string, string> = {
+        depart: 'depart_ville',
+        arrivee: 'arrivee_ville',
+        volume: 'volume_m3',
+      };
+      Object.entries(prefills).forEach(([param, name]) => {
+        const raw = params.get(param);
+        const target = field(name);
+        if (!raw || !target) return;
+        if (param === 'volume') {
+          const numericVolume = Number(raw);
+          if (Number.isFinite(numericVolume) && numericVolume > 0) {
+            target.value = String(Math.min(120, Math.round(numericVolume)));
+          }
+        } else {
+          target.value = raw.slice(0, 120);
+        }
+      });
+      const logement = params.get('logement')?.trim().toLowerCase();
+      const housingAliases: Record<string, string> = {
+        'petit-volume': 'petit-volume',
+        'quelques meubles': 'petit-volume',
+        'studio': 'studio',
+        'studio / t1': 'studio',
+        't1': 'studio',
+        't2': 't2',
+        't2 / t3': 't2',
+        't3': 't3',
+        't4': 't4',
+        't4 / t5': 't4',
+        't5': 't4',
+        'maison': 'maison',
+        'bureau': 'bureau',
+      };
+      if (logement && housingAliases[logement]) {
+        const housing = field('logement_depart');
+        if (housing) housing.value = housingAliases[logement];
+      }
+      const distance = params.get('distance');
+      if (distance) {
+        setHidden('distance_prefill', distance.slice(0, 50));
+        if (['local', 'moins-50-km'].includes(distance)) setRadio('type_trajet', 'local');
+        if (['longue', 'france', 'plus-50-km'].includes(distance)) setRadio('type_trajet', 'france');
+        if (['international', 'etranger'].includes(distance)) setRadio('type_trajet', 'international');
+      }
+      const formule = params.get('formule');
+      if (formule) setHidden('formule_prefill', formule.slice(0, 50));
+      ['cartons_total', 'cartons_petits', 'cartons_grands', 'cartons_livres'].forEach((name) => {
+        const raw = params.get(name);
+        if (raw === null || raw.trim() === '') return;
+        const count = Number(raw);
+        if (Number.isFinite(count) && count >= 0) {
+          setHidden(name, String(Math.min(500, Math.round(count))));
+        }
+      });
+      const service = params.get('service');
+      if (service === 'demenagement-local') setRadio('type_trajet', 'local');
+      if (service === 'demenagement-longue-distance') setRadio('type_trajet', 'france');
+      if (service === 'demenagement-international') setRadio('type_trajet', 'international');
+      if (service === 'transport-piano') {
+        const piano = field('objet_piano') as HTMLInputElement | null;
+        if (piano) piano.checked = true;
+      }
+      if (service === 'transport-meubles') {
+        const housing = field('logement_depart');
+        if (housing) housing.value = 'petit-volume';
+      }
+      if (service === 'petit-demenagement') {
+        setRadio('type_trajet', 'local');
+        const housing = field('logement_depart');
+        if (housing) housing.value = 'petit-volume';
+      }
+      if (service === 'trajet-groupe') {
+        setRadio('type_trajet', 'france');
+        setHidden('request_context', 'trajet-groupe');
+      }
+      const requestedDate = params.get('date');
+      if (requestedDate && /^\d{4}-\d{2}-\d{2}$/.test(requestedDate) && dateInput) {
+        dateInput.value = requestedDate;
+      }
+      const offeredVolume = Number(params.get('volume_max'));
+      if (Number.isFinite(offeredVolume) && offeredVolume > 0) {
+        setHidden('volume_offer_max', String(Math.min(120, Math.round(offeredVolume))));
+      }
+    };
+
+    const inferredVolume = () => {
+      const explicit = Number(value('volume_m3'));
+      if (explicit > 0) return Math.min(explicit, 120);
+      const defaults: Record<string, number> = { 'petit-volume': 5, studio: 10, t2: 18, t3: 28, t4: 38, maison: 50, bureau: 25 };
+      const housingVolume = defaults[value('logement_depart')] || 0;
+      const surface = Number(value('surface_depart_m2'));
+      const surfaceVolume = surface > 0 ? Math.round(surface * 0.42) : 0;
+      return Math.max(housingVolume, surfaceVolume);
+    };
+
+    const formatPrice = (price: number) => new Intl.NumberFormat('fr-FR').format(price);
+    const computeEstimate = () => {
+      const route = value('type_trajet');
+      const volume = inferredVolume();
+      if (!route || !volume) {
+        form.querySelectorAll<HTMLElement>('[data-estimate-output]').forEach((element) => { element.textContent = 'À calculer'; });
+        form.querySelectorAll<HTMLElement>('[data-volume-output]').forEach((element) => { element.textContent = 'Complétez le logement ou le volume'; });
+        setHidden('estimation_min', '');
+        setHidden('estimation_max', '');
+        setHidden('estimation_volume_m3', volume ? String(volume) : '');
+        return null;
+      }
+
+      const brackets: Record<string, Array<[number, number]>> = {
+        local: [[5, 150], [12, 450], [20, 650], [30, 950], [40, 1400], [999, 1900]],
+        france: [[5, 450], [12, 950], [20, 1400], [30, 1800], [40, 2400], [999, 2800]],
+        international: [[12, 2500], [30, 3500], [50, 5000], [999, 6500]],
+      };
+      let price = (brackets[route] || brackets.local).find(([limit]) => volume <= limit)?.[1] || 1900;
+      const accessCost = (suffix: 'depart' | 'arrivee') => {
+        const floor = Number(value(`etage_${suffix}`));
+        const lift = value(`ascenseur_${suffix}`);
+        const parking = value(`stationnement_${suffix}`);
+        let total = lift.startsWith('oui') ? 0 : floor * 25;
+        if (parking === '10-30m') total += 40;
+        if (parking === 'plus-30m') total += 90;
+        return total;
+      };
+      price += accessCost('depart') + accessCost('arrivee');
+      if (checked('service_cartons')) price += 120;
+      if (checked('service_emballage')) price += 280;
+      if (checked('service_demontage')) price += 120;
+      if (checked('service_deballage')) price += 160;
+      if (checked('objet_piano')) price += 350;
+      if (checked('objet_lourd')) price += 250;
+
+      const low = Math.max(150, Math.round(price / 10) * 10);
+      const multiplier = route === 'international' ? 1.35 : 1.2;
+      const high = Math.round(price * multiplier / 10) * 10;
+      const output = `${formatPrice(low)} – ${formatPrice(high)} €`;
+      form.querySelectorAll<HTMLElement>('[data-estimate-output]').forEach((element) => { element.textContent = output; });
+      form.querySelectorAll<HTMLElement>('[data-volume-output]').forEach((element) => { element.textContent = `Base de calcul : environ ${volume} m³`; });
+      setHidden('estimation_min', String(low));
+      setHidden('estimation_max', String(high));
+      setHidden('estimation_volume_m3', String(volume));
+      return { low, high, volume, route };
+    };
+
+    const updateDateNotice = () => {
+      if (!dateInput || !dateNotice || !dateInput.value) {
+        if (dateNotice) dateNotice.hidden = true;
+        return;
+      }
+      const requested = new Date(`${dateInput.value}T12:00:00`);
+      const days = (requested.getTime() - Date.now()) / 86400000;
+      dateNotice.hidden = !(days >= 0 && days < 7);
+    };
+
+    const updateVideoSlot = () => {
+      if (!videoSlot) return;
+      videoSlot.hidden = value('visite_video') !== 'oui';
+    };
+
+    const updateContactRequirements = () => {
+      if (!emailInput) return;
+      emailInput.required = preferredContact?.value === 'email';
+    };
+
+    const updateSummary = () => {
+      const list = form.querySelector<HTMLElement>('[data-summary]');
+      if (!list) return;
+      const routeLabels: Record<string, string> = { local: 'Trajet local', france: 'Longue distance en France', international: 'Trajet international' };
+      const lines = [
+        `${value('depart_ville') || 'Départ à préciser'} → ${value('arrivee_ville') || 'arrivée à préciser'}`,
+        value('date_souhaitee') ? `Date : ${new Date(`${value('date_souhaitee')}T12:00:00`).toLocaleDateString('fr-FR')}` : 'Date à préciser',
+        routeLabels[value('type_trajet')] || 'Type de trajet à préciser',
+        inferredVolume() ? `Volume retenu : environ ${inferredVolume()} m³` : 'Volume à vérifier',
+      ];
+      const formulaLabels: Record<string, string> = { essentielle: 'Essentielle', confort: 'Confort', 'clé-en-main': 'Clé en main' };
+      if (value('formule_prefill')) {
+        lines.push(`Formule demandée : ${formulaLabels[value('formule_prefill')] || value('formule_prefill')}`);
+      }
+      if (value('cartons_total')) {
+        const details = [
+          value('cartons_petits') && `${value('cartons_petits')} petits`,
+          value('cartons_grands') && `${value('cartons_grands')} grands`,
+          value('cartons_livres') && `${value('cartons_livres')} livres`,
+        ].filter(Boolean);
+        lines.push(`Cartons calculés : ${value('cartons_total')} au total${details.length ? ` (${details.join(', ')})` : ''}`);
+      }
+      list.replaceChildren(...lines.map((line) => {
+        const item = document.createElement('li');
+        item.textContent = line;
+        return item;
+      }));
+    };
+
+    const validateStep = (index: number) => {
+      if (index === 4) updateContactRequirements();
+      const controls = Array.from(steps[index].querySelectorAll<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>('input, select, textarea'));
+      controls.forEach((control) => {
+        if (!control.checkValidity()) {
+          control.classList.add('is-touched');
+        }
+      });
+      const firstInvalid = controls.find((control) => !control.checkValidity());
+      if (firstInvalid) {
+        if (errorBox) {
+          errorBox.hidden = false;
+          errorBox.focus();
+        }
+        firstInvalid.reportValidity();
+        return false;
+      }
+      if (errorBox) errorBox.hidden = true;
+      return true;
+    };
+
+    const showStep = (index: number, shouldFocus = true) => {
+      currentStep = Math.max(0, Math.min(index, steps.length - 1));
+      steps.forEach((step, stepIndex) => { step.hidden = stepIndex !== currentStep; });
+      progressItems.forEach((item, itemIndex) => {
+        item.classList.toggle('is-current', itemIndex === currentStep);
+        item.classList.toggle('is-complete', itemIndex < currentStep);
+        if (itemIndex === currentStep) item.setAttribute('aria-current', 'step');
+        else item.removeAttribute('aria-current');
+      });
+      if (progressBar) progressBar.style.width = `${((currentStep + 1) / steps.length) * 100}%`;
+      if (progressText) progressText.textContent = `Étape ${currentStep + 1} sur ${steps.length} · ${stepNames[currentStep]}`;
+      if (currentStep >= 3) {
+        const estimate = computeEstimate();
+        if (estimate && !estimateViewed) {
+          estimateViewed = true;
+          track('devis_estimate_view', { estimate_min: estimate.low, estimate_max: estimate.high, estimated_volume: estimate.volume, route_type: estimate.route });
+        }
+      }
+      if (currentStep === 4) updateSummary();
+      track('devis_step_view', { step_number: currentStep + 1, step_name: stepNames[currentStep] });
+      if (shouldFocus) {
+        steps[currentStep].querySelector<HTMLElement>('legend')?.focus?.();
+        form.scrollIntoView({ behavior: window.matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth', block: 'start' });
+      }
+    };
+
+    hydrateAttribution();
+    restoreDraft();
+    applyQueryPrefill();
+    updateDateNotice();
+    updateVideoSlot();
+    updateContactRequirements();
+    computeEstimate();
+    showStep(0, false);
+
+    form.addEventListener('input', () => {
+      start();
+      saveDraft();
+      computeEstimate();
+      updateDateNotice();
+      updateVideoSlot();
+      updateContactRequirements();
+    });
+    form.addEventListener('change', () => {
+      saveDraft();
+      computeEstimate();
+      updateDateNotice();
+      updateVideoSlot();
+      updateContactRequirements();
+    });
+
+    form.querySelectorAll<HTMLButtonElement>('.wizard__next').forEach((button) => {
+      button.addEventListener('click', () => {
+        start();
+        if (!validateStep(currentStep)) return;
+        track('devis_step_complete', { step_number: currentStep + 1, step_name: stepNames[currentStep] });
+        showStep(currentStep + 1);
+      });
+    });
+    form.addEventListener('keydown', (event) => {
+      if (event.key !== 'Enter' || currentStep >= steps.length - 1) return;
+      const target = event.target;
+      const isSingleLineInput = target instanceof HTMLInputElement && !['checkbox', 'radio', 'file', 'button', 'submit'].includes(target.type);
+      if (!isSingleLineInput) return;
+      event.preventDefault();
+      start();
+      if (!validateStep(currentStep)) return;
+      track('devis_step_complete', { step_number: currentStep + 1, step_name: stepNames[currentStep] });
+      showStep(currentStep + 1);
+    });
+    form.querySelectorAll<HTMLButtonElement>('.wizard__back').forEach((button) => {
+      button.addEventListener('click', () => showStep(currentStep - 1));
+    });
+    form.querySelectorAll<HTMLButtonElement>('[data-edit-step]').forEach((button) => {
+      button.addEventListener('click', () => showStep(Number(button.dataset.editStep || 0)));
+    });
+
+    form.addEventListener('submit', (event) => {
+      if (!validateStep(4)) {
+        event.preventDefault();
+        return;
+      }
+      const estimate = computeEstimate();
+      setHidden('wizard_completed', 'oui');
+      track('devis_wizard_submit', {
+        form_version: 'smart-devis-v1',
+        estimate_min: estimate?.low || 0,
+        estimate_max: estimate?.high || 0,
+        route_type: estimate?.route || 'unknown',
+      });
+      if (submitButton) {
+        submitButton.disabled = true;
+        submitButton.textContent = 'Envoi en cours…';
+      }
+    });
+  }
+</script>

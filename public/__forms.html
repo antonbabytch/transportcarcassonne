@@ -2,6 +2,7 @@
 <html lang="fr">
 <head>
   <meta charset="utf-8">
+  <meta name="robots" content="noindex, nofollow">
   <title>Netlify Forms detection — do not visit</title>
 </head>
 <body>
@@ -24,6 +25,79 @@
     <input type="date" name="date" />
     <textarea name="message"></textarea>
     <input name="bot-field" />
+  </form>
+
+  <!-- Formulaire guidé sur /devis/ ; définition statique pour la détection Netlify. -->
+  <form
+    name="devis-intelligent"
+    method="POST"
+    action="/merci/"
+    data-netlify="true"
+    netlify-honeypot="bot-field"
+    hidden
+  >
+    <input type="hidden" name="form-name" value="devis-intelligent" />
+    <input type="hidden" name="form_version" />
+    <input type="hidden" name="lead_status" />
+    <input type="hidden" name="lead_source" />
+    <input type="hidden" name="request_context" />
+    <input type="hidden" name="volume_offer_max" />
+    <input type="hidden" name="formule_prefill" />
+    <input type="hidden" name="distance_prefill" />
+    <input type="hidden" name="cartons_total" />
+    <input type="hidden" name="cartons_petits" />
+    <input type="hidden" name="cartons_grands" />
+    <input type="hidden" name="cartons_livres" />
+    <input type="hidden" name="landing_page" />
+    <input type="hidden" name="referrer" />
+    <input type="hidden" name="utm_source" />
+    <input type="hidden" name="utm_medium" />
+    <input type="hidden" name="utm_campaign" />
+    <input type="hidden" name="utm_term" />
+    <input type="hidden" name="utm_content" />
+    <input type="hidden" name="estimation_min" />
+    <input type="hidden" name="estimation_max" />
+    <input type="hidden" name="estimation_volume_m3" />
+    <input type="hidden" name="wizard_completed" />
+    <input name="bot-field" />
+    <input name="type_trajet" />
+    <input name="depart_ville" />
+    <input name="depart_code_postal" />
+    <input name="arrivee_ville" />
+    <input name="arrivee_code_postal_pays" />
+    <input name="date_souhaitee" />
+    <input name="flexibilite_date" />
+    <input name="logement_depart" />
+    <input name="surface_depart_m2" />
+    <input name="etage_depart" />
+    <input name="ascenseur_depart" />
+    <input name="stationnement_depart" />
+    <input name="acces_depart" />
+    <input name="logement_arrivee" />
+    <input name="etage_arrivee" />
+    <input name="ascenseur_arrivee" />
+    <input name="stationnement_arrivee" />
+    <input name="volume_m3" />
+    <input name="nombre_cartons" />
+    <input name="nombre_meubles_volumineux" />
+    <input name="nombre_electromenager" />
+    <input name="objet_piano" />
+    <input name="objet_lourd" />
+    <input name="objet_fragile" />
+    <input name="objet_tres_grand" />
+    <input name="service_cartons" />
+    <input name="service_emballage" />
+    <input name="service_demontage" />
+    <input name="service_deballage" />
+    <textarea name="inventaire_details"></textarea>
+    <input name="visite_video" />
+    <input name="creneau_visite_video" />
+    <input name="nom" />
+    <input name="telephone" />
+    <input name="email" />
+    <input name="contact_prefere" />
+    <input name="creneau_rappel" />
+    <input name="consentement_confidentialite" />
   </form>
 </body>
 </html>

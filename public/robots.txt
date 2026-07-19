@@ -1,7 +1,4 @@
 User-agent: *
 Allow: /
-Disallow: /merci/
-Disallow: /merci
-Disallow: /__forms.html
 
 Sitemap: https://transportcarcassonne.fr/sitemap-index.xml

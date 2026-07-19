@@ -3,37 +3,36 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 import Header from '../components/Header.astro';
 import Footer from '../components/Footer.astro';
 import CTA from '../components/CTA.astro';
-import ComboOffer from '../components/ComboOffer.astro';
 import QuoteForm from '../components/QuoteForm.astro';
 import { SITE } from '../data/site.config';
 
-const title = 'Petit déménagement Carcassonne — Prix dès 150€ | Transport Carcassonne';
-const description = `Petit déménagement à Carcassonne et dans l'Aude : studio, 1-2 meubles, déménagement étudiant. Prix dès 150€, devis gratuit sous 2h. ${SITE.phoneDisplay}`;
+const title = 'Petit déménagement à Carcassonne | Estimation sur devis';
+const description = `Petit déménagement à Carcassonne et dans l'Aude : studio, 1-2 meubles ou déménagement étudiant. Repères tarifaires indicatifs, montant confirmé sur devis. ${SITE.phoneDisplay}`;
 
 const cases = [
   {
     icon: '🛏',
     title: 'Studio ou T1',
-    price: 'dès 250 €',
-    desc: 'Studio meublé ou non, déménagement étudiant, mobilier compact. Camion 12 m³, 2 déménageurs.',
+    price: 'repère dès 250 €',
+    desc: 'Studio meublé ou non, déménagement étudiant, mobilier compact. Les moyens nécessaires sont précisés sur le devis.',
   },
   {
     icon: '🛋',
     title: '1 à 3 meubles',
-    price: 'dès 150 €',
+    price: 'repère dès 150 €',
     desc: 'Canapé, lit, armoire ou table à transporter ? Idéal pour les achats Le Bon Coin, Vinted, IKEA.',
   },
   {
     icon: '🎓',
     title: 'Déménagement étudiant',
-    price: 'dès 220 €',
-    desc: 'Chambre d\'étudiant, kitchenette : nous adaptons le service à votre budget. Remise -5 %.',
+    price: 'repère dès 220 €',
+    desc: 'Chambre d\'étudiant, kitchenette : la prestation est dimensionnée selon le volume, les accès et le trajet.',
   },
   {
     icon: '🏢',
     title: 'Cabinet ou bureau',
-    price: 'dès 280 €',
-    desc: 'Petit bureau, cabinet médical, kinésithérapeute : déménagement le weekend possible.',
+    price: 'repère dès 280 €',
+    desc: 'Petit bureau ou cabinet : les créneaux et conditions d’intervention sont confirmés avant engagement.',
   },
 ];
 
@@ -49,32 +48,54 @@ const priceMatrix = [
 const faqs = [
   {
     q: 'Quel est le prix minimum d\'un petit déménagement ?',
-    a: 'Notre tarif minimum d\'intervention est de 150 € pour un seul meuble ou un transport ponctuel à Carcassonne ou dans un rayon de 15 km. Au-delà, le prix dépend du volume (m³) et de la distance.',
+    a: '150 € constitue uniquement un repère indicatif pour une intervention simple. Le montant réel dépend notamment du volume, des accès, de la distance, du créneau et des services retenus ; seul le devis écrit le confirme.',
   },
   {
     q: 'Faites-vous des déménagements le weekend ?',
-    a: 'Oui, nous intervenons le samedi sans supplément, et le dimanche avec un supplément de 50 € pour répondre aux contraintes des étudiants et des actifs.',
+    a: 'Les demandes du samedi ou du dimanche sont étudiées selon le planning. La disponibilité et les éventuelles conditions particulières figurent sur le devis.',
   },
   {
     q: 'Pouvez-vous déménager un seul meuble (canapé, armoire) ?',
-    a: 'Bien sûr. Beaucoup de nos clients font appel à nous pour livrer un meuble acheté sur Le Bon Coin, Vinted ou IKEA. Devis sous 2h, intervention possible le jour même.',
+    a: 'Oui, une demande peut concerner un seul meuble acheté auprès d’un particulier ou d’une enseigne. La faisabilité et la date d’intervention sont confirmées selon le planning.',
   },
   {
     q: 'Faut-il prévoir les cartons ?',
-    a: 'Vous pouvez utiliser vos propres cartons ou nous demander un kit de cartons (10 cartons = 30 €, 20 cartons = 50 €). Nous fournissons toujours couvertures et sangles de protection.',
+    a: 'Vous pouvez utiliser vos propres cartons. Si des fournitures ou protections doivent être ajoutées à la prestation, leur nature, leur quantité et leur prix sont précisés sur le devis.',
   },
   {
     q: 'Quels sont les délais d\'intervention pour un petit déménagement ?',
-    a: 'Pour un petit déménagement urgent, nous intervenons sous 24 à 48h selon notre planning. Pour une planification anticipée, prévoyez 3 à 7 jours.',
+    a: 'Le délai dépend du planning, du trajet, du volume et des accès. Une demande urgente peut être étudiée, sans promesse de délai avant confirmation écrite du créneau.',
   },
   {
-    q: 'Y a-t-il une remise pour les étudiants ?',
-    a: 'Oui, nous proposons une remise de 5 % sur tous les déménagements étudiants (sur présentation de la carte étudiante).',
+    q: 'Existe-t-il un tarif particulier pour les étudiants ?',
+    a: 'Le prix est établi selon les caractéristiques du projet. Toute remise éventuelle doit apparaître explicitement sur le devis ; aucune réduction générale n’est promise sur cette page.',
   },
 ];
 ---
 
 <BaseLayout title={title} description={description}>
+  <script is:inline slot="head" type="application/ld+json" set:html={JSON.stringify({
+    '@context': 'https://schema.org',
+    '@type': 'FAQPage',
+    mainEntity: faqs.map(f => ({
+      '@type': 'Question',
+      name: f.q,
+      acceptedAnswer: { '@type': 'Answer', text: f.a },
+    })),
+  })} />
+  <script is:inline slot="head" type="application/ld+json" set:html={JSON.stringify({
+    '@context': 'https://schema.org',
+    '@type': 'Service',
+    '@id': `${SITE.url}/petit-demenagement/#service`,
+    name: 'Petit déménagement à Carcassonne',
+    serviceType: 'Petit déménagement',
+    url: `${SITE.url}/petit-demenagement/`,
+    provider: { '@id': `${SITE.url}/#business` },
+    areaServed: [
+      { '@type': 'City', name: SITE.hq.city },
+      { '@type': 'AdministrativeArea', name: 'Aude' },
+    ],
+  })} />
   <Header />
 
   <!-- Hero -->
@@ -84,10 +105,10 @@ const faqs = [
       <h1>Petit déménagement<br/><span class="highlight">à Carcassonne</span></h1>
       <p class="petit-hero-sub">
         Studio, étudiant, 1 ou 2 meubles, livraison Le Bon Coin : nous nous adaptons
-        à votre budget. <strong>Prix dès 150 €</strong>, devis gratuit sous 2h.
+        à votre projet. <strong>Repère indicatif dès 150 €, montant confirmé sur devis.</strong>
       </p>
       <div class="petit-hero-cta">
-        <a href="/contact" class="btn btn--primary btn--lg">Devis gratuit →</a>
+        <a href="/devis/?service=petit-demenagement&source=petit-demenagement" class="btn btn--primary btn--lg">Devis gratuit →</a>
         <a href={`tel:${SITE.phone}`} class="btn btn--outline btn--lg">📞 {SITE.phoneDisplay}</a>
       </div>
     </div>
@@ -99,7 +120,7 @@ const faqs = [
       <div class="section-header" style="text-align:center;margin-bottom:48px">
         <span class="section-label">Pour qui ?</span>
         <h2 class="section-title">4 cas typiques de petit déménagement</h2>
-        <p class="section-subtitle">À chaque besoin, un tarif adapté. Pas de minimum déraisonnable.</p>
+        <p class="section-subtitle">Chaque exemple est indicatif : le devis tient compte du volume, des accès, du trajet et du créneau.</p>
       </div>
       <div class="grid-2 cases-grid">
         {cases.map(c => (
@@ -118,15 +139,15 @@ const faqs = [
   <section class="section section--alt">
     <div class="container">
       <div class="section-header" style="text-align:center;margin-bottom:32px">
-        <span class="section-label">Tarifs transparents</span>
-        <h2 class="section-title">Grille tarifaire petit déménagement</h2>
-        <p class="section-subtitle">Tarifs indicatifs TTC, valables au départ de Carcassonne.</p>
+        <span class="section-label">Repères tarifaires</span>
+        <h2 class="section-title">Exemples de budget pour un petit déménagement</h2>
+        <p class="section-subtitle">Montants indicatifs et non contractuels : seul un devis personnalisé confirme le prix et le périmètre.</p>
       </div>
       <div class="price-table">
         <div class="price-table__head">
           <span>Type d'intervention</span>
           <span>Distance</span>
-          <span>Prix à partir de</span>
+          <span>Repère indicatif</span>
         </div>
         {priceMatrix.map((row, i) => (
           <div class:list={['price-table__row', i % 2 === 0 && 'price-table__row--alt']}>
@@ -137,8 +158,8 @@ const faqs = [
         ))}
       </div>
       <p class="price-disclaimer">
-        💡 Tous les prix incluent : camion + 2 déménageurs + carburant + couvertures
-        + sangles + calage soigné. Aucun frais caché.
+        💡 Ces exemples ne constituent pas une offre. Le devis détaille les moyens humains et matériels,
+        le transport, les protections, les options et les éventuels frais liés aux accès ou au trajet.
       </p>
     </div>
   </section>
@@ -153,13 +174,13 @@ const faqs = [
       <div class="grid-3">
         <div class="approach-card">
           <div class="approach-icon">⚡</div>
-          <h3>Intervention rapide</h3>
-          <p>Sous 24-48h pour les urgences. Devis téléphonique en 5 minutes.</p>
+          <h3>Planning vérifié</h3>
+          <p>Nous étudions votre date souhaitée et confirmons le créneau selon les disponibilités.</p>
         </div>
         <div class="approach-card">
           <div class="approach-icon">💼</div>
-          <h3>Sans minimum déraisonnable</h3>
-          <p>Un seul meuble ? Pas de problème. Tarif honnête dès 150 €.</p>
+          <h3>Projet dimensionné</h3>
+          <p>Un seul meuble peut faire l’objet d’un devis adapté au trajet, aux accès et à la manutention.</p>
         </div>
         <div class="approach-card">
           <div class="approach-icon">🛡️</div>
@@ -188,52 +209,15 @@ const faqs = [
     </div>
   </section>
 
-  <ComboOffer />
-
-  <QuoteForm title="Devis pour votre petit déménagement" subtitle="Réponse sous 2h · Aucune obligation" />
+  <QuoteForm title="Devis pour votre petit déménagement" subtitle="Décrivez votre projet · réponse selon nos disponibilités" />
 
   <CTA
     title="Un seul meuble ou un studio à déménager ?"
-    subtitle="Appelez-nous, nous vous donnons un prix par téléphone en 5 minutes."
+    subtitle="Décrivez le volume, les accès et le trajet pour recevoir une proposition personnalisée."
   />
 
   <Footer />
 </BaseLayout>
-
-<!-- FAQ Schema -->
-<script type="application/ld+json" set:html={JSON.stringify({
-  '@context': 'https://schema.org',
-  '@type': 'FAQPage',
-  'mainEntity': faqs.map(f => ({
-    '@type': 'Question',
-    'name': f.q,
-    'acceptedAnswer': { '@type': 'Answer', 'text': f.a },
-  })),
-})} />
-
-<!-- Service Schema -->
-<script type="application/ld+json" set:html={JSON.stringify({
-  '@context': 'https://schema.org',
-  '@type': 'Service',
-  'serviceType': 'Petit déménagement',
-  'provider': {
-    '@type': 'MovingCompany',
-    'name': SITE.name,
-    'url': SITE.url,
-    'telephone': SITE.phone,
-  },
-  'areaServed': {
-    '@type': 'GeoCircle',
-    'geoMidpoint': { '@type': 'GeoCoordinates', latitude: SITE.geo.lat, longitude: SITE.geo.lng },
-    'geoRadius': SITE.serviceRadius * 1000,
-  },
-  'offers': {
-    '@type': 'Offer',
-    'priceCurrency': 'EUR',
-    'price': '150',
-    'priceSpecification': { '@type': 'PriceSpecification', 'minPrice': '150', 'priceCurrency': 'EUR' },
-  },
-})} />
 
 <style>
   .petit-hero {

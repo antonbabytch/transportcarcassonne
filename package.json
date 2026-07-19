@@ -8,6 +8,9 @@
   "scripts": {
     "dev": "astro dev",
     "build": "astro build",
+    "check": "astro check",
+    "audit:seo": "npm run build && node scripts/seo-audit.mjs",
+    "report:leads": "node scripts/lead-report.mjs",
     "preview": "astro preview",
     "astro": "astro"
   },

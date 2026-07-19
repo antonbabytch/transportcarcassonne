@@ -1,0 +1,258 @@
+---
+const homes = [
+  { value: 'studio', label: 'Studio', base: 14 },
+  { value: 't1', label: 'T1', base: 18 },
+  { value: 't2', label: 'T2', base: 26 },
+  { value: 't3', label: 'T3', base: 38 },
+  { value: 't4', label: 'T4', base: 52 },
+  { value: 't5', label: 'T5 ou plus', base: 68 },
+  { value: 'maison', label: 'Maison avec dépendances', base: 84 },
+];
+
+const densities = [
+  { value: 'light', label: 'Peu chargé', hint: 'Tri régulier, peu de décoration', factor: .75 },
+  { value: 'normal', label: 'Standard', hint: 'Placards normalement remplis', factor: 1 },
+  { value: 'dense', label: 'Très chargé', hint: 'Nombreux objets, déco ou collections', factor: 1.35 },
+];
+---
+
+<section class="packing-calculator" aria-labelledby="packing-calculator-title">
+  <div class="packing-layout">
+    <form class="packing-form" id="packing-form">
+      <div class="packing-form__intro">
+        <span class="section-label">Votre logement</span>
+        <h2 id="packing-calculator-title">Trois informations pour préparer vos cartons</h2>
+        <p>Le calcul utilise des moyennes de préparation. Ajustez ensuite le résultat selon votre cave, votre garage et vos objets fragiles.</p>
+      </div>
+
+      <div class="field-group">
+        <label for="packing-home">Type de logement</label>
+        <select id="packing-home" name="home">
+          {homes.map((home) => <option value={home.value} data-base={home.base} selected={home.value === 't2'}>{home.label}</option>)}
+        </select>
+      </div>
+
+      <fieldset class="field-group people-group">
+        <legend>Nombre d’occupants</legend>
+        <div class="stepper">
+          <button type="button" id="people-minus" aria-label="Retirer un occupant">−</button>
+          <output id="people-output" for="packing-people" aria-live="polite">2</output>
+          <input id="packing-people" name="people" type="hidden" value="2" />
+          <button type="button" id="people-plus" aria-label="Ajouter un occupant">+</button>
+        </div>
+        <p>Comptez les adultes et les enfants dont les affaires doivent être emballées.</p>
+      </fieldset>
+
+      <fieldset class="field-group density-group">
+        <legend>Quantité d’affaires</legend>
+        <div class="density-options">
+          {densities.map((density) => (
+            <label>
+              <input
+                type="radio"
+                name="density"
+                value={density.value}
+                data-factor={density.factor}
+                checked={density.value === 'normal'}
+              />
+              <span>
+                <strong>{density.label}</strong>
+                <small>{density.hint}</small>
+              </span>
+            </label>
+          ))}
+        </div>
+      </fieldset>
+
+      <div class="packing-extras">
+        <h3>Éléments à ajouter manuellement</h3>
+        <p>Le résultat ne compte pas précisément le contenu d’une cave, d’un grenier, d’un garage, d’un atelier ou d’une grande collection de livres.</p>
+      </div>
+    </form>
+
+    <aside class="packing-result">
+      <p class="packing-live-status" id="packing-live-status" role="status" aria-live="polite"></p>
+      <span class="packing-result__eyebrow">Estimation actuelle</span>
+      <strong class="packing-result__total"><span id="total-boxes">0</span> cartons</strong>
+      <p id="result-context">Pour un T2, 2 occupants, avec une quantité d’affaires standard.</p>
+
+      <div class="material-list">
+        <div class="material-item">
+          <span class="material-item__icon" aria-hidden="true">S</span>
+          <div><strong id="small-boxes">0</strong><span>petits cartons</span><small>vaisselle, fragile et petits objets</small></div>
+        </div>
+        <div class="material-item">
+          <span class="material-item__icon" aria-hidden="true">G</span>
+          <div><strong id="large-boxes">0</strong><span>grands cartons</span><small>linge, vêtements et objets légers</small></div>
+        </div>
+        <div class="material-item">
+          <span class="material-item__icon" aria-hidden="true">L</span>
+          <div><strong id="book-boxes">0</strong><span>cartons à livres</span><small>format réduit pour limiter le poids</small></div>
+        </div>
+        <div class="material-item">
+          <span class="material-item__icon" aria-hidden="true">A</span>
+          <div><strong id="tape-rolls">0</strong><span>rouleaux d’adhésif</span><small>hors ruban de marquage spécifique</small></div>
+        </div>
+        <div class="material-item">
+          <span class="material-item__icon" aria-hidden="true">B</span>
+          <div><strong><span id="bubble-meters">0</span> m</strong><span>de papier bulle</span><small>à augmenter pour objets très fragiles</small></div>
+        </div>
+      </div>
+
+      <a class="btn btn--primary" id="packing-devis-link" href="/devis/?source=calculateur-cartons">Continuer vers le devis →</a>
+      <p class="packing-result__note">Estimation indicative et non contractuelle. Les formats varient selon les fournisseurs et les besoins réels doivent être vérifiés avant achat ou préparation.</p>
+    </aside>
+  </div>
+</section>
+
+<style>
+  .packing-calculator { max-width: 1080px; margin: 0 auto; }
+  .packing-layout { display: grid; grid-template-columns: minmax(0, 1fr) 350px; gap: 30px; align-items: start; }
+  .packing-form, .packing-result { border: 1px solid var(--line); border-radius: var(--radius-lg); }
+  .packing-form { background: var(--bg-card); padding: 34px; }
+  .packing-form__intro { margin-bottom: 28px; }
+  .packing-form__intro h2 { margin: 8px 0 10px; }
+  .packing-form__intro p { color: var(--text-muted); line-height: 1.7; }
+  .field-group { border: 0; padding: 22px 0; border-top: 1px solid var(--line); }
+  .field-group > label, .field-group legend { display: block; color: var(--text); font-size: .86rem; font-weight: 800; margin-bottom: 11px; }
+  .field-group select { width: 100%; min-height: 48px; border: 1px solid var(--line); border-radius: 7px; background: var(--bg); color: var(--text); padding: 0 14px; font: inherit; }
+  .field-group select:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+  .people-group > p { color: var(--text-muted); font-size: .78rem; margin-top: 10px; }
+  .stepper { width: max-content; display: grid; grid-template-columns: 44px 70px 44px; align-items: stretch; }
+  .stepper button, .stepper output { height: 46px; border: 1px solid var(--line); display: grid; place-items: center; background: var(--bg); color: var(--text); font: inherit; }
+  .stepper button { cursor: pointer; font-size: 1.2rem; }
+  .stepper button:first-child { border-radius: 7px 0 0 7px; }
+  .stepper button:last-child { border-radius: 0 7px 7px 0; }
+  .stepper button:hover, .stepper button:focus-visible { background: var(--accent-soft); border-color: var(--accent); outline: none; }
+  .stepper button:disabled { cursor: not-allowed; opacity: .45; background: var(--bg-soft); border-color: var(--line); }
+  .stepper output { border-inline: 0; font-weight: 800; font-size: 1.05rem; }
+  .density-options { display: grid; grid-template-columns: repeat(3, 1fr); gap: 9px; }
+  .density-options label { cursor: pointer; }
+  .density-options input { position: absolute; opacity: 0; pointer-events: none; }
+  .density-options label > span { min-height: 105px; display: flex; flex-direction: column; justify-content: center; gap: 5px; border: 1px solid var(--line); border-radius: 8px; padding: 14px; background: var(--bg); }
+  .density-options strong { color: var(--text); font-size: .85rem; }
+  .density-options small { color: var(--text-muted); font-size: .72rem; line-height: 1.45; }
+  .density-options input:checked + span { border-color: var(--accent); background: var(--accent-soft); box-shadow: inset 0 0 0 1px var(--accent); }
+  .density-options input:focus-visible + span { outline: 2px solid var(--accent); outline-offset: 2px; }
+  .packing-extras { padding: 20px; background: var(--bg-soft); border-radius: 8px; }
+  .packing-extras h3 { font-family: var(--font-sans); font-size: .86rem; margin-bottom: 5px; }
+  .packing-extras p { color: var(--text-muted); font-size: .78rem; line-height: 1.55; }
+  .packing-result { position: sticky; top: 96px; padding: 28px; background: var(--bg-dark); border-color: var(--line-dark); color: var(--text-on-dark); }
+  .packing-result__eyebrow { display: block; color: var(--text-on-dark-muted); font-size: .7rem; font-weight: 800; letter-spacing: .13em; text-transform: uppercase; }
+  .packing-result__total { display: block; color: var(--accent); font-family: var(--font-display); font-size: 2.8rem; line-height: 1.1; margin: 8px 0 10px; }
+  .packing-result > p:not(.packing-result__note) { color: var(--text-on-dark-muted); font-size: .82rem; line-height: 1.55; }
+  .material-list { display: grid; margin: 22px 0; border-block: 1px solid var(--line-dark); }
+  .material-item { display: grid; grid-template-columns: 34px 1fr; gap: 12px; align-items: center; padding: 13px 0; border-bottom: 1px solid var(--line-dark); }
+  .material-item:last-child { border-bottom: 0; }
+  .material-item__icon { width: 30px; height: 30px; border: 1px solid var(--line-dark); border-radius: 50%; color: var(--accent); display: grid; place-items: center; font-size: .68rem; font-weight: 800; }
+  .material-item div { display: grid; grid-template-columns: auto 1fr; column-gap: 6px; align-items: baseline; }
+  .material-item strong { color: var(--text-on-dark); font-size: 1.05rem; }
+  .material-item div > span { color: var(--text-on-dark); font-size: .8rem; }
+  .material-item small { grid-column: 1 / -1; color: var(--text-on-dark-muted); font-size: .66rem; }
+  .packing-result .btn { width: 100%; justify-content: center; white-space: normal; text-align: center; padding-inline: 14px; }
+  .packing-result__note { color: var(--text-on-dark-muted); font-size: .69rem; line-height: 1.55; margin-top: 16px; }
+  .packing-live-status { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0, 0, 0, 0); white-space: nowrap; border: 0; }
+
+  @media (max-width: 860px) {
+    .packing-layout { grid-template-columns: 1fr; }
+    .packing-result { position: static; }
+  }
+  @media (max-width: 600px) {
+    .packing-form { padding: 26px 18px; }
+    .density-options { grid-template-columns: 1fr; }
+    .density-options label > span { min-height: 0; }
+  }
+</style>
+
+<script is:inline>
+  (function () {
+    var form = document.getElementById('packing-form');
+    var home = document.getElementById('packing-home');
+    var people = document.getElementById('packing-people');
+    var peopleOutput = document.getElementById('people-output');
+    var minus = document.getElementById('people-minus');
+    var plus = document.getElementById('people-plus');
+    var totalEl = document.getElementById('total-boxes');
+    var smallEl = document.getElementById('small-boxes');
+    var largeEl = document.getElementById('large-boxes');
+    var booksEl = document.getElementById('book-boxes');
+    var tapeEl = document.getElementById('tape-rolls');
+    var bubbleEl = document.getElementById('bubble-meters');
+    var contextEl = document.getElementById('result-context');
+    var liveStatus = document.getElementById('packing-live-status');
+    var devisLink = document.getElementById('packing-devis-link');
+    if (!form || !home || !people || !peopleOutput || !totalEl || !smallEl || !largeEl || !booksEl || !tapeEl || !bubbleEl || !contextEl || !liveStatus || !devisLink) return;
+
+    function clamp(value, min, max) {
+      var number = Math.round(Number(value));
+      return Number.isFinite(number) ? Math.min(max, Math.max(min, number)) : min;
+    }
+
+    function selectedOption() {
+      return home.options[home.selectedIndex];
+    }
+
+    function selectedDensity() {
+      return form.querySelector('input[name="density"]:checked');
+    }
+
+    function calculate() {
+      var occupants = clamp(people.value, 1, 8);
+      people.value = String(occupants);
+      peopleOutput.textContent = String(occupants);
+      if (minus) minus.disabled = occupants <= 1;
+      if (plus) plus.disabled = occupants >= 8;
+
+      var homeOption = selectedOption();
+      var densityInput = selectedDensity();
+      var base = Number(homeOption.getAttribute('data-base') || 14);
+      var factor = Number(densityInput && densityInput.getAttribute('data-factor') || 1);
+      var total = Math.max(8, Math.round((base + (occupants - 1) * 6) * factor));
+      var bookShare = factor > 1 ? .19 : factor < 1 ? .12 : .16;
+      var books = Math.max(1, Math.round(total * bookShare));
+      var standard = total - books;
+      var small = Math.max(2, Math.round(standard * .4));
+      var large = Math.max(2, standard - small);
+      var tape = Math.max(2, Math.ceil(total / 10));
+      var bubble = Math.max(10, Math.ceil((small * 1.1 + books * .35) / 5) * 5);
+
+      totalEl.textContent = String(total);
+      smallEl.textContent = String(small);
+      largeEl.textContent = String(large);
+      booksEl.textContent = String(books);
+      tapeEl.textContent = String(tape);
+      bubbleEl.textContent = String(bubble);
+      devisLink.href = '/devis/?source=calculateur-cartons&cartons_total=' + encodeURIComponent(String(total)) +
+        '&cartons_petits=' + encodeURIComponent(String(small)) +
+        '&cartons_grands=' + encodeURIComponent(String(large)) +
+        '&cartons_livres=' + encodeURIComponent(String(books));
+
+      var densityLabel = densityInput && densityInput.nextElementSibling && densityInput.nextElementSibling.querySelector('strong');
+      contextEl.textContent = 'Pour ' + homeOption.textContent + ', ' + occupants + (occupants > 1 ? ' occupants' : ' occupant') + ', avec une quantité d’affaires ' + String(densityLabel && densityLabel.textContent || 'standard').toLowerCase() + '.';
+      liveStatus.textContent = 'Estimation mise à jour : ' + total + ' cartons au total, dont ' + small + ' petits, ' + large + ' grands et ' + books + ' cartons à livres ; ' + tape + ' rouleaux d’adhésif et environ ' + bubble + ' mètres de papier bulle.';
+    }
+
+    minus && minus.addEventListener('click', function () {
+      people.value = String(clamp(Number(people.value) - 1, 1, 8));
+      calculate();
+    });
+    plus && plus.addEventListener('click', function () {
+      people.value = String(clamp(Number(people.value) + 1, 1, 8));
+      calculate();
+    });
+    home.addEventListener('change', calculate);
+    form.querySelectorAll('input[name="density"]').forEach(function (input) {
+      input.addEventListener('change', calculate);
+    });
+    devisLink.addEventListener('click', function () {
+      if (typeof window.gtag === 'function') {
+        window.gtag('event', 'packing_calculator_complete', {
+          event_category: 'lead',
+          total_boxes: Number(totalEl.textContent) || 0,
+          page_path: window.location.pathname
+        });
+      }
+    });
+    calculate();
+  })();
+</script>

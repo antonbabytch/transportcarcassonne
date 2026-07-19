@@ -2,11 +2,9 @@
 import BaseLayout from '../layouts/BaseLayout.astro';
 import Header from '../components/Header.astro';
 import Footer from '../components/Footer.astro';
-import PhotoPlaceholder from '../components/PhotoPlaceholder.astro';
 import QuoteForm from '../components/QuoteForm.astro';
 import CTA from '../components/CTA.astro';
 import ServiceCard from '../components/ServiceCard.astro';
-import SchemaLocalBusiness from '../components/SchemaLocalBusiness.astro';
 import Breadcrumbs from '../components/Breadcrumbs.astro';
 import { CITIES } from '../data/cities';
 import { SERVICES } from '../data/services';
@@ -21,95 +19,100 @@ const { city } = Astro.props;
 const isBase = city.distance === 0;
 const distanceText = isBase ? 'notre ville de base' : `à ${city.distance} km de Carcassonne`;
 
-const title = `Déménagement ${city.name} | Transport Carcassonne`;
-const description = `Déménageur à ${city.name} (${city.distance > 0 ? `${city.distance} km de Carcassonne` : 'Aude'}) : déménagement, transport de meubles, évacuation. Devis gratuit sous 2h. ${SITE.phoneDisplay}`;
+const title = isBase
+  ? 'Déménager à Carcassonne : quartiers, accès et tarifs'
+  : `Déménagement à ${city.name} | Accès et devis`;
+const description = isBase
+  ? `Guide pratique pour déménager à Carcassonne : quartiers, accès à la Cité et à la Bastide, stationnement, prestations et tarifs. Devis gratuit au ${SITE.phoneDisplay}.`
+  : `Préparer un déménagement à ${city.name} (${city.distance} km de Carcassonne) : accès, stationnement, transport de meubles et demande de devis personnalisée. ${SITE.phoneDisplay}`;
+const pageHeading = isBase ? 'Déménager à Carcassonne' : `Déménagement à ${city.name}`;
 
 const cityContent: Record<string, { intro: string; specifics: string; note?: string }> = {
   carcassonne: {
-    intro: `Carcassonne, chef-lieu de l'Aude et ville de base de Transport Carcassonne, est notre terrain de prédilection. Nous connaissons parfaitement les spécificités de la ville : les ruelles médiévales de la Cité, les immeubles haussmanniens du centre-ville, les quartiers résidentiels de Grazailles, Montredon et les zones pavillonnaires périphériques.`,
-    specifics: `Déménager à Carcassonne nécessite souvent une connaissance fine des contraintes locales : zones piétonnes, réglementations de stationnement, accès difficiles dans la Cité historique classée UNESCO. Notre équipe maîtrise toutes ces particularités pour organiser votre déménagement sans accroc.`,
+    intro: `Carcassonne, chef-lieu de l'Aude et ville de base indiquée par Transport Carcassonne, présente des configurations variées : ruelles de la Cité, immeubles du centre-ville, quartiers résidentiels et zones pavillonnaires périphériques.`,
+    specifics: `Un déménagement à Carcassonne peut nécessiter d’anticiper les zones piétonnes, les règles de stationnement et les accès limités dans la Cité historique. Ces points doivent être vérifiés pour chaque adresse avant le devis.`,
   },
   trebes: {
-    intro: `Trèbes, commune de l'Aude située à seulement 8 km à l'est de Carcassonne le long du Canal du Midi, est l'une de nos zones d'intervention privilégiées. Cette commune résidentielle de 5 500 habitants attire de nombreuses familles cherchant la tranquillité tout en restant proche de Carcassonne.`,
-    specifics: `Les déménagements à Trèbes sont généralement facilités par l'urbanisme accessible de la commune : maisons individuelles avec accès direct, lotissements avec voirie large. Nous intervenons régulièrement pour les mutations de fonctionnaires et les déménagements locaux depuis ou vers Carcassonne.`,
+    intro: `Trèbes est une commune de l'Aude située à environ 8 km à l'est de Carcassonne, le long du Canal du Midi. Une demande dans ce secteur peut être étudiée selon le trajet et le planning.`,
+    specifics: `À Trèbes, les maisons individuelles et les lotissements peuvent offrir des accès plus directs, mais le stationnement et le portage restent à vérifier à chaque adresse.`,
   },
   limoux: {
     intro: `Limoux, sous-préfecture de l'Aude à 25 km au sud de Carcassonne dans la vallée de l'Aude, est un bassin de vie important avec ses 9 700 habitants. Connue pour la Blanquette de Limoux et son carnaval, la ville attire résidents permanents et résidences secondaires.`,
-    specifics: `Le centre historique de Limoux, avec ses ruelles et son architecture traditionnelle, peut présenter des défis logistiques pour les déménagements. Notre expérience des centres-villes audois nous permet d'anticiper ces contraintes et de les surmonter efficacement.`,
+    specifics: `Le centre historique de Limoux, avec ses ruelles et son architecture traditionnelle, peut présenter des contraintes de stationnement et de portage à signaler avant l’estimation.`,
   },
   castelnaudary: {
-    intro: `Castelnaudary, capitale mondiale du cassoulet et sous-préfecture de l'Aude, se situe à 38 km à l'ouest de Carcassonne sur l'axe Toulouse-Méditerranée. Sa population de 11 700 habitants en fait l'une des principales villes de notre zone d'intervention.`,
-    specifics: `Bien desservie par l'autoroute A61, Castelnaudary est facile d'accès pour nos fourgons. La ville dispose d'un tissu mixte : maisons de ville dans le centre historique, quartiers pavillonnaires en périphérie. Notre équipe s'adapte à toutes les configurations.`,
+    intro: `Castelnaudary, sous-préfecture de l'Aude, se situe à environ 38 km à l'ouest de Carcassonne sur l'axe Toulouse-Méditerranée. Une demande dans ce secteur doit être confirmée selon le trajet et les disponibilités.`,
+    specifics: `Castelnaudary est desservie par l'autoroute A61 et présente un tissu mixte : maisons de ville dans le centre historique et quartiers pavillonnaires en périphérie. Le véhicule et le portage sont à adapter à l’adresse.`,
   },
   narbonne: {
-    intro: `Narbonne, avec ses 54 000 habitants, est la plus grande ville que nous desservons. Bien qu'elle se situe légèrement au-delà de notre rayon habituel de 50 km (60 km de Carcassonne), nous intervenons régulièrement à Narbonne en raison de la forte demande.`,
-    specifics: `Pour les déménagements vers ou depuis Narbonne, un léger supplément de distance peut s'appliquer selon le volume. Narbonne est une ville dynamique avec un marché immobilier actif : nous intervenons aussi bien dans les quartiers résidentiels que dans les copropriétés de la zone portuaire.`,
-    note: 'Supplément de distance possible selon le volume. Devis personnalisé recommandé.',
+    intro: `Narbonne se situe à environ 60 km de Carcassonne, au-delà du rayon de 50 km affiché comme zone principale. Toute demande vers ou depuis Narbonne doit donc faire l’objet d’une vérification de faisabilité.`,
+    specifics: `Le prix éventuel dépend du volume, du trajet et des accès, notamment dans les copropriétés et les secteurs où le stationnement est contraint.`,
+    note: 'Zone et disponibilité à confirmer. Le devis personnalisé précise le trajet et ses éventuels frais.',
   },
   'lezignan-corbieres': {
     intro: `Lézignan-Corbières, cœur du vignoble des Corbières avec ses 11 000 habitants, est situé à 35 km au nord-est de Carcassonne. Cette ville viticole en plein développement attire de nouveaux résidents chaque année.`,
-    specifics: `Lézignan-Corbières présente un parc immobilier varié : maisons vigneronnes traditionnelles, pavillons récents, appartements en copropriété. Nous connaissons bien ce secteur et intervenons régulièrement pour les déménagements liés aux mutations professionnelles dans la viticulture.`,
+    specifics: `Lézignan-Corbières présente un parc immobilier varié : maisons vigneronnes, pavillons récents et appartements en copropriété. Les caves, dépendances et accès doivent être décrits avant le devis.`,
   },
   bram: {
     intro: `Bram, commune audoise de 3 500 habitants à 23 km à l'ouest de Carcassonne sur la plaine lauragaise, est un village typique du Lauragais avec son plan circulaire médiéval unique.`,
-    specifics: `Le centre historique circulaire de Bram peut présenter des particularités d'accès. Notre équipe connaît bien cette commune et s'adapte aux contraintes locales pour réaliser votre déménagement sans difficulté.`,
+    specifics: `Le centre historique circulaire de Bram peut présenter des particularités d'accès. Le point de stationnement, le portage et le véhicule doivent être étudiés selon l’adresse.`,
   },
   capendu: {
     intro: `Capendu, village de 1 500 habitants à 18 km au sud-est de Carcassonne, est idéalement situé entre Carcassonne et Narbonne. Le village offre un cadre de vie tranquille très prisé des familles.`,
-    specifics: `Capendu dispose d'un tissu résidentiel principalement composé de maisons individuelles et de mas. Les accès sont généralement faciles pour nos fourgons, et nous intervenons régulièrement dans ce secteur.`,
+    specifics: `Capendu dispose d'un tissu résidentiel principalement composé de maisons individuelles et de mas. Pour les biens isolés, l’état du chemin et l’espace de manœuvre doivent être vérifiés.`,
   },
   pezens: {
     intro: `Pezens, commune rurale de 1 700 habitants à 10 km au nord-ouest de Carcassonne, est une commune résidentielle appréciée pour sa proximité avec Carcassonne tout en offrant un cadre de vie plus calme.`,
-    specifics: `Proche de Carcassonne, Pezens est particulièrement bien desservie par nos équipes. Les déménagements depuis ou vers Pezens sont souvent combinés avec d'autres livraisons dans le secteur, ce qui nous permet d'optimiser les coûts.`,
+    specifics: `Pezens est proche de Carcassonne. Le prix d’un projet dépend néanmoins du volume, des accès, du trajet complet et du créneau retenu.`,
   },
   alzonne: {
     intro: `Alzonne, village de 1 400 habitants à 15 km à l'ouest de Carcassonne sur la plaine lauragaise, est une commune résidentielle tranquille avec un tissu pavillonnaire bien développé.`,
-    specifics: `Le tissu résidentiel d'Alzonne est principalement composé de maisons individuelles avec jardin, ce qui facilite généralement les opérations de déménagement. Notre équipe intervient régulièrement dans ce secteur.`,
+    specifics: `Le tissu résidentiel d'Alzonne est principalement composé de maisons individuelles avec jardin. L’accès réel, le stationnement et les contraintes de manutention restent à vérifier pour chaque adresse.`,
   },
 };
 
 const content = cityContent[city.slug] ?? {
-  intro: `${city.name} est une commune de l'Aude où Transport Carcassonne intervient régulièrement. Situé ${distanceText}, ce secteur fait partie intégrante de notre zone d'intervention.`,
-  specifics: `Nous organisons régulièrement des déménagements à ${city.name} et ses environs. Notre équipe connaît les spécificités locales et s'adapte aux contraintes de chaque logement.`,
+  intro: `${city.name} est une commune de l'Aude située ${distanceText}. Une demande de déménagement dans ce secteur peut être étudiée selon le trajet et les disponibilités.`,
+  specifics: `Les accès, le stationnement, les étages, le volume et le créneau doivent être vérifiés pour chaque logement avant l’émission du devis.`,
 };
 
 type Extra = { quartiers: string[]; acces: string; routes: { to: string; price: string }[]; faq: { q: string; a: string }[] };
 const cityExtra: Record<string, Extra> = {
   carcassonne: {
     quartiers: ['La Cité', 'Bastide Saint-Louis', 'Grazailles', 'La Conte', 'Montredon', 'Maquens', 'Le Viguier'],
-    acces: "Zones piétonnes et stationnement réglementé autour de la Cité et de la Bastide : nous repérons les emplacements de chargement à l'avance et gérons les autorisations de voirie si nécessaire.",
+    acces: "Zones piétonnes et stationnement réglementé autour de la Cité et de la Bastide : les points de chargement doivent être repérés et une autorisation de voirie peut être nécessaire.",
     routes: [{ to: 'Toulouse', price: 'dès 600 €' }, { to: 'Narbonne', price: 'dès 350 €' }, { to: 'Montpellier', price: 'dès 750 €' }],
-    faq: [{ q: 'Pouvez-vous déménager dans la Cité médiévale ?', a: "Oui. L'accès véhicule y est restreint : nous organisons le portage depuis les points autorisés et, si besoin, une navette avec un véhicule plus petit." }],
+    faq: [{ q: 'Pouvez-vous déménager dans la Cité médiévale ?', a: "La faisabilité doit être vérifiée selon l'adresse, les restrictions d'accès et les autorisations. Le portage ou un véhicule adapté sont à prévoir au devis si nécessaire." }],
   },
   trebes: {
     quartiers: ['Centre / Canal du Midi', 'Les Bordes', 'Millepetit', 'Lotissements est'],
     acces: "Urbanisme accessible : maisons individuelles avec accès direct et voiries larges dans les lotissements. Stationnement aisé au pied du logement dans la majorité des cas.",
     routes: [{ to: 'Carcassonne', price: 'dès 350 €' }, { to: 'Narbonne', price: 'dès 400 €' }, { to: 'Toulouse', price: 'dès 650 €' }],
-    faq: [{ q: 'Intervenez-vous le long du Canal du Midi à Trèbes ?', a: 'Oui, y compris pour les habitations proches des berges où l\'accès est plus étroit. Nous adaptons le véhicule et le portage.' }],
+    faq: [{ q: 'Intervenez-vous le long du Canal du Midi à Trèbes ?', a: 'Une demande peut être étudiée. Pour les habitations proches des berges, transmettez des photos et les dimensions d’accès afin de confirmer le véhicule et le portage.' }],
   },
   limoux: {
     quartiers: ['Centre / Place de la République', 'Flassian', 'Saint-Antoine', 'Pont Neuf'],
-    acces: "Centre historique aux ruelles étroites : nous privilégions un stationnement au plus proche et un portage maîtrisé. Les quartiers récents sont d'accès facile.",
+    acces: "Centre historique aux ruelles étroites : le point de stationnement et la distance de portage doivent être vérifiés. Les quartiers récents peuvent présenter des accès différents selon l’adresse.",
     routes: [{ to: 'Carcassonne', price: 'dès 380 €' }, { to: 'Toulouse', price: 'dès 700 €' }, { to: 'Perpignan', price: 'dès 650 €' }],
-    faq: [{ q: 'Déménagez-vous dans le centre ancien de Limoux ?', a: 'Oui. Les ruelles autour de la Place de la République demandent une organisation du stationnement et du portage, que nous préparons lors du devis.' }],
+    faq: [{ q: 'Déménagez-vous dans le centre ancien de Limoux ?', a: 'La faisabilité dépend de l’adresse. Les ruelles autour de la Place de la République peuvent demander une organisation particulière du stationnement et du portage à préciser au devis.' }],
   },
   castelnaudary: {
     quartiers: ['Centre / Grand Bassin', 'En Tourre', 'La Capelle', 'Zones pavillonnaires'],
-    acces: "Ville bien desservie par l'A61, accès facile pour nos fourgons. Centre historique aux rues plus étroites, périphérie pavillonnaire sans contrainte particulière.",
+    acces: "Ville desservie par l'A61. Le centre historique comporte des rues plus étroites ; le véhicule et le stationnement doivent être vérifiés selon l’adresse.",
     routes: [{ to: 'Carcassonne', price: 'dès 420 €' }, { to: 'Toulouse', price: 'dès 550 €' }, { to: 'Castres', price: 'dès 600 €' }],
-    faq: [{ q: 'Le trajet Castelnaudary–Toulouse est-il fréquent ?', a: 'Oui, c\'est l\'un de nos axes les plus demandés via l\'A61. Comptez à partir de 550 € selon le volume.' }],
+    faq: [{ q: 'Comment estimer le trajet Castelnaudary–Toulouse ?', a: 'Le repère affiché est indicatif. Le devis tient compte du volume, des accès, du créneau, du trajet et des éventuels frais associés.' }],
   },
   narbonne: {
     quartiers: ['Centre / Les Halles', 'Razimbaud', 'Saint-Jean Saint-Pierre', 'Bourg', 'Cité'],
-    acces: "Grande ville au marché immobilier actif : copropriétés avec étages et stationnement contraint en centre. Nous anticipons monte-meuble et autorisations si besoin.",
+    acces: "Les copropriétés avec étages et le stationnement contraint en centre peuvent nécessiter une autorisation ou une solution de levage, à étudier avant le devis.",
     routes: [{ to: 'Carcassonne', price: 'dès 400 €' }, { to: 'Montpellier', price: 'dès 600 €' }, { to: 'Perpignan', price: 'dès 550 €' }],
     faq: [{ q: 'Narbonne est à 60 km : y a-t-il un supplément ?', a: 'Un léger supplément de distance peut s\'appliquer selon le volume. Nous établissons un devis personnalisé pour Narbonne et ses quartiers.' }],
   },
   'lezignan-corbieres': {
     quartiers: ['Centre / Cours de la République', 'Avenue des Vignerons', 'Quartiers récents'],
-    acces: "Parc immobilier varié (maisons vigneronnes, pavillons, copropriétés). Accès généralement aisé, sauf certaines ruelles du cœur ancien que nous repérons en amont.",
+    acces: "Parc immobilier varié (maisons vigneronnes, pavillons, copropriétés). Certaines ruelles du cœur ancien demandent une vérification préalable du stationnement et du portage.",
     routes: [{ to: 'Carcassonne', price: 'dès 420 €' }, { to: 'Narbonne', price: 'dès 350 €' }, { to: 'Béziers', price: 'dès 500 €' }],
-    faq: [{ q: 'Déménagez-vous les maisons vigneronnes des Corbières ?', a: 'Oui, fréquemment. Les caves et dépendances demandent parfois une manutention spécifique que nous intégrons au devis.' }],
+    faq: [{ q: 'Déménagez-vous les maisons vigneronnes des Corbières ?', a: 'Une demande peut être étudiée. Les caves et dépendances doivent être signalées afin de chiffrer la manutention et les accès.' }],
   },
   bram: {
     quartiers: ['Circulade (centre médiéval)', 'Périphérie pavillonnaire', 'Route de Fanjeaux'],
@@ -119,21 +122,21 @@ const cityExtra: Record<string, Extra> = {
   },
   capendu: {
     quartiers: ['Centre village', 'Lotissements', 'Mas et maisons isolées'],
-    acces: "Tissu résidentiel de maisons individuelles et de mas, accès généralement faciles pour nos fourgons. Position idéale entre Carcassonne et Narbonne.",
+    acces: "Maisons individuelles et mas : l’état des chemins, les dimensions d’accès et l’espace de manœuvre doivent être vérifiés pour choisir un véhicule adapté.",
     routes: [{ to: 'Carcassonne', price: 'dès 350 €' }, { to: 'Narbonne', price: 'dès 350 €' }, { to: 'Lézignan-Corbières', price: 'dès 330 €' }],
-    faq: [{ q: 'Intervenez-vous pour les mas isolés autour de Capendu ?', a: 'Oui. Les accès par chemins et l\'éloignement éventuel sont pris en compte dans le devis, sans surprise le jour J.' }],
+    faq: [{ q: 'Intervenez-vous pour les mas isolés autour de Capendu ?', a: 'La faisabilité est étudiée à partir de l’adresse et des accès. Les chemins et l’éloignement éventuel doivent être décrits et chiffrés au devis.' }],
   },
   pezens: {
     quartiers: ['Centre village', 'Lotissements', 'Route de Toulouse'],
-    acces: "Commune proche de Carcassonne, très bien desservie. Accès faciles ; les déménagements sont souvent mutualisés avec d'autres interventions du secteur pour réduire les coûts.",
+    acces: "Commune proche de Carcassonne. Les accès, le stationnement et le trajet complet restent à vérifier pour chaque projet.",
     routes: [{ to: 'Carcassonne', price: 'dès 320 €' }, { to: 'Toulouse', price: 'dès 600 €' }, { to: 'Castelnaudary', price: 'dès 380 €' }],
-    faq: [{ q: 'Pezens étant proche de Carcassonne, le tarif est-il réduit ?', a: 'La courte distance limite le coût. Nous mutualisons souvent les trajets dans le secteur, ce qui optimise encore le prix.' }],
+    faq: [{ q: 'Pezens étant proche de Carcassonne, le tarif est-il réduit ?', a: 'La distance est un facteur parmi d’autres. Le prix dépend aussi du volume, des accès, du créneau et des services retenus ; seul le devis le confirme.' }],
   },
   alzonne: {
     quartiers: ['Centre village', 'Zones pavillonnaires', 'Plaine lauragaise'],
     acces: "Tissu pavillonnaire avec maisons à jardin facilitant les opérations. Accès directs et stationnement aisé dans la plupart des cas.",
     routes: [{ to: 'Carcassonne', price: 'dès 350 €' }, { to: 'Bram', price: 'dès 320 €' }, { to: 'Toulouse', price: 'dès 600 €' }],
-    faq: [{ q: 'Faut-il réserver à l\'avance pour Alzonne ?', a: 'En période chargée (été, fins de mois), oui. Hors période, une intervention sous 48h est généralement possible.' }],
+    faq: [{ q: 'Faut-il réserver à l\'avance pour Alzonne ?', a: 'Il est conseillé de transmettre la date souhaitée le plus tôt possible, notamment en été et en fin de mois. Aucun délai n’est garanti avant confirmation du créneau.' }],
   },
 };
 const extra: Extra | undefined = cityExtra[city.slug];
@@ -146,10 +149,29 @@ const nearby = CITIES
 const cityFaq = extra?.faq ?? [];
 ---
 
-<BaseLayout title={title} description={description}>
-  <SchemaLocalBusiness slot="head" />
+<BaseLayout
+  title={title}
+  description={description}
+  preloadImage="/images/demenagement-ville.webp"
+  ogImage="/images/demenagement-ville.webp"
+  ogImageAlt={`Déménagement à ${city.name} avec Transport Carcassonne`}
+>
+  <script is:inline slot="head" type="application/ld+json" set:html={JSON.stringify({
+    '@context': 'https://schema.org',
+    '@type': 'Service',
+    '@id': `${SITE.url}/demenagement-${city.slug}/#service`,
+    name: pageHeading,
+    serviceType: 'Service de déménagement',
+    url: `${SITE.url}/demenagement-${city.slug}/`,
+    provider: { '@id': `${SITE.url}/#business` },
+    areaServed: {
+      '@type': 'City',
+      name: city.name,
+      containedInPlace: { '@type': 'AdministrativeArea', name: 'Aude' },
+    },
+  })} />
   {cityFaq.length > 0 && (
-    <script slot="head" type="application/ld+json" set:html={JSON.stringify({
+    <script is:inline slot="head" type="application/ld+json" set:html={JSON.stringify({
       '@context': 'https://schema.org',
       '@type': 'FAQPage',
       mainEntity: cityFaq.map(f => ({ '@type': 'Question', name: f.q, acceptedAnswer: { '@type': 'Answer', text: f.a } })),
@@ -166,18 +188,18 @@ const cityFaq = extra?.faq ?? [];
         <div class="city-badge">
           📍 {isBase ? 'Notre ville' : `${city.distance} km de Carcassonne`}
         </div>
-        <h1>Déménagement à {city.name}</h1>
+        <h1>{pageHeading}</h1>
         <p class="city-hero-sub">
-          Transport Carcassonne intervient à {city.name} et dans un rayon de {SITE.serviceRadius} km.
-          Équipe locale, prix fixe garanti, devis gratuit sous 2h.
+          Une demande de déménagement à {city.name} peut être étudiée depuis Carcassonne.
+          Le périmètre, les moyens, le créneau et le prix sont confirmés sur devis.
         </p>
         <div class="city-hero-ctas">
-          <a href="/contact" class="btn btn--primary btn--lg">Devis gratuit →</a>
+          <a href={`/devis/?depart=${encodeURIComponent(city.name)}&source=ville`} class="btn btn--primary btn--lg">Devis gratuit →</a>
           <a href={`tel:${SITE.phone}`} class="btn btn--white btn--lg">📞 {SITE.phoneDisplay}</a>
         </div>
       </div>
       <div class="city-hero-media">
-        <img src="/images/demenagement-ville.webp" alt={`Déménagement à ${city.name} — Transport Carcassonne`} width="1200" height="896" loading="eager" style="width:100%;height:auto;display:block;border-radius:12px" />
+        <img src="/images/demenagement-ville.webp" alt={`Déménagement à ${city.name} — Transport Carcassonne`} width="1200" height="896" loading="eager" fetchpriority="high" decoding="async" style="width:100%;height:auto;display:block;border-radius:12px" />
       </div>
     </div>
   </section>
@@ -211,8 +233,8 @@ const cityFaq = extra?.faq ?? [];
             <span>Occitanie</span>
           </div>
           <div class="city-fact">
-            <strong>6j/7</strong>
-            <span>disponibilité</span>
+            <strong>En ligne</strong>
+            <span>demande de devis</span>
           </div>
         </div>
       </div>
@@ -221,8 +243,8 @@ const cityFaq = extra?.faq ?? [];
       <aside class="city-sidebar">
         <div class="city-cta-block">
           <h3>Devis pour {city.name}</h3>
-          <p>Gratuit et sans engagement. Réponse sous 2h.</p>
-          <a href="/contact" class="btn btn--primary" style="width:100%;justify-content:center;margin-bottom:10px">
+          <p>Décrivez votre projet ; la demande est étudiée selon les disponibilités.</p>
+          <a href={`/devis/?depart=${encodeURIComponent(city.name)}&source=ville`} class="btn btn--primary" style="width:100%;justify-content:center;margin-bottom:10px">
             Demander un devis
           </a>
           <a href={`tel:${SITE.phone}`} class="btn btn--outline" style="width:100%;justify-content:center">
@@ -231,10 +253,10 @@ const cityFaq = extra?.faq ?? [];
         </div>
 
         <div class="city-trust">
-          <div class="city-trust-item">✅ Équipe locale Carcassonne</div>
-          <div class="city-trust-item">🛡️ Meubles protégés &amp; calés</div>
-          <div class="city-trust-item">💶 Devis fixe garanti</div>
-          <div class="city-trust-item">⚡ Intervention sous 48h</div>
+          <div class="city-trust-item">📍 Projet étudié depuis Carcassonne</div>
+          <div class="city-trust-item">🛡️ Protections précisées au devis</div>
+          <div class="city-trust-item">💶 Périmètre et prix écrits</div>
+          <div class="city-trust-item">📅 Créneau confirmé selon planning</div>
         </div>
       </aside>
     </div>
@@ -246,15 +268,16 @@ const cityFaq = extra?.faq ?? [];
       <div class="container">
         <div class="ce-grid">
           <div class="ce-quartiers">
-            <span class="section-label">Quartiers desservis</span>
-            <h2>Tous les quartiers de {city.name}</h2>
+            <span class="section-label">Repères locaux</span>
+            <h2>Quartiers à anticiper à {city.name}</h2>
             <div class="ce-chips">
               {extra.quartiers.map(q => <span class="ce-chip">{q}</span>)}
             </div>
             <p class="ce-acces"><strong>Accès &amp; stationnement —</strong> {extra.acces}</p>
           </div>
           <div class="ce-routes">
-            <h3>Trajets fréquents depuis {city.name}</h3>
+            <h3>Repères indicatifs depuis {city.name}</h3>
+            <p>Exemples non contractuels : le prix réel est confirmé sur devis.</p>
             <ul>
               {extra.routes.map(r => (
                 <li><span>{city.name} → {r.to}</span><strong>{r.price}</strong></li>
@@ -290,7 +313,7 @@ const cityFaq = extra?.faq ?? [];
     <div class="container">
       <div class="section-header">
         <span class="section-label">Nos services à {city.name}</span>
-        <h2 class="section-title">Toutes nos prestations disponibles</h2>
+        <h2 class="section-title">Prestations à étudier selon votre projet</h2>
       </div>
       <div class="grid-3">
         {SERVICES.map(s => <ServiceCard {...s} />)}
@@ -300,13 +323,13 @@ const cityFaq = extra?.faq ?? [];
 
   <QuoteForm
     title={`Devis déménagement ${city.name}`}
-    subtitle={`Réponse sous 2h pour ${city.name} et ses environs`}
+    subtitle={`Décrivez votre projet à ${city.name} · réponse selon disponibilités`}
     prefilledCity={city.name}
   />
 
   <CTA
     title={`Déménagement à ${city.name} ?`}
-    subtitle="Devis gratuit, réponse sous 2h, intervention possible sous 48h."
+    subtitle="Indiquez les adresses, le volume, les accès et la date souhaitée pour une proposition personnalisée."
   />
 
   <Footer />

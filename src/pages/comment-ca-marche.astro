@@ -5,7 +5,7 @@ import Footer from '../components/Footer.astro';
 import CTA from '../components/CTA.astro';
 import { SITE } from '../data/site.config';
 
-const title = 'Comment ça marche | Transport Carcassonne — Processus de déménagement';
+const title = 'Comment se déroule un déménagement | Carcassonne';
 const description = `Découvrez comment se déroule un déménagement avec Transport Carcassonne : devis, visite, jour J, livraison. Simple, transparent, professionnel. ${SITE.phoneDisplay}`;
 
 const steps = [
@@ -13,8 +13,8 @@ const steps = [
     num: '01',
     icon: '📋',
     title: 'Demande de devis gratuit',
-    duration: 'Sous 2h',
-    content: `Tout commence par votre demande de devis. Vous pouvez nous contacter par téléphone au ${SITE.phoneDisplay}, via WhatsApp, par email ou en remplissant le formulaire en ligne. Nous vous répondons sous 2h du lundi au samedi de 8h à 19h.
+    duration: 'Selon disponibilités',
+    content: `Tout commence par votre demande de devis. Vous pouvez nous contacter par téléphone au ${SITE.phoneDisplay}, via WhatsApp, par email ou en remplissant le formulaire en ligne. La demande est examinée selon les disponibilités.
 
 Pour établir un devis précis, nous aurons besoin de quelques informations : votre ville de départ et d'arrivée, le type et la surface de votre logement, une estimation du nombre de meubles et cartons, la présence ou non d'un ascenseur, et la date souhaitée pour le déménagement.`,
     tips: ['Préparez un plan approximatif de votre logement', 'Listez les objets volumineux (piano, coffre-fort, etc.)', 'Vérifiez les conditions de stationnement à départ et arrivée'],
@@ -24,17 +24,17 @@ Pour établir un devis précis, nous aurons besoin de quelques informations : vo
     icon: '🏠',
     title: 'Évaluation du volume',
     duration: 'En visite ou à distance',
-    content: `Pour les déménagements importants, nous proposons une visite à votre domicile pour évaluer précisément le volume à transporter. Cette étape nous permet d'optimiser le chargement du fourgon et de vous proposer le meilleur tarif.
+    content: `Pour les déménagements importants, une visite à domicile peut être proposée pour préciser le volume à transporter. Cette étape aide à définir le chargement, les accès et un devis adapté au projet.
 
-Pour les petits volumes ou les déménagements simples, une estimation à distance basée sur vos informations suffit. Nous vous envoyons un devis détaillé par écrit avec le tarif fixe, les prestations incluses et les options disponibles.`,
-    tips: ['Le devis est gratuit et sans engagement', 'Le tarif est fixe : pas de surprise le jour J', 'Vous pouvez ajouter des options à tout moment'],
+Pour les petits volumes ou les déménagements simples, une estimation à distance peut être envisagée à partir de vos informations. Le devis écrit détaille le périmètre déclaré, les prestations retenues, le prix et les conditions applicables.`,
+    tips: ['Vérifiez toutes les informations avant d’accepter le devis', 'Faites préciser les accès, le stationnement et le volume', 'Toute modification doit être convenue par écrit'],
   },
   {
     num: '03',
     icon: '📦',
     title: 'Préparation du déménagement',
     duration: 'Avant le jour J',
-    content: `Une fois le devis accepté, nous planifions ensemble la date et les détails logistiques. Si vous avez opté pour le service d'emballage, notre équipe peut intervenir la veille ou le matin même pour emballer vos affaires avec du matériel professionnel.
+    content: `Une fois le devis accepté, la date et les détails logistiques sont planifiés selon les conditions convenues. Si vous avez retenu un service d'emballage, son horaire, son périmètre et les fournitures prévues figurent sur le devis.
 
 Nous vous conseillons sur les précautions à prendre : déconnecter les appareils électroménagers 24h avant, préparer un carton "arrivée" avec les essentiels (vaisselle, linge de nuit, médicaments), et protéger les objets fragiles que vous souhaitez transporter vous-même.`,
     tips: ['Déconnectez réfrigérateur et congélateur 24h avant', 'Étiquetez les cartons par pièce de destination', 'Préparez les accès (codes, clés, codes parkings)'],
@@ -43,10 +43,10 @@ Nous vous conseillons sur les précautions à prendre : déconnecter les apparei
     num: '04',
     icon: '🚚',
     title: 'Jour du déménagement',
-    duration: 'À l\'heure convenue',
-    content: `Le jour J, notre équipe arrive à l'heure convenue avec tout le matériel nécessaire : couvertures de déménagement, sangles de levage, filins, diables, matériel de calage et d'arrimage. Chaque meuble est protégé avant d'être chargé.
+    duration: 'Au créneau convenu',
+    content: `Le jour J, la prestation commence au créneau convenu, sous réserve des aléas signalés. Les moyens humains, le véhicule, les protections et le matériel prévus doivent correspondre au devis accepté.
 
-Le chargement se fait méthodiquement pour optimiser l'espace et garantir la sécurité des objets pendant le transport. Les pièces lourdes et les appareils électroménagers sont arrimés en premier, les objets fragiles soigneusement calés.`,
+Le chargement est organisé selon le volume et la nature des biens. Signalez les objets lourds, fragiles ou de valeur avant l’intervention afin que les précautions et éventuelles limites soient précisées.`,
     tips: ['Soyez présent au départ et à l\'arrivée', 'Faites visiter votre logement à l\'équipe en arrivant', 'Signalez immédiatement tout objet fragile ou de valeur'],
   },
   {
@@ -54,9 +54,9 @@ Le chargement se fait méthodiquement pour optimiser l'espace et garantir la sé
     icon: '🏡',
     title: 'Livraison et installation',
     duration: 'À destination',
-    content: `À l'arrivée dans votre nouveau logement, notre équipe décharge et dépose vos affaires dans les pièces que vous indiquez. Prenez le temps de diriger chaque meuble vers sa pièce finale — c'est beaucoup plus simple avec nous qu'après notre départ !
+    content: `À l'arrivée dans votre nouveau logement, les biens sont déposés selon le périmètre et les pièces convenus. Il est utile d’indiquer clairement la destination de chaque meuble et carton.
 
-Si vous avez opté pour le remontage des meubles, nos professionnels s'en chargent après le déchargement. Un état des lieux informel est effectué pour s'assurer que tout est arrivé en bon état. Avant de partir, nous récupérons nos protections et laissons votre logement propre.`,
+Si vous avez retenu le remontage des meubles, son périmètre doit être indiqué sur le devis. Contrôlez l’état apparent des biens à la livraison et inscrivez immédiatement toute réserve sur le document prévu à cet effet.`,
     tips: ['Vérifiez l\'état de vos affaires avant de signer', 'Signalez immédiatement tout dommage éventuel', 'Conservez le bon de livraison signé'],
   },
 ];
@@ -111,33 +111,33 @@ Si vous avez opté pour le remontage des meubles, nos professionnels s'en charge
     </div>
   </section>
 
-  <!-- Guarantees -->
+  <!-- Commitments -->
   <section class="section section--alt">
     <div class="container">
       <div class="section-header" style="text-align:center;margin-bottom:48px">
-        <span class="section-label">Nos garanties</span>
-        <h2>Ce que vous pouvez attendre de nous</h2>
+        <span class="section-label">Engagements de transparence</span>
+        <h2>Les points à convenir avant l’intervention</h2>
       </div>
       <div class="guarantees-grid">
         <div class="guarantee-item">
           <div class="guarantee-icon">🎯</div>
-          <h3>Ponctualité</h3>
-          <p>Nous arrivons à l'heure fixée. En cas d'imprévu, nous vous prévenons immédiatement.</p>
+          <h3>Créneau convenu</h3>
+          <p>L’horaire prévu figure dans les échanges ; tout aléa connu doit vous être signalé.</p>
         </div>
         <div class="guarantee-item">
           <div class="guarantee-icon">💶</div>
-          <h3>Prix fixe</h3>
-          <p>Le prix du devis est garanti. Sauf modification de vos besoins, aucun supplément ne sera appliqué.</p>
+          <h3>Devis détaillé</h3>
+          <p>Le prix, le périmètre et les conditions sont écrits. Toute modification doit être convenue avant exécution.</p>
         </div>
         <div class="guarantee-item">
           <div class="guarantee-icon">🛡️</div>
-          <h3>Transport soigné</h3>
-          <p>Protection systématique des meubles (couvertures, housses) et calage dans le fourgon sur toutes nos prestations.</p>
+          <h3>Protections précisées</h3>
+          <p>Le matériel et les précautions prévus pour vos biens doivent être décrits dans la proposition.</p>
         </div>
         <div class="guarantee-item">
           <div class="guarantee-icon">🤝</div>
-          <h3>Satisfaction garantie</h3>
-          <p>Nous ne partons pas tant que vous n'êtes pas satisfait du résultat.</p>
+          <h3>Contrôle à la livraison</h3>
+          <p>Vérifiez les biens à l’arrivée et inscrivez sans attendre toute réserve sur le document prévu.</p>
         </div>
       </div>
     </div>
@@ -145,7 +145,7 @@ Si vous avez opté pour le remontage des meubles, nos professionnels s'en charge
 
   <CTA
     title="Prêt à commencer ?"
-    subtitle="Demandez votre devis en ligne — réponse garantie sous 2h."
+    subtitle="Décrivez votre projet en ligne ; votre demande sera étudiée selon les disponibilités."
   />
 
   <Footer />

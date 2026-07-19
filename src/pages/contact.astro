@@ -5,8 +5,8 @@ import Footer from '../components/Footer.astro';
 import QuoteForm from '../components/QuoteForm.astro';
 import { SITE } from '../data/site.config';
 
-const title = 'Contact | Transport Carcassonne — Devis gratuit sous 2h';
-const description = `Contactez Transport Carcassonne pour votre déménagement. Téléphone : ${SITE.phoneDisplay}. WhatsApp, email. Réponse sous 2h. Lun-Sam 8h-19h.`;
+const title = 'Contact | Transport Carcassonne — Demande de devis';
+const description = `Contactez Transport Carcassonne pour votre déménagement. Téléphone : ${SITE.phoneDisplay}. WhatsApp et email. 24h/24, 7j/7, sur rendez-vous.`;
 ---
 
 <BaseLayout title={title} description={description}>
@@ -17,7 +17,7 @@ const description = `Contactez Transport Carcassonne pour votre déménagement. 
       <span class="section-label">Nous contacter</span>
       <h1>Demandez votre devis gratuit</h1>
       <p class="contact-hero-sub">
-        Réponse sous 2h du lundi au samedi de 8h à 19h. Devis gratuit et sans engagement.
+        Décrivez votre projet à tout moment. Les interventions sont organisées sur rendez-vous, 24h/24 et 7j/7.
       </p>
     </div>
   </section>
@@ -57,7 +57,7 @@ const description = `Contactez Transport Carcassonne pour votre déménagement. 
             <div class="contact-card__content">
               <div class="contact-card__label">Email</div>
               <div class="contact-card__value">{SITE.email}</div>
-              <div class="contact-card__sub">Réponse sous 4h</div>
+              <div class="contact-card__sub">Réponse selon disponibilités</div>
             </div>
           </a>
 
@@ -65,8 +65,8 @@ const description = `Contactez Transport Carcassonne pour votre déménagement. 
             <div class="contact-card__icon">📍</div>
             <div class="contact-card__content">
               <div class="contact-card__label">Adresse</div>
-              <div class="contact-card__value">{SITE.hq.city} {SITE.hq.postalCode}</div>
-              <div class="contact-card__sub">{SITE.hq.region}</div>
+              <div class="contact-card__value">{SITE.hq.streetAddress}</div>
+              <div class="contact-card__sub">{SITE.hq.postalCode} {SITE.hq.city} · {SITE.hq.region}</div>
             </div>
           </div>
 
@@ -74,8 +74,8 @@ const description = `Contactez Transport Carcassonne pour votre déménagement. 
             <div class="contact-card__icon">🕐</div>
             <div class="contact-card__content">
               <div class="contact-card__label">Horaires</div>
-              <div class="contact-card__value">Lun–Sam 8h–19h</div>
-              <div class="contact-card__sub">Urgences sur appel</div>
+              <div class="contact-card__value">24h/24 · 7j/7</div>
+              <div class="contact-card__sub">Disponibilités à confirmer</div>
             </div>
           </div>
 

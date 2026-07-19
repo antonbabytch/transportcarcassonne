@@ -1,0 +1,124 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Header from '../components/Header.astro';
+import Footer from '../components/Footer.astro';
+import Breadcrumbs from '../components/Breadcrumbs.astro';
+import { SITE } from '../data/site.config';
+import { REVIEWS, hasGoogleReviewUrl } from '../data/reviews.config';
+
+const title = 'Partager votre avis | Transport Carcassonne';
+const description = 'Partagez librement votre expérience après une prestation de Transport Carcassonne. Tous les retours honnêtes sont bienvenus.';
+const emailHref = `mailto:${SITE.email}?subject=${encodeURIComponent('Mon retour sur votre prestation')}`;
+---
+
+<BaseLayout title={title} description={description} noindex={true}>
+  <Header />
+  <Breadcrumbs items={[{ name: 'Accueil', href: '/' }, { name: 'Partager un avis' }]} />
+
+  <main class="review-page">
+    <section class="review-hero">
+      <div class="container review-hero__inner">
+        <span class="section-label">Après votre prestation</span>
+        <h1>Votre retour, avec vos propres mots</h1>
+        <p>Un avis honnête aide les prochains clients à décider et nous aide à progresser. Positif, mitigé ou critique : votre expérience reste la vôtre.</p>
+
+        <div class="review-actions">
+          {hasGoogleReviewUrl ? (
+            <a href={REVIEWS.googleReviewUrl} class="btn btn--primary btn--lg" target="_blank" rel="noopener noreferrer" data-source="review-page">
+              Donner mon avis sur Google →
+            </a>
+          ) : (
+            <a href={emailHref} class="btn btn--primary btn--lg">Partager mon retour par email →</a>
+          )}
+          <a href={`tel:${SITE.phone}`} class="review-phone">Ou nous appeler : {SITE.phoneDisplay}</a>
+        </div>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="container review-layout">
+        <article class="review-guide">
+          <span class="section-label">Si vous ne savez pas quoi écrire</span>
+          <h2>Quelques repères simples</h2>
+          <p>Deux ou trois phrases suffisent. Vous pouvez parler de ce qui vous semble réellement utile :</p>
+          <ul>
+            <li>le type de déménagement ou de transport réalisé ;</li>
+            <li>la clarté des échanges et du devis ;</li>
+            <li>la ponctualité et l’organisation observées ;</li>
+            <li>la manutention et la protection de vos biens ;</li>
+            <li>un point particulièrement réussi ou à améliorer.</li>
+          </ul>
+          <p class="review-guide__privacy">Pour votre sécurité, ne publiez pas votre adresse complète, votre numéro de téléphone, votre référence de devis ni d’autres données personnelles.</p>
+        </article>
+
+        <aside class="review-principles">
+          <h2>Notre règle</h2>
+          <ul>
+            <li><strong>Aucune récompense</strong><span>Votre avis n’est lié à aucune remise ni cadeau.</span></li>
+            <li><strong>Aucun tri par satisfaction</strong><span>La même invitation peut être envoyée à tous les clients.</span></li>
+            <li><strong>Aucune consigne de note</strong><span>Nous ne demandons pas un nombre d’étoiles déterminé.</span></li>
+            <li><strong>Un droit de réponse</strong><span>Nous pouvons répondre avec respect, sans réécrire votre expérience.</span></li>
+          </ul>
+        </aside>
+      </div>
+    </section>
+
+    <section class="section section--alt">
+      <div class="container issue-box">
+        <div>
+          <span class="section-label">Une difficulté à signaler ?</span>
+          <h2>Contactez-nous directement si vous souhaitez aussi une réponse</h2>
+          <p>Ce canal de contact est disponible quel que soit l’avis que vous choisissez de publier. Écrivez les faits, la date de prestation et le moyen de vous joindre, sans information sensible dans un avis public.</p>
+        </div>
+        <div class="issue-actions">
+          <a href={emailHref} class="btn btn--outline">Écrire à {SITE.email}</a>
+          <a href={`https://wa.me/${SITE.phoneWhatsapp}`} class="text-link" target="_blank" rel="noopener noreferrer">Écrire sur WhatsApp →</a>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <Footer />
+</BaseLayout>
+
+<style>
+  .review-page { background: var(--color-bg); }
+  .review-hero { background: var(--color-navy); color: white; padding: 88px 0; }
+  .review-hero__inner { max-width: 760px; text-align: center; }
+  .review-hero h1 { color: white; margin: 14px 0 18px; }
+  .review-hero p { color: rgba(255,255,255,.75); font-size: 1.08rem; line-height: 1.75; }
+  .review-actions { display: flex; flex-direction: column; align-items: center; gap: 15px; margin-top: 30px; }
+  .review-phone { color: rgba(255,255,255,.7); font-size: .88rem; }
+  .review-phone:hover { color: white; }
+  .review-layout { max-width: 980px; display: grid; grid-template-columns: 1.1fr .9fr; gap: 34px; align-items: start; }
+  .review-guide { padding: 36px; border: 1px solid var(--color-border); border-radius: var(--radius-lg); background: white; }
+  .review-guide h2 { margin: 10px 0 12px; }
+  .review-guide > p { color: var(--color-text-light); line-height: 1.7; }
+  .review-guide ul { display: grid; gap: 10px; margin: 22px 0; }
+  .review-guide li { color: var(--color-text); padding-left: 22px; position: relative; }
+  .review-guide li::before { content: '✓'; position: absolute; left: 0; color: var(--color-accent); font-weight: 800; }
+  .review-guide__privacy { border-top: 1px solid var(--color-border); padding-top: 18px; font-size: .84rem; }
+  .review-principles { background: var(--color-bg-alt); border-radius: var(--radius-lg); padding: 32px; }
+  .review-principles h2 { font-size: 1.35rem; margin-bottom: 20px; }
+  .review-principles ul { display: grid; gap: 17px; }
+  .review-principles li { display: grid; gap: 3px; }
+  .review-principles strong { color: var(--color-navy); font-size: .91rem; }
+  .review-principles span { color: var(--color-text-light); font-size: .82rem; line-height: 1.55; }
+  .issue-box { display: flex; justify-content: space-between; gap: 45px; align-items: center; }
+  .issue-box > div:first-child { max-width: 700px; }
+  .issue-box h2 { margin: 9px 0 12px; }
+  .issue-box p { color: var(--color-text-light); line-height: 1.7; }
+  .issue-actions { display: flex; flex-direction: column; gap: 13px; align-items: center; flex: 0 0 auto; }
+  .text-link { color: var(--color-accent); font-size: .86rem; font-weight: 700; }
+
+  @media (max-width: 800px) {
+    .review-layout { grid-template-columns: 1fr; }
+    .issue-box { flex-direction: column; align-items: flex-start; }
+    .issue-actions { align-items: flex-start; }
+  }
+  @media (max-width: 560px) {
+    .review-hero { padding: 62px 0; }
+    .review-guide, .review-principles { padding: 26px 21px; }
+  }
+</style>
+

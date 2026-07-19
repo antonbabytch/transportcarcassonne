@@ -6,65 +6,81 @@ import DeliveryHero from '../components/DeliveryHero.astro';
 import RoadDivider from '../components/RoadDivider.astro';
 import QuoteForm from '../components/QuoteForm.astro';
 import ComboOffer from '../components/ComboOffer.astro';
-import SchemaLocalBusiness from '../components/SchemaLocalBusiness.astro';
+import TrustStrip from '../components/TrustStrip.astro';
 import { SITE } from '../data/site.config';
 import { SERVICES } from '../data/services';
 import { CITIES } from '../data/cities';
 
-const title = 'Déménagement Carcassonne | Transport Carcassonne — Devis Gratuit';
-const description = `Déménageur professionnel à Carcassonne et dans l'Aude. Déménagement local, longue distance, transport piano, évacuation déchets. 2 fourgons jusqu'à 20 m³. Devis gratuit sous 2h. ${SITE.phoneDisplay}`;
+const title = 'Déménageur à Carcassonne (11) | Estimation et devis';
+const description = `Déménageur à Carcassonne et dans l'Aude : local, longue distance, meubles et piano. Estimation en ligne et devis personnalisé. ${SITE.phoneDisplay}`;
 
 const stats = [
-  { value: '2', sup: '', label: 'Fourgons 12 & 20 m³' },
-  { value: '48', sup: 'h', label: 'Intervention possible' },
-  { value: '2', sup: 'h', label: 'Réponse à votre devis' },
-  { value: '6', sup: 'j/7', label: 'Lun–Sam · 8h–19h' },
+  { value: '50', sup: 'km', label: 'Zone locale annoncée' },
+  { value: '3', sup: '', label: 'Formules à comparer' },
+  { value: '4', sup: '', label: 'Outils gratuits' },
+  { value: '7', sup: 'j/7', label: '24h/24 · sur rendez-vous' },
 ];
 
 const garanties = [
-  { num: '01', title: 'Matériel professionnel', desc: 'Hayon élévateur, sangles, couvertures et housses : vos meubles protégés et calés à chaque trajet.' },
-  { num: '02', title: 'Devis fixe écrit', desc: 'Le prix annoncé sur le devis est le prix final. Aucun frais le jour J, aucune mauvaise surprise.' },
-  { num: '03', title: 'Facture & SIRET', desc: `Entreprise déclarée SIRET ${SITE.siret}. Facture conforme remise à chaque intervention.` },
-  { num: '04', title: 'Ponctualité garantie', desc: "Nous arrivons à l'heure convenue. Plus de 30 min de retard : vous bénéficiez d'une remise." },
-  { num: '05', title: 'Équipe formée', desc: 'Déménageurs expérimentés, formés à la manutention, au démontage et à la protection des meubles fragiles.' },
-  { num: '06', title: 'Geste écologique', desc: 'Optimisation des trajets, mutualisation des transports, cartons réutilisables sur demande.' },
+  { num: '01', title: 'Estimation expliquée', desc: 'La fourchette en ligne reste indicative ; le montant applicable figure dans le devis accepté.' },
+  { num: '02', title: 'Périmètre écrit', desc: 'Emballage, démontage, accès, stationnement et objets particuliers sont clarifiés avant engagement.' },
+  { num: '03', title: 'Identité vérifiable', desc: `Entreprise déclarée sous le SIRET ${SITE.siret}, avec un contact direct affiché sur le site.` },
+  { num: '04', title: 'Documents à contrôler', desc: 'Le devis et les documents utiles permettent de vérifier les informations retenues pour le projet.' },
+  { num: '05', title: 'Données protégées', desc: 'Les photos sont facultatives, limitées au devis et ne doivent contenir aucun document sensible.' },
+  { num: '06', title: 'Preuves réelles uniquement', desc: 'Aucun faux avis, faux label ou chantier reconstitué ne doit remplacer une preuve autorisée.' },
 ];
 
 const fourgons = [
-  { name: 'Fourgon 12 m³', desc: 'Idéal pour studios, T1, T2 et petits déménagements. Hayon élévateur.', cap: '12 m³', payload: '1 200 kg' },
-  { name: 'Fourgon 20 m³', desc: 'Pour T3, T4 et maisons familiales. Hayon élévateur, sangles intégrées.', cap: '20 m³', payload: '1 800 kg' },
+  { name: 'Gabarit autour de 12 m³', desc: 'Un repère courant pour un petit volume, à confirmer après inventaire et contrôle des accès.', cap: '≈ 12 m³', payload: 'Selon véhicule' },
+  { name: 'Gabarit autour de 20 m³', desc: 'Un repère pour un logement plus fourni ; plusieurs rotations peuvent rester nécessaires.', cap: '≈ 20 m³', payload: 'Selon véhicule' },
 ];
 
 const steps = [
-  { num: '01', title: 'Demandez un devis', desc: 'Remplissez le formulaire ou appelez-nous. Devis sous 2h, gratuit et sans engagement.' },
-  { num: '02', title: 'Visite ou inventaire', desc: 'Nous évaluons le volume à transporter pour vous proposer le meilleur tarif.' },
-  { num: '03', title: 'Jour du déménagement', desc: "Notre équipe arrive à l'heure, emballe si besoin et charge avec soin." },
-  { num: '04', title: 'Livraison & installation', desc: 'Livraison à l\'adresse convenue, remontage des meubles si souhaité.' },
+  { num: '01', title: 'Décrivez le projet', desc: 'Utilisez le devis intelligent ou appelez-nous avec le trajet, le volume et les accès.' },
+  { num: '02', title: 'Visite ou inventaire', desc: 'Le volume, les accès et les prestations utiles sont précisés avant l’établissement du devis.' },
+  { num: '03', title: 'Organisation confirmée', desc: 'Le créneau, les moyens prévus et le périmètre de la prestation sont repris dans les documents acceptés.' },
+  { num: '04', title: 'Livraison & réception', desc: 'La livraison et les éventuelles options de remontage suivent le périmètre écrit du devis.' },
 ];
 
-const testimonials = [
-  { name: 'Marie L.', city: 'Carcassonne', text: 'Équipe professionnelle, ponctuelle et très soigneuse avec nos affaires. Je recommande sans hésiter !' },
-  { name: 'Thomas R.', city: 'Limoux', text: 'Déménagement de Limoux vers Toulouse impeccable. Prix correct, aucun dommage, personnel sympathique.' },
-  { name: 'Sophie M.', city: 'Narbonne', text: "Transport de piano réalisé avec expertise. L'instrument est arrivé en parfait état. Merci !" },
+const specialties = [
+  { title: 'Déménagement d’entreprise', text: 'Bureaux, commerces et activités : inventaire, accès et continuité à cadrer avant intervention.', href: '/demenagement-entreprise-carcassonne/' },
+  { title: 'Accompagnement senior', text: 'Une préparation progressive et un périmètre d’aide clairement défini avec la personne concernée.', href: '/demenagement-senior-carcassonne/' },
+  { title: 'Emballage et cartons', text: 'Matériel, objets fragiles et responsabilités détaillés dans la formule et le devis.', href: '/emballage-cartons-carcassonne/' },
 ];
 
 const faqs = [
-  { q: 'Combien coûte un déménagement à Carcassonne ?', a: 'Un déménagement local (≤ 50 km) commence à 450 € pour un studio et 650 € pour un T2. Le prix exact dépend du volume, de l\'étage et des options choisies. Devis gratuit sous 2h.' },
+  { q: 'Combien coûte un déménagement à Carcassonne ?', a: 'Les repères publiés commencent actuellement à 450 € pour un studio et 650 € pour un T2 local. Ils restent indicatifs : le volume, la distance, les accès, la date et les options déterminent le devis personnalisé.' },
   { q: 'Intervenez-vous hors de Carcassonne ?', a: `Oui, nous intervenons dans un rayon de ${SITE.serviceRadius} km autour de Carcassonne : Limoux, Castelnaudary, Lézignan-Corbières, Narbonne, Trèbes, Bram et environs. Nous réalisons aussi des déménagements longue distance vers toute la France.` },
-  { q: 'Proposez-vous l\'emballage des cartons ?', a: 'Oui, nous proposons le service d\'emballage complet (matériel + main d\'œuvre) en option, à partir de 120 € pour les matériaux et 40 €/h ou 280 € au forfait pour la main d\'œuvre.' },
-  { q: 'Comment protégez-vous les objets transportés ?', a: 'Vos biens sont manipulés avec le plus grand soin : démontage maîtrisé, protection des meubles fragiles (couvertures, housses), calage et sanglage dans le fourgon. Pour une couverture spécifique sur des objets de grande valeur, parlons-en lors du devis.' },
-  { q: 'Faites-vous un petit déménagement (1-2 meubles) ?', a: 'Oui, nous prenons en charge les petits déménagements à partir de 150 €. Idéal pour la livraison d\'un canapé acheté sur Le Bon Coin, un mini-déménagement étudiant ou un cabinet professionnel.' },
-  { q: 'Transportez-vous les pianos et objets lourds ?', a: 'Oui, nous sommes équipés pour transporter les pianos droits (350 €), pianos à queue (550 €), coffres-forts (dès 250 €) et autres objets lourds. Sangles spéciales et formation à la manutention lourde.' },
-  { q: 'Comment obtenir un devis ?', a: 'Remplissez le formulaire sur cette page ou appelez-nous directement au ' + SITE.phoneDisplay + '. Vous recevrez une réponse sous 2h (Lun–Sam, 8h–19h).' },
+  { q: 'Proposez-vous l\'emballage des cartons ?', a: 'L’emballage peut être étudié comme option. Le devis doit préciser qui fournit les cartons, quels objets sont emballés et quels matériaux sont compris.' },
+  { q: 'Comment protégez-vous les objets transportés ?', a: 'Les protections et la manutention prévues dépendent de l’inventaire, des accès et de la valeur déclarée. Elles doivent être décrites dans le devis, notamment pour les objets fragiles ou de grande valeur.' },
+  { q: 'Faites-vous un petit déménagement (1-2 meubles) ?', a: 'Les petits volumes et transports de quelques meubles peuvent être étudiés selon le trajet, les accès, le poids et le planning. Le prix applicable est celui du devis écrit.' },
+  { q: 'Transportez-vous les pianos et objets lourds ?', a: 'La faisabilité doit être vérifiée à partir du type d’objet, de son poids, des passages, des étages et des moyens nécessaires. Décrivez précisément l’objet et joignez des photos au devis.' },
+  { q: 'Comment obtenir un devis ?', a: 'Remplissez le devis intelligent ou appelez-nous directement au ' + SITE.phoneDisplay + '. Préparez le trajet, la date, le volume et les contraintes d’accès pour faciliter l’évaluation.' },
 ];
 
 const marquee = ['Déménagement local', 'Longue distance', 'International', 'Transport de meubles', 'Piano & objets lourds', 'Évacuation déchets', 'Petit déménagement'];
+const guides = [
+  {
+    title: 'Autorisation de stationnement à Carcassonne',
+    desc: 'Délai, demande municipale et règles particulières pour la Bastide et la Cité.',
+    href: '/blog/autorisation-stationnement-demenagement-carcassonne/',
+  },
+  {
+    title: 'Checklist des 4 semaines avant le jour J',
+    desc: 'Un planning simple pour les cartons, les accès, l’inventaire et les démarches.',
+    href: '/blog/checklist-demenagement-4-semaines/',
+  },
+];
 const priceFmt = (n: number) => new Intl.NumberFormat('fr-FR').format(n) + ' €';
 ---
 
-<BaseLayout title={title} description={description}>
-  <SchemaLocalBusiness slot="head" />
-  <script slot="head" type="application/ld+json" set:html={JSON.stringify({
+<BaseLayout
+  title={title}
+  description={description}
+  preloadImage="/video/poster.webp"
+  ogImageAlt="Fourgon de Transport Carcassonne pour un déménagement dans l’Aude"
+>
+  <script is:inline slot="head" type="application/ld+json" set:html={JSON.stringify({
     '@context': 'https://schema.org',
     '@type': 'FAQPage',
     'mainEntity': faqs.map(f => ({ '@type': 'Question', 'name': f.q, 'acceptedAnswer': { '@type': 'Answer', 'text': f.a } })),
@@ -73,6 +89,8 @@ const priceFmt = (n: number) => new Intl.NumberFormat('fr-FR').format(n) + ' €
 
   <!-- ============ DELIVERY HERO (corner video card, scrubbed) ============ -->
   <DeliveryHero />
+
+  <TrustStrip />
 
   <!-- ============ MARQUEE ============ -->
   <div class="marquee">
@@ -99,7 +117,7 @@ const priceFmt = (n: number) => new Intl.NumberFormat('fr-FR').format(n) + ' €
     <div class="container">
       <div class="d-head reveal">
         <h2 class="display">Nos <em>prestations.</em></h2>
-        <p>Du déménagement local au transport international, nous avons la solution adaptée — particuliers comme professionnels.</p>
+        <p>Du déménagement local aux trajets plus longs, chaque demande est étudiée selon le volume, les accès et les moyens nécessaires.</p>
       </div>
       <div class="svc-grid">
         {SERVICES.map((s, i) => (
@@ -107,14 +125,14 @@ const priceFmt = (n: number) => new Intl.NumberFormat('fr-FR').format(n) + ' €
             <div class="svc-num">— {String(i + 1).padStart(2, '0')}</div>
             <h3>{s.name}</h3>
             <p>{s.description}</p>
-            <div class="svc-price">à partir de {priceFmt(s.priceFrom)}</div>
+            <div class="svc-price">repère indicatif dès {priceFmt(s.priceFrom)}</div>
             <span class="svc-link">En savoir plus</span>
           </a>
         ))}
-        <a href="/contact" class="svc-item svc-item--dark reveal" data-i={6}>
+        <a href="/devis/?source=cas-particulier" class="svc-item svc-item--dark reveal" data-i={6}>
           <div class="svc-num">— Cas particulier ?</div>
           <h3>Décrivez votre<br/>situation.</h3>
-          <p>Volume hors normes, objet fragile, longue distance : en cinq ans nous avons presque tout vu. Nous trouverons une solution.</p>
+          <p>Volume hors normes, objet fragile ou accès complexe : décrivez les faits pour que nous puissions étudier une solution adaptée.</p>
           <span class="svc-link">Nous contacter</span>
         </a>
       </div>
@@ -128,9 +146,9 @@ const priceFmt = (n: number) => new Intl.NumberFormat('fr-FR').format(n) + ' €
     <div class="container">
       <div class="fleet-grid reveal">
         <div class="fleet-left">
-          <span class="mono-label">Notre matériel</span>
-          <h2 class="display">Une flotte adaptée<br/>à <em>chaque volume.</em></h2>
-          <p>Deux fourgons professionnels équipés de hayon élévateur, sangles et protections. Au-delà de 20 m³, nous combinons les véhicules ou effectuons plusieurs rotations — pas de limite de volume.</p>
+          <span class="mono-label">Repères de volume</span>
+          <h2 class="display">Choisir le bon gabarit<br/>pour <em>le projet.</em></h2>
+          <p>Le gabarit du véhicule dépend du volume, de la charge, des accès et du trajet. Les valeurs ci-contre sont des repères : le moyen réellement prévu doit apparaître dans l’organisation confirmée.</p>
         </div>
         <div class="fleet-cards">
           {fourgons.map(f => (
@@ -152,8 +170,8 @@ const priceFmt = (n: number) => new Intl.NumberFormat('fr-FR').format(n) + ' €
   <section class="d-section d-dark">
     <div class="container">
       <div class="d-head d-head--center reveal">
-        <h2 class="display">Six garanties,<br/>une <em>tranquillité.</em></h2>
-        <p>Notre métier, ce n'est pas seulement transporter — c'est vous garantir une expérience sans stress.</p>
+        <h2 class="display">Six repères,<br/>une décision <em>éclairée.</em></h2>
+        <p>Des informations contrôlables sont plus utiles qu’une longue liste de promesses générales.</p>
       </div>
       <div class="gar-grid">
         {garanties.map((g, i) => (
@@ -185,8 +203,29 @@ const priceFmt = (n: number) => new Intl.NumberFormat('fr-FR').format(n) + ' €
     </div>
   </section>
 
-  <!-- ============ METHODE ============ -->
+  <!-- ============ GUIDES ============ -->
   <section class="d-section d-section--alt">
+    <div class="container">
+      <div class="d-head reveal">
+        <h2 class="display">Préparer votre<br/><em>déménagement.</em></h2>
+        <p>Nos guides pratiques répondent aux questions concrètes avant le jour J, avec les règles locales vérifiées.</p>
+      </div>
+      <div class="guide-grid">
+        {guides.map((guide, i) => (
+          <article class="guide-card reveal" data-i={i}>
+            <span class="guide-card__num">0{i + 1}</span>
+            <h3><a href={guide.href}>{guide.title}</a></h3>
+            <p>{guide.desc}</p>
+            <a class="guide-card__link" href={guide.href}>Lire le guide <span aria-hidden="true">→</span></a>
+          </article>
+        ))}
+      </div>
+      <a class="all-guides reveal" href="/blog/">Voir tous les conseils <span aria-hidden="true">→</span></a>
+    </div>
+  </section>
+
+  <!-- ============ METHODE ============ -->
+  <section class="d-section">
     <div class="container">
       <div class="d-head reveal"><h2 class="display">Notre <em>méthode.</em></h2><p>Un processus simple et transparent en quatre étapes, du premier appel à l'installation chez vous.</p></div>
       <div class="steps-grid">
@@ -201,19 +240,21 @@ const priceFmt = (n: number) => new Intl.NumberFormat('fr-FR').format(n) + ' €
     </div>
   </section>
 
-  <!-- ============ TESTIMONIALS ============ -->
+  <!-- ============ SPECIALITES ============ -->
   <section class="d-section d-dark">
     <div class="container">
-      <div class="d-head reveal"><h2 class="display">Ils nous font<br/><em>confiance.</em></h2><p>Particuliers et professionnels témoignent de leur déménagement avec Transport Carcassonne.</p></div>
-      <div class="tst-grid">
-        {testimonials.map((t, i) => (
-          <div class="tst reveal" data-i={i}>
-            <span class="tst-q">"</span>
-            <p>{t.text}</p>
-            <div class="tst-author"><div class="tst-name">{t.name}</div><div class="tst-meta">{t.city}</div></div>
-          </div>
+      <div class="d-head reveal"><h2 class="display">Des besoins<br/><em>différents.</em></h2><p>Chaque situation mérite une page utile et un devis qui distingue clairement les prestations incluses.</p></div>
+      <div class="specialty-grid">
+        {specialties.map((item, i) => (
+          <a href={item.href} class="specialty-card reveal" data-i={i}>
+            <span>0{i + 1}</span>
+            <h3>{item.title}</h3>
+            <p>{item.text}</p>
+            <strong>Voir la prestation →</strong>
+          </a>
         ))}
       </div>
+      <a class="specialty-formulas reveal" href="/formules/">Comparer les trois formules →</a>
     </div>
   </section>
 
@@ -235,7 +276,7 @@ const priceFmt = (n: number) => new Intl.NumberFormat('fr-FR').format(n) + ' €
   <RoadDivider />
 
   <ComboOffer />
-  <QuoteForm title="Demandez votre devis gratuit" subtitle="Réponse sous 2h · Lun–Sam 8h–19h" />
+  <QuoteForm title="Demandez votre devis gratuit" subtitle="Trajet, volume, accès et date · 24h/24, 7j/7 sur rendez-vous" />
   <Footer />
 </BaseLayout>
 
@@ -243,6 +284,17 @@ const priceFmt = (n: number) => new Intl.NumberFormat('fr-FR').format(n) + ' €
   .display { font-family: 'Instrument Serif', serif; font-weight: 400; letter-spacing: -.02em; line-height: 1; }
   .display em, em { font-style: italic; color: var(--accent); }
   .mono-label { font-size: 11px; text-transform: uppercase; letter-spacing: .2em; color: var(--accent); font-weight: 500; display: block; margin-bottom: 22px; }
+
+  .guide-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 20px; }
+  .guide-card { background: var(--bg-card); border: 1px solid var(--line); border-radius: var(--radius-lg); padding: 30px; }
+  .guide-card__num { display: block; color: var(--accent-deep); font-size: 11px; letter-spacing: .18em; margin-bottom: 22px; }
+  .guide-card h3 { font-size: 1.55rem; margin-bottom: 12px; }
+  .guide-card h3 a:hover { color: var(--accent-deep); }
+  .guide-card p { color: var(--text-muted); margin-bottom: 22px; }
+  .guide-card__link, .all-guides { color: var(--accent-deep); font-weight: 700; text-decoration: underline; text-underline-offset: 4px; }
+  .all-guides { display: inline-block; margin-top: 24px; }
+
+  @media (max-width: 700px) { .guide-grid { grid-template-columns: 1fr; } }
 
   /* HERO content (over 3D scene) */
   .hero-content { position: relative; max-width: 600px; }
@@ -338,15 +390,15 @@ const priceFmt = (n: number) => new Intl.NumberFormat('fr-FR').format(n) + ' €
   .step h3 { font-family: 'Instrument Serif', serif; font-weight: 400; font-size: 26px; margin-bottom: 12px; }
   .step p { color: var(--text-muted); font-size: 14px; line-height: 1.6; }
 
-  /* TESTIMONIALS */
-  .tst-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; }
-  .tst { background: var(--bg-dark-alt); border: 1px solid var(--line-dark); padding: 38px 34px; transition: border-color .3s var(--ease-out), transform .35s var(--ease-out), box-shadow .35s var(--ease-out); }
-  .tst:hover { border-color: var(--accent); transform: translateY(-4px); box-shadow: var(--shadow-soft); }
-  .tst-q { font-family: 'Instrument Serif', serif; font-style: italic; font-size: 70px; line-height: .4; color: var(--accent); display: inline-block; margin-bottom: 26px; }
-  .tst p { font-family: 'Instrument Serif', serif; font-size: 19px; line-height: 1.45; color: var(--text-on-dark); margin-bottom: 28px; }
-  .tst-author { border-top: 1px solid var(--line-dark); padding-top: 18px; }
-  .tst-name { font-size: 14px; font-weight: 500; color: var(--text-on-dark); }
-  .tst-meta { font-size: 12px; color: var(--text-on-dark-muted); text-transform: uppercase; letter-spacing: .1em; margin-top: 4px; }
+  /* SPECIALITES */
+  .specialty-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; }
+  .specialty-card { display: flex; flex-direction: column; min-height: 285px; background: var(--bg-dark-alt); border: 1px solid var(--line-dark); padding: 34px; transition: border-color .3s var(--ease-out), transform .35s var(--ease-out), box-shadow .35s var(--ease-out); }
+  .specialty-card:hover { border-color: var(--accent); transform: translateY(-4px); box-shadow: var(--shadow-soft); }
+  .specialty-card > span { color: var(--accent); font-size: 11px; letter-spacing: .16em; }
+  .specialty-card h3 { color: var(--text-on-dark); font-size: 27px; margin: 32px 0 14px; }
+  .specialty-card p { color: var(--text-on-dark-muted); font-size: 14px; line-height: 1.65; }
+  .specialty-card strong { color: var(--accent); font-size: 12px; text-transform: uppercase; letter-spacing: .1em; margin-top: auto; padding-top: 24px; }
+  .specialty-formulas { display: inline-block; margin-top: 26px; color: var(--accent); font-weight: 700; text-decoration: underline; text-underline-offset: 4px; }
 
   /* FAQ */
   .faq-list { max-width: 820px; margin: 0 auto; display: flex; flex-direction: column; gap: 8px; }
@@ -370,7 +422,7 @@ const priceFmt = (n: number) => new Intl.NumberFormat('fr-FR').format(n) + ' €
     .svc-grid, .gar-grid { grid-template-columns: 1fr; }
     .fleet-grid, .zone-grid { grid-template-columns: 1fr; gap: 36px; }
     .steps-grid { grid-template-columns: 1fr 1fr; gap: 28px; }
-    .tst-grid { grid-template-columns: 1fr; }
+    .specialty-grid { grid-template-columns: 1fr; }
   }
   @media (max-width: 560px) {
     .steps-grid { grid-template-columns: 1fr; }

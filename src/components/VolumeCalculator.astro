@@ -1,0 +1,283 @@
+---
+const rooms = [
+  {
+    id: 'salon',
+    name: 'Salon',
+    items: [
+      { id: 'canape2', name: 'Canapé 2 places', volume: 1.5 },
+      { id: 'canape3', name: 'Canapé 3 places', volume: 2 },
+      { id: 'fauteuil', name: 'Fauteuil', volume: 0.7 },
+      { id: 'table-basse', name: 'Table basse', volume: 0.3 },
+      { id: 'meuble-tv', name: 'Meuble TV', volume: 0.6 },
+      { id: 'bibliotheque', name: 'Bibliothèque', volume: 1 },
+    ],
+  },
+  {
+    id: 'chambre',
+    name: 'Chambre',
+    items: [
+      { id: 'lit-simple', name: 'Lit simple', volume: 1 },
+      { id: 'lit-double', name: 'Lit double', volume: 1.8 },
+      { id: 'armoire-2p', name: 'Armoire 2 portes', volume: 1.5 },
+      { id: 'commode', name: 'Commode', volume: 0.7 },
+      { id: 'chevet', name: 'Table de chevet', volume: 0.2 },
+      { id: 'bureau', name: 'Bureau', volume: 0.8 },
+    ],
+  },
+  {
+    id: 'cuisine',
+    name: 'Cuisine',
+    items: [
+      { id: 'table', name: 'Table', volume: 0.8 },
+      { id: 'chaise', name: 'Chaise', volume: 0.15 },
+      { id: 'refrigerateur', name: 'Réfrigérateur', volume: 1 },
+      { id: 'lave-linge', name: 'Lave-linge', volume: 0.5 },
+      { id: 'lave-vaisselle', name: 'Lave-vaisselle', volume: 0.5 },
+      { id: 'four', name: 'Four / cuisinière', volume: 0.4 },
+    ],
+  },
+  {
+    id: 'divers',
+    name: 'Divers',
+    items: [
+      { id: 'carton-standard', name: 'Carton standard', volume: 0.1 },
+      { id: 'carton-livres', name: 'Carton à livres', volume: 0.06 },
+      { id: 'velo', name: 'Vélo', volume: 0.5 },
+      { id: 'tv', name: 'Téléviseur', volume: 0.25 },
+      { id: 'plante', name: 'Grande plante', volume: 0.3 },
+      { id: 'barbecue', name: 'Barbecue', volume: 0.5 },
+    ],
+  },
+];
+---
+
+<section class="volume-tool" aria-labelledby="volume-title">
+  <div class="volume-layout">
+    <div class="volume-inventory">
+      <div class="volume-intro">
+        <span class="section-label">Inventaire pièce par pièce</span>
+        <h2 id="volume-title">Ajoutez les objets à transporter</h2>
+        <p>Les volumes sont des moyennes. Le démontage, la forme du mobilier et les contraintes d’accès peuvent modifier l’évaluation finale.</p>
+      </div>
+
+      <div class="room-list">
+        {rooms.map((room, roomIndex) => (
+          <details class="room" open={roomIndex === 0}>
+            <summary>
+              <span>{room.name}</span>
+              <span class="room-count" id={`count-${room.id}`}>0 objet</span>
+            </summary>
+            <div class="item-list">
+              {room.items.map((item) => (
+                <div class="inventory-item">
+                  <span>
+                    <strong>{item.name}</strong>
+                    <small>{item.volume.toLocaleString('fr-FR')} m³ / unité</small>
+                  </span>
+                  <span class="qty-control">
+                    <button type="button" class="qty-btn" data-action="minus" data-target={`qty-${item.id}`} aria-label={`Retirer un élément : ${item.name}`}>−</button>
+                    <input
+                      id={`qty-${item.id}`}
+                      name={item.id}
+                      type="number"
+                      inputmode="numeric"
+                      min="0"
+                      max="99"
+                      value="0"
+                      data-volume={item.volume}
+                      data-room={room.id}
+                      aria-label={`Quantité : ${item.name}`}
+                    />
+                    <button type="button" class="qty-btn" data-action="plus" data-target={`qty-${item.id}`} aria-label={`Ajouter un élément : ${item.name}`}>+</button>
+                  </span>
+                </div>
+              ))}
+            </div>
+          </details>
+        ))}
+      </div>
+
+      <label class="custom-volume" for="custom-volume">
+        <span>
+          <strong>Autres objets</strong>
+          <small>Volume libre estimé en m³</small>
+        </span>
+        <input id="custom-volume" type="number" inputmode="decimal" min="0" max="100" step="0.1" value="0" />
+      </label>
+    </div>
+
+    <aside class="volume-summary" aria-live="polite">
+      <span class="summary-label">Volume estimé</span>
+      <strong class="summary-volume"><span id="total-volume">0,0</span> m³</strong>
+      <p id="vehicle-advice">Ajoutez vos meubles pour obtenir une recommandation.</p>
+
+      <div class="summary-stats">
+        <div><span id="total-items">0</span><small>objets</small></div>
+        <div><span id="box-equivalent">0</span><small>cartons équiv.</small></div>
+      </div>
+
+      <div class="summary-actions">
+        <a class="btn btn--primary" id="volume-devis-link" href="/devis/?source=calculateur-volume">Continuer vers le devis →</a>
+        <button type="button" class="reset-button" id="reset-volume">Réinitialiser</button>
+      </div>
+
+      <p class="summary-note">Estimation indicative et non contractuelle. Le volume doit être confirmé avant l’établissement du devis définitif.</p>
+    </aside>
+  </div>
+</section>
+
+<style>
+  .volume-tool { max-width: 1060px; margin: 0 auto; }
+  .volume-layout { display: grid; grid-template-columns: minmax(0, 1fr) 330px; gap: 32px; align-items: start; }
+  .volume-inventory, .volume-summary { background: var(--bg-card); border: 1px solid var(--line); border-radius: var(--radius-lg); }
+  .volume-inventory { padding: 32px; }
+  .volume-intro { margin-bottom: 24px; }
+  .volume-intro h2 { margin-bottom: 10px; }
+  .volume-intro p { color: var(--text-muted); max-width: 680px; }
+  .room-list { display: grid; gap: 10px; }
+  .room { border: 1px solid var(--line); border-radius: 8px; overflow: hidden; background: var(--bg); }
+  .room summary { display: flex; justify-content: space-between; gap: 16px; padding: 16px 18px; cursor: pointer; font-weight: 700; color: var(--text); }
+  .room-count { color: var(--accent-deep); font-size: .82rem; font-weight: 600; }
+  .item-list { border-top: 1px solid var(--line); }
+  .inventory-item, .custom-volume { display: flex; align-items: center; justify-content: space-between; gap: 16px; padding: 14px 18px; border-bottom: 1px solid var(--line); }
+  .inventory-item:last-child { border-bottom: 0; }
+  .inventory-item strong, .custom-volume strong { display: block; font-size: .92rem; }
+  .inventory-item small, .custom-volume small { display: block; color: var(--text-muted); font-size: .76rem; margin-top: 2px; }
+  .qty-control { display: grid; grid-template-columns: 44px 48px 44px; flex-shrink: 0; }
+  .qty-btn, .qty-control input, .custom-volume input { height: 44px; border: 1px solid var(--line); background: var(--bg-card); color: var(--text); font: inherit; }
+  .qty-btn { cursor: pointer; font-size: 1.15rem; }
+  .qty-btn:first-child { border-radius: 6px 0 0 6px; }
+  .qty-btn:last-child { border-radius: 0 6px 6px 0; }
+  .qty-btn:hover, .qty-btn:focus-visible { background: var(--accent-soft); border-color: var(--accent); outline: none; }
+  .qty-control input { width: 48px; text-align: center; border-left: 0; border-right: 0; -moz-appearance: textfield; }
+  .qty-control input::-webkit-outer-spin-button, .qty-control input::-webkit-inner-spin-button { appearance: none; margin: 0; }
+  .custom-volume { margin-top: 16px; border: 1px solid var(--line); border-radius: 8px; background: var(--bg-soft); }
+  .custom-volume input { width: 92px; padding: 0 10px; border-radius: 6px; }
+  .volume-summary { position: sticky; top: 96px; padding: 28px; background: var(--bg-dark); border-color: var(--line-dark); color: var(--text-on-dark); }
+  .summary-label { display: block; color: var(--text-on-dark-muted); font-size: .72rem; font-weight: 700; text-transform: uppercase; letter-spacing: .14em; }
+  .summary-volume { display: block; color: var(--accent); font-family: var(--font-display); font-size: 3rem; line-height: 1.1; margin: 8px 0 12px; }
+  .volume-summary > p { color: var(--text-on-dark-muted); font-size: .88rem; }
+  .summary-stats { display: grid; grid-template-columns: 1fr 1fr; gap: 1px; margin: 24px 0; background: var(--line-dark); border: 1px solid var(--line-dark); border-radius: 8px; overflow: hidden; }
+  .summary-stats div { background: var(--bg-dark-alt); padding: 14px; text-align: center; }
+  .summary-stats span { display: block; color: var(--text-on-dark); font-size: 1.2rem; font-weight: 700; }
+  .summary-stats small { display: block; color: var(--text-on-dark-muted); font-size: .68rem; }
+  .summary-actions { display: grid; gap: 10px; }
+  .summary-actions .btn { white-space: normal; justify-content: center; text-align: center; }
+  .reset-button { border: 0; background: transparent; color: var(--text-on-dark-muted); text-decoration: underline; text-underline-offset: 3px; padding: 8px; cursor: pointer; }
+  .summary-note { margin-top: 18px; font-size: .72rem !important; line-height: 1.5; }
+  @media (max-width: 820px) {
+    .volume-layout { grid-template-columns: 1fr; }
+    .volume-summary { position: static; }
+  }
+  @media (max-width: 560px) {
+    .volume-inventory { padding: 20px 14px; }
+    .inventory-item, .custom-volume { padding: 13px 12px; }
+    .inventory-item small { max-width: 140px; }
+  }
+</style>
+
+<script is:inline>
+  (function () {
+    var STORAGE_KEY = 'tc-volume-inventory-v1';
+    var inputs = Array.from(document.querySelectorAll('[data-volume]'));
+    var custom = document.getElementById('custom-volume');
+    var totalEl = document.getElementById('total-volume');
+    var totalItemsEl = document.getElementById('total-items');
+    var boxEl = document.getElementById('box-equivalent');
+    var vehicleEl = document.getElementById('vehicle-advice');
+    var devisLink = document.getElementById('volume-devis-link');
+    if (!totalEl || !totalItemsEl || !boxEl || !vehicleEl || !devisLink) return;
+
+    function clamp(value, min, max) {
+      var number = Number(value);
+      return Number.isFinite(number) ? Math.min(max, Math.max(min, number)) : min;
+    }
+
+    function getRecommendation(volume) {
+      if (volume <= 0) return 'Ajoutez vos meubles pour obtenir une recommandation.';
+      if (volume <= 6) return 'Petit volume : utilitaire compact ou trajet groupé à étudier.';
+      if (volume <= 12) return 'Volume compatible avec un fourgon d’environ 12 m³.';
+      if (volume <= 20) return 'Un fourgon d’environ 20 m³ peut convenir après vérification.';
+      if (volume <= 35) return 'Un véhicule de grande capacité ou deux rotations sont probablement nécessaires.';
+      return 'Volume important : une visite technique ou un rendez-vous vidéo est recommandé.';
+    }
+
+    function updateRoomCounts() {
+      var counts = {};
+      inputs.forEach(function (input) {
+        var room = input.getAttribute('data-room');
+        counts[room] = (counts[room] || 0) + clamp(input.value, 0, 99);
+      });
+      Object.keys(counts).forEach(function (room) {
+        var el = document.getElementById('count-' + room);
+        if (el) el.textContent = counts[room] + (counts[room] > 1 ? ' objets' : ' objet');
+      });
+    }
+
+    function compute(shouldSave) {
+      var total = 0;
+      var totalItems = 0;
+      var state = {};
+      inputs.forEach(function (input) {
+        var quantity = Math.round(clamp(input.value, 0, 99));
+        input.value = String(quantity);
+        total += quantity * Number(input.getAttribute('data-volume') || 0);
+        totalItems += quantity;
+        if (quantity) state[input.id] = quantity;
+      });
+      var customValue = clamp(custom && custom.value, 0, 100);
+      if (custom) custom.value = String(customValue);
+      total += customValue;
+      state.custom = customValue;
+      total = Math.round(total * 10) / 10;
+
+      totalEl.textContent = total.toLocaleString('fr-FR', { minimumFractionDigits: 1, maximumFractionDigits: 1 });
+      totalItemsEl.textContent = String(totalItems);
+      boxEl.textContent = String(Math.round(total / 0.1));
+      vehicleEl.textContent = getRecommendation(total);
+      devisLink.href = '/devis/?source=calculateur-volume&volume=' + encodeURIComponent(String(total));
+      updateRoomCounts();
+
+      if (shouldSave) {
+        try { localStorage.setItem(STORAGE_KEY, JSON.stringify(state)); } catch (error) {}
+      }
+    }
+
+    try {
+      var saved = JSON.parse(localStorage.getItem(STORAGE_KEY) || '{}');
+      inputs.forEach(function (input) { if (saved[input.id] != null) input.value = saved[input.id]; });
+      if (custom && saved.custom != null) custom.value = saved.custom;
+    } catch (error) {}
+
+    document.querySelectorAll('.qty-btn').forEach(function (button) {
+      button.addEventListener('click', function () {
+        var input = document.getElementById(button.getAttribute('data-target'));
+        if (!input) return;
+        var delta = button.getAttribute('data-action') === 'plus' ? 1 : -1;
+        input.value = String(clamp(Number(input.value) + delta, 0, 99));
+        compute(true);
+      });
+    });
+    inputs.forEach(function (input) { input.addEventListener('input', function () { compute(true); }); });
+    custom && custom.addEventListener('input', function () { compute(true); });
+
+    var reset = document.getElementById('reset-volume');
+    reset && reset.addEventListener('click', function () {
+      inputs.forEach(function (input) { input.value = '0'; });
+      if (custom) custom.value = '0';
+      try { localStorage.removeItem(STORAGE_KEY); } catch (error) {}
+      compute(false);
+    });
+
+    devisLink.addEventListener('click', function () {
+      if (typeof window.gtag === 'function') {
+        window.gtag('event', 'volume_calculator_complete', {
+          event_category: 'lead',
+          value: Number(String(totalEl.textContent).replace(',', '.')) || 0,
+          page_path: window.location.pathname
+        });
+      }
+    });
+    compute(false);
+  })();
+</script>

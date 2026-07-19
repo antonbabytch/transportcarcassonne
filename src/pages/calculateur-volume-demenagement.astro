@@ -1,0 +1,71 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Header from '../components/Header.astro';
+import Footer from '../components/Footer.astro';
+import Breadcrumbs from '../components/Breadcrumbs.astro';
+import VolumeCalculator from '../components/VolumeCalculator.astro';
+import CTA from '../components/CTA.astro';
+
+const title = 'Calculateur de volume déménagement en m³ | Gratuit';
+const description = 'Estimez gratuitement le volume de votre déménagement pièce par pièce. Inventaire meubles et cartons, recommandation de véhicule et transmission vers votre devis.';
+---
+
+<BaseLayout title={title} description={description}>
+  <Header />
+  <Breadcrumbs items={[{ name: 'Accueil', href: '/' }, { name: 'Calculateur de volume' }]} />
+
+  <main>
+    <section class="tool-hero">
+      <div class="container">
+        <span class="section-label">Outil gratuit</span>
+        <h1>Calculez le volume de votre déménagement</h1>
+        <p>Construisez votre inventaire pièce par pièce et obtenez une première estimation en mètres cubes. Votre liste reste enregistrée sur cet appareil pendant votre préparation.</p>
+      </div>
+    </section>
+
+    <section class="section section--alt">
+      <div class="container"><VolumeCalculator /></div>
+    </section>
+
+    <section class="section guide">
+      <div class="container guide-grid">
+        <div>
+          <span class="section-label">Bien utiliser le résultat</span>
+          <h2>Pourquoi le volume est essentiel</h2>
+          <p>Le volume aide à choisir le véhicule, le nombre de déménageurs et le temps de manutention. Il ne suffit cependant pas à déterminer seul le prix : la distance, les étages, l’ascenseur, le stationnement et les objets nécessitant une protection particulière comptent aussi.</p>
+        </div>
+        <div class="guide-card">
+          <h3>Pour une estimation plus fiable</h3>
+          <ul>
+            <li>Comptez aussi le contenu du garage, de la cave et du balcon.</li>
+            <li>Ajoutez les cartons que vous prévoyez encore de remplir.</li>
+            <li>Signalez les meubles non démontables et les objets lourds.</li>
+            <li>Préparez quelques photos des accès et des pièces.</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <CTA
+      title="Votre inventaire est prêt ?"
+      subtitle="Transmettez le volume estimé et complétez les accès pour recevoir un devis personnalisé."
+      btnLabel="Continuer vers le devis →"
+      btnHref="/devis/?source=calculateur-volume"
+    />
+  </main>
+  <Footer />
+</BaseLayout>
+
+<style>
+  .tool-hero { background: var(--bg-dark); color: var(--text-on-dark); padding: 72px 0; text-align: center; }
+  .tool-hero h1 { color: var(--text-on-dark); max-width: 780px; margin: 0 auto 18px; }
+  .tool-hero p { color: var(--text-on-dark-muted); max-width: 720px; margin: 0 auto; font-size: 1.05rem; }
+  .guide-grid { display: grid; grid-template-columns: 1.1fr .9fr; gap: 56px; align-items: center; }
+  .guide-grid p { color: var(--text-muted); margin-top: 16px; line-height: 1.75; }
+  .guide-card { border: 1px solid var(--line); border-radius: var(--radius-lg); padding: 28px; background: var(--bg-card); }
+  .guide-card h3 { margin-bottom: 16px; }
+  .guide-card ul { display: grid; gap: 12px; }
+  .guide-card li { position: relative; padding-left: 20px; color: var(--text-muted); }
+  .guide-card li::before { content: '✓'; position: absolute; left: 0; color: var(--accent); font-weight: 700; }
+  @media (max-width: 760px) { .guide-grid { grid-template-columns: 1fr; gap: 28px; } }
+</style>

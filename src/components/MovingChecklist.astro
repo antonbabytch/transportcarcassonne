@@ -1,0 +1,157 @@
+---
+const groups = [
+  {
+    id: 'm1',
+    title: '4 semaines avant',
+    items: [
+      'Confirmer la date et demander les devis écrits',
+      'Trier, donner ou évacuer les objets inutiles',
+      'Créer l’inventaire pièce par pièce',
+      'Vérifier les accès et le stationnement aux deux adresses',
+      'Prévenir bailleur, syndic ou agence si nécessaire',
+    ],
+  },
+  {
+    id: 's2',
+    title: '2 semaines avant',
+    items: [
+      'Commencer les cartons non essentiels',
+      'Étiqueter chaque carton par pièce et priorité',
+      'Organiser le transfert internet, énergie et assurance',
+      'Déclarer le changement d’adresse aux organismes utiles',
+      'Prévoir la garde des enfants ou animaux le jour J',
+    ],
+  },
+  {
+    id: 's1',
+    title: 'La dernière semaine',
+    items: [
+      'Confirmer les horaires et coordonnées avec le déménageur',
+      'Préparer les appareils électroménagers',
+      'Mettre documents, clés et objets de valeur à part',
+      'Photographier les objets sensibles et les branchements',
+      'Préparer un sac pour la première nuit',
+    ],
+  },
+  {
+    id: 'j',
+    title: 'Jour J et arrivée',
+    items: [
+      'Garder le téléphone chargé et les accès disponibles',
+      'Faire un dernier tour du logement de départ',
+      'Vérifier les compteurs si nécessaire',
+      'Contrôler les biens à la livraison avant signature',
+      'Noter immédiatement toute réserve utile sur les documents',
+    ],
+  },
+];
+---
+
+<section class="checklist-tool" aria-labelledby="checklist-title">
+  <div class="checklist-head">
+    <div>
+      <span class="section-label">20 actions essentielles</span>
+      <h2 id="checklist-title">Votre préparation, étape par étape</h2>
+      <p>La progression est enregistrée uniquement dans votre navigateur.</p>
+    </div>
+    <div class="progress-block" aria-live="polite">
+      <strong id="progress-value">0 %</strong>
+      <span>terminé</span>
+    </div>
+  </div>
+  <div class="progress-track" aria-hidden="true"><span id="progress-bar"></span></div>
+
+  <div class="checklist-groups">
+    {groups.map((group) => (
+      <section class="check-group">
+        <h3>{group.title}</h3>
+        <div>
+          {group.items.map((item, index) => (
+            <label class="check-item">
+              <input type="checkbox" value={`${group.id}-${index}`} />
+              <span>{item}</span>
+            </label>
+          ))}
+        </div>
+      </section>
+    ))}
+  </div>
+
+  <div class="checklist-actions">
+    <button type="button" class="btn btn--outline" id="print-checklist">Imprimer la checklist</button>
+    <button type="button" class="reset-checklist" id="reset-checklist">Tout décocher</button>
+    <a href="/devis/?source=checklist-interactive" class="btn btn--primary">Préparer mon devis →</a>
+  </div>
+</section>
+
+<style>
+  .checklist-tool { max-width: 940px; margin: 0 auto; background: var(--bg-card); border: 1px solid var(--line); border-radius: var(--radius-lg); padding: 34px; }
+  .checklist-head { display: flex; justify-content: space-between; align-items: end; gap: 24px; }
+  .checklist-head p { color: var(--text-muted); margin-top: 8px; }
+  .progress-block { flex-shrink: 0; text-align: right; }
+  .progress-block strong { display: block; color: var(--accent-deep); font-family: var(--font-display); font-size: 2rem; line-height: 1; }
+  .progress-block span { color: var(--text-muted); font-size: .75rem; }
+  .progress-track { height: 8px; overflow: hidden; background: var(--bg-soft); border-radius: 999px; margin: 24px 0 30px; }
+  .progress-track span { display: block; height: 100%; width: 0; border-radius: inherit; background: var(--accent); transition: width .25s ease; }
+  .checklist-groups { display: grid; grid-template-columns: 1fr 1fr; gap: 18px; }
+  .check-group { border: 1px solid var(--line); border-radius: 8px; overflow: hidden; }
+  .check-group h3 { padding: 15px 17px; font-family: var(--font-sans); font-size: .9rem; background: var(--bg-soft); border-bottom: 1px solid var(--line); }
+  .check-item { display: grid; grid-template-columns: 20px 1fr; gap: 11px; align-items: start; padding: 13px 16px; border-bottom: 1px solid var(--line); cursor: pointer; color: var(--text); font-size: .88rem; line-height: 1.45; }
+  .check-item:last-child { border-bottom: 0; }
+  .check-item:hover { background: var(--accent-soft); }
+  .check-item input { width: 18px; height: 18px; margin-top: 1px; accent-color: var(--accent); }
+  .check-item input:checked + span { color: var(--text-muted); text-decoration: line-through; }
+  .checklist-actions { display: flex; align-items: center; justify-content: flex-end; gap: 12px; flex-wrap: wrap; margin-top: 28px; }
+  .reset-checklist { margin-right: auto; border: 0; background: transparent; color: var(--text-muted); text-decoration: underline; text-underline-offset: 3px; cursor: pointer; padding: 10px; }
+  @media (max-width: 720px) { .checklist-groups { grid-template-columns: 1fr; } }
+  @media (max-width: 560px) { .checklist-tool { padding: 24px 14px; } .checklist-head { align-items: start; } .checklist-actions { display: grid; } .reset-checklist { margin: 0; order: 3; } }
+  @media print {
+    .checklist-tool { border: 0; padding: 0; }
+    .checklist-actions { display: none; }
+    .checklist-groups { grid-template-columns: 1fr 1fr; }
+    .check-item { break-inside: avoid; }
+  }
+</style>
+
+<script is:inline>
+  (function () {
+    var STORAGE_KEY = 'tc-moving-checklist-v1';
+    var checks = Array.from(document.querySelectorAll('.checklist-tool input[type="checkbox"]'));
+    var progress = document.getElementById('progress-value');
+    var bar = document.getElementById('progress-bar');
+    var completionTracked = false;
+    if (!progress || !bar) return;
+
+    function update(save) {
+      var completed = checks.filter(function (item) { return item.checked; });
+      var percent = checks.length ? Math.round(completed.length / checks.length * 100) : 0;
+      progress.textContent = percent + ' %';
+      bar.style.width = percent + '%';
+      if (save) {
+        try { localStorage.setItem(STORAGE_KEY, JSON.stringify(completed.map(function (item) { return item.value; }))); } catch (error) {}
+      }
+      if (percent === 100) {
+        if (save && !completionTracked && typeof window.gtag === 'function') {
+          window.gtag('event', 'moving_checklist_complete', { event_category: 'engagement', page_path: window.location.pathname });
+        }
+        completionTracked = true;
+      }
+    }
+
+    try {
+      var saved = JSON.parse(localStorage.getItem(STORAGE_KEY) || '[]');
+      checks.forEach(function (item) { item.checked = saved.indexOf(item.value) !== -1; });
+    } catch (error) {}
+    checks.forEach(function (item) { item.addEventListener('change', function () { update(true); }); });
+
+    var reset = document.getElementById('reset-checklist');
+    reset && reset.addEventListener('click', function () {
+      checks.forEach(function (item) { item.checked = false; });
+      try { localStorage.removeItem(STORAGE_KEY); } catch (error) {}
+      update(false);
+    });
+    var printButton = document.getElementById('print-checklist');
+    printButton && printButton.addEventListener('click', function () { window.print(); });
+    update(false);
+  })();
+</script>

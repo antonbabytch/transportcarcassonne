@@ -1,4 +1,5 @@
 ---
+import { getCollection } from 'astro:content';
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import Header from '../../components/Header.astro';
 import Footer from '../../components/Footer.astro';
@@ -6,50 +7,58 @@ import CTA from '../../components/CTA.astro';
 import Breadcrumbs from '../../components/Breadcrumbs.astro';
 import { SITE } from '../../data/site.config';
 
-const title = 'Blog déménagement | Conseils et astuces | Transport Carcassonne';
-const description = `Conseils pratiques pour réussir votre déménagement à Carcassonne et dans l'Aude. Astuces, guides et informations par Transport Carcassonne ${SITE.phoneDisplay}`;
+const title = 'Conseils déménagement à Carcassonne et dans l’Aude';
+const description = `Guides pratiques pour préparer un déménagement à Carcassonne : stationnement, cartons, démarches et organisation. Conseils locaux par ${SITE.name}.`;
+const posts = (await getCollection('blog', ({ data }) => !data.draft))
+  .sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf());
+const postHref = (id: string) => `/blog/${id.replace(/\.(md|mdx)$/, '')}/`;
+const formatDate = (date: Date) => new Intl.DateTimeFormat('fr-FR', {
+  day: 'numeric', month: 'long', year: 'numeric', timeZone: 'Europe/Paris',
+}).format(date);
 ---
 
 <BaseLayout title={title} description={description}>
   <Header />
-  <Breadcrumbs items={[{ name: 'Accueil', href: '/' }, { name: 'Blog' }]} />
+  <Breadcrumbs items={[{ name: 'Accueil', href: '/' }, { name: 'Conseils déménagement' }]} />
 
-  <section class="blog-hero">
-    <div class="container">
-      <span class="section-label">Blog</span>
-      <h1>Conseils déménagement</h1>
-      <p class="blog-hero-sub">
-        Guides pratiques, astuces et informations pour réussir votre déménagement dans l'Aude.
-      </p>
-    </div>
-  </section>
-
-  <section class="section">
-    <div class="container">
-      <div class="blog-coming-soon">
-        <div class="blog-cs-icon">✍️</div>
-        <h2>Articles à venir</h2>
-        <p>
-          Nos premiers articles de conseils seront bientôt publiés.
-          En attendant, n'hésitez pas à nous contacter directement pour
-          tout conseil personnalisé sur votre déménagement.
+  <main>
+    <section class="blog-hero">
+      <div class="container">
+        <span class="section-label">Guides locaux</span>
+        <h1>Conseils pour déménager sereinement</h1>
+        <p class="blog-hero-sub">
+          Des réponses concrètes sur les accès, le stationnement, les cartons et les démarches
+          à Carcassonne et dans l'Aude.
         </p>
-        <div class="blog-cs-topics">
-          <h3>Prochains sujets :</h3>
-          <ul>
-            <li>Comment préparer son déménagement 4 semaines à l'avance</li>
-            <li>Les meilleures astuces d'emballage des professionnels</li>
-            <li>Déménager avec un piano : tout ce qu'il faut savoir</li>
-            <li>Guide du déménagement à Carcassonne : ruelles et accès</li>
-            <li>Comment choisir son déménageur dans l'Aude</li>
-          </ul>
-        </div>
-        <a href="/contact" class="btn btn--primary btn--lg">Demander un devis →</a>
       </div>
-    </div>
-  </section>
+    </section>
 
-  <CTA />
+    <section class="section">
+      <div class="container">
+        <div class="article-grid">
+          {posts.map((post, index) => (
+            <article class:list={['article-card', index === 0 && 'article-card--featured']}>
+              <div class="article-card__meta">
+                <time datetime={post.data.pubDate.toISOString()}>{formatDate(post.data.pubDate)}</time>
+                <span>·</span>
+                <span>{post.data.tags[0] ?? 'Conseils'}</span>
+              </div>
+              <h2><a href={postHref(post.id)}>{post.data.title}</a></h2>
+              <p>{post.data.description}</p>
+              <a class="article-card__link" href={postHref(post.id)} aria-label={`Lire : ${post.data.title}`}>
+                Lire le guide <span aria-hidden="true">→</span>
+              </a>
+            </article>
+          ))}
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <CTA
+    title="Un projet de déménagement dans l'Aude ?"
+    subtitle="Décrivez-nous votre trajet, votre volume et les accès pour recevoir une réponse personnalisée."
+  />
   <Footer />
 </BaseLayout>
 
@@ -57,35 +66,43 @@ const description = `Conseils pratiques pour réussir votre déménagement à Ca
   .blog-hero {
     background: var(--color-navy);
     color: white;
-    padding: 64px 0;
+    padding: 72px 0;
   }
-  .blog-hero h1 { color: white; margin: 12px 0; }
-  .blog-hero-sub { color: rgba(255,255,255,.75); font-size: 1.05rem; }
-
-  .blog-coming-soon {
-    max-width: 640px;
-    margin: 0 auto;
-    text-align: center;
+  .blog-hero h1 { color: white; margin: 12px 0 16px; max-width: 760px; }
+  .blog-hero-sub { color: rgba(255,255,255,.78); font-size: 1.08rem; max-width: 680px; }
+  .article-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 24px; }
+  .article-card {
     background: var(--color-white);
     border: 1.5px solid var(--color-border);
     border-radius: var(--radius-lg);
-    padding: 56px 48px;
-    box-shadow: var(--shadow);
+    padding: 32px;
+    display: flex;
+    flex-direction: column;
+    min-height: 310px;
   }
-  .blog-cs-icon { font-size: 3rem; margin-bottom: 16px; }
-  .blog-coming-soon h2 { margin-bottom: 16px; }
-  .blog-coming-soon p {
-    font-size: 1rem;
+  .article-card--featured { border-color: var(--color-accent); }
+  .article-card__meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
     color: var(--color-text-light);
-    line-height: 1.7;
-    margin-bottom: 32px;
+    font-size: .78rem;
+    text-transform: uppercase;
+    letter-spacing: .06em;
+    margin-bottom: 18px;
   }
-  .blog-cs-topics { text-align: left; margin-bottom: 36px; }
-  .blog-cs-topics h3 { font-family: var(--font-sans); font-size: .9rem; font-weight: 700; color: var(--color-navy); margin-bottom: 12px; }
-  .blog-cs-topics ul { display: flex; flex-direction: column; gap: 8px; list-style: disc; padding-left: 20px; }
-  .blog-cs-topics li { font-size: .9rem; color: var(--color-text-light); }
-
-  @media (max-width: 560px) {
-    .blog-coming-soon { padding: 36px 20px; }
+  .article-card h2 { font-size: 1.65rem; margin-bottom: 14px; }
+  .article-card h2 a:hover { color: var(--color-accent-deep); }
+  .article-card p { color: var(--color-text-light); line-height: 1.7; margin-bottom: 24px; }
+  .article-card__link {
+    margin-top: auto;
+    color: var(--color-accent-deep);
+    font-weight: 700;
+    text-decoration: underline;
+    text-underline-offset: 4px;
+  }
+  @media (max-width: 720px) {
+    .article-grid { grid-template-columns: 1fr; }
+    .article-card { min-height: 0; padding: 26px 22px; }
   }
 </style>
