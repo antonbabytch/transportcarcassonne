@@ -10,7 +10,13 @@ export type HighIntentPage = {
     service: string;
     depart: string;
     logement?: string;
+    distance?: string;
+    urgent?: string;
   };
+  primaryCta?: string;
+  phoneCta?: string;
+  ctaTitle?: string;
+  ctaSubtitle?: string;
   contextTitle: string;
   context: string[];
   profiles: { title: string; text: string }[];
@@ -180,6 +186,122 @@ export const HIGH_INTENT_PAGES: Record<string, HighIntentPage> = {
       { label: 'Tarifs indicatifs', href: '/tarifs/', text: 'Comprendre les variables prises en compte.' },
       { label: 'Transfert d’entreprise', href: '/demenagement-entreprise-carcassonne/', text: 'Préparer bureaux, archives et accès professionnels.' },
       { label: 'Déménagement senior', href: '/demenagement-senior-carcassonne/', text: 'Organiser progressivement le tri et l’installation.' },
+    ],
+  },
+  urgent: {
+    slug: 'transport-urgent-carcassonne',
+    eyebrow: 'Disponibilité locale à vérifier en direct',
+    title: 'Transport urgent à Carcassonne aujourd’hui ou demain',
+    metaTitle: 'Transport urgent Carcassonne | Aujourd’hui ou demain',
+    metaDescription: 'Besoin d’un transport urgent à Carcassonne aujourd’hui ou demain ? Meuble, petit déménagement ou retrait magasin. Appelez pour vérifier la disponibilité locale.',
+    intro: 'Un besoin de dernière minute ne permet pas d’attendre plusieurs jours de réponses. Pour une courte distance autour de Carcassonne, appelez directement avec les deux adresses, l’inventaire et l’heure limite : nous vérifions le créneau, les accès et les moyens disponibles avant de confirmer.',
+    quote: { source: 'landing-urgent', service: 'transport-meubles', depart: 'Carcassonne', logement: 'petit-volume', distance: 'local', urgent: '1' },
+    primaryCta: 'Envoyer les détails maintenant',
+    phoneCta: 'Appeler maintenant · 06 80 87 30 47',
+    ctaTitle: 'Besoin d’un transport aujourd’hui ou demain ?',
+    ctaSubtitle: 'Le téléphone est le moyen le plus rapide. Indiquez les adresses, les objets, les accès et l’heure limite ; nous confirmons ensuite le créneau et le tarif.',
+    contextTitle: 'Les demandes locales que nous pouvons étudier rapidement',
+    context: [
+      'Cette solution concerne en priorité Carcassonne et les communes proches, pour un petit volume compatible avec le véhicule et le temps disponible. Il peut s’agir d’un canapé, d’un lit, d’électroménager, de cartons, d’un achat entre particuliers ou d’un petit déménagement préparé au dernier moment.',
+      'Une intervention le jour même ou le lendemain dépend du planning réel, du volume, du poids, des étages, du stationnement et du temps de trajet. Nous ne confirmons jamais un créneau avant d’avoir vérifié ces éléments et annoncé le périmètre de la prestation.',
+      'Le tarif est adapté à la distance, au nombre d’objets, au temps de manutention, aux accès et au nombre de personnes nécessaires. Le prix et le créneau sont communiqués avant l’intervention afin que vous puissiez décider sans surprise.',
+    ],
+    profiles: [
+      { title: 'Un meuble ou un achat', text: 'Canapé, table, armoire, lit ou électroménager à retirer chez un particulier ou dans un magasin de Carcassonne.' },
+      { title: 'Petit déménagement local', text: 'Quelques meubles et cartons entre deux adresses proches, lorsque tout est prêt et que les accès sont clairement décrits.' },
+      { title: 'Besoin professionnel ponctuel', text: 'Livraison locale pour un commerce, un bureau, une location ou un client qui a besoin d’un créneau très proche.' },
+    ],
+    method: [
+      { title: 'Appelez avec les informations utiles', text: 'Donnez les deux adresses, l’heure limite, la liste des objets, leurs dimensions et les contraintes d’accès.' },
+      { title: 'Envoyez des photos si nécessaire', text: 'Des photos du meuble, des escaliers, des portes et du stationnement permettent de vérifier plus vite la manutention.' },
+      { title: 'Nous vérifions le créneau', text: 'Nous contrôlons le planning, le véhicule, le temps de trajet, le nombre de personnes et la faisabilité réelle.' },
+      { title: 'Vous confirmez avant le départ', text: 'Le créneau, le tarif, les prestations incluses et les éventuelles limites sont validés avant l’intervention.' },
+    ],
+    checklistTitle: 'Ce qu’il faut préparer pour une réponse rapide',
+    checklistIntro: 'Plus la demande est précise au premier appel, plus la disponibilité peut être vérifiée rapidement.',
+    checklist: [
+      'Adresse exacte de retrait et adresse exacte de livraison',
+      'Créneau possible et heure à laquelle tout doit être terminé',
+      'Liste des meubles, cartons ou appareils avec dimensions approximatives',
+      'Étage, ascenseur, largeur des passages et distance de portage',
+      'Possibilité de stationner près de chaque entrée',
+      'État de préparation : meuble démonté ou non, cartons fermés, achat déjà réglé',
+      'Photos des objets et des accès pour les éléments volumineux ou lourds',
+    ],
+    callout: {
+      title: 'Aujourd’hui ou demain ne signifie pas « sans vérification »',
+      text: 'La disponibilité n’est confirmée qu’après contrôle du planning, du volume, des accès et des moyens nécessaires. Un objet trop lourd, un passage impossible ou une prestation réglementée peut nécessiter une autre organisation.',
+    },
+    faqs: [
+      { q: 'Pouvez-vous intervenir aujourd’hui à Carcassonne ?', a: 'C’est parfois possible pour une courte distance et un volume limité. Appelez immédiatement avec les adresses, l’inventaire, les accès et l’heure limite. Le créneau reste soumis à confirmation.' },
+      { q: 'Pouvez-vous intervenir demain ?', a: 'Une intervention le lendemain est souvent plus simple à organiser que le jour même, mais elle dépend toujours du planning et des moyens nécessaires. Plus les informations sont complètes, plus la réponse est rapide.' },
+      { q: 'Transportez-vous un seul canapé ou un seul appareil ?', a: 'Oui, une demande pour un seul meuble ou appareil peut être étudiée. Il faut préciser les dimensions, le poids connu, les étages, l’ascenseur et les passages.' },
+      { q: 'Pouvez-vous retirer un achat dans un magasin ?', a: 'Oui, si l’achat est prêt, réglé, accessible au retrait et compatible avec le véhicule. Transmettez le nom du magasin, le créneau de retrait, les dimensions et l’adresse de livraison.' },
+      { q: 'Combien coûte un transport urgent local ?', a: 'Le tarif dépend de la distance, du volume, des accès, du temps de manutention, du nombre de personnes et du créneau. Le montant est annoncé avant confirmation ; aucune majoration automatique n’est promise ou appliquée sans explication.' },
+      { q: 'Dans quelles communes intervenez-vous en urgence ?', a: 'La priorité est donnée à Carcassonne et aux communes proches comme Trèbes, Cazilhac, Palaja, Pennautier, Villemoustaussou ou Berriac. Une autre destination peut être étudiée selon le trajet et le planning.' },
+    ],
+    related: [
+      { label: 'Transport de meubles', href: '/services/transport-meubles/', text: 'Un ou plusieurs meubles, achat en ligne ou livraison locale.' },
+      { label: 'Livraison depuis un magasin', href: '/livraison-meubles-magasins-carcassonne/', text: 'Retrait et livraison d’un achat volumineux à Carcassonne.' },
+      { label: 'Petit déménagement', href: '/petit-demenagement/', text: 'Studios, quelques meubles et petits volumes.' },
+      { label: 'Tarifs indicatifs', href: '/tarifs/', text: 'Comprendre les éléments qui déterminent le prix.' },
+    ],
+  },
+  livraisonMagasin: {
+    slug: 'livraison-meubles-magasins-carcassonne',
+    eyebrow: 'Retrait magasin et livraison locale',
+    title: 'Livraison de meubles et achats magasin à Carcassonne',
+    metaTitle: 'Livraison meubles magasin Carcassonne | Transport local',
+    metaDescription: 'Retrait et livraison locale d’un canapé, meuble ou électroménager acheté en magasin à Carcassonne. Créneau rapide selon disponibilité, accès et dimensions.',
+    intro: 'Vous avez acheté un canapé, une table, un lit ou un appareil volumineux et le magasin ne peut pas livrer assez vite ? Nous pouvons étudier le retrait au point de vente et la livraison à domicile à Carcassonne et dans les communes proches.',
+    quote: { source: 'landing-livraison-magasin', service: 'transport-meubles', depart: 'Carcassonne', logement: 'petit-volume', distance: 'local' },
+    primaryCta: 'Décrire l’achat à livrer',
+    phoneCta: 'Appeler · 06 80 87 30 47',
+    ctaTitle: 'Un achat volumineux à récupérer ?',
+    ctaSubtitle: 'Appelez avec le magasin, les dimensions, le créneau de retrait et l’adresse de livraison. Un passage aujourd’hui ou demain peut être étudié selon disponibilité.',
+    contextTitle: 'Une liaison simple entre le magasin et le client',
+    context: [
+      'Le retrait doit être préparé avant notre arrivée : achat réglé, bon de retrait disponible, personne autorisée identifiée et horaires du dépôt confirmés. Pour éviter l’attente, indiquez le point de retrait exact et le délai prévu par le magasin.',
+      'Les dimensions du colis ne suffisent pas toujours. Un canapé, un réfrigérateur ou une armoire doit aussi passer par les portes, l’escalier et l’ascenseur du domicile. Les accès et le stationnement à l’arrivée sont donc vérifiés avant le créneau.',
+      'Le service peut être demandé directement par l’acheteur ou par un commerce qui cherche une solution ponctuelle pour un client. Chaque livraison reste confirmée individuellement avec les coordonnées utiles, le périmètre de manutention et le tarif.',
+    ],
+    profiles: [
+      { title: 'Acheteur particulier', text: 'Retrait d’un achat déjà réglé et livraison à domicile, avec mise en place simple à confirmer selon les accès.' },
+      { title: 'Magasin ou commerçant', text: 'Solution locale ponctuelle lorsqu’un client a besoin d’une livraison plus proche que le planning habituel.' },
+      { title: 'Achat entre particuliers', text: 'Retrait d’un meuble vendu en ligne ou d’occasion, après validation du rendez-vous avec le vendeur.' },
+    ],
+    method: [
+      { title: 'Confirmer le retrait', text: 'Nom du magasin ou du vendeur, référence, personne de contact, adresse et plage horaire disponible.' },
+      { title: 'Vérifier le gabarit', text: 'Dimensions, poids, emballage, position de transport imposée et éventuel besoin de manutention à deux.' },
+      { title: 'Décrire la livraison', text: 'Adresse, étage, ascenseur, portes, escaliers, stationnement et pièce de destination.' },
+      { title: 'Valider le service', text: 'Créneau, tarif, protection, manutention, mise en place et exclusions sont confirmés avant le retrait.' },
+    ],
+    checklistTitle: 'Informations à transmettre avant le retrait',
+    checklistIntro: 'Une photo de l’étiquette ou du colis peut compléter les informations, sans envoyer de document bancaire ni de donnée sensible.',
+    checklist: [
+      'Nom et adresse exacte du magasin ou coordonnées du vendeur',
+      'Référence de retrait utile, sans transmettre de donnée bancaire',
+      'Dimensions, poids et nombre de colis ou de meubles',
+      'Horaires du dépôt et délai d’attente éventuel',
+      'Adresse complète de livraison et numéro joignable',
+      'Étage, ascenseur, escaliers et largeur des portes',
+      'Besoin éventuel de démontage, remontage ou mise en place',
+    ],
+    callout: {
+      title: 'Le meuble doit être transportable et accessible',
+      text: 'Nous vérifions les dimensions du véhicule et des passages avant de confirmer. Le branchement d’appareils, les travaux, le levage extérieur ou le démontage complexe ne sont jamais inclus implicitement.',
+    },
+    faqs: [
+      { q: 'Pouvez-vous livrer un canapé acheté le jour même ?', a: 'La demande peut être étudiée immédiatement si le canapé est prêt au retrait, que ses dimensions sont connues et que le planning le permet. Le créneau est confirmé avant déplacement.' },
+      { q: 'Travaillez-vous directement avec les magasins ?', a: 'Un magasin peut nous contacter pour une livraison ponctuelle, comme un client peut organiser lui-même le retrait. Les responsabilités, le contact de retrait, le destinataire et le tarif sont confirmés pour chaque mission.' },
+      { q: 'Mon achat peut-il être monté à l’étage ?', a: 'Oui si le poids, les dimensions, l’escalier ou l’ascenseur et le nombre de personnes nécessaires le permettent. Ces informations doivent être vérifiées avant le devis.' },
+      { q: 'Pouvez-vous démonter ou monter le meuble ?', a: 'Cette prestation n’est pas automatique. Elle peut être étudiée selon le meuble, la notice, l’état, le temps nécessaire et les outils à prévoir.' },
+      { q: 'Livrez-vous hors de Carcassonne ?', a: 'Oui dans les communes proches et, selon le planning, plus loin dans l’Aude. La distance et le temps de trajet sont intégrés au tarif annoncé.' },
+    ],
+    related: [
+      { label: 'Transport urgent local', href: '/transport-urgent-carcassonne/', text: 'Vérifier une disponibilité aujourd’hui ou demain.' },
+      { label: 'Transport de meubles', href: '/services/transport-meubles/', text: 'Cadre général, protections et questions fréquentes.' },
+      { label: 'Petit déménagement', href: '/petit-demenagement/', text: 'Pour plusieurs meubles et cartons sur une courte distance.' },
     ],
   },
 };

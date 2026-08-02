@@ -1,0 +1,84 @@
+---
+import { SITE } from '../data/site.config';
+
+const hideOnThisPage = Astro.url.pathname.startsWith('/transport-urgent-carcassonne');
+---
+
+{!hideOnThisPage && (
+  <aside class="urgent-prompt" id="urgent-transport-prompt" aria-label="Transport urgent à Carcassonne" hidden>
+    <button class="urgent-prompt__close" type="button" aria-label="Fermer l’information urgente">×</button>
+    <p class="urgent-prompt__kicker"><span aria-hidden="true"></span> Besoin aujourd’hui ou demain&nbsp;?</p>
+    <strong>Transport local à Carcassonne</strong>
+    <p>Un meuble, un achat magasin ou un petit déménagement&nbsp;? Appelez&nbsp;: nous vérifions le créneau en direct.</p>
+    <div class="urgent-prompt__actions">
+      <a href={`tel:${SITE.phone}`} data-source="urgent-prompt">Appeler · {SITE.phoneDisplay}</a>
+      <a href="/transport-urgent-carcassonne/">Détails →</a>
+    </div>
+  </aside>
+)}
+
+<style>
+  .urgent-prompt {
+    position: fixed;
+    left: 22px;
+    bottom: 22px;
+    z-index: 950;
+    width: min(390px, calc(100vw - 44px));
+    background: var(--bg-card);
+    color: var(--text);
+    border: 1px solid var(--line);
+    border-left: 4px solid var(--accent);
+    border-radius: 10px;
+    padding: 20px 46px 18px 20px;
+    box-shadow: 0 22px 60px -18px rgba(21, 25, 28, .45);
+  }
+  .urgent-prompt[hidden] { display: none; }
+  .urgent-prompt__close {
+    position: absolute;
+    right: 10px;
+    top: 8px;
+    width: 32px;
+    height: 32px;
+    border: 0;
+    background: transparent;
+    color: var(--text-muted);
+    font-size: 24px;
+    cursor: pointer;
+  }
+  .urgent-prompt__kicker { color: var(--accent-deep); font-size: 11px; font-weight: 800; letter-spacing: .09em; text-transform: uppercase; margin-bottom: 6px; }
+  .urgent-prompt__kicker span { display: inline-block; width: 7px; height: 7px; border-radius: 50%; background: #39a964; margin-right: 5px; }
+  .urgent-prompt > strong { display: block; font-family: var(--font-display); font-size: 22px; line-height: 1.15; margin-bottom: 7px; }
+  .urgent-prompt > p:not(.urgent-prompt__kicker) { color: var(--text-muted); font-size: 13px; line-height: 1.5; }
+  .urgent-prompt__actions { display: flex; flex-wrap: wrap; gap: 10px 16px; align-items: center; margin-top: 14px; }
+  .urgent-prompt__actions a:first-child { background: var(--accent); color: #15100a; border-radius: 6px; padding: 10px 13px; font-weight: 800; }
+  .urgent-prompt__actions a:last-child { color: var(--accent-deep); font-weight: 700; text-decoration: underline; text-underline-offset: 3px; }
+
+  @media (max-width: 1023px) {
+    .urgent-prompt { left: 12px; bottom: 150px; width: calc(100vw - 24px); }
+  }
+</style>
+
+<script is:inline>
+  (function () {
+    var prompt = document.getElementById('urgent-transport-prompt');
+    if (!prompt) return;
+    try { if (sessionStorage.getItem('tc-urgent-prompt-dismissed') === '1') return; } catch (e) {}
+
+    var attempts = 0;
+    var showWhenClear = function () {
+      var cookie = document.getElementById('cc-banner');
+      if (cookie && !cookie.hasAttribute('hidden') && attempts < 20) {
+        attempts += 1;
+        window.setTimeout(showWhenClear, 1000);
+        return;
+      }
+      prompt.removeAttribute('hidden');
+    };
+
+    window.setTimeout(showWhenClear, 6500);
+    prompt.querySelector('.urgent-prompt__close')?.addEventListener('click', function () {
+      prompt.setAttribute('hidden', '');
+      try { sessionStorage.setItem('tc-urgent-prompt-dismissed', '1'); } catch (e) {}
+    });
+  })();
+</script>

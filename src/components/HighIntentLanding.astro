@@ -45,8 +45,8 @@ const serviceSchema = {
           <h1>{page.title}</h1>
           <p>{page.intro}</p>
           <div class="intent-hero__actions">
-            <a class="btn btn--primary btn--lg" href={quoteHref}>Décrire mon projet</a>
-            <a class="intent-phone" href={`tel:${SITE.phone}`}>{SITE.phoneDisplay}</a>
+            <a class="btn btn--primary btn--lg" href={quoteHref}>{page.primaryCta ?? 'Décrire mon projet'}</a>
+            <a class="intent-phone" href={`tel:${SITE.phone}`} data-source={`landing-${page.slug}`}>{page.phoneCta ?? SITE.phoneDisplay}</a>
           </div>
         </div>
         <nav class="intent-summary" aria-label="Sur cette page">
@@ -141,7 +141,11 @@ const serviceSchema = {
     </section>
   </main>
 
-  <CTA title="Un projet à chiffrer à Carcassonne ?" subtitle="Transmettez les adresses, l’inventaire et les contraintes d’accès pour recevoir une proposition adaptée au périmètre réel." btnHref={quoteHref} />
+  <CTA
+    title={page.ctaTitle ?? 'Un projet à chiffrer à Carcassonne ?'}
+    subtitle={page.ctaSubtitle ?? 'Transmettez les adresses, l’inventaire et les contraintes d’accès pour recevoir une proposition adaptée au périmètre réel.'}
+    btnHref={quoteHref}
+  />
   <Footer />
 </BaseLayout>
 

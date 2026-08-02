@@ -1,6 +1,7 @@
 ---
 import { SITE } from '../data/site.config';
 import { SERVICES } from '../data/services';
+import UrgentTransportPrompt from '../components/UrgentTransportPrompt.astro';
 
 interface Props {
   title: string;
@@ -78,15 +79,35 @@ const schemaOrg = {
       hasOfferCatalog: {
         '@type': 'OfferCatalog',
         name: 'Services de déménagement et transport',
-        itemListElement: SERVICES.map(service => ({
-          '@type': 'Offer',
-          url: `${SITE.url}/services/${service.slug}/`,
-          itemOffered: {
-            '@type': 'Service',
-            name: service.name,
-            description: service.description,
+        itemListElement: [
+          ...SERVICES.map(service => ({
+            '@type': 'Offer',
+            url: `${SITE.url}/services/${service.slug}/`,
+            itemOffered: {
+              '@type': 'Service',
+              name: service.name,
+              description: service.description,
+            },
+          })),
+          {
+            '@type': 'Offer',
+            url: `${SITE.url}/transport-urgent-carcassonne/`,
+            itemOffered: {
+              '@type': 'Service',
+              name: 'Transport urgent local à Carcassonne',
+              description: 'Demande de transport local aujourd’hui ou demain, selon disponibilité et faisabilité.',
+            },
           },
-        })),
+          {
+            '@type': 'Offer',
+            url: `${SITE.url}/livraison-meubles-magasins-carcassonne/`,
+            itemOffered: {
+              '@type': 'Service',
+              name: 'Livraison de meubles depuis un magasin à Carcassonne',
+              description: 'Retrait et livraison locale de meubles, électroménager et achats volumineux.',
+            },
+          },
+        ],
       },
     },
     {
@@ -212,6 +233,8 @@ const schemaOrg = {
   </head>
   <body>
     <slot />
+
+    <UrgentTransportPrompt />
 
     <!-- Floating CTA buttons (mobile) -->
     <div class="float-cta">

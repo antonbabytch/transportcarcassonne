@@ -7,12 +7,13 @@ import RoadDivider from '../components/RoadDivider.astro';
 import QuoteForm from '../components/QuoteForm.astro';
 import ComboOffer from '../components/ComboOffer.astro';
 import TrustStrip from '../components/TrustStrip.astro';
+import UrgentTransportSpotlight from '../components/UrgentTransportSpotlight.astro';
 import { SITE } from '../data/site.config';
 import { SERVICES } from '../data/services';
 import { CITIES } from '../data/cities';
 
-const title = 'Déménageur à Carcassonne (11) | Estimation et devis';
-const description = `Déménageur à Carcassonne et dans l'Aude : local, longue distance, meubles et piano. Estimation en ligne et devis personnalisé. ${SITE.phoneDisplay}`;
+const title = 'Transport & déménagement à Carcassonne | Devis local';
+const description = `Transport et déménagement à Carcassonne : meubles, petit volume, retrait magasin et demande urgente aujourd’hui ou demain selon disponibilité. ${SITE.phoneDisplay}`;
 
 const stats = [
   { value: '50', sup: 'km', label: 'Zone locale annoncée' },
@@ -49,6 +50,7 @@ const specialties = [
 ];
 
 const faqs = [
+  { q: 'Pouvez-vous intervenir aujourd’hui ou demain à Carcassonne ?', a: 'Une demande urgente locale peut être étudiée immédiatement selon le planning, le volume, les accès et les moyens nécessaires. Appelez avec les deux adresses, l’inventaire et l’heure limite ; le créneau et le tarif sont confirmés avant intervention.' },
   { q: 'Combien coûte un déménagement à Carcassonne ?', a: 'Les repères publiés commencent actuellement à 450 € pour un studio et 650 € pour un T2 local. Ils restent indicatifs : le volume, la distance, les accès, la date et les options déterminent le devis personnalisé.' },
   { q: 'Intervenez-vous hors de Carcassonne ?', a: `Oui, nous intervenons dans un rayon de ${SITE.serviceRadius} km autour de Carcassonne : Limoux, Castelnaudary, Lézignan-Corbières, Narbonne, Trèbes, Bram et environs. Nous réalisons aussi des déménagements longue distance vers toute la France.` },
   { q: 'Proposez-vous l\'emballage des cartons ?', a: 'L’emballage peut être étudié comme option. Le devis doit préciser qui fournit les cartons, quels objets sont emballés et quels matériaux sont compris.' },
@@ -58,7 +60,7 @@ const faqs = [
   { q: 'Comment obtenir un devis ?', a: 'Remplissez le devis intelligent ou appelez-nous directement au ' + SITE.phoneDisplay + '. Préparez le trajet, la date, le volume et les contraintes d’accès pour faciliter l’évaluation.' },
 ];
 
-const marquee = ['Déménagement local', 'Longue distance', 'International', 'Transport de meubles', 'Piano & objets lourds', 'Évacuation déchets', 'Petit déménagement'];
+const marquee = ['Transport urgent local', 'Retrait en magasin', 'Déménagement local', 'Longue distance', 'International', 'Transport de meubles', 'Piano & objets lourds', 'Évacuation déchets', 'Petit déménagement'];
 const guides = [
   {
     title: 'Autorisation de stationnement à Carcassonne',
@@ -91,6 +93,8 @@ const priceFmt = (n: number) => new Intl.NumberFormat('fr-FR').format(n) + ' €
   <DeliveryHero />
 
   <TrustStrip />
+
+  <UrgentTransportSpotlight />
 
   <!-- ============ MARQUEE ============ -->
   <div class="marquee">

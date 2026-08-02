@@ -18,7 +18,7 @@ import { CITIES } from '../data/cities';
     <ul class="nav-links">
       <li><a href="/services/demenagement-local">Déménagement</a></li>
       <li><a href="/petit-demenagement">Petit déménagement</a></li>
-      <li><a href="/formules">Formules</a></li>
+      <li><a href="/transport-urgent-carcassonne" class="nav-urgent">Urgent 24–48 h</a></li>
       <li><a href="/tarifs">Tarifs</a></li>
       <li><a href="/outils-demenagement">Outils</a></li>
       <li><a href="/blog">Conseils</a></li>
@@ -50,6 +50,8 @@ import { CITIES } from '../data/cities';
       <p class="mobile-section-title">Navigation</p>
       <ul>
         <li><a href="/" class="mobile-menu-link">Accueil</a></li>
+        <li><a href="/transport-urgent-carcassonne" class="mobile-menu-link">Transport urgent 24–48 h</a></li>
+        <li><a href="/livraison-meubles-magasins-carcassonne" class="mobile-menu-link">Livraison depuis un magasin</a></li>
         <li><a href="/tarifs" class="mobile-menu-link">Tarifs</a></li>
         <li><a href="/formules" class="mobile-menu-link">Formules</a></li>
         <li><a href="/comment-ca-marche" class="mobile-menu-link">Méthode</a></li>
@@ -184,6 +186,7 @@ import { CITIES } from '../data/cities';
   .nav-links a:hover {
     color: var(--accent);
   }
+  .nav-links .nav-urgent { color: var(--accent); font-weight: 700; }
 
   /* ── Desktop CTA ──────────────────────────── */
   .nav-cta {

@@ -749,6 +749,10 @@ const {
         setRadio('type_trajet', 'france');
         setHidden('request_context', 'trajet-groupe');
       }
+      if (params.get('urgent') === '1') {
+        setRadio('type_trajet', 'local');
+        setHidden('request_context', 'transport-urgent-local');
+      }
       const requestedDate = params.get('date');
       if (requestedDate && /^\d{4}-\d{2}-\d{2}$/.test(requestedDate) && dateInput) {
         dateInput.value = requestedDate;
