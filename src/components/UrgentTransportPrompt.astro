@@ -5,7 +5,7 @@ const hideOnThisPage = Astro.url.pathname.startsWith('/transport-urgent-carcasso
 ---
 
 {!hideOnThisPage && (
-  <aside class="urgent-prompt" id="urgent-transport-prompt" aria-label="Transport urgent à Carcassonne" hidden>
+  <aside class="urgent-prompt" id="urgent-transport-prompt" aria-label="Transport express et urgent à Carcassonne" hidden>
     <button class="urgent-prompt__close" type="button" aria-label="Fermer l’information urgente">×</button>
     <p class="urgent-prompt__kicker"><span aria-hidden="true"></span> Besoin aujourd’hui ou demain&nbsp;?</p>
     <strong>Transport local à Carcassonne</strong>
