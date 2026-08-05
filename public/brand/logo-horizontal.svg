@@ -1,0 +1,15 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="720" height="180" viewBox="0 0 720 180" role="img" aria-labelledby="title desc">
+  <title id="title">Transport Carcassonne</title>
+  <desc id="desc">Logo de Transport Carcassonne, inspiré des remparts de la Cité.</desc>
+  <g transform="translate(12 10) scale(.94)">
+    <circle cx="80" cy="80" r="76" fill="#FAFAF7" stroke="#15191C" stroke-width="4"/>
+    <circle cx="80" cy="80" r="65" fill="none" stroke="#A8703F" stroke-width="3"/>
+    <path d="M38 108V63h15V48l11-15 11 15v15h10V48l11-15 11 15v15h15v45" fill="none" stroke="#15191C" stroke-width="6" stroke-linejoin="miter"/>
+    <path d="M56 108V81a24 24 0 0 1 48 0v27" fill="none" stroke="#A8703F" stroke-width="6"/>
+    <path d="M65 134c4-20 9-35 15-49 7 14 12 29 16 49Z" fill="#15191C"/>
+    <path d="M80 88v41" fill="none" stroke="#FAFAF7" stroke-width="3" stroke-linecap="round" stroke-dasharray="6 7"/>
+  </g>
+  <text x="188" y="73" font-family="Georgia, 'Times New Roman', serif" font-size="42" fill="#15191C">Transport</text>
+  <text x="188" y="119" font-family="Georgia, 'Times New Roman', serif" font-size="50" font-style="italic" fill="#A8703F">Carcassonne</text>
+  <text x="191" y="148" font-family="Arial, sans-serif" font-size="10.5" letter-spacing="2.6" font-weight="600" fill="#5C6470">LOCAL · SOIGNÉ · DISPONIBLE</text>
+</svg>

@@ -8,7 +8,14 @@ import { CITIES } from '../data/cities';
   <div class="container nav-inner">
 
     <a href="/" class="logo">
-      <span class="logo-mark"></span>
+      <img
+        class="logo-mark"
+        src="/brand/logo-mark.svg"
+        width="46"
+        height="46"
+        alt=""
+        aria-hidden="true"
+      />
       <span class="logo-text">
         <strong>Transport Carcassonne</strong>
         <small>Déménagement &amp; transport</small>
@@ -128,22 +135,10 @@ import { CITIES } from '../data/cities';
   }
 
   .logo-mark {
-    width: 38px;
-    height: 38px;
-    background: var(--accent);
-    border-radius: 4px;
+    width: 46px;
+    height: 46px;
     flex-shrink: 0;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-family: 'Instrument Serif', serif;
-    color: var(--bg-dark);
-    font-size: 22px;
-    font-weight: 400;
-  }
-
-  .logo-mark::after {
-    content: 'TC';
+    display: block;
   }
 
   .logo-text {
@@ -400,7 +395,6 @@ import { CITIES } from '../data/cities';
     .logo-mark {
       width: 34px;
       height: 34px;
-      font-size: 18px;
     }
 
     .logo-text strong {

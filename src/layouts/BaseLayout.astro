@@ -37,7 +37,12 @@ const schemaOrg = {
       name: SITE.name,
       legalName: SITE.legalName,
       url: SITE.url,
-      logo: `${SITE.url}/apple-touch-icon.png`,
+      logo: {
+        '@type': 'ImageObject',
+        url: `${SITE.url}/brand/logo-google-business.png`,
+        width: 720,
+        height: 720,
+      },
       image: `${SITE.url}/images/og-default.jpg`,
       telephone: SITE.phone,
       email: SITE.email,
@@ -182,7 +187,6 @@ const schemaOrg = {
 
     <!-- Favicons -->
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-    <link rel="icon" type="image/x-icon" href="/favicon.ico" />
     <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
 
     <!-- Entity, website and page JSON-LD -->

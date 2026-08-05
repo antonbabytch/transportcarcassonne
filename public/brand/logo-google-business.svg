@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="720" height="720" viewBox="0 0 720 720" role="img" aria-labelledby="title desc">
+  <title id="title">Logo Google Business de Transport Carcassonne</title>
+  <desc id="desc">Emblème rond représentant les remparts de Carcassonne, une porte et une route.</desc>
+  <circle cx="360" cy="360" r="352" fill="#15191C"/>
+  <circle cx="360" cy="360" r="278" fill="#FAFAF7"/>
+  <circle cx="360" cy="360" r="258" fill="none" stroke="#A8703F" stroke-width="12"/>
+  <path d="M210 455V295h54v-51l39-55 39 55v51h36v-51l39-55 39 55v51h54v160" fill="none" stroke="#15191C" stroke-width="24" stroke-linejoin="miter"/>
+  <path d="M276 455V350a84 84 0 0 1 168 0v105" fill="none" stroke="#A8703F" stroke-width="24"/>
+  <path d="M298 550c14-83 35-148 62-204 28 56 49 121 63 204Z" fill="#15191C"/>
+  <path d="M360 358v170" fill="none" stroke="#FAFAF7" stroke-width="11" stroke-linecap="round" stroke-dasharray="25 28"/>
+</svg>

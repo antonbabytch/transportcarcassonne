@@ -9,7 +9,15 @@ import { CITIES } from '../data/cities';
     <div class="footer-grid">
       <div class="footer-brand reveal" data-i="0">
         <a href="/" class="logo">
-          <span class="logo-mark"></span>
+          <img
+            class="logo-mark"
+            src="/brand/logo-mark.svg"
+            width="50"
+            height="50"
+            alt=""
+            aria-hidden="true"
+            loading="lazy"
+          />
           <span class="logo-text">
             <strong>Transport Carcassonne</strong>
             <small>Déménagement &amp; transport</small>
@@ -124,22 +132,10 @@ import { CITIES } from '../data/cities';
   }
 
   .footer-brand .logo-mark {
-    width: 38px;
-    height: 38px;
-    background: var(--accent);
-    border-radius: 4px;
+    width: 50px;
+    height: 50px;
     flex-shrink: 0;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-family: 'Instrument Serif', serif;
-    color: var(--bg-dark);
-    font-size: 22px;
-    font-weight: 400;
-  }
-
-  .footer-brand .logo-mark::after {
-    content: 'TC';
+    display: block;
   }
 
   .footer-brand .logo-text {
