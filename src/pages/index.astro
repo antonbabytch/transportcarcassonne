@@ -6,7 +6,6 @@ import DeliveryHero from '../components/DeliveryHero.astro';
 import RoadDivider from '../components/RoadDivider.astro';
 import QuoteForm from '../components/QuoteForm.astro';
 import ComboOffer from '../components/ComboOffer.astro';
-import TrustStrip from '../components/TrustStrip.astro';
 import UrgentTransportSpotlight from '../components/UrgentTransportSpotlight.astro';
 import { SITE } from '../data/site.config';
 import { SERVICES } from '../data/services';
@@ -91,8 +90,6 @@ const priceFmt = (n: number) => new Intl.NumberFormat('fr-FR').format(n) + ' €
 
   <!-- ============ DELIVERY HERO (corner video card, scrubbed) ============ -->
   <DeliveryHero />
-
-  <TrustStrip />
 
   <UrgentTransportSpotlight />
 
