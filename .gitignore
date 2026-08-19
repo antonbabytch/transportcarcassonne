@@ -25,3 +25,9 @@ pnpm-debug.log*
 
 # Local Netlify folder
 .netlify
+
+# локальные настройки инструментов
+.claude/settings.local.json
+
+# архивы и снимки проекта — не версионируются
+*.zip

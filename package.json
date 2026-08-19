@@ -1,5 +1,5 @@
 {
-  "name": "moy-site",
+  "name": "transportcarcassonne",
   "type": "module",
   "version": "0.0.1",
   "engines": {
@@ -17,8 +17,6 @@
   "dependencies": {
     "@astrojs/check": "^0.9.9",
     "@astrojs/sitemap": "^3.7.2",
-    "astro": "^6.1.8",
-    "gsap": "^3.15.0",
-    "three": "^0.184.0"
+    "astro": "^6.1.8"
   }
 }
