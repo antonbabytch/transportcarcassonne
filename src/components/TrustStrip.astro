@@ -1,9 +1,14 @@
 ---
 import { SITE } from '../data/site.config';
+import { GOOGLE_RATING, hasGoogleRating } from '../data/reviews.config';
+
+const ratingText = hasGoogleRating
+  ? `${GOOGLE_RATING.average.toLocaleString('fr-FR', { minimumFractionDigits: 1 })}/5 · ${GOOGLE_RATING.count} avis`
+  : null;
 ---
 
 <aside class="trust-strip" aria-label="Repères de confiance">
-  <div class="container trust-strip__grid">
+  <div class:list={['container', 'trust-strip__grid', ratingText && 'trust-strip__grid--4']}>
     <div class="trust-strip__item">
       <span class="trust-strip__eyebrow">Entreprise identifiée</span>
       <strong>SIRET {SITE.siret}</strong>
@@ -16,17 +21,30 @@ import { SITE } from '../data/site.config';
       <span class="trust-strip__eyebrow">Contact direct</span>
       <a href={`tel:${SITE.phone}`}>{SITE.phoneDisplay}</a>
     </div>
+    {ratingText && (
+      <div class="trust-strip__item">
+        <span class="trust-strip__eyebrow">Avis Google</span>
+        <strong><span class="trust-strip__stars" aria-hidden="true">★</span> {ratingText}</strong>
+      </div>
+    )}
   </div>
 </aside>
 
 <style>
   .trust-strip { background: var(--color-bg-alt); border-block: 1px solid var(--color-border); }
   .trust-strip__grid { display: grid; grid-template-columns: repeat(3, 1fr); }
+  .trust-strip__grid--4 { grid-template-columns: repeat(4, 1fr); }
   .trust-strip__item { padding: 20px 28px; display: flex; flex-direction: column; gap: 3px; }
   .trust-strip__item + .trust-strip__item { border-left: 1px solid var(--color-border); }
   .trust-strip__eyebrow { color: var(--color-text-light); font-size: .72rem; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; }
   .trust-strip strong, .trust-strip a { color: var(--color-navy); font-size: .94rem; font-weight: 700; }
+  .trust-strip__stars { color: var(--color-accent); }
   .trust-strip a:hover { color: var(--color-accent); }
+
+  @media (max-width: 980px) {
+    .trust-strip__grid--4 { grid-template-columns: repeat(2, 1fr); }
+    .trust-strip__grid--4 .trust-strip__item:nth-child(3) { border-left: 0; }
+  }
 
   @media (max-width: 720px) {
     .trust-strip__grid { grid-template-columns: 1fr; }
