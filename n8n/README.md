@@ -24,19 +24,20 @@ Le workflow tourne et Telegram est vérifié.
 | URL de production | `https://hooks.massagebienetreolena.fr/webhook/transportcarcassonne-devis` |
 | Bot Telegram | `transport_carcassonne_bot` |
 | Conversation | `476774111` |
-| Nœud e-mail | **désactivé** |
+| E-mail | SMTP `smtp.hostinger.com:465`, depuis et vers `contact@transportcarcassonne.fr` |
 
 Netlify envoie trois notifications par demande : son webhook historique vers
 Make, son e-mail intégré, et ce webhook. Les deux premiers n'ont pas été
 touchés. Le doublon Telegram avec Make est temporaire et disparaîtra quand la
 branche transport de Make sera coupée.
 
-Le nœud e-mail reste désactivé tant que l'expéditeur n'est pas tranché :
-l'e-mail actuel part de l'infrastructure Netlify, dont le gabarit n'est pas
-modifiable, et aucune adresse détenue par l'entreprise ne l'envoie aujourd'hui.
-Activer le nœud suppose de choisir entre un envoi SMTP depuis
-`contact@transportcarcassonne.fr` et un envoi depuis un compte Gmail déjà
-connecté à n8n, qui changerait l'expéditeur.
+L'e-mail part en SMTP depuis `contact@transportcarcassonne.fr`, l'adresse que
+le propriétaire connaît déjà, et non depuis un compte Gmail qui aurait changé
+l'expéditeur. Le nœud Gmail prévu au départ ne pouvait pas le faire : il envoie
+via l'API Google, pas via un serveur SMTP tiers.
+
+La notification e-mail intégrée de Netlify tourne toujours en parallèle. Elle
+peut être coupée une fois le nouvel e-mail validé sur quelques demandes réelles.
 
 ## Réinstaller depuis zéro
 
@@ -44,8 +45,9 @@ connecté à n8n, qui changerait l'expéditeur.
    fichier sur GitHub.
 2. Nœud **Telegram** : choisir les identifiants
    `Telegram - transport_carcassonne_bot`. Le `chatId` est déjà renseigné.
-3. Nœud **E-mail** : il arrive désactivé. Choisir les identifiants seulement
-   au moment de l'activer.
+3. Nœud **E-mail** : choisir les identifiants
+   `SMTP - contact@transportcarcassonne.fr`. Expéditeur et destinataire sont
+   déjà renseignés.
 4. Publier le workflow, puis copier l'**URL de production** du nœud webhook.
 5. Dans Netlify : **Project configuration → Notifications → Form submission
    notifications → Add notification → HTTP POST request**, coller l'URL dans

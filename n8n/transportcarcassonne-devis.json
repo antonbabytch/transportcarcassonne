@@ -52,22 +52,20 @@
     },
     {
       "parameters": {
-        "sendTo": "contact@transportcarcassonne.fr",
+        "fromEmail": "contact@transportcarcassonne.fr",
+        "toEmail": "contact@transportcarcassonne.fr",
         "subject": "={{ $json.sujet }}",
-        "emailType": "html",
-        "message": "={{ $json.html }}",
+        "html": "={{ $json.html }}",
         "options": {}
       },
-      "id": "gmail-devis",
+      "id": "email-devis",
       "name": "E-mail",
-      "type": "n8n-nodes-base.gmail",
+      "type": "n8n-nodes-base.emailSend",
       "typeVersion": 2.1,
       "position": [
         500,
         400
-      ],
-      "onError": "continueRegularOutput",
-      "disabled": true
+      ]
     }
   ],
   "connections": {
