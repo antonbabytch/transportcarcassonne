@@ -10,7 +10,7 @@ interface Props {
 const { slug, name, distance, population, note } = Astro.props;
 ---
 
-<a href={`/demenagement-${slug}`} class="city-card">
+<a href={`/demenagement-${slug}/`} class="city-card">
   <div class="city-card__header">
     <span class="city-card__name">{name}</span>
     {distance === 0

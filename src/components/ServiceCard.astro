@@ -10,7 +10,7 @@ interface Props {
 const { slug, name, description, priceFrom, icon } = Astro.props;
 ---
 
-<a href={`/services/${slug}`} class="service-card">
+<a href={`/services/${slug}/`} class="service-card">
   <div class="service-card__icon">{icon}</div>
   <h3 class="service-card__name">{name}</h3>
   <p class="service-card__desc">{description}</p>
