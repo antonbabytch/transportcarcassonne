@@ -53,6 +53,16 @@ peut être coupée une fois le nouvel e-mail validé sur quelques demandes réel
    notifications → Add notification → HTTP POST request**, coller l'URL dans
    le champ **URL to notify**. Laisser le champ JWS vide.
 
+
+## Attention à l'import
+
+**Import from URL ajoute les nœuds, il ne les remplace pas.** Réimporter sur un
+workflow existant crée des doublons `Telegram1`, `E-mail1`, `Mettre en forme1`.
+
+Pour reprendre ce fichier sur le workflow en place, il faut supprimer les nœuds
+existants d'abord, ou éditer le nœud concerné directement. Un nœud s'ouvre par
+son URL : `/workflow/<id>/<6 premiers caractères de l'id du nœud>`.
+
 ## Ce que fait la mise en forme
 
 Le nœud **Mettre en forme** ne garde que les champs renseignés et traduit les
