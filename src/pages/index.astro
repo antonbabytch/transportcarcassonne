@@ -6,6 +6,7 @@ import DeliveryHero from '../components/DeliveryHero.astro';
 import RoadDivider from '../components/RoadDivider.astro';
 import QuoteForm from '../components/QuoteForm.astro';
 import ComboOffer from '../components/ComboOffer.astro';
+import GoogleReviews from '../components/GoogleReviews.astro';
 import UrgentTransportSpotlight from '../components/UrgentTransportSpotlight.astro';
 import { SITE } from '../data/site.config';
 import { SERVICES } from '../data/services';
@@ -258,6 +259,8 @@ const priceFmt = (n: number) => new Intl.NumberFormat('fr-FR').format(n) + ' €
       <a class="specialty-formulas reveal" href="/formules/">Comparer les trois formules →</a>
     </div>
   </section>
+
+  <GoogleReviews />
 
   <!-- ============ FAQ ============ -->
   <section class="d-section">

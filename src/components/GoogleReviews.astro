@@ -1,0 +1,101 @@
+---
+/**
+ * Avis Google affichés comme contenu éditorial.
+ *
+ * Aucune donnée structurée n'est émise ici : ni `Review`, ni `AggregateRating`.
+ * Voir `docs/AVIS-CLIENTS.md` et l'en-tête de `src/data/reviews.config.ts`.
+ */
+import {
+  GOOGLE_REVIEWS,
+  GOOGLE_RATING,
+  GOOGLE_PROFILE_URL,
+  hasGoogleReviews,
+  hasGoogleRating,
+  hasGoogleProfileUrl,
+} from '../data/reviews.config';
+
+interface Props {
+  title?: string;
+  subtitle?: string;
+}
+
+const {
+  title = 'Ce que disent nos clients',
+  subtitle = 'Avis publiés sur notre fiche Google, repris ici sans modification.',
+} = Astro.props;
+
+const ratingLabel = hasGoogleRating
+  ? `${GOOGLE_RATING.average.toLocaleString('fr-FR', { minimumFractionDigits: 1 })}/5 · ${GOOGLE_RATING.count} avis Google`
+  : null;
+
+const dateFormat = new Intl.DateTimeFormat('fr-FR', { month: 'long', year: 'numeric' });
+const stars = (n: number) => '★'.repeat(n) + '☆'.repeat(5 - n);
+---
+
+{hasGoogleReviews && (
+  <section class="section section--alt gr">
+    <div class="container">
+      <div class="section-header">
+        <span class="section-label">Avis clients</span>
+        <h2 class="section-title">{title}</h2>
+        <p class="gr__sub">{subtitle}</p>
+        {ratingLabel && (
+          <p class="gr__rating">
+            <span class="gr__stars" aria-hidden="true">{stars(Math.round(GOOGLE_RATING.average))}</span>
+            <strong>{ratingLabel}</strong>
+          </p>
+        )}
+      </div>
+
+      <ul class="gr__grid">
+        {GOOGLE_REVIEWS.map((review) => (
+          <li class="gr__card">
+            <p class="gr__card-stars" aria-label={`${review.rating} étoiles sur 5`}>
+              <span aria-hidden="true">{stars(review.rating)}</span>
+            </p>
+            <blockquote class="gr__quote">{review.quote}</blockquote>
+            <footer class="gr__meta">
+              <span class="gr__author">{review.author}</span>
+              <span class="gr__sep" aria-hidden="true">·</span>
+              <time datetime={review.date}>{dateFormat.format(new Date(review.date))}</time>
+              {review.service && <span class="gr__service">{review.service}</span>}
+            </footer>
+          </li>
+        ))}
+      </ul>
+
+      {hasGoogleProfileUrl && (
+        <p class="gr__source">
+          <a href={GOOGLE_PROFILE_URL} target="_blank" rel="noopener noreferrer" data-source="avis-google">
+            Lire tous les avis sur Google →
+          </a>
+        </p>
+      )}
+    </div>
+  </section>
+)}
+
+<style>
+  .gr__sub { color: var(--color-text-light); font-size: .95rem; margin-top: 6px; }
+  .gr__rating { display: flex; align-items: center; justify-content: center; gap: 10px; margin-top: 14px; font-size: .95rem; }
+  .gr__stars { color: var(--color-accent); letter-spacing: .1em; }
+  .gr__rating strong { color: var(--color-navy); }
+
+  .gr__grid { list-style: none; padding: 0; margin: 34px 0 0; display: grid; gap: 20px; grid-template-columns: repeat(auto-fit, minmax(290px, 1fr)); }
+  .gr__card { display: flex; flex-direction: column; gap: 12px; background: var(--color-white); border: 1px solid var(--color-border); border-radius: var(--radius-lg); padding: 24px 26px; }
+  .gr__card-stars { margin: 0; color: var(--color-accent); letter-spacing: .1em; font-size: .95rem; }
+  .gr__quote { margin: 0; font-size: .96rem; line-height: 1.7; color: var(--color-text); }
+  .gr__quote::before { content: '«\00a0'; }
+  .gr__quote::after { content: '\00a0»'; }
+  .gr__meta { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; margin-top: auto; font-size: .84rem; color: var(--color-text-light); }
+  .gr__author { font-weight: 700; color: var(--color-navy); }
+  .gr__service { flex-basis: 100%; }
+
+  .gr__source { margin-top: 26px; text-align: center; font-size: .92rem; }
+  .gr__source a { color: var(--color-navy); text-decoration: none; border-bottom: 1px solid var(--color-border); }
+  .gr__source a:hover { color: var(--color-accent); border-bottom-color: currentColor; }
+
+  @media (max-width: 640px) {
+    .gr__card { padding: 20px; }
+  }
+</style>
