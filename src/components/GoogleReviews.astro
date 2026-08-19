@@ -28,7 +28,8 @@ const ratingLabel = hasGoogleRating
   ? `${GOOGLE_RATING.average.toLocaleString('fr-FR', { minimumFractionDigits: 1 })}/5 · ${GOOGLE_RATING.count} avis Google`
   : null;
 
-const dateFormat = new Intl.DateTimeFormat('fr-FR', { month: 'long', year: 'numeric' });
+const monthFormat = new Intl.DateTimeFormat('fr-FR', { month: 'long', year: 'numeric' });
+const formatMonth = (m: string) => monthFormat.format(new Date(`${m}-01T00:00:00Z`));
 const stars = (n: number) => '★'.repeat(n) + '☆'.repeat(5 - n);
 ---
 
@@ -57,7 +58,7 @@ const stars = (n: number) => '★'.repeat(n) + '☆'.repeat(5 - n);
             <footer class="gr__meta">
               <span class="gr__author">{review.author}</span>
               <span class="gr__sep" aria-hidden="true">·</span>
-              <time datetime={review.date}>{dateFormat.format(new Date(review.date))}</time>
+              <time datetime={review.month}>{formatMonth(review.month)}</time>
               {review.service && <span class="gr__service">{review.service}</span>}
             </footer>
           </li>
