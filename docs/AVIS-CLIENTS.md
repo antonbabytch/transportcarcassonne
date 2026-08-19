@@ -12,6 +12,51 @@ La page publique est `/avis/`. Elle est volontairement en `noindex` : elle sert 
 
 Ne pas construire le lien à partir du nom de l'entreprise et ne pas publier de QR code tant que la destination n'a pas été vérifiée.
 
+## Afficher un nouvel avis sur le site
+
+Les avis affichés sont recopiés à la main dans `src/data/reviews.config.ts`.
+Il n'y a pas de récupération automatique : l'API Google Places impose une clé,
+une facturation et des limites de mise en cache, et ne renvoie que quelques
+avis. Une entrée ajoutée au fichier suffit.
+
+1. Ouvrir la fiche Google et lire l'avis en entier, sans le tronquer.
+2. Ajouter un objet dans `GOOGLE_REVIEWS` :
+
+```ts
+{
+  quote: "Texte exact de l'avis, ponctuation d'origine comprise",
+  author: 'Prénom I.',
+  rating: 5,
+  month: '2026-09',
+}
+```
+
+3. `quote` : le texte tel qu'il est publié. Une coupe se signale par « […] ».
+   Ne pas corriger l'orthographe ni la ponctuation du client.
+4. `author` : prénom suivi de l'initiale du nom. Jamais le nom complet.
+5. `month` : le mois affiché par Google, au format `YYYY-MM`. Google ne donne
+   pas le jour, donc le site n'affiche que le mois et l'année.
+6. `service` : facultatif, uniquement si la prestation ressort clairement de
+   l'avis. Ne pas la deviner.
+7. Lancer `npm run check` puis vérifier la page d'accueil.
+
+### Note moyenne et nombre d'avis
+
+`GOOGLE_RATING` reste à `0` tant que le total de la fiche compte des avis qui
+ne viennent pas de clients. Un chiffre affiché sur le site doit correspondre à
+ce qu'un visiteur retrouve sur Google.
+
+Quand la fiche ne contient plus que des avis clients, renseigner `average` et
+`count` avec les valeurs exactes de la fiche. La note apparaît alors dans le
+bandeau de confiance et au-dessus des cartes.
+
+### Ce que le site n'affichera jamais
+
+Un avis rédigé par le propriétaire, un proche ou une personne qui gère la
+fiche n'a pas sa place ici, même s'il est publié sur Google. C'est déjà la
+règle de `LOCAL-SEO-OPERATIONS.md`, et un tel avis reste supprimable par
+Google à tout moment.
+
 ## Déclenchement recommandé
 
 - Envoyer l'invitation uniquement quand la prestation est terminée.

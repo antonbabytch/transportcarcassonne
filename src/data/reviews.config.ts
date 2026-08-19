@@ -20,19 +20,24 @@
  * avec le compte administrateur. Ne jamais le deviner à partir du nom.
  */
 export const REVIEWS = {
-  googleReviewUrl: '',
+  googleReviewUrl: 'https://g.page/r/CfkVxczuGs8VEBM/review',
 } as const;
 
 export const hasGoogleReviewUrl = REVIEWS.googleReviewUrl.startsWith('https://');
 
 /** Lien public vers la fiche Google, pour vérifier les avis à la source. */
-export const GOOGLE_PROFILE_URL = '';
+export const GOOGLE_PROFILE_URL = 'https://g.page/r/CfkVxczuGs8VEBM';
 
 export const hasGoogleProfileUrl = GOOGLE_PROFILE_URL.startsWith('https://');
 
 /**
  * Note moyenne et nombre d'avis, recopiés depuis la fiche Google.
  * `count: 0` masque toute mention chiffrée sur le site.
+ *
+ * Volontairement à zéro pour l'instant : le total affiché par Google
+ * compte des avis qui ne proviennent pas de clients. Ne renseigner ces
+ * deux valeurs que lorsque le total de la fiche ne reflète plus que des
+ * avis clients.
  */
 export const GOOGLE_RATING = {
   average: 0,
@@ -48,14 +53,28 @@ export interface GoogleReview {
   author: string;
   /** Note laissée par le client, de 1 à 5. */
   rating: 1 | 2 | 3 | 4 | 5;
-  /** Date de publication au format ISO (YYYY-MM-DD). */
-  date: string;
+  /** Mois affiché par Google, au format `YYYY-MM`. Google ne donne pas le jour. */
+  month: string;
   /** Prestation concernée, si elle ressort clairement de l'avis. */
   service?: string;
 }
 
-// À remplir uniquement avec des avis réellement publiés sur la fiche Google.
-// Tant que la liste est vide, aucune section d'avis n'apparaît sur le site.
-export const GOOGLE_REVIEWS: GoogleReview[] = [];
+// Avis recopiés le 19/08/2026 depuis la fiche Google, sans modification :
+// ponctuation et espacement d'origine conservés.
+export const GOOGLE_REVIEWS: GoogleReview[] = [
+  {
+    quote:
+      "Équipe au top et très ponctuelle . Grâce à eux la surprise pour l anniversaire d une amie a été très réussie . Très bonne communication . Merci à eux",
+    author: 'Samia B.',
+    rating: 5,
+    month: '2026-06',
+  },
+  {
+    quote: 'Super service ! Je recommande vivement',
+    author: 'Ivan R.',
+    rating: 5,
+    month: '2026-05',
+  },
+];
 
 export const hasGoogleReviews = GOOGLE_REVIEWS.length > 0;
