@@ -15,22 +15,41 @@ Netlify envoie deux notifications par défaut :
 Le webhook contient donc déjà tout ; c'est la mise en forme qui manquait.
 Ce workflow la fournit pour Telegram et pour l'e-mail.
 
-## Installation
+## État en production — 19/08/2026
 
-1. Dans n8n : **Workflows → … → Import from File**, choisir
-   `transportcarcassonne-devis.json`.
-2. Nœud **Telegram** : sélectionner les identifiants du bot, puis remplacer
-   `REMPLACER_PAR_CHAT_ID` par l'identifiant réel de la conversation.
-3. Nœud **E-mail** : sélectionner les identifiants Gmail. Le destinataire est
-   `contact@transportcarcassonne.fr`.
-4. Activer le workflow, puis copier l'**URL de production** du nœud webhook.
-   Elle a la forme `https://hooks.<domaine>/webhook/transportcarcassonne-devis`.
+Le workflow tourne et Telegram est vérifié.
+
+| Élément | Valeur |
+|---|---|
+| URL de production | `https://hooks.massagebienetreolena.fr/webhook/transportcarcassonne-devis` |
+| Bot Telegram | `transport_carcassonne_bot` |
+| Conversation | `476774111` |
+| Nœud e-mail | **désactivé** |
+
+Netlify envoie trois notifications par demande : son webhook historique vers
+Make, son e-mail intégré, et ce webhook. Les deux premiers n'ont pas été
+touchés. Le doublon Telegram avec Make est temporaire et disparaîtra quand la
+branche transport de Make sera coupée.
+
+Le nœud e-mail reste désactivé tant que l'expéditeur n'est pas tranché :
+l'e-mail actuel part de l'infrastructure Netlify, dont le gabarit n'est pas
+modifiable, et aucune adresse détenue par l'entreprise ne l'envoie aujourd'hui.
+Activer le nœud suppose de choisir entre un envoi SMTP depuis
+`contact@transportcarcassonne.fr` et un envoi depuis un compte Gmail déjà
+connecté à n8n, qui changerait l'expéditeur.
+
+## Réinstaller depuis zéro
+
+1. Dans n8n : **Workflows → … → Import from URL**, coller l'URL brute de ce
+   fichier sur GitHub.
+2. Nœud **Telegram** : choisir les identifiants
+   `Telegram - transport_carcassonne_bot`. Le `chatId` est déjà renseigné.
+3. Nœud **E-mail** : il arrive désactivé. Choisir les identifiants seulement
+   au moment de l'activer.
+4. Publier le workflow, puis copier l'**URL de production** du nœud webhook.
 5. Dans Netlify : **Project configuration → Notifications → Form submission
-   notifications**, ajouter un webhook sortant vers cette URL.
-6. Envoyer une demande de test depuis `/devis/`, vérifier Telegram et l'e-mail,
-   puis supprimer la soumission de test.
-7. Une fois le résultat validé, désactiver la notification e-mail intégrée de
-   Netlify — sinon deux e-mails partent pour chaque demande.
+   notifications → Add notification → HTTP POST request**, coller l'URL dans
+   le champ **URL to notify**. Laisser le champ JWS vide.
 
 ## Ce que fait la mise en forme
 
