@@ -125,7 +125,7 @@ const priceFmt = (n: number) => new Intl.NumberFormat('fr-FR').format(n) + ' €
       </div>
       <div class="svc-grid">
         {SERVICES.map((s, i) => (
-          <a href={`/services/${s.slug}`} class="svc-item reveal" data-i={i}>
+          <a href={`/services/${s.slug}/`} class="svc-item reveal" data-i={i}>
             <div class="svc-num">— {String(i + 1).padStart(2, '0')}</div>
             <h3>{s.name}</h3>
             <p>{s.description}</p>
@@ -200,7 +200,7 @@ const priceFmt = (n: number) => new Intl.NumberFormat('fr-FR').format(n) + ' €
         </div>
         <div class="zone-cities">
           {CITIES.map((c, i) => (
-            <a href={`/demenagement-${c.slug}`} class={(i < 5 ? 'zone-city main' : 'zone-city') + ' reveal'} data-i={i}>{c.name}</a>
+            <a href={`/demenagement-${c.slug}/`} class={(i < 5 ? 'zone-city main' : 'zone-city') + ' reveal'} data-i={i}>{c.name}</a>
           ))}
         </div>
       </div>

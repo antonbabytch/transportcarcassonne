@@ -23,12 +23,12 @@ import { CITIES } from '../data/cities';
     </a>
 
     <ul class="nav-links">
-      <li><a href="/services/demenagement-local">Déménagement</a></li>
-      <li><a href="/petit-demenagement">Petit déménagement</a></li>
-      <li><a href="/transport-urgent-carcassonne" class="nav-urgent">Express 24–48 h</a></li>
-      <li><a href="/tarifs">Tarifs</a></li>
-      <li><a href="/outils-demenagement">Outils</a></li>
-      <li><a href="/blog">Conseils</a></li>
+      <li><a href="/services/demenagement-local/">Déménagement</a></li>
+      <li><a href="/petit-demenagement/">Petit déménagement</a></li>
+      <li><a href="/transport-urgent-carcassonne/" class="nav-urgent">Express 24–48 h</a></li>
+      <li><a href="/tarifs/">Tarifs</a></li>
+      <li><a href="/outils-demenagement/">Outils</a></li>
+      <li><a href="/blog/">Conseils</a></li>
     </ul>
 
     <div class="nav-cta">
@@ -57,26 +57,26 @@ import { CITIES } from '../data/cities';
       <p class="mobile-section-title">Navigation</p>
       <ul>
         <li><a href="/" class="mobile-menu-link">Accueil</a></li>
-        <li><a href="/transport-urgent-carcassonne" class="mobile-menu-link">Transport express 24–48 h</a></li>
-        <li><a href="/livraison-meubles-magasins-carcassonne" class="mobile-menu-link">Livraison depuis un magasin</a></li>
-        <li><a href="/tarifs" class="mobile-menu-link">Tarifs</a></li>
-        <li><a href="/formules" class="mobile-menu-link">Formules</a></li>
-        <li><a href="/comment-ca-marche" class="mobile-menu-link">Méthode</a></li>
-        <li><a href="/realisations" class="mobile-menu-link">Réalisations</a></li>
-        <li><a href="/nos-garanties" class="mobile-menu-link">Nos garanties</a></li>
-        <li><a href="/outils-demenagement" class="mobile-menu-link">Outils gratuits</a></li>
-        <li><a href="/blog" class="mobile-menu-link">Conseils</a></li>
-        <li><a href="/a-propos" class="mobile-menu-link">À propos</a></li>
-        <li><a href="/contact" class="mobile-menu-link">Contact</a></li>
+        <li><a href="/transport-urgent-carcassonne/" class="mobile-menu-link">Transport express 24–48 h</a></li>
+        <li><a href="/livraison-meubles-magasins-carcassonne/" class="mobile-menu-link">Livraison depuis un magasin</a></li>
+        <li><a href="/tarifs/" class="mobile-menu-link">Tarifs</a></li>
+        <li><a href="/formules/" class="mobile-menu-link">Formules</a></li>
+        <li><a href="/comment-ca-marche/" class="mobile-menu-link">Méthode</a></li>
+        <li><a href="/realisations/" class="mobile-menu-link">Réalisations</a></li>
+        <li><a href="/nos-garanties/" class="mobile-menu-link">Nos garanties</a></li>
+        <li><a href="/outils-demenagement/" class="mobile-menu-link">Outils gratuits</a></li>
+        <li><a href="/blog/" class="mobile-menu-link">Conseils</a></li>
+        <li><a href="/a-propos/" class="mobile-menu-link">À propos</a></li>
+        <li><a href="/contact/" class="mobile-menu-link">Contact</a></li>
       </ul>
     </nav>
 
     <nav class="mobile-section">
       <p class="mobile-section-title">Nos services</p>
       <ul>
-        <li><a href="/petit-demenagement" class="mobile-menu-link">Petit déménagement</a></li>
+        <li><a href="/petit-demenagement/" class="mobile-menu-link">Petit déménagement</a></li>
         {SERVICES.map(s => (
-          <li><a href={`/services/${s.slug}`} class="mobile-menu-link">{s.name}</a></li>
+          <li><a href={`/services/${s.slug}/`} class="mobile-menu-link">{s.name}</a></li>
         ))}
       </ul>
     </nav>
@@ -85,7 +85,7 @@ import { CITIES } from '../data/cities';
       <p class="mobile-section-title">Notre zone</p>
       <ul>
         {CITIES.slice(0, 5).map(c => (
-          <li><a href={`/demenagement-${c.slug}`} class="mobile-menu-link">{c.name}</a></li>
+          <li><a href={`/demenagement-${c.slug}/`} class="mobile-menu-link">{c.name}</a></li>
         ))}
       </ul>
     </nav>

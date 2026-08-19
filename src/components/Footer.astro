@@ -39,17 +39,17 @@ import { CITIES } from '../data/cities';
       <div class="reveal" data-i="1">
         <p class="footer-title">Services</p>
         <ul>
-          <li><a href="/petit-demenagement">Petit déménagement</a></li>
-          <li><a href="/transport-urgent-carcassonne">Transport express aujourd’hui / demain</a></li>
-          <li><a href="/livraison-meubles-magasins-carcassonne">Livraison de meubles depuis un magasin</a></li>
+          <li><a href="/petit-demenagement/">Petit déménagement</a></li>
+          <li><a href="/transport-urgent-carcassonne/">Transport express aujourd’hui / demain</a></li>
+          <li><a href="/livraison-meubles-magasins-carcassonne/">Livraison de meubles depuis un magasin</a></li>
           {SERVICES.map(s => (
-            <li><a href={`/services/${s.slug}`}>{s.name}</a></li>
+            <li><a href={`/services/${s.slug}/`}>{s.name}</a></li>
           ))}
-          <li><a href="/demenagement-entreprise-carcassonne">Déménagement d’entreprise</a></li>
-          <li><a href="/demenagement-senior-carcassonne">Déménagement senior</a></li>
-          <li><a href="/emballage-cartons-carcassonne">Emballage et cartons</a></li>
-          <li><a href="/formules">Nos formules</a></li>
-          <li><a href="/tarifs">Nos tarifs</a></li>
+          <li><a href="/demenagement-entreprise-carcassonne/">Déménagement d’entreprise</a></li>
+          <li><a href="/demenagement-senior-carcassonne/">Déménagement senior</a></li>
+          <li><a href="/emballage-cartons-carcassonne/">Emballage et cartons</a></li>
+          <li><a href="/formules/">Nos formules</a></li>
+          <li><a href="/tarifs/">Nos tarifs</a></li>
         </ul>
       </div>
 
@@ -57,7 +57,7 @@ import { CITIES } from '../data/cities';
         <p class="footer-title">Zone</p>
         <ul>
           {CITIES.slice(0, 6).map(c => (
-            <li><a href={`/demenagement-${c.slug}`}>{c.name}</a></li>
+            <li><a href={`/demenagement-${c.slug}/`}>{c.name}</a></li>
           ))}
         </ul>
       </div>
@@ -65,14 +65,14 @@ import { CITIES } from '../data/cities';
       <div class="reveal" data-i="3">
         <p class="footer-title">Ressources</p>
         <ul>
-          <li><a href="/outils-demenagement">Tous les outils</a></li>
-          <li><a href="/calculateur-volume-demenagement">Calculateur de volume</a></li>
-          <li><a href="/calculateur-cartons-demenagement">Calculateur de cartons</a></li>
-          <li><a href="/checklist-demenagement">Checklist interactive</a></li>
-          <li><a href="/trajets-groupes">Trajets groupés</a></li>
-          <li><a href="/realisations">Réalisations</a></li>
-          <li><a href="/nos-garanties">Nos garanties</a></li>
-          <li><a href="/blog">Conseils déménagement</a></li>
+          <li><a href="/outils-demenagement/">Tous les outils</a></li>
+          <li><a href="/calculateur-volume-demenagement/">Calculateur de volume</a></li>
+          <li><a href="/calculateur-cartons-demenagement/">Calculateur de cartons</a></li>
+          <li><a href="/checklist-demenagement/">Checklist interactive</a></li>
+          <li><a href="/trajets-groupes/">Trajets groupés</a></li>
+          <li><a href="/realisations/">Réalisations</a></li>
+          <li><a href="/nos-garanties/">Nos garanties</a></li>
+          <li><a href="/blog/">Conseils déménagement</a></li>
         </ul>
       </div>
 
@@ -97,9 +97,9 @@ import { CITIES } from '../data/cities';
     <div class="footer-bottom">
       <div>© {new Date().getFullYear()} {SITE.name} · SIRET {SITE.siret}</div>
       <div class="footer-legal">
-        <a href="/mentions-legales">Mentions légales</a>
+        <a href="/mentions-legales/">Mentions légales</a>
         <span>·</span>
-        <a href="/politique-confidentialite">Politique de confidentialité</a>
+        <a href="/politique-confidentialite/">Politique de confidentialité</a>
         <span>·</span>
         <button type="button" class="footer-cookie" onclick="window.__ccManage&&window.__ccManage()">Gérer les cookies</button>
       </div>

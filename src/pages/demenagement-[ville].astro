@@ -283,7 +283,7 @@ const cityFaq = extra?.faq ?? [];
                 <li><span>{city.name} → {r.to}</span><strong>{r.price}</strong></li>
               ))}
             </ul>
-            <a href="/tarifs" class="ce-link">Voir tous nos tarifs →</a>
+            <a href="/tarifs/" class="ce-link">Voir tous nos tarifs →</a>
           </div>
         </div>
 
@@ -300,7 +300,7 @@ const cityFaq = extra?.faq ?? [];
           <h3>Communes voisines</h3>
           <div class="ce-nearby-row">
             {nearby.map(c => (
-              <a href={`/demenagement-${c.slug}`}>Déménagement {c.name}</a>
+              <a href={`/demenagement-${c.slug}/`}>Déménagement {c.name}</a>
             ))}
           </div>
         </div>
