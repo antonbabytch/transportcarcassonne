@@ -141,6 +141,87 @@ const cityExtra: Record<string, Extra> = {
 };
 const extra: Extra | undefined = cityExtra[city.slug];
 
+/**
+ * Sous-titre du hero propre à chaque commune.
+ * Uniquement des faits déjà vérifiés plus haut : distance, orientation,
+ * tissu urbain. Aucune promesse de délai, de prix ni de couverture.
+ */
+const cityHeroSub: Record<string, string> = {
+  carcassonne: "De la Cité aux quartiers pavillonnaires de Maquens ou de Grazailles, chaque adresse de Carcassonne pose ses propres contraintes d'accès. Le devis les reprend une par une.",
+  trebes: "À 8 km de Carcassonne le long du Canal du Midi, Trèbes se déménage souvent depuis un accès direct — le stationnement reste à vérifier adresse par adresse.",
+  limoux: "Entre les ruelles du centre ancien et les quartiers plus récents, un déménagement à Limoux se prépare à 25 km de notre base, dans la vallée de l'Aude.",
+  castelnaudary: "Sur l'axe Toulouse-Méditerranée à 38 km de Carcassonne, Castelnaudary mêle maisons de ville du centre historique et périphérie pavillonnaire.",
+  narbonne: "Narbonne se situe à 60 km, au-delà du rayon de 50 km affiché comme zone principale : chaque demande passe d'abord par une vérification de faisabilité.",
+  'lezignan-corbieres': "Maisons vigneronnes, pavillons récents et copropriétés : à 35 km de Carcassonne, Lézignan-Corbières demande de décrire caves et dépendances dès la prise de contact.",
+  bram: "La circulade médiévale de Bram, à 23 km à l'ouest de Carcassonne, impose de repérer le point de chargement avant le jour du déménagement.",
+  capendu: "Entre Carcassonne et Narbonne, à 18 km de notre base, Capendu compte de nombreux mas et maisons isolées dont les chemins d'accès se vérifient en amont.",
+  pezens: "À 10 km au nord-ouest de Carcassonne, Pezens est proche — mais la proximité seule ne fixe pas le prix d'un déménagement.",
+  alzonne: "Tissu pavillonnaire et maisons à jardin : à 15 km de Carcassonne sur la plaine lauragaise, Alzonne offre le plus souvent des accès directs.",
+};
+
+const heroSub = cityHeroSub[city.slug]
+  ?? `Une demande de déménagement à ${city.name} peut être étudiée depuis Carcassonne. Le périmètre, les moyens, le créneau et le prix sont confirmés sur devis.`;
+
+/**
+ * Ressources internes réellement utiles selon le contexte de la commune.
+ * Les communes à centre ancien contraint pointent vers le guide de
+ * stationnement ; les communes pavillonnaires vers la préparation du volume.
+ */
+type Guide = { lead: string; links: { href: string; label: string }[] };
+
+const VOLUME = { href: '/calculateur-volume-demenagement/', label: 'Calculer le volume en m³' };
+const CARTONS = { href: '/calculateur-cartons-demenagement/', label: 'Estimer le nombre de cartons' };
+const STATIONNEMENT = { href: '/blog/autorisation-stationnement-demenagement-carcassonne/', label: 'Autorisation de stationnement : démarches et délais' };
+const CHECKLIST = { href: '/checklist-demenagement/', label: 'Checklist des 4 semaines avant le jour J' };
+const PRIX = { href: '/blog/prix-demenagement-carcassonne-scenarios/', label: 'Prix d\'un déménagement : 4 scénarios expliqués' };
+const FRAGILE = { href: '/blog/emballer-objets-fragiles-vaisselle-tableaux/', label: 'Emballer vaisselle, tableaux et objets fragiles' };
+
+const cityGuides: Record<string, Guide> = {
+  carcassonne: {
+    lead: "Les zones piétonnes de la Cité et de la Bastide demandent d'anticiper le point de chargement, parfois avec une autorisation de voirie.",
+    links: [STATIONNEMENT, VOLUME, PRIX],
+  },
+  trebes: {
+    lead: "Les accès sont souvent directs à Trèbes : l'essentiel se joue sur l'estimation du volume et la préparation des cartons.",
+    links: [VOLUME, CARTONS, CHECKLIST],
+  },
+  limoux: {
+    lead: "Pour une adresse dans le centre ancien de Limoux, la question du stationnement se règle avant le jour J, pas le matin même.",
+    links: [STATIONNEMENT, VOLUME, CHECKLIST],
+  },
+  castelnaudary: {
+    lead: "Entre centre historique et quartiers pavillonnaires, la préparation diffère beaucoup d'une adresse de Castelnaudary à l'autre.",
+    links: [VOLUME, STATIONNEMENT, PRIX],
+  },
+  narbonne: {
+    lead: "Narbonne étant hors du rayon principal, un volume estimé sérieusement en amont rend la vérification de faisabilité plus rapide.",
+    links: [VOLUME, PRIX, CHECKLIST],
+  },
+  'lezignan-corbieres': {
+    lead: "Caves, dépendances et objets fragiles pèsent lourd dans un déménagement lézignanais : mieux vaut les inventorier tôt.",
+    links: [VOLUME, FRAGILE, CARTONS],
+  },
+  bram: {
+    lead: "Dans les ruelles concentriques de la circulade, le portage se prépare : connaître son volume aide à choisir le véhicule.",
+    links: [VOLUME, STATIONNEMENT, CARTONS],
+  },
+  capendu: {
+    lead: "Pour un mas ou une maison isolée autour de Capendu, l'inventaire et l'espace de manœuvre comptent plus que la distance.",
+    links: [VOLUME, CHECKLIST, FRAGILE],
+  },
+  pezens: {
+    lead: "Pezens est à dix minutes de Carcassonne : le volume et les accès expliquent l'essentiel de l'écart de prix entre deux projets.",
+    links: [PRIX, VOLUME, CARTONS],
+  },
+  alzonne: {
+    lead: "Maisons à jardin et accès directs simplifient la logistique : le travail utile se fait surtout en amont, sur les cartons.",
+    links: [CARTONS, VOLUME, CHECKLIST],
+  },
+};
+
+const guide: Guide | undefined = cityGuides[city.slug];
+
+
 const nearby = CITIES
   .filter(c => c.slug !== city.slug)
   .sort((a, b) => Math.abs(a.distance - city.distance) - Math.abs(b.distance - city.distance))
@@ -189,10 +270,7 @@ const cityFaq = extra?.faq ?? [];
           📍 {isBase ? 'Notre ville' : `${city.distance} km de Carcassonne`}
         </div>
         <h1>{pageHeading}</h1>
-        <p class="city-hero-sub">
-          Une demande de déménagement à {city.name} peut être étudiée depuis Carcassonne.
-          Le périmètre, les moyens, le créneau et le prix sont confirmés sur devis.
-        </p>
+        <p class="city-hero-sub">{heroSub}</p>
         <div class="city-hero-ctas">
           <a href={`/devis/?depart=${encodeURIComponent(city.name)}&source=ville`} class="btn btn--primary btn--lg">Devis gratuit →</a>
           <a href={`tel:${SITE.phone}`} class="btn btn--white btn--lg">📞 {SITE.phoneDisplay}</a>
@@ -293,6 +371,18 @@ const cityFaq = extra?.faq ?? [];
             {cityFaq.map(f => (
               <details class="ce-faq-item"><summary>{f.q}</summary><p>{f.a}</p></details>
             ))}
+          </div>
+        )}
+
+        {guide && (
+          <div class="ce-guides">
+            <h3>Préparer son déménagement à {city.name}</h3>
+            <p class="ce-guides-lead">{guide.lead}</p>
+            <ul class="ce-guides-list">
+              {guide.links.map(l => (
+                <li><a href={l.href}>{l.label}</a></li>
+              ))}
+            </ul>
           </div>
         )}
 
@@ -466,6 +556,13 @@ const cityFaq = extra?.faq ?? [];
   .ce-faq-item summary { padding: 16px 20px; font-weight: 600; font-size: .95rem; color: var(--color-navy); cursor: pointer; list-style: none; }
   .ce-faq-item summary::-webkit-details-marker { display: none; }
   .ce-faq-item p { padding: 0 20px 16px; font-size: .9rem; color: var(--color-text-light); line-height: 1.65; }
+  .ce-guides { margin-top: 40px; background: var(--color-white); border: 1px solid var(--color-border); border-radius: var(--radius); padding: 24px 26px; }
+  .ce-guides h3 { font-family: var(--font-sans); font-size: 1.05rem; font-weight: 700; color: var(--color-navy); margin-bottom: 10px; }
+  .ce-guides-lead { font-size: .92rem; color: var(--color-text-light); line-height: 1.65; margin-bottom: 16px; }
+  .ce-guides-list { list-style: none; padding: 0; margin: 0; display: grid; gap: 10px; }
+  .ce-guides-list a { display: inline-flex; align-items: center; gap: 8px; font-size: .92rem; color: var(--color-navy); text-decoration: none; border-bottom: 1px solid transparent; transition: color .2s, border-color .2s; }
+  .ce-guides-list a::before { content: '→'; color: var(--color-accent); }
+  .ce-guides-list a:hover { color: var(--color-accent); border-bottom-color: currentColor; }
   .ce-nearby { margin-top: 40px; }
   .ce-nearby h3 { font-family: var(--font-sans); font-size: .9rem; font-weight: 700; text-transform: uppercase; letter-spacing: .08em; color: var(--color-text-light); margin-bottom: 14px; }
   .ce-nearby-row { display: flex; flex-wrap: wrap; gap: 10px; }
