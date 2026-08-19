@@ -1,0 +1,105 @@
+{
+  "name": "Transport Carcassonne — demandes de devis",
+  "nodes": [
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "transportcarcassonne-devis",
+        "responseMode": "onReceived",
+        "options": {}
+      },
+      "id": "webhook-devis",
+      "name": "Netlify — nouvelle soumission",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2,
+      "position": [
+        -40,
+        300
+      ],
+      "webhookId": "transportcarcassonne-devis"
+    },
+    {
+      "parameters": {
+        "jsCode": "// Formate une soumission Netlify `devis-intelligent` en message Telegram\n// et en e-mail HTML lisibles. Aucun champ vide n'est affiché.\n\nconst body = $input.first().json.body ?? $input.first().json;\nconst d = body.data ?? {};\n\nif (body.form_name && body.form_name !== 'devis-intelligent' && body.form_name !== 'devis-transport') {\n  return [];\n}\n\nconst t = (v) => (v === undefined || v === null ? '' : String(v).trim());\nconst has = (v) => t(v).length > 0;\n\n// Libellés lisibles pour les valeurs codées du wizard\nconst L = {\n  local: 'local', 'longue-distance': 'longue distance', international: 'international',\n  studio: 'studio', t1: 'T1', t2: 'T2', t3: 'T3', t4: 'T4', 't5-plus': 'T5 et plus',\n  maison: 'maison', bureau: 'bureau', garde_meuble: 'garde-meuble',\n  oui: 'oui', non: 'non', 'peut-etre': 'peut-être',\n  'oui-grand': 'grand ascenseur', 'oui-petit': 'petit ascenseur', 'non-ascenseur': 'sans ascenseur',\n  'devant-porte': 'devant la porte', 'moins-30m': '< 30 m', 'plus-30m': '> 30 m',\n  'rue-etroite': 'rue étroite', 'zone-pietonne': 'zone piétonne', 'cour-interieure': 'cour intérieure',\n  'plus-moins-1-semaine': '± 1 semaine', 'plus-moins-3-jours': '± 3 jours',\n  'date-ferme': 'date ferme', flexible: 'flexible',\n  telephone: 'téléphone', sms: 'SMS', whatsapp: 'WhatsApp', email: 'e-mail',\n  'des-que-possible': 'dès que possible',\n};\nconst lab = (v) => L[t(v)] ?? t(v);\n\nconst dateFr = (iso) => {\n  if (!has(iso)) return '';\n  const parts = t(iso).split('-');\n  if (parts.length !== 3) return t(iso);\n  const mois = ['janvier','février','mars','avril','mai','juin','juillet','août','septembre','octobre','novembre','décembre'];\n  return `${Number(parts[2])} ${mois[Number(parts[1]) - 1]} ${parts[0]}`;\n};\n\nconst etage = (v) => {\n  const n = t(v);\n  if (!has(n)) return '';\n  if (n === '0') return 'RDC';\n  if (n === '1') return '1er étage';\n  return `${n}e étage`;\n};\n\n// ---------- Construction des blocs ----------\nconst lignes = [];\nconst push = (s) => lignes.push(s);\n\nconst nom = has(d.nom) ? d.nom : 'Sans nom';\npush(`🚚 <b>NOUVELLE DEMANDE</b>`);\npush('');\npush(`👤 <b>${nom}</b>`);\nif (has(d.telephone)) push(`   📞 ${d.telephone}`);\nif (has(d.email)) push(`   ✉️ ${d.email}`);\nconst contact = [has(d.contact_prefere) ? lab(d.contact_prefere) : '', has(d.creneau_rappel) ? `rappel ${lab(d.creneau_rappel)}` : ''].filter(Boolean).join(' · ');\nif (contact) push(`   ${contact}`);\n\npush('');\npush(`📍 <b>TRAJET</b>${has(d.type_trajet) ? ` · ${lab(d.type_trajet)}` : ''}`);\nconst dep = [t(d.depart_ville), has(d.depart_code_postal) ? `(${d.depart_code_postal})` : ''].filter(Boolean).join(' ');\nconst arr = [t(d.arrivee_ville), has(d.arrivee_code_postal_pays) ? `(${d.arrivee_code_postal_pays})` : ''].filter(Boolean).join(' ');\nif (dep || arr) push(`   ${dep || '?'} → ${arr || '?'}`);\nconst quand = [dateFr(d.date_souhaitee), has(d.flexibilite_date) ? lab(d.flexibilite_date) : ''].filter(Boolean).join(' · ');\nif (quand) push(`   ${quand}`);\n\nconst bloc = (titre, logement, surface, et, asc, stat, acces) => {\n  const items = [];\n  const tete = [has(logement) ? lab(logement) : '', has(surface) ? `${surface} m²` : ''].filter(Boolean).join(' · ');\n  const niveau = [etage(et), has(asc) ? lab(asc) : ''].filter(Boolean).join(' · ');\n  const bas = [has(stat) ? `stationnement ${lab(stat)}` : '', has(acces) ? lab(acces) : ''].filter(Boolean).join(' · ');\n  if (tete) items.push(`   ${tete}`);\n  if (niveau) items.push(`   ${niveau}${t(asc) === 'non-ascenseur' && t(et) !== '0' ? '  ⚠️' : ''}`);\n  if (bas) items.push(`   ${bas}`);\n  if (items.length) { push(''); push(`${titre}`); items.forEach(push); }\n};\nbloc('🏠 <b>DÉPART</b>', d.logement_depart, d.surface_depart_m2, d.etage_depart, d.ascenseur_depart, d.stationnement_depart, d.acces_depart);\nbloc('🏢 <b>ARRIVÉE</b>', d.logement_arrivee, '', d.etage_arrivee, d.ascenseur_arrivee, d.stationnement_arrivee, '');\n\nconst vol = [];\nif (has(d.volume_m3)) vol.push(`${d.volume_m3} m³`);\nif (has(d.nombre_cartons)) vol.push(`${d.nombre_cartons} cartons`);\nif (has(d.nombre_meubles_volumineux)) vol.push(`${d.nombre_meubles_volumineux} meubles volumineux`);\nif (has(d.nombre_electromenager)) vol.push(`${d.nombre_electromenager} électroménager`);\nconst alertes = [];\nif (t(d.objet_piano) === 'oui') alertes.push('piano');\nif (t(d.objet_lourd) === 'oui') alertes.push('objet lourd');\nif (t(d.objet_fragile) === 'oui') alertes.push('objets fragiles');\nif (t(d.objet_tres_grand) === 'oui') alertes.push('objet très grand');\nif (vol.length || alertes.length) {\n  push(''); push('📦 <b>VOLUME</b>');\n  if (vol.length) push(`   ${vol.join(' · ')}`);\n  if (alertes.length) push(`   ⚠️ ${alertes.join(' · ')}`);\n}\n\nconst serv = [];\nif (t(d.service_cartons) === 'oui') serv.push('fourniture de cartons');\nif (t(d.service_emballage) === 'oui') serv.push('emballage');\nif (t(d.service_demontage) === 'oui') serv.push('démontage');\nif (t(d.service_deballage) === 'oui') serv.push('déballage');\nif (serv.length) { push(''); push('✅ <b>SERVICES</b>'); push(`   ${serv.join(' · ')}`); }\n\nif (has(d.inventaire_details)) {\n  push(''); push('📝 <b>PRÉCISIONS</b>');\n  push(`   ${t(d.inventaire_details).slice(0, 500)}`);\n}\n\nif (has(d.visite_video) && t(d.visite_video) !== 'non') {\n  push(''); push(`📹 Visite vidéo : ${lab(d.visite_video)}${has(d.creneau_visite_video) ? ` · ${d.creneau_visite_video}` : ''}`);\n}\n\nif (has(d.estimation_min) && has(d.estimation_max)) {\n  push(''); push(`💶 <b>Estimation indicative : ${d.estimation_min} – ${d.estimation_max} €</b>`);\n  push(`   <i>non contractuelle</i>`);\n}\n\nconst src = [has(d.lead_source) ? d.lead_source : '', has(d.landing_page) ? d.landing_page : ''].filter(Boolean).join(' · ');\nconst utm = ['utm_source','utm_medium','utm_campaign','utm_content'].map(k => has(d[k]) ? `${k.replace('utm_','')}=${d[k]}` : '').filter(Boolean).join(' · ');\npush('');\nif (src) push(`🔗 ${src}`);\nif (utm) push(`   ${utm}`);\n\nconst telegram = lignes.join('\\n');\n\n// ---------- E-mail HTML ----------\nconst esc = (s) => t(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');\nconst rows = [];\nconst row = (k, v) => { if (has(v)) rows.push(`<tr><th align=\"left\" style=\"padding:7px 14px 7px 0;color:#6b7280;font-weight:600;white-space:nowrap;vertical-align:top\">${esc(k)}</th><td style=\"padding:7px 0;color:#15191c\">${esc(v)}</td></tr>`); };\nconst section = (titre) => rows.push(`<tr><td colspan=\"2\" style=\"padding:20px 0 6px;font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:#a8703f;font-weight:700;border-bottom:1px solid #e5e1d8\">${esc(titre)}</td></tr>`);\n\nsection('Contact');\nrow('Nom', d.nom); row('Téléphone', d.telephone); row('E-mail', d.email);\nrow('Contact préféré', lab(d.contact_prefere)); row('Créneau de rappel', lab(d.creneau_rappel));\nsection('Trajet');\nrow('Type', lab(d.type_trajet)); row('Départ', dep); row('Arrivée', arr);\nrow('Date souhaitée', dateFr(d.date_souhaitee)); row('Flexibilité', lab(d.flexibilite_date));\nsection('Départ');\nrow('Logement', lab(d.logement_depart)); row('Surface', has(d.surface_depart_m2) ? `${d.surface_depart_m2} m²` : '');\nrow('Étage', etage(d.etage_depart)); row('Ascenseur', lab(d.ascenseur_depart));\nrow('Stationnement', lab(d.stationnement_depart)); row('Accès', lab(d.acces_depart));\nsection('Arrivée');\nrow('Logement', lab(d.logement_arrivee)); row('Étage', etage(d.etage_arrivee));\nrow('Ascenseur', lab(d.ascenseur_arrivee)); row('Stationnement', lab(d.stationnement_arrivee));\nsection('Volume et objets');\nrow('Volume', has(d.volume_m3) ? `${d.volume_m3} m³` : ''); row('Cartons', d.nombre_cartons);\nrow('Meubles volumineux', d.nombre_meubles_volumineux); row('Électroménager', d.nombre_electromenager);\nrow('Objets signalés', alertes.join(', ')); row('Précisions', d.inventaire_details);\nsection('Services et suite');\nrow('Services demandés', serv.join(', ')); row('Visite vidéo', lab(d.visite_video));\nrow('Créneau visite', d.creneau_visite_video);\nrow('Estimation', has(d.estimation_min) ? `${d.estimation_min} – ${d.estimation_max} € (non contractuelle)` : '');\nsection('Origine');\nrow('Source', d.lead_source); row('Page', d.landing_page); row('Referrer', d.referrer);\n['utm_source','utm_medium','utm_campaign','utm_term','utm_content'].forEach(k => row(k, d[k]));\nrow('Version du formulaire', d.form_version);\n\nconst html = `<div style=\"font-family:-apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif;max-width:640px;margin:0 auto;padding:24px;background:#fafaf7\">\n<h1 style=\"margin:0 0 4px;font-size:20px;color:#15191c\">Nouvelle demande de devis</h1>\n<p style=\"margin:0 0 18px;color:#6b7280;font-size:14px\">${esc(nom)}${has(d.telephone) ? ` · <a href=\"tel:${esc(d.telephone)}\" style=\"color:#a8703f\">${esc(d.telephone)}</a>` : ''}</p>\n<table cellpadding=\"0\" cellspacing=\"0\" style=\"width:100%;font-size:14px;line-height:1.5\">${rows.join('')}</table>\n<p style=\"margin:22px 0 0;color:#9ca3ac;font-size:12px\">Envoyé automatiquement depuis transportcarcassonne.fr. L'estimation est indicative et ne vaut pas devis.</p>\n</div>`;\n\nconst sujet = `Devis ${has(d.depart_ville) ? d.depart_ville : '?'} → ${has(d.arrivee_ville) ? d.arrivee_ville : '?'} · ${nom}`;\n\nreturn [{ json: { telegram, html, sujet } }];\n"
+      },
+      "id": "format-devis",
+      "name": "Mettre en forme",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        220,
+        300
+      ]
+    },
+    {
+      "parameters": {
+        "chatId": "REMPLACER_PAR_CHAT_ID",
+        "text": "={{ $json.telegram }}",
+        "additionalFields": {
+          "parse_mode": "HTML",
+          "disable_web_page_preview": true
+        }
+      },
+      "id": "telegram-devis",
+      "name": "Telegram",
+      "type": "n8n-nodes-base.telegram",
+      "typeVersion": 1.2,
+      "position": [
+        500,
+        200
+      ],
+      "onError": "continueRegularOutput"
+    },
+    {
+      "parameters": {
+        "sendTo": "contact@transportcarcassonne.fr",
+        "subject": "={{ $json.sujet }}",
+        "emailType": "html",
+        "message": "={{ $json.html }}",
+        "options": {}
+      },
+      "id": "gmail-devis",
+      "name": "E-mail",
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.1,
+      "position": [
+        500,
+        400
+      ],
+      "onError": "continueRegularOutput"
+    }
+  ],
+  "connections": {
+    "Netlify — nouvelle soumission": {
+      "main": [
+        [
+          {
+            "node": "Mettre en forme",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Mettre en forme": {
+      "main": [
+        [
+          {
+            "node": "Telegram",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "E-mail",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "pinData": {}
+}
