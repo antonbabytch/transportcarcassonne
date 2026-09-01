@@ -34,14 +34,13 @@ export const hasGoogleProfileUrl = GOOGLE_PROFILE_URL.startsWith('https://');
  * Note moyenne et nombre d'avis, recopiés depuis la fiche Google.
  * `count: 0` masque toute mention chiffrée sur le site.
  *
- * Volontairement à zéro pour l'instant : le total affiché par Google
- * compte des avis qui ne proviennent pas de clients. Ne renseigner ces
- * deux valeurs que lorsque le total de la fiche ne reflète plus que des
- * avis clients.
+ * Relevés le 01/09/2026, après retrait des avis qui ne venaient pas de
+ * clients. Le chiffre affiché ici doit toujours correspondre à ce qu'un
+ * visiteur retrouve sur la fiche : le remettre à jour à chaque nouvel avis.
  */
 export const GOOGLE_RATING = {
-  average: 0,
-  count: 0,
+  average: 5,
+  count: 3,
 } as const;
 
 export const hasGoogleRating = GOOGLE_RATING.count > 0 && GOOGLE_RATING.average > 0;
@@ -59,7 +58,7 @@ export interface GoogleReview {
   service?: string;
 }
 
-// Avis recopiés le 19/08/2026 depuis la fiche Google, sans modification :
+// Avis recopiés depuis la fiche Google, sans modification :
 // ponctuation et espacement d'origine conservés.
 export const GOOGLE_REVIEWS: GoogleReview[] = [
   {
@@ -74,6 +73,13 @@ export const GOOGLE_REVIEWS: GoogleReview[] = [
     author: 'Ivan R.',
     rating: 5,
     month: '2026-05',
+  },
+  {
+    quote:
+      "Le déménagement s'est déroulé facilement et sans problème, les déménageurs ont fait un excellent travail et le prix était raisonnable.",
+    author: 'Наталья Е.',
+    rating: 5,
+    month: '2026-09',
   },
 ];
 
