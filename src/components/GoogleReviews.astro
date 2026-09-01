@@ -51,8 +51,11 @@ const stars = (n: number) => '★'.repeat(n) + '☆'.repeat(5 - n);
       <ul class="gr__grid">
         {GOOGLE_REVIEWS.map((review) => (
           <li class="gr__card">
-            <p class="gr__card-stars" aria-label={`${review.rating} étoiles sur 5`}>
-              <span aria-hidden="true">{stars(review.rating)}</span>
+            <p class="gr__card-head">
+              <span class="gr__card-stars" aria-label={`${review.rating} étoiles sur 5`}>
+                <span aria-hidden="true">{stars(review.rating)}</span>
+              </span>
+              <span class="gr__via">via Google</span>
             </p>
             <blockquote class="gr__quote">{review.quote}</blockquote>
             <footer class="gr__meta">
@@ -84,7 +87,9 @@ const stars = (n: number) => '★'.repeat(n) + '☆'.repeat(5 - n);
 
   .gr__grid { list-style: none; padding: 0; margin: 34px 0 0; display: grid; gap: 20px; grid-template-columns: repeat(auto-fit, minmax(290px, 1fr)); }
   .gr__card { display: flex; flex-direction: column; gap: 12px; background: var(--color-white); border: 1px solid var(--color-border); border-radius: var(--radius-lg); padding: 24px 26px; }
-  .gr__card-stars { margin: 0; color: var(--color-accent); letter-spacing: .1em; font-size: .95rem; }
+  .gr__card-head { display: flex; align-items: center; justify-content: space-between; gap: 10px; margin: 0; }
+  .gr__card-stars { color: var(--color-accent); letter-spacing: .1em; font-size: .95rem; }
+  .gr__via { font-size: .72rem; font-weight: 700; letter-spacing: .06em; text-transform: uppercase; color: var(--color-text-light); }
   .gr__quote { margin: 0; font-size: .96rem; line-height: 1.7; color: var(--color-text); }
   .gr__quote::before { content: '«\00a0'; }
   .gr__quote::after { content: '\00a0»'; }
