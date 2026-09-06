@@ -1,0 +1,144 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Header from '../components/Header.astro';
+import Footer from '../components/Footer.astro';
+import Breadcrumbs from '../components/Breadcrumbs.astro';
+import { SITE } from '../data/site.config';
+
+const title = 'Paiement sécurisé de votre déménagement | Transport Carcassonne';
+const description = 'Payez l’acompte ou le solde de votre déménagement depuis le lien Stripe personnel associé à votre devis Transport Carcassonne.';
+const whatsappText = encodeURIComponent('Bonjour, je souhaite vérifier ou recevoir le lien de paiement associé à mon devis.');
+---
+
+<BaseLayout title={title} description={description} noindex={true}>
+  <Header />
+  <Breadcrumbs items={[{ name: 'Accueil', href: '/' }, { name: 'Paiement sécurisé' }]} />
+
+  <main class="payment-page">
+    <section class="payment-hero">
+      <div class="container payment-hero__inner">
+        <div>
+          <span class="section-label">Paiement en ligne</span>
+          <h1>Un paiement sécurisé, toujours lié à votre devis</h1>
+          <p>
+            Après acceptation de votre devis, vous recevez un lien Stripe personnel indiquant
+            le montant exact de l’acompte ou du solde. Aucune donnée de carte bancaire ne transite
+            par notre site.
+          </p>
+        </div>
+        <aside class="security-card" aria-label="Principes de sécurité du paiement">
+          <div class="security-card__icon" aria-hidden="true">✓</div>
+          <strong>Page de paiement hébergée par Stripe</strong>
+          <span>Montant vérifiable avant validation</span>
+          <span>Confirmation envoyée par email</span>
+          <span>Aucune carte demandée par téléphone</span>
+        </aside>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="container payment-layout">
+        <article class="payment-process">
+          <span class="section-label">Comment payer</span>
+          <h2>Trois vérifications avant de valider</h2>
+          <ol>
+            <li>
+              <span>1</span>
+              <div><strong>Vérifiez votre devis</strong><p>Le numéro, la prestation et les conditions de règlement doivent correspondre à ce qui a été accepté.</p></div>
+            </li>
+            <li>
+              <span>2</span>
+              <div><strong>Ouvrez uniquement votre lien personnel</strong><p>Le paiement doit être affiché sur une page sécurisée Stripe avec le nom Transport Carcassonne.</p></div>
+            </li>
+            <li>
+              <span>3</span>
+              <div><strong>Contrôlez le montant</strong><p>Ne validez pas si le montant ou la référence diffère de votre devis ou de votre facture.</p></div>
+            </li>
+          </ol>
+        </article>
+
+        <aside class="payment-help">
+          <span class="section-label">Besoin d’aide ?</span>
+          <h2>Un doute sur votre lien</h2>
+          <p>Ne payez pas et contactez-nous directement. Nous vérifierons la référence et vous renverrons le bon lien.</p>
+          <div class="payment-help__actions">
+            <a href={`tel:${SITE.phone}`} class="btn btn--primary">Appeler le {SITE.phoneDisplay}</a>
+            <a href={`https://wa.me/${SITE.phoneWhatsapp}?text=${whatsappText}`} class="btn btn--outline" target="_blank" rel="noopener noreferrer">Écrire sur WhatsApp</a>
+          </div>
+        </aside>
+      </div>
+    </section>
+
+    <section class="section section--alt">
+      <div class="container payment-faq">
+        <div class="payment-faq__heading">
+          <span class="section-label">Questions fréquentes</span>
+          <h2>À propos du règlement</h2>
+        </div>
+        <div class="payment-faq__list">
+          <details>
+            <summary>Quand vais-je recevoir mon lien de paiement ?</summary>
+            <p>Après vérification et acceptation du devis. Le lien est transmis séparément par email ou par le canal convenu avec vous.</p>
+          </details>
+          <details>
+            <summary>Le paiement confirme-t-il immédiatement la date ?</summary>
+            <p>Le paiement est enregistré automatiquement. L’organisation définitive et le créneau restent ceux confirmés séparément avec Transport Carcassonne selon le devis accepté.</p>
+          </details>
+          <details>
+            <summary>Vais-je recevoir un justificatif ?</summary>
+            <p>Oui. Une confirmation de paiement est envoyée à l’adresse email utilisée sur la page Stripe. La facture reste établie et suivie séparément dans Tiime.</p>
+          </details>
+          <details>
+            <summary>Puis-je encore payer par virement ?</summary>
+            <p>Utilisez uniquement le moyen et l’échéance indiqués sur votre devis ou votre facture. Contactez-nous avant de changer de moyen de paiement.</p>
+          </details>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <Footer />
+</BaseLayout>
+
+<style>
+  .payment-page { background: var(--color-bg); }
+  .payment-page .section-label { color: var(--color-accent-dark); }
+  .payment-hero { padding: 82px 0; background: var(--color-navy); color: white; }
+  .payment-hero .section-label { color: #D09A67; }
+  .payment-hero__inner { display: grid; grid-template-columns: minmax(0, 1fr) 360px; gap: 64px; align-items: center; }
+  .payment-hero h1 { color: white; max-width: 750px; margin: 12px 0 18px; }
+  .payment-hero p { max-width: 690px; color: rgba(255,255,255,.76); font-size: 1.04rem; line-height: 1.75; }
+  .security-card { display: grid; gap: 11px; padding: 30px; border: 1px solid rgba(255,255,255,.16); border-radius: var(--radius-lg); background: rgba(255,255,255,.05); }
+  .security-card__icon { display: grid; place-items: center; width: 44px; height: 44px; margin-bottom: 4px; border-radius: 50%; background: var(--color-accent); color: var(--color-navy); font-weight: 800; font-size: 1.2rem; }
+  .security-card strong { color: white; font-size: 1rem; }
+  .security-card span { color: rgba(255,255,255,.7); font-size: .86rem; padding-left: 18px; position: relative; }
+  .security-card span::before { content: '✓'; position: absolute; left: 0; color: var(--color-accent); }
+  .payment-layout { display: grid; grid-template-columns: minmax(0, 1.2fr) minmax(300px, .8fr); gap: 42px; align-items: start; }
+  .payment-process h2, .payment-help h2, .payment-faq h2 { margin: 9px 0 22px; }
+  .payment-process ol { display: grid; gap: 14px; list-style: none; }
+  .payment-process li { display: grid; grid-template-columns: 42px 1fr; gap: 16px; padding: 20px; border: 1px solid var(--color-border); border-radius: var(--radius-lg); background: white; }
+  .payment-process li > span { display: grid; place-items: center; width: 38px; height: 38px; border-radius: 50%; background: var(--color-navy); color: white; font-weight: 700; }
+  .payment-process strong { color: var(--color-navy); }
+  .payment-process p { margin-top: 5px; color: var(--color-text-light); font-size: .88rem; line-height: 1.6; }
+  .payment-help { padding: 32px; border-radius: var(--radius-lg); background: var(--color-bg-alt); border-top: 3px solid var(--color-accent); }
+  .payment-help > p { color: var(--color-text-light); line-height: 1.7; }
+  .payment-help__actions { display: grid; gap: 11px; margin-top: 24px; }
+  .payment-help__actions .btn { justify-content: center; white-space: normal; text-align: center; }
+  .payment-faq { max-width: 900px; }
+  .payment-faq__heading { text-align: center; margin-bottom: 28px; }
+  .payment-faq__list { display: grid; gap: 9px; }
+  .payment-faq details { border: 1px solid var(--color-border); border-radius: var(--radius); background: white; }
+  .payment-faq summary { cursor: pointer; padding: 18px 22px; font-weight: 650; color: var(--color-navy); }
+  .payment-faq details p { padding: 0 22px 20px; color: var(--color-text-light); font-size: .9rem; line-height: 1.65; }
+  @media (max-width: 850px) {
+    .payment-hero__inner, .payment-layout { grid-template-columns: 1fr; gap: 32px; }
+    .security-card { max-width: 520px; }
+  }
+  @media (max-width: 560px) {
+    .payment-hero { padding: 58px 0; }
+    .payment-process li { grid-template-columns: 34px 1fr; padding: 17px; }
+    .payment-process li > span { width: 32px; height: 32px; }
+    .payment-help { padding: 26px 21px; }
+  }
+</style>
+

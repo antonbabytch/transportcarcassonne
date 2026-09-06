@@ -1,0 +1,151 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Header from '../components/Header.astro';
+import Footer from '../components/Footer.astro';
+import { SITE } from '../data/site.config';
+
+const title = 'Paiement transmis | Transport Carcassonne';
+const description = 'Votre retour de paiement Stripe a bien été reçu par Transport Carcassonne.';
+---
+
+<BaseLayout title={title} description={description} noindex={true}>
+  <Header />
+
+  <main class="payment-result">
+    <div class="container payment-result__inner">
+      <section class="result-card" aria-labelledby="payment-title">
+        <div class="result-icon" id="payment-icon" aria-hidden="true">…</div>
+        <span class="section-label">Retour de paiement</span>
+        <h1 id="payment-title">Vérification de votre paiement</h1>
+        <p class="result-lead" id="payment-lead">
+          Nous vérifions le statut transmis par Stripe. Cette opération prend généralement quelques instants.
+        </p>
+        <p class="result-status" id="payment-status" aria-live="polite">Vérification en cours…</p>
+
+        <div class="result-notice">
+          <strong>À savoir</strong>
+          <p>La réception du paiement ne modifie pas les dates ou le périmètre du devis. L’organisation définitive reste celle confirmée séparément avec Transport Carcassonne.</p>
+        </div>
+
+        <ol class="result-steps">
+          <li><span>1</span><p>Nous recevons automatiquement le statut du paiement.</p></li>
+          <li><span>2</span><p>Vous recevez votre confirmation par email.</p></li>
+          <li><span>3</span><p>Nous poursuivons l’organisation selon votre devis accepté.</p></li>
+        </ol>
+
+        <div class="result-actions">
+          <a href="/" class="btn btn--primary">Retour à l’accueil</a>
+          <a href={`tel:${SITE.phone}`} class="btn btn--outline">Une question ? {SITE.phoneDisplay}</a>
+        </div>
+      </section>
+    </div>
+  </main>
+
+  <Footer />
+</BaseLayout>
+
+<script>
+  const params = new URLSearchParams(window.location.search);
+  const sessionId = params.get('session_id');
+  const title = document.querySelector<HTMLElement>('#payment-title');
+  const lead = document.querySelector<HTMLElement>('#payment-lead');
+  const statusLine = document.querySelector<HTMLElement>('#payment-status');
+  const icon = document.querySelector<HTMLElement>('#payment-icon');
+
+  const setResult = (symbol: string, heading: string, message: string, status: string) => {
+    if (icon) icon.textContent = symbol;
+    if (title) title.textContent = heading;
+    if (lead) lead.textContent = message;
+    if (statusLine) statusLine.textContent = status;
+  };
+
+  if (!sessionId) {
+    setResult(
+      '✓',
+      'Merci, votre retour de paiement a été transmis',
+      'Si vous venez de payer, Stripe et Transport Carcassonne vous enverront les confirmations prévues à l’adresse utilisée lors du paiement.',
+      'Conservez votre reçu Stripe et contactez-nous en cas de doute.',
+    );
+  } else {
+    const verifyPayment = async () => {
+      for (let attempt = 0; attempt < 5; attempt += 1) {
+        try {
+          const response = await fetch(`/api/payment/status?session_id=${encodeURIComponent(sessionId)}`, {
+            headers: { Accept: 'application/json' },
+            cache: 'no-store',
+          });
+          const payment = await response.json();
+
+          if (response.status === 202) {
+            if (statusLine) statusLine.textContent = 'Confirmation Stripe en cours de réception…';
+            await new Promise((resolve) => window.setTimeout(resolve, 1400));
+            continue;
+          }
+
+          if (!response.ok) throw new Error('Payment status unavailable');
+
+          if (payment.status === 'acompte-recu' || payment.status === 'solde-recu') {
+            const kind = payment.status === 'solde-recu' ? 'Solde reçu' : 'Acompte reçu';
+            const amount = new Intl.NumberFormat('fr-FR', {
+              style: 'currency',
+              currency: String(payment.currency || 'eur').toUpperCase(),
+            }).format(Number(payment.amountTotal || 0) / 100);
+            const reference = payment.quoteNumber ? ` pour le devis n° ${payment.quoteNumber}` : '';
+            setResult('✓', kind, `Stripe a confirmé le paiement de ${amount}${reference}.`, 'Le statut est enregistré. Nous poursuivons l’organisation selon le devis accepté.');
+            return;
+          }
+
+          if (payment.status === 'paiement-echoue') {
+            setResult('!', 'Paiement non confirmé', 'Stripe n’a pas confirmé ce règlement.', 'Ne recommencez pas sans vérifier votre relevé ou nous contacter.');
+            return;
+          }
+
+          if (payment.status === 'rembourse' || payment.status === 'remboursement-partiel') {
+            setResult('↩', 'Remboursement enregistré', 'Le statut de cette transaction a été mis à jour.', 'Consultez le message Stripe ou contactez-nous pour le détail.');
+            return;
+          }
+
+          setResult('…', 'Paiement en traitement', 'Le moyen de paiement utilisé nécessite une confirmation différée.', 'Vous recevrez la confirmation définitive dès que Stripe aura terminé le traitement.');
+          return;
+        } catch {
+          if (attempt < 4) {
+            await new Promise((resolve) => window.setTimeout(resolve, 1400));
+            continue;
+          }
+        }
+      }
+
+      setResult('?', 'Vérification encore en cours', 'Nous n’avons pas encore pu afficher le statut définitif.', 'Conservez votre reçu Stripe. En cas de doute, appelez-nous avant de tenter un nouveau paiement.');
+    };
+
+    verifyPayment();
+  }
+</script>
+
+<style>
+  .payment-result { min-height: 72vh; display: grid; align-items: center; padding: 76px 0; background: var(--color-bg-alt); }
+  .payment-result__inner { display: flex; justify-content: center; }
+  .result-card { width: 100%; max-width: 680px; padding: 52px 48px; text-align: center; background: white; border: 1px solid var(--color-border); border-radius: var(--radius-lg); box-shadow: var(--shadow-lg); }
+  .result-card .section-label { color: var(--color-accent-dark); }
+  .result-icon { display: grid; place-items: center; width: 64px; height: 64px; margin: 0 auto 22px; border-radius: 50%; background: rgba(168,112,63,.13); color: var(--color-accent-dark); font-size: 1.8rem; font-weight: 800; }
+  .result-card h1 { margin: 10px 0 16px; }
+  .result-lead { max-width: 560px; margin: 0 auto; color: var(--color-text-light); font-size: 1.02rem; line-height: 1.7; }
+  .result-status { max-width: 560px; margin: 14px auto 0; color: var(--color-navy); font-size: .9rem; font-weight: 650; }
+  .result-notice { margin: 28px 0; padding: 20px 22px; text-align: left; border-left: 3px solid var(--color-accent); background: var(--color-bg-alt); }
+  .result-notice strong { color: var(--color-navy); }
+  .result-notice p { margin-top: 4px; color: var(--color-text-light); font-size: .88rem; line-height: 1.6; }
+  .result-steps { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; list-style: none; margin: 28px 0 32px; }
+  .result-steps li { padding: 18px 13px; border: 1px solid var(--color-border); border-radius: var(--radius); }
+  .result-steps span { display: grid; place-items: center; width: 28px; height: 28px; margin: 0 auto 10px; border-radius: 50%; background: var(--color-navy); color: white; font-size: .76rem; font-weight: 700; }
+  .result-steps p { color: var(--color-text-light); font-size: .78rem; line-height: 1.5; }
+  .result-actions { display: flex; justify-content: center; flex-wrap: wrap; gap: 12px; }
+  @media (max-width: 600px) {
+    .payment-result { padding: 46px 0; }
+    .result-card { padding: 38px 20px; }
+    .result-steps { grid-template-columns: 1fr; }
+    .result-steps li { display: flex; align-items: center; gap: 12px; text-align: left; }
+    .result-steps span { margin: 0; flex: 0 0 auto; }
+    .result-actions { display: grid; }
+    .result-actions .btn { justify-content: center; white-space: normal; }
+  }
+</style>

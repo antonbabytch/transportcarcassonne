@@ -9,6 +9,7 @@
     "dev": "astro dev",
     "build": "astro build",
     "check": "astro check",
+    "test": "node --test",
     "audit:seo": "npm run build && node scripts/seo-audit.mjs",
     "report:leads": "node scripts/lead-report.mjs",
     "preview": "astro preview",
@@ -17,6 +18,8 @@
   "dependencies": {
     "@astrojs/check": "^0.9.10",
     "@astrojs/sitemap": "^3.7.3",
-    "astro": "^7.2.3"
+    "@netlify/blobs": "^10.7.13",
+    "astro": "^7.2.3",
+    "nodemailer": "^10.0.0"
   }
 }
