@@ -12,7 +12,7 @@ import { SITE } from '../data/site.config';
 import { SERVICES } from '../data/services';
 import { CITIES } from '../data/cities';
 
-const title = 'Transport & déménagement à Carcassonne | Devis local';
+const title = 'Déménageur & transport à Carcassonne | Devis rapide';
 const description = `Transport express et déménagement à Carcassonne : meubles, petit volume, retrait magasin et demande urgente aujourd’hui ou demain selon disponibilité. ${SITE.phoneDisplay}`;
 
 const stats = [
@@ -71,6 +71,16 @@ const guides = [
     title: 'Checklist des 4 semaines avant le jour J',
     desc: 'Un planning simple pour les cartons, les accès, l’inventaire et les démarches.',
     href: '/blog/checklist-demenagement-4-semaines/',
+  },
+  {
+    title: 'Déménager sans ascenseur : portage et accès',
+    desc: 'Étages, escaliers, distance de portage et informations à transmettre avant le devis.',
+    href: '/blog/demenagement-sans-ascenseur-portage/',
+  },
+  {
+    title: 'Déménagement en été : préparer la haute saison',
+    desc: 'Dates, stationnement et organisation à anticiper lorsque les créneaux sont plus demandés.',
+    href: '/blog/demenagement-ete-haute-saison/',
   },
 ];
 const priceFmt = (n: number) => new Intl.NumberFormat('fr-FR').format(n) + ' €';

@@ -52,7 +52,7 @@ const stars = (n: number) => '★'.repeat(n) + '☆'.repeat(5 - n);
         {GOOGLE_REVIEWS.map((review) => (
           <li class="gr__card">
             <p class="gr__card-head">
-              <span class="gr__card-stars" aria-label={`${review.rating} étoiles sur 5`}>
+              <span class="gr__card-stars" role="img" aria-label={`${review.rating} étoiles sur 5`}>
                 <span aria-hidden="true">{stars(review.rating)}</span>
               </span>
               <span class="gr__via">via Google</span>
@@ -81,6 +81,7 @@ const stars = (n: number) => '★'.repeat(n) + '☆'.repeat(5 - n);
 
 <style>
   .gr__sub { color: var(--color-text-light); font-size: .95rem; margin-top: 6px; }
+  .gr .section-label { color: var(--color-accent-dark); }
   .gr__rating { display: flex; align-items: center; justify-content: center; gap: 10px; margin-top: 14px; font-size: .95rem; }
   .gr__stars { color: var(--color-accent); letter-spacing: .1em; }
   .gr__rating strong { color: var(--color-navy); }
