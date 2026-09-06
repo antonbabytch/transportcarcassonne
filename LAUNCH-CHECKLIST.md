@@ -17,7 +17,7 @@
 - email-уведомление Netlify на `contact@transportcarcassonne.fr` активно для новых отправок любой формы; тестовое письмо успешно доставлено во входящие Hostinger;
 - Google Business Profile не изменялся; production-деплой не выполнялся.
 - SIRET `10416678000015` подтверждён через официальный API Annuaire des Entreprises: активная EI в Carcassonne, деятельность 49.42Z, начало 23.04.2026. В опубликованном реестре транспортных предприятий SIREN `104166780` не найден; до production требуется номер лицензии/регистрации или данные лицензированного партнёра.
-- Kbis от 24.04.2026 подтверждает: `KARPOV Andriy`, entrepreneur individuel, `104 166 780 R.C.S. Carcassonne`, établissement principal `22 Rue Armand Tiffou, 11000 Carcassonne`, nom commercial `Transport Carcassonne` и начало деятельности 23.04.2026. Эти данные внесены в юридические страницы и structured data; контакт — `contact@transportcarcassonne.fr`.
+- Kbis от 24.04.2026 подтверждает: `KARPOV Andriy`, entrepreneur individuel, `104 166 780 R.C.S. Carcassonne`, nom commercial `Transport Carcassonne` и начало деятельности 23.04.2026. Публичный сайт не показывает точный адрес; контакт — `contact@transportcarcassonne.fr`.
 
 ## 1. Факты о компании
 

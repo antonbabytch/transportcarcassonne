@@ -15,9 +15,7 @@ export const SITE = {
   registrationDate: '2026-04-24',
   foundingDate: '2026-04-23',
   hq: {
-    streetAddress: '22 Rue Armand Tiffou',
     city: 'Carcassonne',
-    postalCode: '11000',
     region: 'Occitanie',
     country: 'FR',
   },
