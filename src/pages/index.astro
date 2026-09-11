@@ -151,6 +151,42 @@ const priceFmt = (n: number) => new Intl.NumberFormat('fr-FR').format(n) + ' €
     </div>
   </section>
 
+  <!-- ============ CALCULATEUR DE VOLUME ============ -->
+  <section class="volume-promo">
+    <div class="container volume-promo__grid">
+      <div class="volume-promo__copy reveal">
+        <span class="mono-label">Outil gratuit · résultat immédiat</span>
+        <h2 class="display">Combien de m³<br/>faut-il <em>prévoir&nbsp;?</em></h2>
+        <p>Sélectionnez vos meubles et cartons en quelques clics. Le calculateur prépare votre inventaire, estime le volume et le transmet directement dans votre demande de devis.</p>
+        <ul>
+          <li>Plus de 50 meubles, appareils et cartons</li>
+          <li>Ajout possible d’un objet avec ses dimensions</li>
+          <li>Inventaire conservé pendant votre navigation</li>
+        </ul>
+        <a class="btn btn--primary volume-promo__cta" href="/calculateur-volume-demenagement/?source=accueil-calculateur">
+          Calculer mon volume gratuitement <span aria-hidden="true">→</span>
+        </a>
+      </div>
+      <div class="volume-promo__preview reveal" aria-hidden="true">
+        <div class="volume-promo__preview-head">
+          <span>Aperçu de votre chargement</span>
+          <span class="volume-promo__status">Calcul en direct</span>
+        </div>
+        <div class="volume-promo__items">
+          <div class="volume-promo__item"><span class="volume-promo__icon">🛋️</span><span><strong>Canapé 3 places</strong><small>2,0 m³</small></span><b>1</b></div>
+          <div class="volume-promo__item"><span class="volume-promo__icon">🛏️</span><span><strong>Lit double</strong><small>1,4 m³</small></span><b>1</b></div>
+          <div class="volume-promo__item"><span class="volume-promo__icon">📦</span><span><strong>Carton standard</strong><small>0,06 m³ / unité</small></span><b>12</b></div>
+        </div>
+        <div class="volume-promo__meter"><span style="width: 46%"></span></div>
+        <div class="volume-promo__result">
+          <span>Volume estimé</span>
+          <strong>4,1 <small>m³</small></strong>
+        </div>
+        <p>Petit volume · utilitaire à confirmer selon les accès et la charge</p>
+      </div>
+    </div>
+  </section>
+
   <RoadDivider />
 
   <!-- ============ FLOTTE ============ -->
@@ -267,42 +303,6 @@ const priceFmt = (n: number) => new Intl.NumberFormat('fr-FR').format(n) + ' €
         ))}
       </div>
       <a class="specialty-formulas reveal" href="/formules/">Comparer les trois formules →</a>
-    </div>
-  </section>
-
-  <!-- ============ CALCULATEUR DE VOLUME ============ -->
-  <section class="volume-promo">
-    <div class="container volume-promo__grid">
-      <div class="volume-promo__copy reveal">
-        <span class="mono-label">Outil gratuit · résultat immédiat</span>
-        <h2 class="display">Combien de m³<br/>faut-il <em>prévoir&nbsp;?</em></h2>
-        <p>Sélectionnez vos meubles et cartons en quelques clics. Le calculateur prépare votre inventaire, estime le volume et le transmet directement dans votre demande de devis.</p>
-        <ul>
-          <li>Plus de 50 meubles, appareils et cartons</li>
-          <li>Ajout possible d’un objet avec ses dimensions</li>
-          <li>Inventaire conservé pendant votre navigation</li>
-        </ul>
-        <a class="btn btn--primary volume-promo__cta" href="/calculateur-volume-demenagement/?source=accueil-calculateur">
-          Calculer mon volume gratuitement <span aria-hidden="true">→</span>
-        </a>
-      </div>
-      <div class="volume-promo__preview reveal" aria-hidden="true">
-        <div class="volume-promo__preview-head">
-          <span>Aperçu de votre chargement</span>
-          <span class="volume-promo__status">Calcul en direct</span>
-        </div>
-        <div class="volume-promo__items">
-          <div class="volume-promo__item"><span class="volume-promo__icon">🛋️</span><span><strong>Canapé 3 places</strong><small>2,0 m³</small></span><b>1</b></div>
-          <div class="volume-promo__item"><span class="volume-promo__icon">🛏️</span><span><strong>Lit double</strong><small>1,4 m³</small></span><b>1</b></div>
-          <div class="volume-promo__item"><span class="volume-promo__icon">📦</span><span><strong>Carton standard</strong><small>0,06 m³ / unité</small></span><b>12</b></div>
-        </div>
-        <div class="volume-promo__meter"><span style="width: 46%"></span></div>
-        <div class="volume-promo__result">
-          <span>Volume estimé</span>
-          <strong>4,1 <small>m³</small></strong>
-        </div>
-        <p>Petit volume · utilitaire à confirmer selon les accès et la charge</p>
-      </div>
     </div>
   </section>
 
