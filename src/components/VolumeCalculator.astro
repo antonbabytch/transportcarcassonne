@@ -1,283 +1,380 @@
 ---
-const rooms = [
+const categories = [
   {
-    id: 'salon',
-    name: 'Salon',
+    id: 'salon', name: 'Salon', icon: '🛋️',
     items: [
-      { id: 'canape2', name: 'Canapé 2 places', volume: 1.5 },
-      { id: 'canape3', name: 'Canapé 3 places', volume: 2 },
-      { id: 'fauteuil', name: 'Fauteuil', volume: 0.7 },
-      { id: 'table-basse', name: 'Table basse', volume: 0.3 },
-      { id: 'meuble-tv', name: 'Meuble TV', volume: 0.6 },
-      { id: 'bibliotheque', name: 'Bibliothèque', volume: 1 },
+      { id: 'canape2', name: 'Canapé 2 places', volume: 1.5, icon: '🛋️' },
+      { id: 'canape3', name: 'Canapé 3 places', volume: 2, icon: '🛋️' },
+      { id: 'fauteuil', name: 'Fauteuil', volume: 0.7, icon: '🪑' },
+      { id: 'table-basse', name: 'Table basse', volume: 0.3, icon: '▰' },
+      { id: 'meuble-tv', name: 'Meuble TV', volume: 0.6, icon: '▤' },
+      { id: 'television', name: 'Télévision', volume: 0.25, icon: '📺' },
+      { id: 'buffet', name: 'Buffet', volume: 1.2, icon: '▥' },
+      { id: 'bibliotheque', name: 'Bibliothèque', volume: 1, icon: '📚' },
     ],
   },
   {
-    id: 'chambre',
-    name: 'Chambre',
+    id: 'chambre', name: 'Chambre', icon: '🛏️',
     items: [
-      { id: 'lit-simple', name: 'Lit simple', volume: 1 },
-      { id: 'lit-double', name: 'Lit double', volume: 1.8 },
-      { id: 'armoire-2p', name: 'Armoire 2 portes', volume: 1.5 },
-      { id: 'commode', name: 'Commode', volume: 0.7 },
-      { id: 'chevet', name: 'Table de chevet', volume: 0.2 },
-      { id: 'bureau', name: 'Bureau', volume: 0.8 },
+      { id: 'lit-simple', name: 'Lit simple', volume: 1, icon: '🛏️' },
+      { id: 'lit-double', name: 'Lit double', volume: 1.8, icon: '🛏️' },
+      { id: 'matelas', name: 'Matelas', volume: 0.8, icon: '▱' },
+      { id: 'armoire-2p', name: 'Armoire 2 portes', volume: 1.5, icon: '🚪' },
+      { id: 'commode', name: 'Commode', volume: 0.7, icon: '▦' },
+      { id: 'chevet', name: 'Table de chevet', volume: 0.2, icon: '▣' },
+      { id: 'bureau', name: 'Bureau', volume: 0.8, icon: '🖥️' },
+      { id: 'chaise-chambre', name: 'Chaise', volume: 0.15, icon: '🪑' },
     ],
   },
   {
-    id: 'cuisine',
-    name: 'Cuisine',
+    id: 'cuisine', name: 'Cuisine', icon: '🍽️',
     items: [
-      { id: 'table', name: 'Table', volume: 0.8 },
-      { id: 'chaise', name: 'Chaise', volume: 0.15 },
-      { id: 'refrigerateur', name: 'Réfrigérateur', volume: 1 },
-      { id: 'lave-linge', name: 'Lave-linge', volume: 0.5 },
-      { id: 'lave-vaisselle', name: 'Lave-vaisselle', volume: 0.5 },
-      { id: 'four', name: 'Four / cuisinière', volume: 0.4 },
+      { id: 'refrigerateur', name: 'Réfrigérateur', volume: 1, icon: '▥' },
+      { id: 'congelateur', name: 'Congélateur', volume: 0.8, icon: '❄️' },
+      { id: 'lave-linge', name: 'Lave-linge', volume: 0.5, icon: '◉' },
+      { id: 'seche-linge', name: 'Sèche-linge', volume: 0.5, icon: '◉' },
+      { id: 'lave-vaisselle', name: 'Lave-vaisselle', volume: 0.5, icon: '▧' },
+      { id: 'four', name: 'Four / cuisinière', volume: 0.4, icon: '♨️' },
+      { id: 'micro-ondes', name: 'Micro-ondes', volume: 0.15, icon: '▰' },
+      { id: 'table-cuisine', name: 'Table à manger', volume: 0.8, icon: '▱' },
+      { id: 'chaise-cuisine', name: 'Chaise', volume: 0.15, icon: '🪑' },
     ],
   },
   {
-    id: 'divers',
-    name: 'Divers',
+    id: 'bureau-pro', name: 'Bureau', icon: '🖥️',
     items: [
-      { id: 'carton-standard', name: 'Carton standard', volume: 0.1 },
-      { id: 'carton-livres', name: 'Carton à livres', volume: 0.06 },
-      { id: 'velo', name: 'Vélo', volume: 0.5 },
-      { id: 'tv', name: 'Téléviseur', volume: 0.25 },
-      { id: 'plante', name: 'Grande plante', volume: 0.3 },
-      { id: 'barbecue', name: 'Barbecue', volume: 0.5 },
+      { id: 'bureau-pro-meuble', name: 'Bureau professionnel', volume: 0.9, icon: '🖥️' },
+      { id: 'chaise-bureau', name: 'Chaise de bureau', volume: 0.35, icon: '🪑' },
+      { id: 'etagere-bureau', name: 'Étagère', volume: 0.7, icon: '▥' },
+      { id: 'armoire-dossiers', name: 'Armoire à dossiers', volume: 1, icon: '🗄️' },
+      { id: 'ordinateur', name: 'Ordinateur / écran', volume: 0.12, icon: '🖥️' },
+      { id: 'imprimante', name: 'Imprimante', volume: 0.1, icon: '🖨️' },
+    ],
+  },
+  {
+    id: 'cartons', name: 'Cartons', icon: '📦',
+    items: [
+      { id: 'carton-standard', name: 'Carton standard', volume: 0.06, icon: '📦' },
+      { id: 'carton-grand', name: 'Grand carton', volume: 0.1, icon: '📦' },
+      { id: 'carton-livres', name: 'Carton à livres', volume: 0.04, icon: '📚' },
+      { id: 'carton-penderie', name: 'Carton penderie', volume: 0.12, icon: '👔' },
+      { id: 'bac-plastique', name: 'Bac de rangement', volume: 0.08, icon: '▰' },
+      { id: 'valise', name: 'Valise', volume: 0.1, icon: '🧳' },
+    ],
+  },
+  {
+    id: 'exterieur', name: 'Garage & extérieur', icon: '🚲',
+    items: [
+      { id: 'velo', name: 'Vélo', volume: 0.5, icon: '🚲' },
+      { id: 'barbecue', name: 'Barbecue', volume: 0.5, icon: '♨️' },
+      { id: 'tondeuse', name: 'Tondeuse', volume: 0.45, icon: '🌿' },
+      { id: 'salon-jardin', name: 'Salon de jardin', volume: 2, icon: '🪑' },
+      { id: 'plante', name: 'Grande plante', volume: 0.3, icon: '🪴' },
+      { id: 'outillage', name: 'Lot d’outillage', volume: 0.3, icon: '🧰' },
+      { id: 'trottinette', name: 'Trottinette', volume: 0.2, icon: '🛴' },
+    ],
+  },
+  {
+    id: 'autres', name: 'Autres', icon: '➕',
+    items: [
+      { id: 'miroir', name: 'Grand miroir', volume: 0.2, icon: '🪞' },
+      { id: 'tapis', name: 'Tapis roulé', volume: 0.18, icon: '▰' },
+      { id: 'lampadaire', name: 'Lampadaire', volume: 0.15, icon: '💡' },
+      { id: 'piano-droit', name: 'Piano droit', volume: 2, icon: '🎹' },
+      { id: 'coffre-fort', name: 'Coffre-fort', volume: 0.5, icon: '🔒' },
+      { id: 'objet-art', name: 'Tableau / objet d’art', volume: 0.25, icon: '🖼️' },
     ],
   },
 ];
 ---
 
-<section class="volume-tool" aria-labelledby="volume-title">
-  <div class="volume-layout">
-    <div class="volume-inventory">
-      <div class="volume-intro">
-        <span class="section-label">Inventaire pièce par pièce</span>
-        <h2 id="volume-title">Ajoutez les objets à transporter</h2>
-        <p>Les volumes sont des moyennes. Le démontage, la forme du mobilier et les contraintes d’accès peuvent modifier l’évaluation finale.</p>
-      </div>
+<section class="volume-tool" aria-labelledby="volume-title" data-volume-calculator>
+  <div class="volume-intro">
+    <div>
+      <span class="section-label">Inventaire visuel gratuit</span>
+      <h2 id="volume-title">Que faut-il transporter ?</h2>
+      <p>Sélectionnez vos meubles, appareils et cartons. Le total et votre liste se mettent à jour immédiatement.</p>
+    </div>
+    <div class="volume-intro__step"><span>1</span> Choisissez · <span>2</span> Vérifiez · <span>3</span> Demandez le devis</div>
+  </div>
 
-      <div class="room-list">
-        {rooms.map((room, roomIndex) => (
-          <details class="room" open={roomIndex === 0}>
-            <summary>
-              <span>{room.name}</span>
-              <span class="room-count" id={`count-${room.id}`}>0 objet</span>
-            </summary>
-            <div class="item-list">
-              {room.items.map((item) => (
-                <div class="inventory-item">
-                  <span>
-                    <strong>{item.name}</strong>
-                    <small>{item.volume.toLocaleString('fr-FR')} m³ / unité</small>
-                  </span>
-                  <span class="qty-control">
-                    <button type="button" class="qty-btn" data-action="minus" data-target={`qty-${item.id}`} aria-label={`Retirer un élément : ${item.name}`}>−</button>
-                    <input
-                      id={`qty-${item.id}`}
-                      name={item.id}
-                      type="number"
-                      inputmode="numeric"
-                      min="0"
-                      max="99"
-                      value="0"
-                      data-volume={item.volume}
-                      data-room={room.id}
-                      aria-label={`Quantité : ${item.name}`}
-                    />
-                    <button type="button" class="qty-btn" data-action="plus" data-target={`qty-${item.id}`} aria-label={`Ajouter un élément : ${item.name}`}>+</button>
-                  </span>
-                </div>
-              ))}
-            </div>
-          </details>
+  <div class="calculator-shell">
+    <div class="inventory-panel">
+      <div class="category-tabs" role="tablist" aria-label="Pièces et catégories">
+        {categories.map((category, index) => (
+          <button type="button" role="tab" class:list={['category-tab', { 'is-active': index === 0 }]} aria-selected={index === 0 ? 'true' : 'false'} data-category-tab={category.id}>
+            <span aria-hidden="true">{category.icon}</span><strong>{category.name}</strong><small data-category-count={category.id}>0</small>
+          </button>
         ))}
       </div>
 
-      <label class="custom-volume" for="custom-volume">
-        <span>
-          <strong>Autres objets</strong>
-          <small>Volume libre estimé en m³</small>
-        </span>
-        <input id="custom-volume" type="number" inputmode="decimal" min="0" max="100" step="0.1" value="0" />
+      <label class="item-search" for="volume-search">
+        <span aria-hidden="true">⌕</span>
+        <input id="volume-search" type="search" placeholder="Rechercher un meuble ou un objet…" autocomplete="off" />
+        <button type="button" data-clear-search>Effacer</button>
       </label>
+
+      <p class="result-label" aria-live="polite"><span data-visible-count>8</span> objets proposés</p>
+
+      <div class="item-grid" data-item-grid>
+        {categories.flatMap((category, categoryIndex) => category.items.map((item) => (
+          <article class:list={['item-card', { 'is-hidden': categoryIndex !== 0 }]} data-item-card data-category={category.id} data-search={`${item.name} ${category.name}`.toLocaleLowerCase('fr')}>
+            <div class="item-card__visual" aria-hidden="true">{item.icon}</div>
+            <div class="item-card__body"><strong>{item.name}</strong><small>{item.volume.toLocaleString('fr-FR')} m³ / unité</small></div>
+            <div class="qty-control">
+              <button type="button" data-action="minus" data-target={`qty-${item.id}`} aria-label={`Retirer : ${item.name}`}>−</button>
+              <input id={`qty-${item.id}`} name={item.id} type="number" inputmode="numeric" min="0" max="99" value="0" data-volume={item.volume} data-item-name={item.name} data-item-icon={item.icon} data-category={category.id} aria-label={`Quantité : ${item.name}`} />
+              <button type="button" data-action="plus" data-target={`qty-${item.id}`} aria-label={`Ajouter : ${item.name}`}>+</button>
+            </div>
+          </article>
+        )))}
+      </div>
+
+      <p class="no-results" data-no-results hidden>Aucun objet trouvé. Utilisez « Objet sur mesure » ci-dessous.</p>
+
+      <details class="custom-object">
+        <summary><span aria-hidden="true">＋</span> Objet sur mesure avec ses dimensions</summary>
+        <form class="custom-object__form" data-custom-form>
+          <label class="custom-name"><span>Nom de l’objet</span><input name="custom-name" type="text" maxlength="60" placeholder="Ex. armoire ancienne" required /></label>
+          <label><span>Quantité</span><input name="custom-qty" type="number" inputmode="numeric" min="1" max="99" value="1" required /></label>
+          <label><span>Longueur</span><span class="dimension-input"><input name="custom-length" type="number" inputmode="decimal" min="1" max="1000" placeholder="120" required /><em>cm</em></span></label>
+          <label><span>Profondeur</span><span class="dimension-input"><input name="custom-depth" type="number" inputmode="decimal" min="1" max="1000" placeholder="60" required /><em>cm</em></span></label>
+          <label><span>Hauteur</span><span class="dimension-input"><input name="custom-height" type="number" inputmode="decimal" min="1" max="1000" placeholder="180" required /><em>cm</em></span></label>
+          <button class="btn btn--outline custom-submit" type="submit">Ajouter à l’inventaire</button>
+        </form>
+        <p>Le volume géométrique est calculé à partir du gabarit extérieur. Indiquez au devis si l’objet sera démonté.</p>
+      </details>
     </div>
 
     <aside class="volume-summary" aria-live="polite">
-      <span class="summary-label">Volume estimé</span>
-      <strong class="summary-volume"><span id="total-volume">0,0</span> m³</strong>
-      <p id="vehicle-advice">Ajoutez vos meubles pour obtenir une recommandation.</p>
-
-      <div class="summary-stats">
-        <div><span id="total-items">0</span><small>objets</small></div>
-        <div><span id="box-equivalent">0</span><small>cartons équiv.</small></div>
+      <div class="summary-topline"><span>Votre inventaire</span><button type="button" data-reset-volume>Tout effacer</button></div>
+      <div class="selected-list" data-selected-list>
+        <div class="selected-empty" data-selected-empty><span aria-hidden="true">📦</span><strong>Votre liste est vide</strong><p>Ajoutez un premier objet pour commencer l’estimation.</p></div>
       </div>
-
-      <div class="summary-actions">
-        <a class="btn btn--primary" id="volume-devis-link" href="/devis/?source=calculateur-volume">Continuer vers le devis →</a>
-        <button type="button" class="reset-button" id="reset-volume">Réinitialiser</button>
+      <div class="volume-result">
+        <div><span>Volume estimé</span><strong><span data-total-volume>0,0</span> m³</strong></div>
+        <div class="result-truck" aria-hidden="true">🚚</div>
       </div>
-
-      <p class="summary-note">Estimation indicative et non contractuelle. Le volume doit être confirmé avant l’établissement du devis définitif.</p>
+      <div class="load-scale" aria-hidden="true"><span data-load-scale></span></div>
+      <p class="vehicle-advice" data-vehicle-advice>Ajoutez vos meubles pour obtenir un premier repère.</p>
+      <div class="summary-stats"><div><strong data-total-items>0</strong><span>unités</span></div><div><strong data-total-lines>0</strong><span>types d’objet</span></div></div>
+      <a class="btn btn--primary summary-cta" data-volume-devis-link href="/devis/?source=calculateur-volume">Utiliser cet inventaire pour mon devis →</a>
+      <p class="summary-note">Estimation indicative, non contractuelle. Le volume, le démontage et les accès seront vérifiés avant le devis définitif.</p>
     </aside>
   </div>
 </section>
 
 <style>
-  .volume-tool { max-width: 1060px; margin: 0 auto; }
-  .volume-layout { display: grid; grid-template-columns: minmax(0, 1fr) 330px; gap: 32px; align-items: start; }
-  .volume-inventory, .volume-summary { background: var(--bg-card); border: 1px solid var(--line); border-radius: var(--radius-lg); }
-  .volume-inventory { padding: 32px; }
-  .volume-intro { margin-bottom: 24px; }
-  .volume-intro h2 { margin-bottom: 10px; }
-  .volume-intro p { color: var(--text-muted); max-width: 680px; }
-  .room-list { display: grid; gap: 10px; }
-  .room { border: 1px solid var(--line); border-radius: 8px; overflow: hidden; background: var(--bg); }
-  .room summary { display: flex; justify-content: space-between; gap: 16px; padding: 16px 18px; cursor: pointer; font-weight: 700; color: var(--text); }
-  .room-count { color: var(--accent-deep); font-size: .82rem; font-weight: 600; }
-  .item-list { border-top: 1px solid var(--line); }
-  .inventory-item, .custom-volume { display: flex; align-items: center; justify-content: space-between; gap: 16px; padding: 14px 18px; border-bottom: 1px solid var(--line); }
-  .inventory-item:last-child { border-bottom: 0; }
-  .inventory-item strong, .custom-volume strong { display: block; font-size: .92rem; }
-  .inventory-item small, .custom-volume small { display: block; color: var(--text-muted); font-size: .76rem; margin-top: 2px; }
-  .qty-control { display: grid; grid-template-columns: 44px 48px 44px; flex-shrink: 0; }
-  .qty-btn, .qty-control input, .custom-volume input { height: 44px; border: 1px solid var(--line); background: var(--bg-card); color: var(--text); font: inherit; }
-  .qty-btn { cursor: pointer; font-size: 1.15rem; }
-  .qty-btn:first-child { border-radius: 6px 0 0 6px; }
-  .qty-btn:last-child { border-radius: 0 6px 6px 0; }
-  .qty-btn:hover, .qty-btn:focus-visible { background: var(--accent-soft); border-color: var(--accent); outline: none; }
-  .qty-control input { width: 48px; text-align: center; border-left: 0; border-right: 0; -moz-appearance: textfield; }
+  .volume-tool { max-width: 1180px; margin: 0 auto; }
+  .volume-intro { display: flex; align-items: end; justify-content: space-between; gap: 32px; margin-bottom: 28px; }
+  .volume-intro h2 { margin: 8px 0 10px; }
+  .volume-intro p { max-width: 720px; color: var(--text-muted); line-height: 1.65; }
+  .volume-intro__step { flex-shrink: 0; color: var(--text-muted); font-size: .76rem; }
+  .volume-intro__step span { display: inline-grid; place-items: center; width: 24px; height: 24px; margin: 0 3px; border-radius: 50%; color: var(--bg-card); background: var(--bg-dark); font-weight: 800; }
+  .calculator-shell { display: grid; grid-template-columns: minmax(0, 1fr) 370px; gap: 24px; align-items: start; }
+  .inventory-panel, .volume-summary { border: 1px solid var(--line); border-radius: var(--radius-lg); background: var(--bg-card); box-shadow: 0 18px 55px rgba(27, 33, 44, .07); }
+  .inventory-panel { min-width: 0; padding: 24px; }
+  .category-tabs { display: flex; gap: 8px; padding-bottom: 6px; overflow-x: auto; scrollbar-width: thin; }
+  .category-tab { display: grid; grid-template-columns: auto auto auto; align-items: center; gap: 7px; min-height: 44px; padding: 9px 12px; border: 1px solid var(--line); border-radius: 999px; color: var(--text); background: var(--bg); font: inherit; white-space: nowrap; cursor: pointer; transition: border-color .2s, background .2s, color .2s, transform .2s; }
+  .category-tab:hover { border-color: var(--accent); transform: translateY(-1px); }
+  .category-tab.is-active { color: var(--text-on-dark); border-color: var(--bg-dark); background: var(--bg-dark); }
+  .category-tab strong { font-size: .78rem; }
+  .category-tab small { display: grid; place-items: center; min-width: 20px; height: 20px; padding: 0 5px; border-radius: 999px; color: var(--text-muted); background: var(--bg-soft); font-size: .66rem; font-weight: 800; }
+  .category-tab.is-active small { color: var(--bg-dark); background: var(--accent); }
+  .item-search { display: grid; grid-template-columns: 24px 1fr auto; align-items: center; gap: 8px; margin: 18px 0 10px; padding: 0 14px; border: 1px solid var(--line); border-radius: 10px; background: var(--bg); }
+  .item-search:focus-within { border-color: var(--accent); box-shadow: 0 0 0 3px var(--accent-soft); }
+  .item-search > span { color: var(--accent-deep); font-size: 1.25rem; }
+  .item-search input { width: 100%; min-width: 0; height: 48px; border: 0; outline: 0; color: var(--text); background: transparent; font: inherit; }
+  .item-search button { border: 0; color: var(--text-muted); background: transparent; font: inherit; font-size: .7rem; cursor: pointer; }
+  .result-label { margin: 12px 2px; color: var(--text-muted); font-size: .72rem; }
+  .item-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 10px; }
+  .item-card { display: grid; grid-template-rows: 70px auto auto; min-width: 0; overflow: hidden; border: 1px solid var(--line); border-radius: 12px; background: var(--bg); transition: border-color .2s, box-shadow .2s, transform .2s; }
+  .item-card:hover, .item-card:focus-within { border-color: var(--accent); box-shadow: 0 10px 24px rgba(27, 33, 44, .08); transform: translateY(-2px); }
+  .item-card.is-selected { border-color: var(--accent); background: color-mix(in srgb, var(--accent-soft) 45%, var(--bg-card)); }
+  .item-card.is-hidden { display: none; }
+  .item-card__visual { display: grid; place-items: center; font-size: 2.1rem; background: linear-gradient(145deg, var(--bg-soft), var(--bg-card)); }
+  .item-card__body { min-height: 65px; padding: 11px 12px 6px; }
+  .item-card__body strong { display: block; overflow: hidden; color: var(--text); font-size: .82rem; line-height: 1.25; text-overflow: ellipsis; white-space: nowrap; }
+  .item-card__body small { display: block; margin-top: 4px; color: var(--text-muted); font-size: .66rem; }
+  .qty-control { display: grid; grid-template-columns: 1fr 42px 1fr; align-items: center; margin: 8px; border: 1px solid var(--line); border-radius: 8px; overflow: hidden; }
+  .qty-control button, .qty-control input { height: 38px; border: 0; color: var(--text); background: var(--bg-card); font: inherit; }
+  .qty-control button { cursor: pointer; font-size: 1.1rem; }
+  .qty-control button:hover, .qty-control button:focus-visible { color: var(--text-on-dark); background: var(--bg-dark); outline: 0; }
+  .qty-control input { width: 42px; text-align: center; border-inline: 1px solid var(--line); border-radius: 0; -moz-appearance: textfield; }
   .qty-control input::-webkit-outer-spin-button, .qty-control input::-webkit-inner-spin-button { appearance: none; margin: 0; }
-  .custom-volume { margin-top: 16px; border: 1px solid var(--line); border-radius: 8px; background: var(--bg-soft); }
-  .custom-volume input { width: 92px; padding: 0 10px; border-radius: 6px; }
-  .volume-summary { position: sticky; top: 96px; padding: 28px; background: var(--bg-dark); border-color: var(--line-dark); color: var(--text-on-dark); }
-  .summary-label { display: block; color: var(--text-on-dark-muted); font-size: .72rem; font-weight: 700; text-transform: uppercase; letter-spacing: .14em; }
-  .summary-volume { display: block; color: var(--accent); font-family: var(--font-display); font-size: 3rem; line-height: 1.1; margin: 8px 0 12px; }
-  .volume-summary > p { color: var(--text-on-dark-muted); font-size: .88rem; }
-  .summary-stats { display: grid; grid-template-columns: 1fr 1fr; gap: 1px; margin: 24px 0; background: var(--line-dark); border: 1px solid var(--line-dark); border-radius: 8px; overflow: hidden; }
-  .summary-stats div { background: var(--bg-dark-alt); padding: 14px; text-align: center; }
-  .summary-stats span { display: block; color: var(--text-on-dark); font-size: 1.2rem; font-weight: 700; }
-  .summary-stats small { display: block; color: var(--text-on-dark-muted); font-size: .68rem; }
-  .summary-actions { display: grid; gap: 10px; }
-  .summary-actions .btn { white-space: normal; justify-content: center; text-align: center; }
-  .reset-button { border: 0; background: transparent; color: var(--text-on-dark-muted); text-decoration: underline; text-underline-offset: 3px; padding: 8px; cursor: pointer; }
-  .summary-note { margin-top: 18px; font-size: .72rem !important; line-height: 1.5; }
-  @media (max-width: 820px) {
-    .volume-layout { grid-template-columns: 1fr; }
-    .volume-summary { position: static; }
-  }
-  @media (max-width: 560px) {
-    .volume-inventory { padding: 20px 14px; }
-    .inventory-item, .custom-volume { padding: 13px 12px; }
-    .inventory-item small { max-width: 140px; }
-  }
+  .no-results { padding: 34px 16px; text-align: center; color: var(--text-muted); }
+  .custom-object { margin-top: 16px; border: 1px dashed var(--accent); border-radius: 12px; background: var(--bg-soft); }
+  .custom-object summary { padding: 16px 18px; color: var(--accent-deep); font-weight: 750; cursor: pointer; }
+  .custom-object summary span { margin-right: 7px; }
+  .custom-object__form { display: grid; grid-template-columns: 1.4fr .7fr 1fr 1fr 1fr; gap: 10px; padding: 0 18px 14px; }
+  .custom-object__form label { min-width: 0; color: var(--text-muted); font-size: .68rem; }
+  .custom-object__form label > span:first-child { display: block; margin-bottom: 5px; }
+  .custom-object__form input { width: 100%; height: 42px; padding: 0 10px; border: 1px solid var(--line); border-radius: 7px; color: var(--text); background: var(--bg-card); font: inherit; font-size: .82rem; }
+  .dimension-input { position: relative; display: block; }
+  .dimension-input input { padding-right: 32px; }
+  .dimension-input em { position: absolute; right: 9px; top: 12px; color: var(--text-muted); font-style: normal; font-size: .7rem; }
+  .custom-submit { grid-column: 1 / -1; justify-content: center; margin-top: 3px; }
+  .custom-object > p { padding: 0 18px 16px; color: var(--text-muted); font-size: .7rem; line-height: 1.5; }
+  .volume-summary { position: sticky; top: 96px; overflow: hidden; }
+  .summary-topline { display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 18px 20px; border-bottom: 1px solid var(--line); }
+  .summary-topline > span { font-weight: 800; }
+  .summary-topline button { padding: 4px; border: 0; color: var(--accent-deep); background: transparent; font: inherit; font-size: .7rem; text-decoration: underline; text-underline-offset: 3px; cursor: pointer; }
+  .selected-list { max-height: 280px; overflow-y: auto; }
+  .selected-empty { display: grid; place-items: center; gap: 5px; padding: 28px 20px; color: var(--text-muted); text-align: center; }
+  .selected-empty > span { font-size: 2rem; }
+  .selected-empty strong { color: var(--text); font-size: .86rem; }
+  .selected-empty p { max-width: 220px; font-size: .72rem; }
+  :global(.selected-row) { display: grid; grid-template-columns: 38px minmax(0, 1fr) auto; align-items: center; gap: 10px; padding: 11px 16px; border-bottom: 1px solid var(--line); }
+  :global(.selected-row__icon) { display: grid; place-items: center; width: 38px; height: 38px; border-radius: 9px; background: var(--bg-soft); }
+  :global(.selected-row__text) { min-width: 0; }
+  :global(.selected-row__text strong) { display: block; overflow: hidden; font-size: .76rem; text-overflow: ellipsis; white-space: nowrap; }
+  :global(.selected-row__text small) { color: var(--text-muted); font-size: .64rem; }
+  :global(.selected-row__controls) { display: grid; grid-template-columns: 28px 24px 28px; align-items: center; text-align: center; }
+  :global(.selected-row__controls button) { display: grid; place-items: center; width: 28px; height: 28px; padding: 0; border: 1px solid var(--line); border-radius: 50%; color: var(--text); background: var(--bg-card); font: inherit; cursor: pointer; }
+  :global(.selected-row__controls span) { font-size: .72rem; font-weight: 800; }
+  .volume-result { display: flex; align-items: center; justify-content: space-between; gap: 16px; padding: 22px 20px 12px; color: var(--text-on-dark); background: var(--bg-dark); }
+  .volume-result span { color: var(--text-on-dark-muted); font-size: .7rem; font-weight: 700; text-transform: uppercase; letter-spacing: .1em; }
+  .volume-result strong { display: block; margin-top: 4px; color: var(--accent); font-family: var(--font-display); font-size: 2.55rem; line-height: 1; }
+  .volume-result strong span { color: inherit; font: inherit; letter-spacing: 0; text-transform: none; }
+  .result-truck { font-size: 2.35rem; }
+  .load-scale { height: 7px; margin: 0 20px; overflow: hidden; border-radius: 999px; background: var(--bg-dark-alt); }
+  .load-scale span { display: block; width: 0; height: 100%; border-radius: inherit; background: var(--accent); transition: width .3s ease; }
+  .vehicle-advice { min-height: 52px; padding: 12px 20px 16px; color: var(--text-on-dark-muted); background: var(--bg-dark); font-size: .76rem; line-height: 1.5; }
+  .summary-stats { display: grid; grid-template-columns: 1fr 1fr; border-bottom: 1px solid var(--line); }
+  .summary-stats div { padding: 14px 20px; }
+  .summary-stats div + div { border-left: 1px solid var(--line); }
+  .summary-stats strong, .summary-stats span { display: block; }
+  .summary-stats strong { font-size: 1.15rem; }
+  .summary-stats span { color: var(--text-muted); font-size: .66rem; }
+  .summary-cta { margin: 18px 20px 10px; white-space: normal; text-align: center; justify-content: center; }
+  .summary-note { padding: 0 20px 20px; color: var(--text-muted); font-size: .66rem; line-height: 1.5; }
+  @media (max-width: 980px) { .calculator-shell { grid-template-columns: 1fr; } .volume-summary { position: static; } .selected-list { max-height: 240px; } }
+  @media (max-width: 720px) { .volume-intro { align-items: start; flex-direction: column; gap: 14px; } .volume-intro__step { display: none; } .inventory-panel { padding: 16px; } .item-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); } .custom-object__form { grid-template-columns: 1fr 1fr; } .custom-object__form .custom-name { grid-column: 1 / -1; } }
+  @media (max-width: 430px) { .item-grid { grid-template-columns: 1fr; } .item-card { grid-template-columns: 64px minmax(0, 1fr); grid-template-rows: auto auto; align-items: center; } .item-card__visual { grid-row: 1 / 3; align-self: stretch; min-height: 108px; } .item-card__body { min-height: 0; padding: 12px 10px 2px; } .qty-control { margin: 6px 8px 9px; } .custom-object__form { grid-template-columns: 1fr; } .custom-object__form .custom-name { grid-column: auto; } }
 </style>
 
 <script is:inline>
   (function () {
-    var STORAGE_KEY = 'tc-volume-inventory-v1';
-    var inputs = Array.from(document.querySelectorAll('[data-volume]'));
-    var custom = document.getElementById('custom-volume');
-    var totalEl = document.getElementById('total-volume');
-    var totalItemsEl = document.getElementById('total-items');
-    var boxEl = document.getElementById('box-equivalent');
-    var vehicleEl = document.getElementById('vehicle-advice');
-    var devisLink = document.getElementById('volume-devis-link');
-    if (!totalEl || !totalItemsEl || !boxEl || !vehicleEl || !devisLink) return;
+    var root = document.querySelector('[data-volume-calculator]');
+    if (!root) return;
+    var STORAGE_KEY = 'tc-volume-inventory-v2';
+    var LEGACY_KEY = 'tc-volume-inventory-v1';
+    var inputs = Array.from(root.querySelectorAll('[data-volume]'));
+    var cards = Array.from(root.querySelectorAll('[data-item-card]'));
+    var tabs = Array.from(root.querySelectorAll('[data-category-tab]'));
+    var search = root.querySelector('#volume-search');
+    var visibleCount = root.querySelector('[data-visible-count]');
+    var noResults = root.querySelector('[data-no-results]');
+    var selectedList = root.querySelector('[data-selected-list]');
+    var emptyTemplate = root.querySelector('[data-selected-empty]').cloneNode(true);
+    var totalVolumeEl = root.querySelector('[data-total-volume]');
+    var totalItemsEl = root.querySelector('[data-total-items]');
+    var totalLinesEl = root.querySelector('[data-total-lines]');
+    var vehicleEl = root.querySelector('[data-vehicle-advice]');
+    var loadScale = root.querySelector('[data-load-scale]');
+    var devisLink = root.querySelector('[data-volume-devis-link]');
+    var customForm = root.querySelector('[data-custom-form]');
+    var activeCategory = 'salon';
+    var customItems = [];
 
-    function clamp(value, min, max) {
-      var number = Number(value);
-      return Number.isFinite(number) ? Math.min(max, Math.max(min, number)) : min;
-    }
-
-    function getRecommendation(volume) {
-      if (volume <= 0) return 'Ajoutez vos meubles pour obtenir une recommandation.';
+    function clamp(value, min, max) { var number = Number(value); return Number.isFinite(number) ? Math.min(max, Math.max(min, number)) : min; }
+    function normalize(value) { return String(value || '').normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase().trim(); }
+    function recommendation(volume) {
+      if (volume <= 0) return 'Ajoutez vos meubles pour obtenir un premier repère.';
       if (volume <= 6) return 'Petit volume : utilitaire compact ou trajet groupé à étudier.';
-      if (volume <= 12) return 'Volume compatible avec un fourgon d’environ 12 m³.';
-      if (volume <= 20) return 'Un fourgon d’environ 20 m³ peut convenir après vérification.';
-      if (volume <= 35) return 'Un véhicule de grande capacité ou deux rotations sont probablement nécessaires.';
-      return 'Volume important : une visite technique ou un rendez-vous vidéo est recommandé.';
+      if (volume <= 12) return 'Repère : capacité proche d’un fourgon de 12 m³, à confirmer.';
+      if (volume <= 20) return 'Repère : fourgon de 20 m³ ou organisation équivalente, à confirmer.';
+      if (volume <= 35) return 'Volume important : grand véhicule ou rotations à étudier selon le trajet.';
+      return 'Grand volume : une visite technique ou vidéo est recommandée avant le devis.';
     }
-
-    function updateRoomCounts() {
-      var counts = {};
-      inputs.forEach(function (input) {
-        var room = input.getAttribute('data-room');
-        counts[room] = (counts[room] || 0) + clamp(input.value, 0, 99);
-      });
-      Object.keys(counts).forEach(function (room) {
-        var el = document.getElementById('count-' + room);
-        if (el) el.textContent = counts[room] + (counts[room] > 1 ? ' objets' : ' objet');
+    function standardSelection() {
+      return inputs.map(function (input) {
+        var qty = Math.round(clamp(input.value, 0, 99)); input.value = String(qty);
+        return { id: input.id, name: input.getAttribute('data-item-name') || input.name, icon: input.getAttribute('data-item-icon') || '📦', volume: Number(input.getAttribute('data-volume') || 0), qty: qty, category: input.getAttribute('data-category') || '', custom: false };
+      }).filter(function (item) { return item.qty > 0; });
+    }
+    function allSelection() { return standardSelection().concat(customItems.filter(function (item) { return item.qty > 0; })); }
+    function makeButton(label, action, item) {
+      var button = document.createElement('button'); button.type = 'button'; button.textContent = label;
+      button.setAttribute('aria-label', (action === 'plus' ? 'Ajouter : ' : 'Retirer : ') + item.name);
+      button.dataset.selectedAction = action; button.dataset.selectedTarget = item.id;
+      if (item.custom) button.dataset.customItem = 'true'; return button;
+    }
+    function renderSelected(selection) {
+      selectedList.replaceChildren();
+      if (!selection.length) { selectedList.appendChild(emptyTemplate.cloneNode(true)); return; }
+      selection.forEach(function (item) {
+        var row = document.createElement('div'); row.className = 'selected-row';
+        var icon = document.createElement('span'); icon.className = 'selected-row__icon'; icon.setAttribute('aria-hidden', 'true'); icon.textContent = item.icon;
+        var text = document.createElement('span'); text.className = 'selected-row__text';
+        var name = document.createElement('strong'); name.textContent = item.name;
+        var volume = document.createElement('small'); volume.textContent = (item.volume * item.qty).toLocaleString('fr-FR', { maximumFractionDigits: 2 }) + ' m³'; text.append(name, volume);
+        var controls = document.createElement('span'); controls.className = 'selected-row__controls';
+        var count = document.createElement('span'); count.textContent = String(item.qty);
+        controls.append(makeButton('−', 'minus', item), count, makeButton('+', 'plus', item)); row.append(icon, text, controls); selectedList.appendChild(row);
       });
     }
-
+    function save() {
+      var quantities = {}; inputs.forEach(function (input) { var qty = Math.round(clamp(input.value, 0, 99)); if (qty) quantities[input.id] = qty; });
+      try { localStorage.setItem(STORAGE_KEY, JSON.stringify({ quantities: quantities, customItems: customItems })); } catch (error) {}
+    }
+    function updateCategoryCounts(selection) {
+      tabs.forEach(function (tab) {
+        var id = tab.getAttribute('data-category-tab');
+        var total = selection.filter(function (item) { return !item.custom && item.category === id; }).reduce(function (sum, item) { return sum + item.qty; }, 0);
+        var badge = root.querySelector('[data-category-count="' + id + '"]'); if (badge) badge.textContent = String(total);
+      });
+    }
     function compute(shouldSave) {
-      var total = 0;
-      var totalItems = 0;
-      var state = {};
-      inputs.forEach(function (input) {
-        var quantity = Math.round(clamp(input.value, 0, 99));
-        input.value = String(quantity);
-        total += quantity * Number(input.getAttribute('data-volume') || 0);
-        totalItems += quantity;
-        if (quantity) state[input.id] = quantity;
-      });
-      var customValue = clamp(custom && custom.value, 0, 100);
-      if (custom) custom.value = String(customValue);
-      total += customValue;
-      state.custom = customValue;
-      total = Math.round(total * 10) / 10;
-
-      totalEl.textContent = total.toLocaleString('fr-FR', { minimumFractionDigits: 1, maximumFractionDigits: 1 });
-      totalItemsEl.textContent = String(totalItems);
-      boxEl.textContent = String(Math.round(total / 0.1));
-      vehicleEl.textContent = getRecommendation(total);
-      devisLink.href = '/devis/?source=calculateur-volume&volume=' + encodeURIComponent(String(total));
-      updateRoomCounts();
-
-      if (shouldSave) {
-        try { localStorage.setItem(STORAGE_KEY, JSON.stringify(state)); } catch (error) {}
-      }
+      var selection = allSelection(); var total = selection.reduce(function (sum, item) { return sum + item.volume * item.qty; }, 0); total = Math.round(total * 100) / 100;
+      var units = selection.reduce(function (sum, item) { return sum + item.qty; }, 0);
+      totalVolumeEl.textContent = total.toLocaleString('fr-FR', { minimumFractionDigits: 1, maximumFractionDigits: 2 }); totalItemsEl.textContent = String(units); totalLinesEl.textContent = String(selection.length);
+      vehicleEl.textContent = recommendation(total); loadScale.style.width = Math.min(100, total / 35 * 100) + '%'; renderSelected(selection); updateCategoryCounts(selection);
+      inputs.forEach(function (input) { var card = input.closest('[data-item-card]'); if (card) card.classList.toggle('is-selected', Number(input.value) > 0); });
+      var inventoryText = selection.map(function (item) { return item.qty + ' × ' + item.name; }).join(', ').slice(0, 1200);
+      var params = new URLSearchParams({ source: 'calculateur-volume-visuel' }); if (total > 0) params.set('volume', String(Math.max(1, Math.ceil(total)))); if (inventoryText) params.set('inventaire', inventoryText);
+      devisLink.href = '/devis/?' + params.toString(); if (shouldSave) save();
+    }
+    function filterCards() {
+      var query = normalize(search.value); var count = 0;
+      cards.forEach(function (card) { var show = Boolean((!query && card.getAttribute('data-category') === activeCategory) || (query && normalize(card.getAttribute('data-search')).includes(query))); card.classList.toggle('is-hidden', !show); if (show) count += 1; });
+      visibleCount.textContent = String(count); noResults.hidden = count !== 0;
+      tabs.forEach(function (tab) { var active = tab.getAttribute('data-category-tab') === activeCategory; tab.classList.toggle('is-active', active); tab.setAttribute('aria-selected', active ? 'true' : 'false'); });
+    }
+    function restore() {
+      try {
+        var saved = JSON.parse(localStorage.getItem(STORAGE_KEY) || 'null');
+        if (saved && saved.quantities) {
+          inputs.forEach(function (input) { if (saved.quantities[input.id] != null) input.value = saved.quantities[input.id]; });
+          customItems = Array.isArray(saved.customItems) ? saved.customItems.filter(function (item) { return item && typeof item.id === 'string' && typeof item.name === 'string' && Number(item.volume) > 0 && Number(item.qty) > 0; }).slice(0, 30) : []; return;
+        }
+        var legacy = JSON.parse(localStorage.getItem(LEGACY_KEY) || '{}'); inputs.forEach(function (input) { if (legacy[input.id] != null) input.value = legacy[input.id]; });
+      } catch (error) {}
     }
 
-    try {
-      var saved = JSON.parse(localStorage.getItem(STORAGE_KEY) || '{}');
-      inputs.forEach(function (input) { if (saved[input.id] != null) input.value = saved[input.id]; });
-      if (custom && saved.custom != null) custom.value = saved.custom;
-    } catch (error) {}
-
-    document.querySelectorAll('.qty-btn').forEach(function (button) {
-      button.addEventListener('click', function () {
-        var input = document.getElementById(button.getAttribute('data-target'));
-        if (!input) return;
-        var delta = button.getAttribute('data-action') === 'plus' ? 1 : -1;
-        input.value = String(clamp(Number(input.value) + delta, 0, 99));
-        compute(true);
-      });
+    root.addEventListener('click', function (event) {
+      var target = event.target.closest('button'); if (!target) return;
+      if (target.matches('[data-category-tab]')) { activeCategory = target.getAttribute('data-category-tab') || activeCategory; search.value = ''; filterCards(); return; }
+      if (target.matches('[data-clear-search]')) { search.value = ''; filterCards(); search.focus(); return; }
+      if (target.matches('[data-action]')) { var input = root.querySelector('#' + CSS.escape(target.getAttribute('data-target'))); if (!input) return; var delta = target.getAttribute('data-action') === 'plus' ? 1 : -1; input.value = String(clamp(Number(input.value) + delta, 0, 99)); compute(true); return; }
+      if (target.matches('[data-reset-volume]')) { inputs.forEach(function (input) { input.value = '0'; }); customItems = []; try { localStorage.removeItem(STORAGE_KEY); localStorage.removeItem(LEGACY_KEY); } catch (error) {} compute(false); }
     });
-    inputs.forEach(function (input) { input.addEventListener('input', function () { compute(true); }); });
-    custom && custom.addEventListener('input', function () { compute(true); });
-
-    var reset = document.getElementById('reset-volume');
-    reset && reset.addEventListener('click', function () {
-      inputs.forEach(function (input) { input.value = '0'; });
-      if (custom) custom.value = '0';
-      try { localStorage.removeItem(STORAGE_KEY); } catch (error) {}
-      compute(false);
+    selectedList.addEventListener('click', function (event) {
+      var button = event.target.closest('[data-selected-action]'); if (!button) return;
+      var targetId = button.getAttribute('data-selected-target'); var delta = button.getAttribute('data-selected-action') === 'plus' ? 1 : -1;
+      if (button.hasAttribute('data-custom-item')) { var custom = customItems.find(function (item) { return item.id === targetId; }); if (custom) custom.qty = Math.round(clamp(custom.qty + delta, 0, 99)); customItems = customItems.filter(function (item) { return item.qty > 0; }); }
+      else { var input = root.querySelector('#' + CSS.escape(targetId)); if (input) input.value = String(clamp(Number(input.value) + delta, 0, 99)); }
+      compute(true);
     });
-
-    devisLink.addEventListener('click', function () {
-      if (typeof window.gtag === 'function') {
-        window.gtag('event', 'volume_calculator_complete', {
-          event_category: 'lead',
-          value: Number(String(totalEl.textContent).replace(',', '.')) || 0,
-          page_path: window.location.pathname
-        });
-      }
+    inputs.forEach(function (input) { input.addEventListener('input', function () { compute(true); }); }); search.addEventListener('input', filterCards);
+    customForm.addEventListener('submit', function (event) {
+      event.preventDefault(); if (!customForm.reportValidity()) return; var data = new FormData(customForm);
+      var name = String(data.get('custom-name') || '').trim(); var qty = Math.round(clamp(data.get('custom-qty'), 1, 99)); var length = clamp(data.get('custom-length'), 1, 1000); var depth = clamp(data.get('custom-depth'), 1, 1000); var height = clamp(data.get('custom-height'), 1, 1000);
+      var volume = Math.round((length * depth * height / 1000000) * 100) / 100;
+      customItems.push({ id: 'custom-' + Date.now(), name: name + ' (' + length + ' × ' + depth + ' × ' + height + ' cm)', icon: '📐', volume: Math.max(.01, volume), qty: qty, category: 'autres', custom: true });
+      customForm.reset(); customForm.querySelector('[name="custom-qty"]').value = '1'; compute(true);
     });
-    compute(false);
+    devisLink.addEventListener('click', function () { if (typeof window.gtag === 'function') window.gtag('event', 'volume_calculator_complete', { event_category: 'lead', value: Number(String(totalVolumeEl.textContent).replace(',', '.')) || 0, item_count: Number(totalItemsEl.textContent) || 0, page_path: window.location.pathname }); });
+    restore(); filterCards(); compute(false);
   })();
 </script>

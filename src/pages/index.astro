@@ -270,6 +270,42 @@ const priceFmt = (n: number) => new Intl.NumberFormat('fr-FR').format(n) + ' €
     </div>
   </section>
 
+  <!-- ============ CALCULATEUR DE VOLUME ============ -->
+  <section class="volume-promo">
+    <div class="container volume-promo__grid">
+      <div class="volume-promo__copy reveal">
+        <span class="mono-label">Outil gratuit · résultat immédiat</span>
+        <h2 class="display">Combien de m³<br/>faut-il <em>prévoir&nbsp;?</em></h2>
+        <p>Sélectionnez vos meubles et cartons en quelques clics. Le calculateur prépare votre inventaire, estime le volume et le transmet directement dans votre demande de devis.</p>
+        <ul>
+          <li>Plus de 50 meubles, appareils et cartons</li>
+          <li>Ajout possible d’un objet avec ses dimensions</li>
+          <li>Inventaire conservé pendant votre navigation</li>
+        </ul>
+        <a class="btn btn--primary volume-promo__cta" href="/calculateur-volume-demenagement/?source=accueil-calculateur">
+          Calculer mon volume gratuitement <span aria-hidden="true">→</span>
+        </a>
+      </div>
+      <div class="volume-promo__preview reveal" aria-hidden="true">
+        <div class="volume-promo__preview-head">
+          <span>Aperçu de votre chargement</span>
+          <span class="volume-promo__status">Calcul en direct</span>
+        </div>
+        <div class="volume-promo__items">
+          <div class="volume-promo__item"><span class="volume-promo__icon">🛋️</span><span><strong>Canapé 3 places</strong><small>2,0 m³</small></span><b>1</b></div>
+          <div class="volume-promo__item"><span class="volume-promo__icon">🛏️</span><span><strong>Lit double</strong><small>1,4 m³</small></span><b>1</b></div>
+          <div class="volume-promo__item"><span class="volume-promo__icon">📦</span><span><strong>Carton standard</strong><small>0,06 m³ / unité</small></span><b>12</b></div>
+        </div>
+        <div class="volume-promo__meter"><span style="width: 46%"></span></div>
+        <div class="volume-promo__result">
+          <span>Volume estimé</span>
+          <strong>4,1 <small>m³</small></strong>
+        </div>
+        <p>Petit volume · utilitaire à confirmer selon les accès et la charge</p>
+      </div>
+    </div>
+  </section>
+
   <GoogleReviews />
 
   <!-- ============ FAQ ============ -->
@@ -414,6 +450,37 @@ const priceFmt = (n: number) => new Intl.NumberFormat('fr-FR').format(n) + ' €
   .specialty-card strong { color: var(--accent); font-size: 12px; text-transform: uppercase; letter-spacing: .1em; margin-top: auto; padding-top: 24px; }
   .specialty-formulas { display: inline-block; margin-top: 26px; color: var(--accent); font-weight: 700; text-decoration: underline; text-underline-offset: 4px; }
 
+  /* CALCULATEUR DE VOLUME */
+  .volume-promo { position: relative; overflow: hidden; padding: 108px 0; background: var(--bg-soft); }
+  .volume-promo::before { content: ''; position: absolute; width: 460px; height: 460px; right: -150px; top: -210px; border-radius: 50%; background: color-mix(in srgb, var(--accent) 14%, transparent); filter: blur(2px); }
+  .volume-promo__grid { position: relative; display: grid; grid-template-columns: .92fr 1.08fr; gap: 78px; align-items: center; }
+  .volume-promo__copy h2 { font-size: clamp(40px, 5vw, 68px); margin-bottom: 24px; }
+  .volume-promo__copy > p { max-width: 590px; color: var(--text-muted); font-size: 17px; line-height: 1.7; }
+  .volume-promo__copy ul { display: grid; gap: 10px; margin: 26px 0 32px; padding: 0; list-style: none; }
+  .volume-promo__copy li { position: relative; padding-left: 28px; color: var(--text); font-size: 14px; }
+  .volume-promo__copy li::before { content: '✓'; position: absolute; left: 0; top: 0; width: 19px; height: 19px; border-radius: 50%; display: grid; place-items: center; background: var(--accent); color: var(--bg-dark); font-size: 11px; font-weight: 800; }
+  .volume-promo__cta { display: inline-flex; align-items: center; gap: 14px; }
+  .volume-promo__cta span { transition: transform .25s ease; }
+  .volume-promo__cta:hover span { transform: translateX(5px); }
+  .volume-promo__preview { position: relative; border: 1px solid var(--line-dark); border-radius: 24px; padding: 26px; color: var(--text-on-dark); background: var(--bg-dark); box-shadow: 0 32px 80px rgba(31, 28, 24, .2); transform: rotate(1.2deg); }
+  .volume-promo__preview::before { content: ''; position: absolute; inset: 10px -10px -10px 10px; border: 1px solid color-mix(in srgb, var(--accent) 44%, transparent); border-radius: 24px; z-index: -1; }
+  .volume-promo__preview-head { display: flex; justify-content: space-between; gap: 16px; align-items: center; padding-bottom: 22px; border-bottom: 1px solid var(--line-dark); font-size: 13px; font-weight: 700; }
+  .volume-promo__status { color: var(--accent); font-size: 10px; text-transform: uppercase; letter-spacing: .13em; }
+  .volume-promo__items { display: grid; gap: 10px; margin: 20px 0 24px; }
+  .volume-promo__item { display: grid; grid-template-columns: 48px 1fr 32px; gap: 13px; align-items: center; padding: 12px; border: 1px solid var(--line-dark); border-radius: 14px; background: var(--bg-dark-alt); }
+  .volume-promo__icon { display: grid; place-items: center; width: 48px; height: 48px; border-radius: 12px; background: color-mix(in srgb, var(--accent) 15%, var(--bg-dark)); font-size: 25px; }
+  .volume-promo__item strong, .volume-promo__item small { display: block; }
+  .volume-promo__item strong { color: var(--text-on-dark); font-size: 13px; }
+  .volume-promo__item small { margin-top: 3px; color: var(--text-on-dark-muted); font-size: 11px; }
+  .volume-promo__item b { display: grid; place-items: center; width: 30px; height: 30px; border-radius: 50%; color: var(--bg-dark); background: var(--accent); font-size: 12px; }
+  .volume-promo__meter { height: 8px; border-radius: 999px; background: var(--line-dark); overflow: hidden; }
+  .volume-promo__meter span { display: block; height: 100%; border-radius: inherit; background: linear-gradient(90deg, var(--accent), #ffd57a); }
+  .volume-promo__result { display: flex; justify-content: space-between; align-items: end; gap: 16px; padding-top: 24px; }
+  .volume-promo__result > span { color: var(--text-on-dark-muted); font-size: 12px; text-transform: uppercase; letter-spacing: .14em; }
+  .volume-promo__result strong { font-family: 'Instrument Serif', serif; color: var(--accent); font-size: 56px; font-weight: 400; line-height: .8; }
+  .volume-promo__result small { font-family: inherit; font-size: 22px; }
+  .volume-promo__preview > p { margin-top: 18px; padding-top: 16px; border-top: 1px solid var(--line-dark); color: var(--text-on-dark-muted); font-size: 12px; }
+
   /* FAQ */
   .faq-list { max-width: 820px; margin: 0 auto; display: flex; flex-direction: column; gap: 8px; }
   .faq { border: 1px solid var(--line); border-radius: 4px; background: var(--bg-card); overflow: hidden; transition: border-color .3s var(--ease-out), box-shadow .3s var(--ease-out); }
@@ -435,6 +502,8 @@ const priceFmt = (n: number) => new Intl.NumberFormat('fr-FR').format(n) + ' €
     .stat { border-bottom: 1px solid var(--line-dark); }
     .svc-grid, .gar-grid { grid-template-columns: 1fr; }
     .fleet-grid, .zone-grid { grid-template-columns: 1fr; gap: 36px; }
+    .volume-promo__grid { grid-template-columns: 1fr; gap: 54px; }
+    .volume-promo__preview { max-width: 660px; transform: none; }
     .steps-grid { grid-template-columns: 1fr 1fr; gap: 28px; }
     .specialty-grid { grid-template-columns: 1fr; }
   }
@@ -442,5 +511,10 @@ const priceFmt = (n: number) => new Intl.NumberFormat('fr-FR').format(n) + ' €
     .steps-grid { grid-template-columns: 1fr; }
     .stats-row { grid-template-columns: 1fr; }
     .stat { border-right: none; }
+    .volume-promo { padding: 72px 0; }
+    .volume-promo__preview { padding: 18px; border-radius: 18px; }
+    .volume-promo__preview::before { display: none; }
+    .volume-promo__preview-head { align-items: flex-start; flex-direction: column; }
+    .volume-promo__result strong { font-size: 46px; }
   }
 </style>

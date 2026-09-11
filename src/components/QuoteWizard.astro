@@ -263,6 +263,12 @@ const {
             </legend>
             <p class="wizard__intro">Vous pouvez donner un volume connu ou simplement quelques repères. Une vérification sera faite avant le devis ferme.</p>
 
+            <div class="wizard__calculator-link">
+              <span aria-hidden="true">📦</span>
+              <div><strong>Vous ne connaissez pas votre volume ?</strong><small>Créez un inventaire visuel pièce par pièce, puis revenez ici avec le volume et la liste déjà remplis.</small></div>
+              <a href="/calculateur-volume-demenagement/?source=devis-volume">Ouvrir le calculateur →</a>
+            </div>
+
             <div class="wizard__grid wizard__grid--2">
               <label class="field">
                 <span>Volume estimé, si connu</span>
@@ -480,6 +486,12 @@ const {
   .wizard__step legend:focus { outline: none; }
   .wizard__eyebrow { display: block; margin-bottom: 8px; color: var(--color-accent); font-family: var(--font-sans); font-size: .7rem; font-weight: 700; letter-spacing: .13em; text-transform: uppercase; }
   .wizard__intro { margin: 10px 0 26px; color: var(--color-text-light); font-size: .92rem; line-height: 1.6; }
+  .wizard__calculator-link { display: grid; grid-template-columns: 44px minmax(0, 1fr) auto; align-items: center; gap: 14px; margin: -8px 0 24px; padding: 14px 16px; border: 1px solid rgba(168,112,63,.28); border-radius: var(--radius); background: rgba(168,112,63,.07); }
+  .wizard__calculator-link > span { display: grid; place-items: center; width: 44px; height: 44px; border-radius: 10px; background: var(--color-white); font-size: 1.4rem; }
+  .wizard__calculator-link strong, .wizard__calculator-link small { display: block; }
+  .wizard__calculator-link strong { color: var(--color-navy); font-size: .82rem; }
+  .wizard__calculator-link small { margin-top: 3px; color: var(--color-text-light); font-size: .7rem; line-height: 1.4; }
+  .wizard__calculator-link a { color: var(--color-accent); font-size: .76rem; font-weight: 750; white-space: nowrap; }
   .wizard__grid { display: grid; gap: 16px; margin-top: 20px; }
   .wizard__grid--2 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
   .field { display: flex; flex-direction: column; gap: 7px; color: var(--color-navy); font-size: .78rem; font-weight: 700; }
@@ -556,6 +568,8 @@ const {
     .wizard__actions .btn { justify-content: center; width: 100%; }
     .wizard__actions > span { display: none; }
     .wizard__submit-note { text-align: center; }
+    .wizard__calculator-link { grid-template-columns: 40px 1fr; }
+    .wizard__calculator-link a { grid-column: 1 / -1; padding-left: 54px; }
   }
 </style>
 
@@ -691,6 +705,9 @@ const {
           target.value = raw.slice(0, 120);
         }
       });
+      const inventory = params.get('inventaire');
+      const inventoryField = field('inventaire_details');
+      if (inventory && inventoryField) inventoryField.value = inventory.slice(0, 1800);
       const logement = params.get('logement')?.trim().toLowerCase();
       const housingAliases: Record<string, string> = {
         'petit-volume': 'petit-volume',
