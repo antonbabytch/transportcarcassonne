@@ -2,6 +2,7 @@
 import { SITE } from '../data/site.config';
 import { SERVICES } from '../data/services';
 import UrgentTransportPrompt from '../components/UrgentTransportPrompt.astro';
+import { getLanguageAlternates } from '../data/i18n';
 
 interface Props {
   title: string;
@@ -12,6 +13,7 @@ interface Props {
   ogType?: string;
   noindex?: boolean;
   preloadImage?: string;
+  lang?: 'fr-FR' | 'en-GB';
 }
 
 const {
@@ -23,10 +25,13 @@ const {
   ogType = 'website',
   noindex = false,
   preloadImage,
+  lang = 'fr-FR',
 } = Astro.props;
 
 const canonicalURL = canonical ?? new URL(Astro.url.pathname, SITE.url).href;
 const ogImageURL = ogImage.startsWith('http') ? ogImage : new URL(ogImage, SITE.url).href;
+const languageAlternates = getLanguageAlternates(Astro.url.pathname);
+const isEnglish = lang === 'en-GB';
 
 const schemaOrg = {
   '@context': 'https://schema.org',
@@ -77,7 +82,7 @@ const schemaOrg = {
         email: SITE.email,
         contactType: 'customer service',
         areaServed: 'FR',
-        availableLanguage: ['fr'],
+      availableLanguage: ['fr', 'en'],
       },
       hasOfferCatalog: {
         '@type': 'OfferCatalog',
@@ -136,7 +141,7 @@ const schemaOrg = {
       '@id': `${SITE.url}/#website`,
       url: SITE.url,
       name: SITE.name,
-      inLanguage: 'fr-FR',
+      inLanguage: lang,
       publisher: { '@id': `${SITE.url}/#business` },
     },
     {
@@ -145,7 +150,7 @@ const schemaOrg = {
       url: canonicalURL,
       name: title,
       description,
-      inLanguage: 'fr-FR',
+      inLanguage: lang,
       isPartOf: { '@id': `${SITE.url}/#website` },
       about: { '@id': `${SITE.url}/#business` },
       primaryImageOfPage: {
@@ -158,7 +163,7 @@ const schemaOrg = {
 ---
 
 <!DOCTYPE html>
-<html lang="fr">
+<html lang={lang}>
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -176,6 +181,13 @@ const schemaOrg = {
     <title>{title}</title>
     <meta name="description" content={description} />
     <link rel="canonical" href={canonicalURL} />
+    {languageAlternates && (
+      <>
+        <link rel="alternate" hreflang="fr-FR" href={new URL(languageAlternates.french, SITE.url).href} />
+        <link rel="alternate" hreflang="en-GB" href={new URL(languageAlternates.english, SITE.url).href} />
+        <link rel="alternate" hreflang="x-default" href={new URL(languageAlternates.french, SITE.url).href} />
+      </>
+    )}
     <meta
       name="robots"
       content={noindex
@@ -192,7 +204,8 @@ const schemaOrg = {
     <meta property="og:image" content={ogImageURL} />
     <meta property="og:image:alt" content={ogImageAlt} />
     <meta property="og:site_name" content={SITE.name} />
-    <meta property="og:locale" content="fr_FR" />
+    <meta property="og:locale" content={isEnglish ? 'en_GB' : 'fr_FR'} />
+    <meta property="og:locale:alternate" content={isEnglish ? 'fr_FR' : 'en_GB'} />
 
     <!-- Twitter Card -->
     <meta name="twitter:card" content="summary_large_image" />
@@ -254,7 +267,7 @@ const schemaOrg = {
   <body>
     <slot />
 
-    <UrgentTransportPrompt />
+    <UrgentTransportPrompt lang={isEnglish ? 'en' : 'fr'} />
 
     <!-- Floating CTA buttons (mobile) -->
     <div class="float-cta">
@@ -336,13 +349,14 @@ const schemaOrg = {
             if (!Number.isFinite(average) || average < 1 || average > 5) return;
             if (!Number.isInteger(count) || count < 1) return;
 
-            var formatted = average.toLocaleString('fr-FR', {
-              minimumFractionDigits: 1,
-              maximumFractionDigits: 1
-            });
             labels.forEach(function (label) {
               var suffix = label.getAttribute('data-google-rating-suffix');
-              label.textContent = formatted + '/5 · ' + count + ' avis' + (suffix ? ' ' + suffix : '');
+              var english = label.getAttribute('data-google-rating-lang') === 'en';
+              var formatted = average.toLocaleString(english ? 'en-GB' : 'fr-FR', {
+                minimumFractionDigits: 1,
+                maximumFractionDigits: 1
+              });
+              label.textContent = formatted + '/5 · ' + count + (english ? ' ' : ' avis') + (suffix ? ' ' + suffix : '');
             });
             document.querySelectorAll('[data-google-rating-stars]').forEach(function (stars) {
               var rounded = Math.max(0, Math.min(5, Math.round(average)));
@@ -393,14 +407,15 @@ const schemaOrg = {
       .cc-btn--ghost:hover { border-color: var(--accent, #A8703F); }
       @media (max-width: 560px) { .cc-banner { flex-direction: column; align-items: stretch; } .cc-actions { justify-content: flex-end; } }
     </style>
-    <div class="cc-banner" id="cc-banner" role="dialog" aria-label="Consentement aux cookies" hidden>
+    <div class="cc-banner" id="cc-banner" role="dialog" aria-label={isEnglish ? 'Cookie consent' : 'Consentement aux cookies'} hidden>
       <p class="cc-text">
-        Nous utilisons des cookies de mesure d'audience (Google Analytics) pour améliorer le site.
-        Ils ne sont déposés qu'avec votre accord. <a href="/politique-confidentialite/">En savoir plus</a>.
+        {isEnglish
+          ? <>We use audience measurement cookies (Google Analytics) to improve the website. They are only placed with your consent. <a href="/politique-confidentialite/" hreflang="fr">Privacy information in French</a>.</>
+          : <>Nous utilisons des cookies de mesure d'audience (Google Analytics) pour améliorer le site. Ils ne sont déposés qu'avec votre accord. <a href="/politique-confidentialite/">En savoir plus</a>.</>}
       </p>
       <div class="cc-actions">
-        <button type="button" class="cc-btn cc-btn--ghost" id="cc-refuse">Refuser</button>
-        <button type="button" class="cc-btn cc-btn--primary" id="cc-accept">Accepter</button>
+        <button type="button" class="cc-btn cc-btn--ghost" id="cc-refuse">{isEnglish ? 'Reject' : 'Refuser'}</button>
+        <button type="button" class="cc-btn cc-btn--primary" id="cc-accept">{isEnglish ? 'Accept' : 'Accepter'}</button>
       </div>
     </div>
     <script is:inline>

@@ -4,52 +4,59 @@ interface Props {
   subtitle?: string;
   prefilledCity?: string;
   prefilledService?: string;
+  lang?: 'fr' | 'en';
 }
 
 const {
-  title = 'Demandez votre devis gratuit',
-  subtitle = 'Décrivez votre projet · réponse selon nos disponibilités',
+  title,
+  subtitle,
   prefilledCity = '',
   prefilledService = '',
+  lang = 'fr',
 } = Astro.props;
+const isEnglish = lang === 'en';
+const formTitle = title ?? (isEnglish ? 'Request your free quote' : 'Demandez votre devis gratuit');
+const formSubtitle = subtitle ?? (isEnglish ? 'Tell us about the route, volume, access and preferred date' : 'Décrivez votre projet · réponse selon nos disponibilités');
 ---
 
 <section class="qf-section">
   <div class="container">
     <div class="qf-header reveal">
-      <span class="section-label">Devis gratuit</span>
-      <h2 class="section-title">{title}</h2>
-      <p class="section-subtitle">{subtitle}</p>
+      <span class="section-label">{isEnglish ? 'Free, no-obligation quote' : 'Devis gratuit'}</span>
+      <h2 class="section-title">{formTitle}</h2>
+      <p class="section-subtitle">{formSubtitle}</p>
     </div>
 
     <form
       class="qf reveal"
       name="devis-transport"
       method="POST"
-      action="/merci/"
+      action={isEnglish ? '/en/thank-you/' : '/merci/'}
       data-netlify="true"
       netlify-honeypot="bot-field"
     >
       <input type="hidden" name="form-name" value="devis-transport" />
+      <input type="hidden" name="language" value={isEnglish ? 'en' : 'fr'} />
+      <input type="hidden" name="page_source" value={Astro.url.pathname} />
       <p class="qf__honeypot" aria-hidden="true">
-        <label>Ne pas remplir : <input name="bot-field" /></label>
+        <label>{isEnglish ? 'Leave this empty' : 'Ne pas remplir'} : <input name="bot-field" /></label>
       </p>
 
       <div class="qf__row qf__row--2">
         <div class="qf__field">
-          <label class="qf__label" for="qf-nom">Votre nom *</label>
+          <label class="qf__label" for="qf-nom">{isEnglish ? 'Your name' : 'Votre nom'} *</label>
           <input
             class="qf__input"
             type="text"
             id="qf-nom"
             name="nom"
-            placeholder="Jean Dupont"
+            placeholder={isEnglish ? 'John Smith' : 'Jean Dupont'}
             required
             autocomplete="name"
           />
         </div>
         <div class="qf__field">
-          <label class="qf__label" for="qf-tel">Téléphone *</label>
+          <label class="qf__label" for="qf-tel">{isEnglish ? 'Phone number' : 'Téléphone'} *</label>
           <input
             class="qf__input"
             type="tel"
@@ -64,22 +71,22 @@ const {
 
       <div class="qf__row">
         <div class="qf__field">
-          <label class="qf__label" for="qf-type">Type de prestation *</label>
+          <label class="qf__label" for="qf-type">{isEnglish ? 'Service required' : 'Type de prestation'} *</label>
           <select class="qf__input qf__select" id="qf-type" name="type_demenagement" required>
-            <option value="" disabled selected={!prefilledService}>Choisissez une prestation…</option>
-            <option value="demenagement-local" selected={prefilledService === 'demenagement-local'}>Déménagement local (≤ 50 km)</option>
-            <option value="demenagement-longue-distance" selected={prefilledService === 'demenagement-longue-distance'}>Déménagement longue distance</option>
-            <option value="demenagement-international" selected={prefilledService === 'demenagement-international'}>Déménagement international</option>
-            <option value="transport-meubles" selected={prefilledService === 'transport-meubles'}>Transport de meubles</option>
-            <option value="transport-piano" selected={prefilledService === 'transport-piano'}>Transport piano / objets lourds</option>
-            <option value="evacuation-dechets-metaux" selected={prefilledService === 'evacuation-dechets-metaux'}>Évacuation déchets / métaux</option>
+            <option value="" disabled selected={!prefilledService}>{isEnglish ? 'Choose a service…' : 'Choisissez une prestation…'}</option>
+            <option value="demenagement-local" selected={prefilledService === 'demenagement-local'}>{isEnglish ? 'Local removal (up to 50 km)' : 'Déménagement local (≤ 50 km)'}</option>
+            <option value="demenagement-longue-distance" selected={prefilledService === 'demenagement-longue-distance'}>{isEnglish ? 'Long-distance removal in France' : 'Déménagement longue distance'}</option>
+            <option value="demenagement-international" selected={prefilledService === 'demenagement-international'}>{isEnglish ? 'International removal' : 'Déménagement international'}</option>
+            <option value="transport-meubles" selected={prefilledService === 'transport-meubles'}>{isEnglish ? 'Furniture transport or delivery' : 'Transport de meubles'}</option>
+            <option value="transport-piano" selected={prefilledService === 'transport-piano'}>{isEnglish ? 'Piano or heavy item' : 'Transport piano / objets lourds'}</option>
+            <option value="evacuation-dechets-metaux" selected={prefilledService === 'evacuation-dechets-metaux'}>{isEnglish ? 'Bulky item removal' : 'Évacuation déchets / métaux'}</option>
           </select>
         </div>
       </div>
 
       <div class="qf__row qf__row--2">
         <div class="qf__field">
-          <label class="qf__label" for="qf-depart">Ville de départ *</label>
+          <label class="qf__label" for="qf-depart">{isEnglish ? 'Collection town' : 'Ville de départ'} *</label>
           <input
             class="qf__input"
             type="text"
@@ -92,13 +99,13 @@ const {
           />
         </div>
         <div class="qf__field">
-          <label class="qf__label" for="qf-arrivee">Ville d'arrivée *</label>
+          <label class="qf__label" for="qf-arrivee">{isEnglish ? 'Delivery town' : "Ville d'arrivée"} *</label>
           <input
             class="qf__input"
             type="text"
             id="qf-arrivee"
             name="arrivee_ville"
-            placeholder="Paris"
+            placeholder={isEnglish ? 'Carcassonne' : 'Paris'}
             required
             autocomplete="address-level2"
           />
@@ -107,7 +114,7 @@ const {
 
       <div class="qf__row">
         <div class="qf__field">
-          <label class="qf__label" for="qf-date">Date souhaitée</label>
+          <label class="qf__label" for="qf-date">{isEnglish ? 'Preferred date' : 'Date souhaitée'}</label>
           <input
             class="qf__input"
             type="date"
@@ -120,29 +127,29 @@ const {
 
       <div class="qf__row">
         <div class="qf__field">
-          <label class="qf__label" for="qf-message">Informations complémentaires</label>
+          <label class="qf__label" for="qf-message">{isEnglish ? 'Additional details' : 'Informations complémentaires'}</label>
           <textarea
             class="qf__input qf__textarea"
             id="qf-message"
             name="message"
             rows="4"
-            placeholder="Surface habitable, étage, ascenseur, objets spéciaux (piano, coffre-fort…)"
+            placeholder={isEnglish ? 'Property size, floor, lift, parking, heavy or fragile items…' : 'Surface habitable, étage, ascenseur, objets spéciaux (piano, coffre-fort…)'}
           ></textarea>
         </div>
       </div>
 
       <div class="qf__row">
         <button type="submit" class="qf__submit btn btn--primary btn--lg">
-          Envoyer ma demande de devis →
+          {isEnglish ? 'Send my quote request' : 'Envoyer ma demande de devis'} →
         </button>
       </div>
 
       <p class="qf__legal">
-        Vos données sont utilisées uniquement pour répondre à votre demande.
-        Aucun démarchage. Voir notre
-        <a href="/politique-confidentialite/" style="color:var(--accent);text-decoration:underline;text-underline-offset:2px">politique de confidentialité</a>.
-        Si vous renseignez votre numéro, vous pouvez vous inscrire gratuitement sur la liste d'opposition
-        au démarchage téléphonique <a href="https://www.bloctel.gouv.fr/" target="_blank" rel="noopener noreferrer" style="color:var(--accent);text-decoration:underline;text-underline-offset:2px">Bloctel</a>.
+        {isEnglish ? (
+          <>Your details are used only to answer this request and are not sold to other providers. See the <a href="/politique-confidentialite/" hreflang="fr" style="color:var(--accent);text-decoration:underline;text-underline-offset:2px">privacy policy (in French)</a>. French telephone marketing opt-out information is available from <a href="https://www.bloctel.gouv.fr/" target="_blank" rel="noopener noreferrer" style="color:var(--accent);text-decoration:underline;text-underline-offset:2px">Bloctel</a>.</>
+        ) : (
+          <>Vos données sont utilisées uniquement pour répondre à votre demande. Aucun démarchage. Voir notre <a href="/politique-confidentialite/" style="color:var(--accent);text-decoration:underline;text-underline-offset:2px">politique de confidentialité</a>. Si vous renseignez votre numéro, vous pouvez vous inscrire gratuitement sur la liste d'opposition au démarchage téléphonique <a href="https://www.bloctel.gouv.fr/" target="_blank" rel="noopener noreferrer" style="color:var(--accent);text-decoration:underline;text-underline-offset:2px">Bloctel</a>.</>
+        )}
       </p>
     </form>
   </div>

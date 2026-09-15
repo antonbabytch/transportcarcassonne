@@ -1,0 +1,300 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import Header from '../../components/Header.astro';
+import Footer from '../../components/Footer.astro';
+import QuoteForm from '../../components/QuoteForm.astro';
+import GoogleReviews from '../../components/GoogleReviews.astro';
+import { SITE } from '../../data/site.config';
+import { CITIES } from '../../data/cities';
+
+const title = 'Moving Company Carcassonne | English Removal Service';
+const description = 'English-language removal and transport enquiries in Carcassonne for homes, villas, furniture, urgent local jobs and UK–France moves. Free written quote.';
+const services = [
+  { num: '01', title: 'Local home removals', text: 'Houses, villas and flats in Carcassonne and nearby Aude towns.', href: '/en/removals-carcassonne/' },
+  { num: '02', title: 'Small removals', text: 'A studio, several boxes, one sofa or a partial household.', href: '/en/small-removals-carcassonne/' },
+  { num: '03', title: 'Urgent local transport', text: 'Today or tomorrow when the live schedule and access allow it.', href: '/en/urgent-transport-carcassonne/' },
+  { num: '04', title: 'Furniture delivery', text: 'Collection from a shop, warehouse, storage unit or private seller.', href: '/en/furniture-delivery-carcassonne/' },
+  { num: '05', title: 'Long-distance France', text: 'Door-to-door routes between Carcassonne and mainland France.', href: '/en/long-distance-removals-france/' },
+  { num: '06', title: 'UK and international', text: 'Route, inventory, access and post-Brexit requirements checked first.', href: '/en/uk-france-removals-carcassonne/' },
+];
+const steps = [
+  { title: 'Send the route and inventory', text: 'Both locations, preferred date, furniture, boxes and any heavy or fragile items.' },
+  { title: 'Describe access at both ends', text: 'Floors, lifts, gates, narrow streets, parking and carrying distance.' },
+  { title: 'Check the written quote', text: 'Scope, labour, vehicle, timing, protections, options and price.' },
+  { title: 'Confirm collection and delivery', text: 'Keys, contact people and any final changes before the booked slot.' },
+];
+const faqs = [
+  { q: 'Can I request a removal quote in English?', a: 'Yes. Send your route, inventory, access and date in English. The final service and price are confirmed in a written quote.' },
+  { q: 'Do you help British buyers moving into Carcassonne?', a: 'Yes, local delivery, household moves, furniture collections and UK–France route enquiries can be assessed. International formalities must be verified for the specific move.' },
+  { q: 'Can you deliver furniture to a villa or second home?', a: 'Yes, subject to gate, road, parking and internal access checks. Remote key and delivery contacts should be agreed before the slot.' },
+  { q: 'Can you move something today or tomorrow?', a: 'Possibly for a local job, but only after the live schedule, item dimensions, access, labour and price have been checked.' },
+  { q: 'How much does a local Carcassonne move cost?', a: 'The current non-contractual guide starts at €450 for a studio-sized local move and €650 for a T2. Only the written quote confirms the price.' },
+];
+const structuredData = {
+  '@context': 'https://schema.org',
+  '@graph': [
+    {
+      '@type': 'Service',
+      '@id': `${SITE.url}/en/#service`,
+      name: 'English-language removal and transport service in Carcassonne',
+      description,
+      provider: { '@id': `${SITE.url}/#business` },
+      areaServed: [{ '@type': 'City', name: 'Carcassonne' }, { '@type': 'AdministrativeArea', name: 'Aude' }],
+      availableChannel: { '@type': 'ServiceChannel', serviceUrl: `${SITE.url}/en/quote/`, servicePhone: { '@type': 'ContactPoint', telephone: SITE.phone, availableLanguage: ['en', 'fr'] } },
+    },
+    {
+      '@type': 'FAQPage',
+      '@id': `${SITE.url}/en/#faq`,
+      mainEntity: faqs.map(faq => ({ '@type': 'Question', name: faq.q, acceptedAnswer: { '@type': 'Answer', text: faq.a } })),
+    },
+  ],
+};
+---
+
+<BaseLayout
+  lang="en-GB"
+  title={title}
+  description={description}
+  preloadImage="/video/poster.webp"
+  ogImageAlt="Transport Carcassonne removal service for English-speaking property owners"
+>
+  <script is:inline slot="head" type="application/ld+json" set:html={JSON.stringify(structuredData)} />
+  <Header lang="en" />
+
+  <main>
+    <section class="eh-hero">
+      <video class="eh-hero__video" autoplay muted loop playsinline poster="/video/poster.webp" aria-hidden="true">
+        <source src="/video/delivery.mp4" type="video/mp4" />
+      </video>
+      <div class="eh-hero__veil"></div>
+      <div class="container eh-hero__content hero-stagger">
+        <span class="eh-kicker">Local removals · Carcassonne and the Aude</span>
+        <h1>Moving in Carcassonne.<br/><em>Explained clearly in English.</em></h1>
+        <p>For homes, villas, flats, furniture and urgent local transport. Send the real inventory and access details; receive a quote you can check before you commit.</p>
+        <div class="eh-hero__actions">
+          <a class="btn btn--primary btn--lg" href="/en/quote/?source=english-home">Request a free quote</a>
+          <a class="eh-call" href={`tel:${SITE.phone}`} data-source="english-home">Call +33 6 80 87 30 47</a>
+        </div>
+        <a class="eh-fr" href="/" hreflang="fr">Voir le site en français</a>
+      </div>
+    </section>
+
+    <section class="eh-proof" aria-label="Key business facts">
+      <div class="container eh-proof__grid">
+        <div><strong>Carcassonne</strong><span>Registered local base</span></div>
+        <div><strong>50 km</strong><span>Core local service area</span></div>
+        <div><strong>24/7</strong><span>Enquiries · work by appointment</span></div>
+        <div data-google-rating-live><strong><span aria-hidden="true">★</span> <span data-google-rating-label data-google-rating-lang="en" data-google-rating-suffix="Google reviews">5.0/5 · 5 Google reviews</span></strong><span>Public Google profile</span></div>
+      </div>
+    </section>
+
+    <section class="eh-services">
+      <div class="container">
+        <div class="eh-heading reveal">
+          <span class="eh-kicker">Removal and transport services</span>
+          <h2>From a single sofa<br/>to a <em>complete home.</em></h2>
+          <p>Choose the closest starting point. The accepted quote defines the exact service, resources and price.</p>
+        </div>
+        <div class="eh-services__grid">
+          {services.map((service, index) => (
+            <a href={service.href} class="eh-service reveal" data-i={index}>
+              <span>— {service.num}</span><h3>{service.title}</h3><p>{service.text}</p><strong>Explore the service →</strong>
+            </a>
+          ))}
+        </div>
+      </div>
+    </section>
+
+    <section class="eh-expat">
+      <div class="container eh-expat__grid">
+        <div class="eh-expat__media reveal">
+          <img src="/images/demenagement-ville.webp" width="680" height="520" alt="Moving furniture into a villa near Carcassonne" loading="lazy" />
+        </div>
+        <div class="reveal">
+          <span class="eh-kicker">For British property owners</span>
+          <h2>A move built around the property you bought</h2>
+          <p>A flat in the Bastide, a village house, a vineyard property and a modern villa do not have the same access. Before the quote is confirmed, check gates, private roads, stairs, parking, keys and the final carrying distance.</p>
+          <ul>
+            <li>Plan remotely from the UK with one written inventory</li>
+            <li>Coordinate keys and an authorised local contact</li>
+            <li>Combine household and French shop collections when agreed</li>
+            <li>Keep clearance and disputed seller belongings separate</li>
+          </ul>
+          <div class="eh-links">
+            <a href="/en/second-home-removals-carcassonne/">Second-home removals →</a>
+            <a href="/en/moving-to-carcassonne/">Moving to Carcassonne guide →</a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="eh-uk">
+      <div class="container eh-uk__grid">
+        <div class="reveal">
+          <span class="eh-kicker">London and the United Kingdom</span>
+          <h2>Plan the UK route and the local delivery together</h2>
+          <p>Post-Brexit household moves may require customs formalities and supporting documents. The exact responsibilities, carrier arrangement, goods inventory and French access must be checked before a date or price is confirmed.</p>
+          <div class="eh-links">
+            <a class="btn btn--primary" href="/en/uk-france-removals-carcassonne/">Plan a UK–Carcassonne move</a>
+            <a href="/en/moving-from-london-to-carcassonne/">London to Carcassonne guide →</a>
+          </div>
+        </div>
+        <div class="eh-uk__route reveal" aria-label="Route planning stages">
+          <div><span>01</span><strong>UK collection</strong><small>Inventory and building access</small></div>
+          <div><span>02</span><strong>Channel and formalities</strong><small>Responsibilities verified in writing</small></div>
+          <div><span>03</span><strong>Carcassonne delivery</strong><small>Keys, gate, parking and placement</small></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="eh-area">
+      <div class="container eh-area__grid">
+        <div class="eh-heading reveal"><span class="eh-kicker">Local service area</span><h2>Carcassonne and nearby <em>Aude towns.</em></h2><p>Each page explains the real local distance and the access details needed for a useful quote.</p></div>
+        <div class="eh-cities">
+          {CITIES.map((city, index) => (
+            <a href={`/en/removals-${city.slug}/`} class="reveal" data-i={index}><strong>{city.name}</strong><span>{city.distance === 0 ? 'Local base' : `Approx. ${city.distance} km from Carcassonne`} →</span></a>
+          ))}
+        </div>
+      </div>
+    </section>
+
+    <section class="eh-process">
+      <div class="container">
+        <div class="eh-heading reveal"><span class="eh-kicker">A checkable process</span><h2>Four steps before<br/><em>moving day.</em></h2></div>
+        <ol class="eh-process__grid">
+          {steps.map((step, index) => (
+            <li class="reveal" data-i={index}><span>0{index + 1}</span><h3>{step.title}</h3><p>{step.text}</p></li>
+          ))}
+        </ol>
+      </div>
+    </section>
+
+    <section class="eh-identity">
+      <div class="container eh-identity__grid">
+        <div class="reveal"><span class="eh-kicker">Who receives your enquiry</span><h2>A registered Carcassonne business, not a comparison portal</h2><p>Transport Carcassonne is the trade name of Andriy KARPOV, entrepreneur individuel. SIRET {SITE.siret}; R.C.S. Carcassonne {SITE.siren}. Your request goes directly to the business.</p></div>
+        <div class="eh-identity__card reveal">
+          <dl><div><dt>Trade name</dt><dd>Transport Carcassonne</dd></div><div><dt>Registration</dt><dd>SIRET {SITE.siret}</dd></div><div><dt>Telephone</dt><dd><a href={`tel:${SITE.phone}`}>+33 6 80 87 30 47</a></dd></div><div><dt>Email</dt><dd><a href={`mailto:${SITE.email}`}>{SITE.email}</a></dd></div></dl>
+          <a href="/en/why-choose-us/">Business details and safeguards →</a>
+        </div>
+      </div>
+    </section>
+
+    <GoogleReviews lang="en" />
+
+    <section class="eh-faq" id="faq">
+      <div class="container eh-faq__wrap">
+        <div class="eh-heading reveal"><span class="eh-kicker">Frequently asked questions</span><h2>Before you choose a mover</h2></div>
+        <div class="eh-faq__list">
+          {faqs.map((faq, index) => <details class="reveal" data-i={index}><summary>{faq.q}</summary><p>{faq.a}</p></details>)}
+        </div>
+      </div>
+    </section>
+
+    <QuoteForm lang="en" prefilledCity="Carcassonne" title="Tell us about your move" subtitle="Route, inventory, access and preferred date · English written enquiries welcome" />
+  </main>
+
+  <Footer lang="en" />
+</BaseLayout>
+
+<style>
+  .eh-kicker { display: block; color: var(--accent); font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: .18em; margin-bottom: 20px; }
+  .eh-heading h2 { font-size: clamp(2.4rem, 5vw, 4.6rem); font-weight: 400; line-height: 1; }
+  .eh-heading h2 em, .eh-hero h1 em { color: var(--accent); font-weight: 400; }
+  .eh-heading > p { color: var(--text-muted); max-width: 640px; margin-top: 20px; line-height: 1.75; }
+  .eh-hero { min-height: 720px; position: relative; display: flex; align-items: center; overflow: hidden; background: var(--bg-dark); color: var(--text-on-dark); }
+  .eh-hero__video, .eh-hero__veil { position: absolute; inset: 0; width: 100%; height: 100%; }
+  .eh-hero__video { object-fit: cover; opacity: .5; }
+  .eh-hero__veil { background: linear-gradient(90deg, rgba(21,25,28,.98) 0%, rgba(21,25,28,.88) 48%, rgba(21,25,28,.25) 100%); }
+  .eh-hero__content { position: relative; z-index: 2; padding-top: 90px; padding-bottom: 90px; }
+  .eh-hero h1 { color: var(--text-on-dark); font-size: clamp(3.2rem, 7.5vw, 7.4rem); font-weight: 400; line-height: .92; max-width: 1020px; }
+  .eh-hero__content > p { color: var(--text-on-dark-muted); font-size: 1.12rem; max-width: 620px; line-height: 1.75; margin-top: 26px; }
+  .eh-hero__actions { display: flex; flex-wrap: wrap; gap: 20px 28px; align-items: center; margin-top: 36px; }
+  .eh-call { color: var(--text-on-dark); border-bottom: 1px solid var(--line-dark); font-weight: 700; padding-bottom: 4px; }
+  .eh-call:hover { color: var(--accent); }
+  .eh-fr { display: inline-block; color: var(--text-on-dark-muted); font-size: .8rem; margin-top: 20px; text-decoration: underline; text-underline-offset: 3px; }
+  .eh-proof { background: var(--bg-card); border-bottom: 1px solid var(--line); }
+  .eh-proof__grid { display: grid; grid-template-columns: repeat(4, 1fr); }
+  .eh-proof__grid > div { display: flex; flex-direction: column; padding: 23px 26px; gap: 4px; }
+  .eh-proof__grid > div + div { border-left: 1px solid var(--line); }
+  .eh-proof strong { color: var(--accent-deep); font-family: var(--font-display); font-size: 1.35rem; font-weight: 400; }
+  .eh-proof span { color: var(--text-muted); font-size: .74rem; }
+  .eh-services { padding: 105px 0; }
+  .eh-services__grid { display: grid; grid-template-columns: repeat(3, 1fr); margin-top: 52px; border-top: 1px solid var(--line); border-left: 1px solid var(--line); }
+  .eh-service { padding: 34px; min-height: 280px; display: flex; flex-direction: column; border-right: 1px solid var(--line); border-bottom: 1px solid var(--line); transition: background .2s, transform .2s; }
+  .eh-service:hover { background: var(--bg-soft); transform: translateY(-2px); }
+  .eh-service > span { color: var(--accent-deep); font-size: 11px; letter-spacing: .14em; }
+  .eh-service h3 { font-size: 1.8rem; margin: 28px 0 14px; font-weight: 400; }
+  .eh-service p { color: var(--text-muted); line-height: 1.65; }
+  .eh-service strong { margin-top: auto; padding-top: 20px; color: var(--accent-deep); font-size: .84rem; }
+  .eh-expat { background: var(--bg-soft); padding: 100px 0; }
+  .eh-expat__grid { display: grid; grid-template-columns: 1fr 1fr; gap: 76px; align-items: center; }
+  .eh-expat__media img { width: 100%; aspect-ratio: 4 / 3; object-fit: cover; border-radius: 14px; }
+  .eh-expat h2, .eh-uk h2, .eh-identity h2 { font-size: clamp(2.2rem, 4vw, 3.8rem); font-weight: 400; }
+  .eh-expat p, .eh-uk p, .eh-identity p { color: var(--text-muted); line-height: 1.75; margin-top: 20px; }
+  .eh-expat ul { display: grid; gap: 12px; margin-top: 24px; }
+  .eh-expat li { padding-left: 20px; position: relative; }
+  .eh-expat li::before { content: '✓'; position: absolute; left: 0; color: var(--accent-deep); }
+  .eh-links { display: flex; flex-wrap: wrap; gap: 12px 24px; margin-top: 28px; }
+  .eh-links a { color: var(--accent-deep); text-decoration: underline; text-underline-offset: 4px; font-weight: 700; }
+  .eh-uk { background: var(--bg-dark); color: var(--text-on-dark); padding: 100px 0; }
+  .eh-uk__grid { display: grid; grid-template-columns: .9fr 1.1fr; gap: 76px; align-items: center; }
+  .eh-uk h2 { color: var(--text-on-dark); }
+  .eh-uk p { color: var(--text-on-dark-muted); margin-bottom: 28px; }
+  .eh-uk__route { border: 1px solid var(--line-dark); border-radius: 12px; padding: 8px 28px; }
+  .eh-uk__route div { display: grid; grid-template-columns: 38px 1fr; gap: 3px 14px; padding: 22px 0; border-bottom: 1px solid var(--line-dark); }
+  .eh-uk__route div:last-child { border-bottom: 0; }
+  .eh-uk__route span { color: var(--accent); grid-row: 1 / 3; }
+  .eh-uk__route strong { color: var(--text-on-dark); }
+  .eh-uk__route small { color: var(--text-on-dark-muted); }
+  .eh-area { padding: 100px 0; }
+  .eh-area__grid { display: grid; grid-template-columns: .8fr 1.2fr; gap: 72px; align-items: start; }
+  .eh-cities { display: grid; grid-template-columns: 1fr 1fr; border-top: 1px solid var(--line); }
+  .eh-cities a { display: flex; flex-direction: column; padding: 22px 18px; border-bottom: 1px solid var(--line); }
+  .eh-cities a:nth-child(odd) { border-right: 1px solid var(--line); }
+  .eh-cities strong { font-family: var(--font-display); font-size: 1.4rem; font-weight: 400; }
+  .eh-cities span { color: var(--text-muted); font-size: .74rem; margin-top: 5px; }
+  .eh-cities a:hover strong { color: var(--accent-deep); }
+  .eh-process { background: var(--bg-dark); color: var(--text-on-dark); padding: 100px 0; }
+  .eh-process .eh-heading h2 { color: var(--text-on-dark); }
+  .eh-process__grid { display: grid; grid-template-columns: repeat(4, 1fr); margin-top: 48px; border-block: 1px solid var(--line-dark); }
+  .eh-process li { padding: 30px; }
+  .eh-process li + li { border-left: 1px solid var(--line-dark); }
+  .eh-process li > span { color: var(--accent); font-size: 11px; }
+  .eh-process h3 { color: var(--text-on-dark); font-family: var(--font-sans); font-size: 1rem; margin: 26px 0 10px; }
+  .eh-process p { color: var(--text-on-dark-muted); font-size: .85rem; line-height: 1.65; }
+  .eh-identity { background: var(--bg-soft); padding: 100px 0; }
+  .eh-identity__grid { display: grid; grid-template-columns: 1fr 1fr; gap: 74px; align-items: center; }
+  .eh-identity__card { background: var(--bg-card); border: 1px solid var(--line); border-radius: 12px; padding: 12px 30px 28px; }
+  .eh-identity dl > div { display: flex; justify-content: space-between; gap: 20px; padding: 18px 0; border-bottom: 1px solid var(--line); }
+  .eh-identity dt { color: var(--text-muted); font-size: .8rem; }
+  .eh-identity dd { text-align: right; font-weight: 700; font-size: .85rem; }
+  .eh-identity__card > a { display: inline-block; margin-top: 24px; color: var(--accent-deep); font-weight: 700; }
+  .eh-faq { padding: 100px 0; }
+  .eh-faq__wrap { max-width: 900px; }
+  .eh-faq__list { display: grid; gap: 10px; margin-top: 42px; }
+  .eh-faq details { border: 1px solid var(--line); border-radius: 8px; background: var(--bg-card); }
+  .eh-faq summary { cursor: pointer; list-style: none; display: flex; justify-content: space-between; gap: 20px; padding: 20px 24px; font-weight: 700; }
+  .eh-faq summary::-webkit-details-marker { display: none; }
+  .eh-faq summary::after { content: '+'; color: var(--accent-deep); }
+  .eh-faq details[open] summary::after { content: '−'; }
+  .eh-faq details p { padding: 0 24px 22px; color: var(--text-muted); line-height: 1.7; }
+  @media (max-width: 960px) {
+    .eh-proof__grid, .eh-services__grid, .eh-process__grid { grid-template-columns: 1fr 1fr; }
+    .eh-proof__grid > div:nth-child(3) { border-left: 0; border-top: 1px solid var(--line); }
+    .eh-proof__grid > div:nth-child(4) { border-top: 1px solid var(--line); }
+    .eh-expat__grid, .eh-uk__grid, .eh-area__grid, .eh-identity__grid { grid-template-columns: 1fr; gap: 44px; }
+    .eh-process li:nth-child(3) { border-left: 0; border-top: 1px solid var(--line-dark); }
+    .eh-process li:nth-child(4) { border-top: 1px solid var(--line-dark); }
+  }
+  @media (max-width: 640px) {
+    .eh-hero { min-height: 650px; }
+    .eh-hero h1 { font-size: clamp(3rem, 15vw, 5rem); }
+    .eh-hero__veil { background: rgba(21,25,28,.86); }
+    .eh-proof__grid, .eh-services__grid, .eh-process__grid, .eh-cities { grid-template-columns: 1fr; }
+    .eh-proof__grid > div + div { border-left: 0; border-top: 1px solid var(--line); }
+    .eh-service { min-height: 235px; }
+    .eh-cities a:nth-child(odd) { border-right: 0; }
+    .eh-process li + li { border-left: 0; border-top: 1px solid var(--line-dark); }
+    .eh-services, .eh-expat, .eh-uk, .eh-area, .eh-process, .eh-identity, .eh-faq { padding: 70px 0; }
+  }
+</style>

@@ -17,18 +17,23 @@ import {
 interface Props {
   title?: string;
   subtitle?: string;
+  lang?: 'fr' | 'en';
 }
 
 const {
-  title = 'Ce que disent nos clients',
-  subtitle = 'Avis publiés sur notre fiche Google, repris ici sans modification.',
+  title,
+  subtitle,
+  lang = 'fr',
 } = Astro.props;
+const isEnglish = lang === 'en';
+const sectionTitle = title ?? (isEnglish ? 'What customers say' : 'Ce que disent nos clients');
+const sectionSubtitle = subtitle ?? (isEnglish ? 'Reviews published on our Google profile. Original wording is preserved.' : 'Avis publiés sur notre fiche Google, repris ici sans modification.');
 
 const ratingLabel = hasGoogleRating
-  ? `${GOOGLE_RATING.average.toLocaleString('fr-FR', { minimumFractionDigits: 1 })}/5 · ${GOOGLE_RATING.count} avis Google`
+  ? `${GOOGLE_RATING.average.toLocaleString(isEnglish ? 'en-GB' : 'fr-FR', { minimumFractionDigits: 1 })}/5 · ${GOOGLE_RATING.count} ${isEnglish ? 'Google reviews' : 'avis Google'}`
   : null;
 
-const monthFormat = new Intl.DateTimeFormat('fr-FR', { month: 'long', year: 'numeric' });
+const monthFormat = new Intl.DateTimeFormat(isEnglish ? 'en-GB' : 'fr-FR', { month: 'long', year: 'numeric' });
 const formatMonth = (m: string) => monthFormat.format(new Date(`${m}-01T00:00:00Z`));
 const stars = (n: number) => '★'.repeat(n) + '☆'.repeat(5 - n);
 ---
@@ -37,13 +42,13 @@ const stars = (n: number) => '★'.repeat(n) + '☆'.repeat(5 - n);
   <section class="section section--alt gr">
     <div class="container">
       <div class="section-header">
-        <span class="section-label">Avis clients</span>
-        <h2 class="section-title">{title}</h2>
-        <p class="gr__sub">{subtitle}</p>
+        <span class="section-label">{isEnglish ? 'Customer reviews' : 'Avis clients'}</span>
+        <h2 class="section-title">{sectionTitle}</h2>
+        <p class="gr__sub">{sectionSubtitle}</p>
         {ratingLabel && (
           <p class="gr__rating" data-google-rating-live>
             <span class="gr__stars" aria-hidden="true" data-google-rating-stars>{stars(Math.round(GOOGLE_RATING.average))}</span>
-            <strong data-google-rating-label data-google-rating-suffix="Google">{ratingLabel}</strong>
+            <strong data-google-rating-label data-google-rating-suffix={isEnglish ? 'Google reviews' : 'Google'} data-google-rating-lang={isEnglish ? 'en' : 'fr'}>{ratingLabel}</strong>
           </p>
         )}
       </div>
@@ -52,7 +57,7 @@ const stars = (n: number) => '★'.repeat(n) + '☆'.repeat(5 - n);
         {GOOGLE_REVIEWS.map((review) => (
           <li class="gr__card">
             <p class="gr__card-head">
-              <span class="gr__card-stars" role="img" aria-label={`${review.rating} étoiles sur 5`}>
+              <span class="gr__card-stars" role="img" aria-label={isEnglish ? `${review.rating} stars out of 5` : `${review.rating} étoiles sur 5`}>
                 <span aria-hidden="true">{stars(review.rating)}</span>
               </span>
               <span class="gr__via">via Google</span>
@@ -71,7 +76,7 @@ const stars = (n: number) => '★'.repeat(n) + '☆'.repeat(5 - n);
       {hasGoogleProfileUrl && (
         <p class="gr__source">
           <a href={GOOGLE_PROFILE_URL} target="_blank" rel="noopener noreferrer" data-source="avis-google">
-            Lire tous les avis sur Google →
+            {isEnglish ? 'Read all reviews on Google' : 'Lire tous les avis sur Google'} →
           </a>
         </p>
       )}

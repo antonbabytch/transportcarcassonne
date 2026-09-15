@@ -1,18 +1,21 @@
 ---
 import { SITE } from '../data/site.config';
 
-const hideOnThisPage = Astro.url.pathname.startsWith('/transport-urgent-carcassonne');
+interface Props { lang?: 'fr' | 'en'; }
+const { lang = 'fr' } = Astro.props;
+const isEnglish = lang === 'en';
+const hideOnThisPage = Astro.url.pathname.startsWith('/transport-urgent-carcassonne') || Astro.url.pathname.startsWith('/en/urgent-transport-carcassonne');
 ---
 
 {!hideOnThisPage && (
-  <aside class="urgent-prompt" id="urgent-transport-prompt" aria-label="Transport express et urgent à Carcassonne" hidden>
-    <button class="urgent-prompt__close" type="button" aria-label="Fermer l’information urgente">×</button>
-    <p class="urgent-prompt__kicker"><span aria-hidden="true"></span> Besoin aujourd’hui ou demain&nbsp;?</p>
-    <strong>Transport local à Carcassonne</strong>
-    <p>Un meuble, un achat magasin ou un petit déménagement&nbsp;? Appelez&nbsp;: nous vérifions le créneau en direct.</p>
+  <aside class="urgent-prompt" id="urgent-transport-prompt" aria-label={isEnglish ? 'Urgent transport in Carcassonne' : 'Transport express et urgent à Carcassonne'} hidden>
+    <button class="urgent-prompt__close" type="button" aria-label={isEnglish ? 'Close urgent transport notice' : 'Fermer l’information urgente'}>×</button>
+    <p class="urgent-prompt__kicker"><span aria-hidden="true"></span> {isEnglish ? 'Need it moved today or tomorrow?' : 'Besoin aujourd’hui ou demain ?'}</p>
+    <strong>{isEnglish ? 'Local transport in Carcassonne' : 'Transport local à Carcassonne'}</strong>
+    <p>{isEnglish ? 'A sofa, a shop purchase or a small move? Call us and we will check the next available slot.' : 'Un meuble, un achat magasin ou un petit déménagement ? Appelez : nous vérifions le créneau en direct.'}</p>
     <div class="urgent-prompt__actions">
-      <a href={`tel:${SITE.phone}`} data-source="urgent-prompt">Appeler · {SITE.phoneDisplay}</a>
-      <a href="/transport-urgent-carcassonne/">Détails →</a>
+      <a href={`tel:${SITE.phone}`} data-source="urgent-prompt">{isEnglish ? 'Call' : 'Appeler'} · {SITE.phoneDisplay}</a>
+      <a href={isEnglish ? '/en/urgent-transport-carcassonne/' : '/transport-urgent-carcassonne/'}>{isEnglish ? 'Details' : 'Détails'} →</a>
     </div>
   </aside>
 )}
@@ -64,12 +67,10 @@ const hideOnThisPage = Astro.url.pathname.startsWith('/transport-urgent-carcasso
     if (!prompt) return;
     try { if (sessionStorage.getItem('tc-urgent-prompt-dismissed') === '1') return; } catch (e) {}
 
-    var attempts = 0;
     var showWhenClear = function () {
       var cookie = document.getElementById('cc-banner');
-      if (cookie && !cookie.hasAttribute('hidden') && attempts < 20) {
-        attempts += 1;
-        window.setTimeout(showWhenClear, 1000);
+      if (cookie && !cookie.hasAttribute('hidden')) {
+        window.setTimeout(showWhenClear, 750);
         return;
       }
       prompt.removeAttribute('hidden');

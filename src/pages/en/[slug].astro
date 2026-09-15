@@ -1,0 +1,12 @@
+---
+import EnglishServicePage from '../../components/EnglishServicePage.astro';
+import { ENGLISH_PAGES } from '../../data/englishPages';
+
+export function getStaticPaths() {
+  return ENGLISH_PAGES.map(page => ({ params: { slug: page.slug }, props: { page } }));
+}
+
+const { page } = Astro.props;
+---
+
+<EnglishServicePage page={page} />

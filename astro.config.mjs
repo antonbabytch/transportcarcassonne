@@ -11,6 +11,7 @@ export default defineConfig({
         !page.includes('/paiement-confirme') &&
         !page.includes('/avis') &&
         !page.includes('/realisations') &&
+        !page.includes('/en/thank-you') &&
         !page.includes('/__forms') &&
         !page.includes('/mentions-legales') &&
         !page.includes('/politique-confidentialite'),

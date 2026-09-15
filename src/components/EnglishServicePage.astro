@@ -1,0 +1,303 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Header from './Header.astro';
+import Footer from './Footer.astro';
+import QuoteForm from './QuoteForm.astro';
+import GoogleReviews from './GoogleReviews.astro';
+import { SITE } from '../data/site.config';
+import type { EnglishPage } from '../data/englishPages';
+
+const { page } = Astro.props as { page: EnglishPage };
+const pageUrl = new URL(`/en/${page.slug}/`, SITE.url).href;
+const related = [
+  { href: '/en/removals-carcassonne/', title: 'Carcassonne removals', text: 'Local homes, flats and villas.' },
+  { href: '/en/urgent-transport-carcassonne/', title: 'Urgent transport', text: 'Today or tomorrow, subject to availability.' },
+  { href: '/en/furniture-delivery-carcassonne/', title: 'Furniture delivery', text: 'Shop, storage or private collection.' },
+  { href: '/en/uk-france-removals-carcassonne/', title: 'UK–France removals', text: 'Route and post-Brexit planning.' },
+  { href: '/en/removal-prices-carcassonne/', title: 'Price guide', text: 'Indicative starting prices and cost factors.' },
+  { href: '/en/moving-to-carcassonne/', title: 'Moving guide', text: 'Access, parking, inventory and completion dates.' },
+].filter(item => item.href !== `/en/${page.slug}/`).slice(0, 3);
+
+const structuredData = {
+  '@context': 'https://schema.org',
+  '@graph': [
+    ...(page.serviceName ? [{
+      '@type': 'Service',
+      '@id': `${pageUrl}#service`,
+      name: page.serviceName,
+      description: page.description,
+      url: pageUrl,
+      provider: { '@id': `${SITE.url}/#business` },
+      areaServed: [
+        { '@type': 'City', name: 'Carcassonne' },
+        { '@type': 'AdministrativeArea', name: 'Aude' },
+        { '@type': 'AdministrativeArea', name: 'Occitanie' },
+      ],
+      availableChannel: {
+        '@type': 'ServiceChannel',
+        serviceUrl: `${SITE.url}/en/quote/`,
+        servicePhone: { '@type': 'ContactPoint', telephone: SITE.phone, availableLanguage: ['en', 'fr'] },
+      },
+    }] : []),
+    {
+      '@type': 'FAQPage',
+      '@id': `${pageUrl}#faq`,
+      mainEntity: page.faqs.map(faq => ({
+        '@type': 'Question',
+        name: faq.q,
+        acceptedAnswer: { '@type': 'Answer', text: faq.a },
+      })),
+    },
+    {
+      '@type': 'BreadcrumbList',
+      itemListElement: [
+        { '@type': 'ListItem', position: 1, name: 'Home', item: `${SITE.url}/en/` },
+        { '@type': 'ListItem', position: 2, name: page.heading, item: pageUrl },
+      ],
+    },
+  ],
+};
+---
+
+<BaseLayout
+  lang="en-GB"
+  title={page.title}
+  description={page.description}
+  ogImage={page.image}
+  ogImageAlt={page.imageAlt}
+>
+  <script is:inline slot="head" type="application/ld+json" set:html={JSON.stringify(structuredData)} />
+  <Header lang="en" />
+
+  <nav class="en-breadcrumbs" aria-label="Breadcrumb">
+    <div class="container">
+      <a href="/en/">Home</a><span aria-hidden="true">›</span><span aria-current="page">{page.heading}</span>
+    </div>
+  </nav>
+
+  <main>
+    <section class="en-hero">
+      <div class="container en-hero__grid">
+        <div class="en-hero__copy hero-stagger">
+          <span class="en-eyebrow">{page.eyebrow}</span>
+          <h1>{page.heading}</h1>
+          <p>{page.intro}</p>
+          <div class="en-hero__actions">
+            <a class="btn btn--primary btn--lg" href={`/en/quote/?service=${page.slug}&source=english-page`}>Request a free quote</a>
+            <a class="en-phone" href={`tel:${SITE.phone}`} data-source="english-hero">Call +33 6 80 87 30 47</a>
+          </div>
+          <p class="en-language-note"><a href={page.frenchPath} hreflang="fr">Voir cette information en français</a></p>
+        </div>
+        <figure class="en-hero__media reveal">
+          <img src={page.image} alt={page.imageAlt} width="680" height="480" fetchpriority="high" />
+          <figcaption>Carcassonne-based · English written enquiries welcome</figcaption>
+        </figure>
+      </div>
+    </section>
+
+    <section class="en-facts" aria-label="Key information">
+      <div class="container en-facts__grid">
+        {page.highlights.map(item => (
+          <div class="en-fact"><strong>{item.value}</strong><span>{item.label}</span></div>
+        ))}
+      </div>
+    </section>
+
+    <nav class="en-onpage" aria-label="On this page">
+      <div class="container">
+        <a href="#details">Service details</a>
+        <a href="#process">How it works</a>
+        <a href="#faq">Questions</a>
+        <a href="#quote">Get a quote</a>
+      </div>
+    </nav>
+
+    <section class="en-content" id="details">
+      <div class="container en-content__grid">
+        <div class="en-content__intro reveal">
+          <span class="en-eyebrow">Practical information</span>
+          <h2>Plan the real job, not a generic package</h2>
+          <p>The details below explain what should be checked before a date or price is treated as confirmed.</p>
+        </div>
+        <div class="en-sections">
+          {page.sections.map((section, index) => (
+            <article class="en-section reveal" data-i={index}>
+              <span class="en-section__number">0{index + 1}</span>
+              <h2>{section.title}</h2>
+              {section.paragraphs.map(paragraph => <p>{paragraph}</p>)}
+              {section.bullets && (
+                <ul>{section.bullets.map(item => <li>{item}</li>)}</ul>
+              )}
+            </article>
+          ))}
+        </div>
+      </div>
+    </section>
+
+    <section class="en-process" id="process">
+      <div class="container">
+        <div class="en-heading reveal">
+          <span class="en-eyebrow">From enquiry to booking</span>
+          <h2>A four-step removal plan</h2>
+        </div>
+        <ol class="en-process__grid">
+          {page.steps.map((step, index) => (
+            <li class="reveal" data-i={index}>
+              <span>0{index + 1}</span>
+              <h3>{step.title}</h3>
+              <p>{step.text}</p>
+            </li>
+          ))}
+        </ol>
+      </div>
+    </section>
+
+    <section class="en-trust">
+      <div class="container en-trust__grid">
+        <div class="reveal">
+          <span class="en-eyebrow">A registered local business</span>
+          <h2>Details you can verify</h2>
+          <p>Transport Carcassonne is the trade name of Andriy KARPOV, entrepreneur individuel, registered under SIRET {SITE.siret} and R.C.S. Carcassonne {SITE.siren}.</p>
+        </div>
+        <ul class="reveal">
+          <li><strong>Direct contact</strong><span>{SITE.email} · +33 6 80 87 30 47</span></li>
+          <li><strong>Written scope</strong><span>Route, load, access, included work and price</span></li>
+          <li><strong>Local base</strong><span>Carcassonne, Aude, Occitanie</span></li>
+        </ul>
+      </div>
+    </section>
+
+    <section class="en-related" aria-labelledby="related-title">
+      <div class="container">
+        <div class="en-heading reveal"><span class="en-eyebrow">Related information</span><h2 id="related-title">Continue planning your move</h2></div>
+        <div class="en-related__grid">
+          {related.map((item, index) => (
+            <a href={item.href} class="reveal" data-i={index}><h3>{item.title}</h3><p>{item.text}</p><strong>Read more →</strong></a>
+          ))}
+        </div>
+      </div>
+    </section>
+
+    <section class="en-faq" id="faq">
+      <div class="container en-faq__wrap">
+        <div class="en-heading reveal"><span class="en-eyebrow">Frequently asked questions</span><h2>Before you request a quote</h2></div>
+        <div class="en-faq__list">
+          {page.faqs.map((faq, index) => (
+            <details class="reveal" data-i={index}><summary>{faq.q}</summary><p>{faq.a}</p></details>
+          ))}
+        </div>
+      </div>
+    </section>
+
+    {page.slug === 'removals-carcassonne' && <GoogleReviews lang="en" />}
+
+    <div id="quote">
+      <QuoteForm
+        lang="en"
+        prefilledCity="Carcassonne"
+        prefilledService={page.formService}
+        title="Tell us what needs to be moved"
+        subtitle="Route, inventory, access and preferred date · English written enquiries welcome"
+      />
+    </div>
+  </main>
+
+  <Footer lang="en" />
+</BaseLayout>
+
+<style>
+  .en-breadcrumbs { border-bottom: 1px solid var(--line-dark); background: var(--bg-dark); color: var(--text-on-dark-muted); }
+  .en-breadcrumbs .container { display: flex; gap: 9px; padding-top: 11px; padding-bottom: 11px; font-size: 12px; overflow: hidden; white-space: nowrap; }
+  .en-breadcrumbs a { color: var(--accent); }
+  .en-breadcrumbs span[aria-current] { overflow: hidden; text-overflow: ellipsis; }
+  .en-hero { background: var(--bg-dark); color: var(--text-on-dark); padding: 72px 0 82px; }
+  .en-hero__grid { display: grid; grid-template-columns: minmax(0, 1.08fr) minmax(360px, .92fr); gap: 64px; align-items: center; }
+  .en-hero h1 { color: var(--text-on-dark); font-size: clamp(2.65rem, 6vw, 5.6rem); font-weight: 400; letter-spacing: -.025em; }
+  .en-hero__copy > p { margin-top: 24px; max-width: 720px; color: var(--text-on-dark-muted); font-size: 1.05rem; line-height: 1.75; }
+  .en-eyebrow { display: block; color: var(--accent); text-transform: uppercase; letter-spacing: .17em; font-size: 11px; font-weight: 700; margin-bottom: 18px; }
+  .en-hero__actions { display: flex; flex-wrap: wrap; align-items: center; gap: 18px 24px; margin-top: 32px; }
+  .en-phone { color: var(--text-on-dark); font-weight: 700; border-bottom: 1px solid var(--line-dark); padding-bottom: 3px; }
+  .en-phone:hover { color: var(--accent); border-color: var(--accent); }
+  .en-language-note { font-size: .78rem !important; margin-top: 18px !important; }
+  .en-language-note a { text-decoration: underline; text-underline-offset: 3px; }
+  .en-hero__media { position: relative; margin: 0; }
+  .en-hero__media img { width: 100%; aspect-ratio: 4 / 3; object-fit: cover; border-radius: 16px; border: 1px solid var(--line-dark); }
+  .en-hero__media figcaption { position: absolute; left: 16px; bottom: 16px; background: rgba(21,25,28,.9); padding: 9px 12px; border-radius: 5px; font-size: 11px; color: var(--text-on-dark-muted); }
+  .en-facts { background: var(--bg-card); border-bottom: 1px solid var(--line); }
+  .en-facts__grid { display: grid; grid-template-columns: repeat(3, 1fr); }
+  .en-fact { padding: 24px 30px; display: flex; flex-direction: column; gap: 4px; }
+  .en-fact + .en-fact { border-left: 1px solid var(--line); }
+  .en-fact strong { font-family: var(--font-display); color: var(--accent-deep); font-size: 1.45rem; font-weight: 400; }
+  .en-fact span { color: var(--text-muted); font-size: .78rem; }
+  .en-onpage { background: var(--bg-soft); border-bottom: 1px solid var(--line); position: sticky; top: 83px; z-index: 20; }
+  .en-onpage .container { display: flex; gap: 24px; overflow-x: auto; padding-top: 13px; padding-bottom: 13px; }
+  .en-onpage a { white-space: nowrap; color: var(--text-muted); font-size: 12px; font-weight: 700; }
+  .en-onpage a:hover { color: var(--accent-deep); }
+  .en-content { padding: 96px 0; }
+  .en-content__grid { display: grid; grid-template-columns: .7fr 1.3fr; gap: 72px; align-items: start; }
+  .en-content__intro { position: sticky; top: 160px; }
+  .en-content__intro h2, .en-heading h2, .en-trust h2 { font-size: clamp(2rem, 4vw, 3.2rem); font-weight: 400; }
+  .en-content__intro p { color: var(--text-muted); margin-top: 18px; line-height: 1.7; }
+  .en-sections { display: grid; gap: 54px; }
+  .en-section { border-top: 1px solid var(--line); padding-top: 24px; }
+  .en-section__number { color: var(--accent-deep); font-size: 11px; letter-spacing: .16em; }
+  .en-section h2 { font-size: clamp(1.6rem, 3vw, 2.25rem); margin: 12px 0 18px; font-weight: 400; }
+  .en-section p { color: var(--text-muted); line-height: 1.75; margin-top: 12px; }
+  .en-section ul { display: grid; grid-template-columns: 1fr 1fr; gap: 10px 20px; margin-top: 22px; }
+  .en-section li { position: relative; padding-left: 18px; font-size: .9rem; }
+  .en-section li::before { content: '✓'; position: absolute; left: 0; color: var(--accent-deep); font-weight: 800; }
+  .en-process { background: var(--bg-dark); color: var(--text-on-dark); padding: 96px 0; }
+  .en-process .en-heading h2 { color: var(--text-on-dark); }
+  .en-process__grid { display: grid; grid-template-columns: repeat(4, 1fr); margin-top: 44px; border-top: 1px solid var(--line-dark); border-bottom: 1px solid var(--line-dark); }
+  .en-process__grid li { padding: 28px; }
+  .en-process__grid li + li { border-left: 1px solid var(--line-dark); }
+  .en-process__grid span { color: var(--accent); font-size: 11px; letter-spacing: .16em; }
+  .en-process__grid h3 { color: var(--text-on-dark); font-family: var(--font-sans); font-size: 1rem; margin: 24px 0 10px; }
+  .en-process__grid p { color: var(--text-on-dark-muted); font-size: .87rem; line-height: 1.65; }
+  .en-trust { padding: 86px 0; background: var(--bg-soft); }
+  .en-trust__grid { display: grid; grid-template-columns: 1fr 1fr; gap: 80px; align-items: center; }
+  .en-trust p { margin-top: 18px; color: var(--text-muted); line-height: 1.75; }
+  .en-trust ul { background: var(--bg-card); border: 1px solid var(--line); border-radius: 12px; padding: 10px 28px; }
+  .en-trust li { padding: 18px 0; display: flex; justify-content: space-between; gap: 20px; border-bottom: 1px solid var(--line); }
+  .en-trust li:last-child { border-bottom: 0; }
+  .en-trust li strong { font-size: .88rem; }
+  .en-trust li span { color: var(--text-muted); font-size: .82rem; text-align: right; }
+  .en-related { padding: 90px 0; }
+  .en-related__grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; margin-top: 38px; }
+  .en-related__grid a { border: 1px solid var(--line); border-radius: 12px; padding: 28px; background: var(--bg-card); transition: transform .2s, border-color .2s; }
+  .en-related__grid a:hover { transform: translateY(-3px); border-color: var(--accent); }
+  .en-related h3 { font-size: 1.55rem; font-weight: 400; }
+  .en-related p { color: var(--text-muted); margin: 10px 0 20px; }
+  .en-related strong { color: var(--accent-deep); font-size: .86rem; }
+  .en-faq { background: var(--bg-soft); padding: 90px 0; }
+  .en-faq__wrap { max-width: 900px; }
+  .en-faq__list { display: grid; gap: 10px; margin-top: 38px; }
+  .en-faq details { background: var(--bg-card); border: 1px solid var(--line); border-radius: 8px; }
+  .en-faq summary { cursor: pointer; list-style: none; padding: 20px 24px; font-weight: 700; display: flex; justify-content: space-between; gap: 20px; }
+  .en-faq summary::-webkit-details-marker { display: none; }
+  .en-faq summary::after { content: '+'; color: var(--accent-deep); font-size: 1.2rem; }
+  .en-faq details[open] summary::after { content: '−'; }
+  .en-faq details p { color: var(--text-muted); padding: 0 24px 22px; line-height: 1.7; }
+  @media (max-width: 960px) {
+    .en-hero__grid, .en-content__grid, .en-trust__grid { grid-template-columns: 1fr; gap: 42px; }
+    .en-content__intro { position: static; }
+    .en-process__grid { grid-template-columns: 1fr 1fr; }
+    .en-process__grid li:nth-child(3) { border-left: 0; border-top: 1px solid var(--line-dark); }
+    .en-process__grid li:nth-child(4) { border-top: 1px solid var(--line-dark); }
+    .en-related__grid { grid-template-columns: 1fr; }
+    .en-onpage { top: 63px; }
+  }
+  @media (max-width: 640px) {
+    .en-hero { padding: 52px 0 60px; }
+    .en-hero__grid { grid-template-columns: minmax(0, 1fr); }
+    .en-hero h1 { font-size: clamp(2.45rem, 13vw, 4rem); }
+    .en-hero__media figcaption { position: static; margin-top: 8px; background: transparent; padding: 0; }
+    .en-facts__grid, .en-process__grid { grid-template-columns: 1fr; }
+    .en-fact + .en-fact { border-left: 0; border-top: 1px solid var(--line); }
+    .en-process__grid li + li { border-left: 0; border-top: 1px solid var(--line-dark); }
+    .en-content, .en-process, .en-related, .en-faq { padding: 66px 0; }
+    .en-section ul { grid-template-columns: 1fr; }
+    .en-trust li { flex-direction: column; }
+    .en-trust li span { text-align: left; }
+  }
+</style>

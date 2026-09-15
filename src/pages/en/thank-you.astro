@@ -1,0 +1,29 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import Header from '../../components/Header.astro';
+import Footer from '../../components/Footer.astro';
+import { SITE } from '../../data/site.config';
+---
+
+<BaseLayout lang="en-GB" title="Thank you | Transport Carcassonne" description="Your English-language quote request has been sent securely to Transport Carcassonne. We will review the route, access and inventory." noindex={true}>
+  <Header lang="en" />
+  <main class="thanks">
+    <div class="container thanks__card">
+      <span>Request received</span>
+      <h1>Thank you. Your message has been sent.</h1>
+      <p>Transport Carcassonne will review the route, inventory, access and preferred date. For a genuine same-day request, call directly so current availability can be checked.</p>
+      <div><a class="btn btn--primary" href="/en/">Return to the English home page</a><a href={`tel:${SITE.phone}`}>Call +33 6 80 87 30 47</a></div>
+    </div>
+  </main>
+  <Footer lang="en" />
+</BaseLayout>
+
+<style>
+  .thanks { padding: 110px 0; background: var(--bg-soft); }
+  .thanks__card { max-width: 780px; background: var(--bg-card); border: 1px solid var(--line); border-radius: 14px; padding: clamp(30px, 7vw, 72px); }
+  .thanks__card > span { color: var(--accent-deep); text-transform: uppercase; letter-spacing: .16em; font-size: 11px; }
+  .thanks h1 { margin: 18px 0; }
+  .thanks p { color: var(--text-muted); line-height: 1.75; }
+  .thanks__card > div { display: flex; flex-wrap: wrap; align-items: center; gap: 20px; margin-top: 30px; }
+  .thanks__card > div > a:last-child { color: var(--accent-deep); font-weight: 700; }
+</style>

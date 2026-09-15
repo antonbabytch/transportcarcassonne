@@ -2,13 +2,29 @@
 import { SITE } from '../data/site.config';
 import { SERVICES } from '../data/services';
 import { CITIES } from '../data/cities';
+
+interface Props { lang?: 'fr' | 'en'; }
+const { lang = 'fr' } = Astro.props;
+const isEnglish = lang === 'en';
+const englishServices = [
+  ['/en/small-removals-carcassonne/', 'Small removals'],
+  ['/en/urgent-transport-carcassonne/', 'Urgent transport today / tomorrow'],
+  ['/en/furniture-delivery-carcassonne/', 'Furniture delivery'],
+  ['/en/local-removals-carcassonne/', 'Local removals'],
+  ['/en/long-distance-removals-france/', 'Long-distance removals'],
+  ['/en/international-removals-carcassonne/', 'International removals'],
+  ['/en/uk-france-removals-carcassonne/', 'UK to Carcassonne removals'],
+  ['/en/piano-moving-carcassonne/', 'Piano and heavy items'],
+  ['/en/office-removals-carcassonne/', 'Office removals'],
+  ['/en/packing-service-carcassonne/', 'Packing service'],
+] as const;
 ---
 
 <footer class="site-footer">
   <div class="container">
     <div class="footer-grid">
       <div class="footer-brand reveal" data-i="0">
-        <a href="/" class="logo">
+        <a href={isEnglish ? '/en/' : '/'} class="logo">
           <img
             class="logo-mark"
             src="/brand/logo-mark.svg"
@@ -20,59 +36,78 @@ import { CITIES } from '../data/cities';
           />
           <span class="logo-text">
             <strong>Transport Carcassonne</strong>
-            <small>Déménagement &amp; transport</small>
+            <small>{isEnglish ? 'Removals & transport' : 'Déménagement & transport'}</small>
           </span>
         </a>
-        <p>
-          Déménagement et transport à Carcassonne et dans l'Aude. Entreprise
-          identifiée sous le SIRET {SITE.siret}.
+        <p>{isEnglish
+          ? <>Local removals and transport in Carcassonne and across the Aude. French registered business, SIRET {SITE.siret}.</>
+          : <>Déménagement et transport à Carcassonne et dans l'Aude. Entreprise identifiée sous le SIRET {SITE.siret}.</>}
         </p>
         <p class="sister-site">
-          Besoin d'un débarras ou d'un vide maison&nbsp;? Consulter le site
+          {isEnglish ? 'Need a house clearance as a separate service? Visit ' : "Besoin d'un débarras ou d'un vide maison ? Consulter le site "}
           <a href="https://debarras-carcassonne.fr/" rel="noopener">
             Débarras Carcassonne
           </a>
-          pour étudier cette prestation séparément.
+          {isEnglish ? ' (website in French).' : ' pour étudier cette prestation séparément.'}
         </p>
       </div>
 
       <div class="reveal" data-i="1">
-        <p class="footer-title">Services</p>
+        <p class="footer-title">{isEnglish ? 'Services' : 'Services'}</p>
         <ul>
-          <li><a href="/petit-demenagement/">Petit déménagement</a></li>
-          <li><a href="/transport-urgent-carcassonne/">Transport express aujourd’hui / demain</a></li>
-          <li><a href="/livraison-meubles-magasins-carcassonne/">Livraison de meubles depuis un magasin</a></li>
-          {SERVICES.map(s => (
-            <li><a href={`/services/${s.slug}/`}>{s.name}</a></li>
-          ))}
-          <li><a href="/demenagement-entreprise-carcassonne/">Déménagement d’entreprise</a></li>
-          <li><a href="/demenagement-senior-carcassonne/">Déménagement senior</a></li>
-          <li><a href="/emballage-cartons-carcassonne/">Emballage et cartons</a></li>
-          <li><a href="/formules/">Nos formules</a></li>
-          <li><a href="/tarifs/">Nos tarifs</a></li>
+          {isEnglish ? englishServices.map(([href, label]) => (
+            <li><a href={href}>{label}</a></li>
+          )) : (
+            <>
+              <li><a href="/petit-demenagement/">Petit déménagement</a></li>
+              <li><a href="/transport-urgent-carcassonne/">Transport express aujourd’hui / demain</a></li>
+              <li><a href="/livraison-meubles-magasins-carcassonne/">Livraison de meubles depuis un magasin</a></li>
+              {SERVICES.map(s => (
+                <li><a href={`/services/${s.slug}/`}>{s.name}</a></li>
+              ))}
+              <li><a href="/demenagement-entreprise-carcassonne/">Déménagement d’entreprise</a></li>
+              <li><a href="/demenagement-senior-carcassonne/">Déménagement senior</a></li>
+              <li><a href="/emballage-cartons-carcassonne/">Emballage et cartons</a></li>
+              <li><a href="/formules/">Nos formules</a></li>
+              <li><a href="/tarifs/">Nos tarifs</a></li>
+            </>
+          )}
         </ul>
       </div>
 
       <div class="reveal" data-i="2">
-        <p class="footer-title">Zone</p>
+        <p class="footer-title">{isEnglish ? 'Service area' : 'Zone'}</p>
         <ul>
           {CITIES.slice(0, 6).map(c => (
-            <li><a href={`/demenagement-${c.slug}/`}>{c.name}</a></li>
+            <li><a href={isEnglish ? `/en/removals-${c.slug}/` : `/demenagement-${c.slug}/`}>{c.name}</a></li>
           ))}
         </ul>
       </div>
 
       <div class="reveal" data-i="3">
-        <p class="footer-title">Ressources</p>
+        <p class="footer-title">{isEnglish ? 'Resources' : 'Ressources'}</p>
         <ul>
-          <li><a href="/outils-demenagement/">Tous les outils</a></li>
-          <li><a href="/calculateur-volume-demenagement/">Calculateur de volume</a></li>
-          <li><a href="/calculateur-cartons-demenagement/">Calculateur de cartons</a></li>
-          <li><a href="/checklist-demenagement/">Checklist interactive</a></li>
-          <li><a href="/trajets-groupes/">Trajets groupés</a></li>
-          <li><a href="/realisations/">Réalisations</a></li>
-          <li><a href="/nos-garanties/">Nos garanties</a></li>
-          <li><a href="/blog/">Conseils déménagement</a></li>
+          {isEnglish ? (
+            <>
+              <li><a href="/en/moving-to-carcassonne/">Moving to Carcassonne guide</a></li>
+              <li><a href="/en/second-home-removals-carcassonne/">Second-home removals</a></li>
+              <li><a href="/en/removal-prices-carcassonne/">Removal price guide</a></li>
+              <li><a href="/en/how-it-works/">How the service works</a></li>
+              <li><a href="/en/why-choose-us/">Business details and safeguards</a></li>
+              <li><a href="/en/quote/">Request a quote</a></li>
+            </>
+          ) : (
+            <>
+              <li><a href="/outils-demenagement/">Tous les outils</a></li>
+              <li><a href="/calculateur-volume-demenagement/">Calculateur de volume</a></li>
+              <li><a href="/calculateur-cartons-demenagement/">Calculateur de cartons</a></li>
+              <li><a href="/checklist-demenagement/">Checklist interactive</a></li>
+              <li><a href="/trajets-groupes/">Trajets groupés</a></li>
+              <li><a href="/realisations/">Réalisations</a></li>
+              <li><a href="/nos-garanties/">Nos garanties</a></li>
+              <li><a href="/blog/">Conseils déménagement</a></li>
+            </>
+          )}
         </ul>
       </div>
 
@@ -88,8 +123,8 @@ import { CITIES } from '../data/cities';
             >WhatsApp</a>
           </li>
           <li><a href={`mailto:${SITE.email}`}>{SITE.email}</a></li>
-          <li>{SITE.hours}</li>
-          <li>Zone d’intervention : {SITE.hq.city} et alentours</li>
+          <li>{isEnglish ? 'By appointment · 24/7 enquiries' : SITE.hours}</li>
+          <li>{isEnglish ? `Service area: ${SITE.hq.city} and surrounding towns` : `Zone d’intervention : ${SITE.hq.city} et alentours`}</li>
         </ul>
       </div>
     </div>
@@ -97,13 +132,13 @@ import { CITIES } from '../data/cities';
     <div class="footer-bottom">
       <div>© {new Date().getFullYear()} {SITE.name} · SIRET {SITE.siret}</div>
       <div class="footer-legal">
-        <a href="/paiement-securise/">Paiement sécurisé</a>
+        <a href="/paiement-securise/" hreflang="fr">{isEnglish ? 'Secure payment' : 'Paiement sécurisé'}</a>
         <span>·</span>
-        <a href="/mentions-legales/">Mentions légales</a>
+        <a href="/mentions-legales/" hreflang="fr">{isEnglish ? 'Legal notice (FR)' : 'Mentions légales'}</a>
         <span>·</span>
-        <a href="/politique-confidentialite/">Politique de confidentialité</a>
+        <a href="/politique-confidentialite/" hreflang="fr">{isEnglish ? 'Privacy (FR)' : 'Politique de confidentialité'}</a>
         <span>·</span>
-        <button type="button" class="footer-cookie" onclick="window.__ccManage&&window.__ccManage()">Gérer les cookies</button>
+        <button type="button" class="footer-cookie" onclick="window.__ccManage&&window.__ccManage()">{isEnglish ? 'Cookie settings' : 'Gérer les cookies'}</button>
       </div>
     </div>
   </div>
