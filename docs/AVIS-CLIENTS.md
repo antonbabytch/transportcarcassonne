@@ -12,12 +12,29 @@ La page publique est `/avis/`. Elle est volontairement en `noindex` : elle sert 
 
 Ne pas construire le lien à partir du nom de l'entreprise et ne pas publier de QR code tant que la destination n'a pas été vérifiée.
 
-## Afficher un nouvel avis sur le site
+## Mise à jour automatique de la note Google
+
+La moyenne et le nombre total d'avis sont maintenant synchronisés avec la
+fiche Google vérifiée de Transport Carcassonne :
+
+- à chaque build, `scripts/refresh-google-rating.mjs` met à jour le snapshot
+  de secours `src/data/google-rating.json` ;
+- chaque jour à 05:30 UTC, la fonction Netlify `refresh-google-rating` relit la
+  fiche publique et conserve la dernière valeur valide dans Netlify Blobs ;
+- les pages qui affichent la note lisent `/api/google-rating` et remplacent le
+  snapshot sans attendre un nouveau déploiement ;
+- en cas d'erreur Google ou Netlify, le dernier snapshot validé reste affiché.
+
+Le lecteur vérifie le CID, le chemin Maps, le FTID et l'identifiant du lieu de
+la fiche `Transport Carcassonne` avant d'accepter une valeur. Il ne récupère
+aucun nom, texte d'avis ou autre donnée client.
+
+## Afficher le texte d'un nouvel avis sur le site
 
 Les avis affichés sont recopiés à la main dans `src/data/reviews.config.ts`.
-Il n'y a pas de récupération automatique : l'API Google Places impose une clé,
-une facturation et des limites de mise en cache, et ne renvoie que quelques
-avis. Une entrée ajoutée au fichier suffit.
+Seuls la moyenne et le nombre total sont automatiques. L'API Google Places
+impose une clé, une facturation et des limites de mise en cache, et ne renvoie
+que quelques avis. Une entrée ajoutée au fichier suffit.
 
 1. Ouvrir la fiche Google et lire l'avis en entier, sans le tronquer.
 2. Ajouter un objet dans `GOOGLE_REVIEWS` :
@@ -42,13 +59,9 @@ avis. Une entrée ajoutée au fichier suffit.
 
 ### Note moyenne et nombre d'avis
 
-`GOOGLE_RATING` reste à `0` tant que le total de la fiche compte des avis qui
-ne viennent pas de clients. Un chiffre affiché sur le site doit correspondre à
-ce qu'un visiteur retrouve sur Google.
-
-Quand la fiche ne contient plus que des avis clients, renseigner `average` et
-`count` avec les valeurs exactes de la fiche. La note apparaît alors dans le
-bandeau de confiance et au-dessus des cartes.
+`GOOGLE_RATING` lit le snapshot validé de `src/data/google-rating.json`. Ne pas
+modifier `average` ou `count` dans `reviews.config.ts` : ils sont alimentés par
+la synchronisation automatique.
 
 ### Ce que le site n'affichera jamais
 

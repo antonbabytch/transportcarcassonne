@@ -7,7 +7,8 @@
   },
   "scripts": {
     "dev": "astro dev",
-    "build": "astro build",
+    "build": "node scripts/refresh-google-rating.mjs && astro build",
+    "refresh:rating": "node scripts/refresh-google-rating.mjs",
     "check": "astro check",
     "test": "node --test",
     "audit:seo": "npm run build && node scripts/seo-audit.mjs",

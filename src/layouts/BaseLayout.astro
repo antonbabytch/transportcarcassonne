@@ -319,6 +319,42 @@ const schemaOrg = {
       });
     </script>
 
+    <!-- Rating/count are refreshed from the daily Netlify cache when present. -->
+    <script is:inline>
+      (function () {
+        var labels = document.querySelectorAll('[data-google-rating-label]');
+        if (!labels.length || !window.fetch) return;
+
+        fetch('/api/google-rating', { headers: { Accept: 'application/json' } })
+          .then(function (response) {
+            if (!response.ok) throw new Error('rating unavailable');
+            return response.json();
+          })
+          .then(function (rating) {
+            var average = Number(rating.ratingValue);
+            var count = Number(rating.reviewCount);
+            if (!Number.isFinite(average) || average < 1 || average > 5) return;
+            if (!Number.isInteger(count) || count < 1) return;
+
+            var formatted = average.toLocaleString('fr-FR', {
+              minimumFractionDigits: 1,
+              maximumFractionDigits: 1
+            });
+            labels.forEach(function (label) {
+              var suffix = label.getAttribute('data-google-rating-suffix');
+              label.textContent = formatted + '/5 · ' + count + ' avis' + (suffix ? ' ' + suffix : '');
+            });
+            document.querySelectorAll('[data-google-rating-stars]').forEach(function (stars) {
+              var rounded = Math.max(0, Math.min(5, Math.round(average)));
+              stars.textContent = '★'.repeat(rounded) + '☆'.repeat(5 - rounded);
+            });
+          })
+          .catch(function () {
+            // The rendered build snapshot stays visible when Google or Netlify is unavailable.
+          });
+      })();
+    </script>
+
     <!-- Scroll-reveal engine (Intersection Observer) — all pages -->
     <script is:inline>
       (function () {

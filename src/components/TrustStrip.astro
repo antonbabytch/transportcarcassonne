@@ -24,7 +24,7 @@ const ratingText = hasGoogleRating
     {ratingText && (
       <div class="trust-strip__item">
         <span class="trust-strip__eyebrow">Avis Google</span>
-        <strong><span class="trust-strip__stars" aria-hidden="true">★</span> {ratingText}</strong>
+        <strong data-google-rating-live><span class="trust-strip__stars" aria-hidden="true">★</span> <span data-google-rating-label>{ratingText}</span></strong>
       </div>
     )}
   </div>

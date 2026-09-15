@@ -44,6 +44,8 @@ Les CTA commerciaux doivent pointer vers `/devis/` et conserver un paramètre
 - `src/data/movingRoutes.ts` : routes longue distance documentées ;
 - `src/data/groupedTrips.ts` : places réellement disponibles ;
 - `src/data/realisations.ts` : cas publiables avec consentements ;
+- `src/data/google-rating.json` : snapshot de secours de la note Google,
+  actualisé automatiquement au build et chaque jour via Netlify ;
 - `src/content/blog/` : articles Markdown validés par le schema Astro.
 
 Ne pas créer de ville, trajet, avis, disponibilité ou réalisation fictive.

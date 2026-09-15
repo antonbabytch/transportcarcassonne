@@ -1,3 +1,5 @@
+import googleRating from './google-rating.json';
+
 /**
  * Source unique des avis Google affichés sur le site.
  *
@@ -31,16 +33,16 @@ export const GOOGLE_PROFILE_URL = 'https://g.page/r/CfkVxczuGs8VEBM';
 export const hasGoogleProfileUrl = GOOGLE_PROFILE_URL.startsWith('https://');
 
 /**
- * Note moyenne et nombre d'avis, recopiés depuis la fiche Google.
+ * Note moyenne et nombre d'avis issus du dernier snapshot Google validé.
  * `count: 0` masque toute mention chiffrée sur le site.
  *
- * Relevés le 01/09/2026, après retrait des avis qui ne venaient pas de
- * clients. Le chiffre affiché ici doit toujours correspondre à ce qu'un
- * visiteur retrouve sur la fiche : le remettre à jour à chaque nouvel avis.
+ * La fonction Netlify quotidienne met à jour ces chiffres dans le navigateur,
+ * et chaque nouvelle compilation rafraîchit ce snapshot de secours.
  */
 export const GOOGLE_RATING = {
-  average: 5,
-  count: 3,
+  average: googleRating.ratingValue,
+  count: googleRating.reviewCount,
+  updatedAt: googleRating.lastUpdated,
 } as const;
 
 export const hasGoogleRating = GOOGLE_RATING.count > 0 && GOOGLE_RATING.average > 0;

@@ -41,9 +41,9 @@ const stars = (n: number) => '★'.repeat(n) + '☆'.repeat(5 - n);
         <h2 class="section-title">{title}</h2>
         <p class="gr__sub">{subtitle}</p>
         {ratingLabel && (
-          <p class="gr__rating">
-            <span class="gr__stars" aria-hidden="true">{stars(Math.round(GOOGLE_RATING.average))}</span>
-            <strong>{ratingLabel}</strong>
+          <p class="gr__rating" data-google-rating-live>
+            <span class="gr__stars" aria-hidden="true" data-google-rating-stars>{stars(Math.round(GOOGLE_RATING.average))}</span>
+            <strong data-google-rating-label data-google-rating-suffix="Google">{ratingLabel}</strong>
           </p>
         )}
       </div>
