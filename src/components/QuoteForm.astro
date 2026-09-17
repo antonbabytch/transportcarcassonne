@@ -15,6 +15,7 @@ const {
   lang = 'fr',
 } = Astro.props;
 const isEnglish = lang === 'en';
+const isBespokeLogistics = prefilledService === 'mission-logistique';
 const formTitle = title ?? (isEnglish ? 'Request your free quote' : 'Demandez votre devis gratuit');
 const formSubtitle = subtitle ?? (isEnglish ? 'Tell us about the route, volume, access and preferred date' : 'Décrivez votre projet · réponse selon nos disponibilités');
 ---
@@ -38,6 +39,7 @@ const formSubtitle = subtitle ?? (isEnglish ? 'Tell us about the route, volume, 
       <input type="hidden" name="form-name" value="devis-transport" />
       <input type="hidden" name="language" value={isEnglish ? 'en' : 'fr'} />
       <input type="hidden" name="page_source" value={Astro.url.pathname} />
+      <input type="hidden" name="request_context" value={isBespokeLogistics ? 'mission-logistique-longue-distance' : ''} />
       <p class="qf__honeypot" aria-hidden="true">
         <label>{isEnglish ? 'Leave this empty' : 'Ne pas remplir'} : <input name="bot-field" /></label>
       </p>
@@ -80,6 +82,7 @@ const formSubtitle = subtitle ?? (isEnglish ? 'Tell us about the route, volume, 
             <option value="transport-meubles" selected={prefilledService === 'transport-meubles'}>{isEnglish ? 'Furniture transport or delivery' : 'Transport de meubles'}</option>
             <option value="transport-piano" selected={prefilledService === 'transport-piano'}>{isEnglish ? 'Piano or heavy item' : 'Transport piano / objets lourds'}</option>
             <option value="evacuation-dechets-metaux" selected={prefilledService === 'evacuation-dechets-metaux'}>{isEnglish ? 'Bulky item removal' : 'Évacuation déchets / métaux'}</option>
+            <option value="mission-logistique" selected={prefilledService === 'mission-logistique'}>{isEnglish ? 'Bespoke long-distance logistics assistance' : 'Mission logistique longue distance sur mesure'}</option>
           </select>
         </div>
       </div>
@@ -133,7 +136,9 @@ const formSubtitle = subtitle ?? (isEnglish ? 'Tell us about the route, volume, 
             id="qf-message"
             name="message"
             rows="4"
-            placeholder={isEnglish ? 'Property size, floor, lift, parking, heavy or fragile items…' : 'Surface habitable, étage, ascenseur, objets spéciaux (piano, coffre-fort…)'}
+            placeholder={isBespokeLogistics
+              ? (isEnglish ? 'Stops, belongings, luggage, keys, vehicle, authorised contacts and deadlines…' : 'Étapes, biens, bagages, clés, véhicule, interlocuteurs autorisés et horaires…')
+              : (isEnglish ? 'Property size, floor, lift, parking, heavy or fragile items…' : 'Surface habitable, étage, ascenseur, objets spéciaux (piano, coffre-fort…)')}
           ></textarea>
         </div>
       </div>

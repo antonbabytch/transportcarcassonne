@@ -22,6 +22,7 @@ export interface EnglishPage {
   sections: EnglishPageSection[];
   steps: Array<{ title: string; text: string }>;
   faqs: Array<{ q: string; a: string }>;
+  related?: Array<{ href: string; title: string; text: string }>;
 }
 
 const standardSteps = [
@@ -606,6 +607,61 @@ const commercialPages: EnglishPage[] = [
       { q: 'Where is the business based?', a: 'The business is registered in Carcassonne and serves the city, nearby Aude towns and longer routes subject to assessment.' },
       { q: 'Is this a comparison or lead-selling website?', a: 'No. Enquiries submitted on this site go directly to Transport Carcassonne.' },
       { q: 'How can I contact the business?', a: 'Call 06 80 87 30 47 from France, use +33 6 80 87 30 47 internationally, or email contact@transportcarcassonne.fr.' },
+    ],
+  },
+  {
+    slug: 'long-distance-logistics-assistance',
+    title: 'Bespoke Long-Distance Logistics | Carcassonne',
+    description: 'Bespoke long-distance logistics from Carcassonne for belongings, luggage, keys, vehicle coordination and practical multi-stop missions in France.',
+    eyebrow: 'Complex situation · France-wide · Assessed individually',
+    heading: 'A practical long-distance mission built around the real situation',
+    intro: 'Some requests are not standard removals. You may need personal belongings collected, luggage transferred, keys handed over, a garage or relative contacted and several practical steps coordinated between Carcassonne and another French city. Each task is assessed and confirmed in writing before departure.',
+    frenchPath: '/mission-logistique-longue-distance/',
+    image: '/images/demenagement-longue-distance.webp',
+    imageAlt: 'Long-distance logistics mission from Carcassonne across France',
+    serviceName: 'Bespoke long-distance logistics assistance from Carcassonne',
+    formService: 'mission-logistique',
+    highlights: [
+      { value: 'Case by case', label: 'Every step assessed' },
+      { value: 'France', label: 'Long-distance routes' },
+      { value: 'Written', label: 'Scope before departure' },
+    ],
+    sections: [
+      {
+        title: 'One file with several practical tasks',
+        paragraphs: ['The mission may combine authorised collection of clothes or boxes, luggage transport, key handover, a meeting with a garage, photographs of a vehicle or delivery to a relative. Each task needs its own contact, authorisation and proof of completion.'],
+        bullets: ['Personal belongings and luggage', 'Keys and non-sensitive physical documents', 'Garage, insurer or authorised local contact', 'Several collection and delivery points', 'Photographs or signed handover when agreed'],
+      },
+      {
+        title: 'Passenger travel remains a separate regulated service',
+        paragraphs: ['Transport Carcassonne assesses logistics, handling, delivery and transport of goods. This page does not sell passenger transport or medical transport. If a person must travel, they contract directly with an authorised taxi, VTC or medical transport provider; our practical timing can be coordinated with the carrier they choose.'],
+      },
+      {
+        title: 'For a hospital or care-facility discharge',
+        paragraphs: ['We can assess the non-medical logistics around the situation: collecting authorised belongings, moving luggage, dealing with keys or meeting another named contact. The passenger journey itself must be arranged separately with the appropriate licensed provider, and we do not collect or store medical information.'],
+      },
+      {
+        title: 'Vehicle-related tasks need the owner’s authority',
+        paragraphs: ['A key handover, garage appointment or agreed photographic check can be considered. Driving, recovering, selling or repairing a vehicle may require written authority, suitable insurance or a separate qualified professional and is never assumed to be included.'],
+      },
+    ],
+    steps: [
+      { title: 'Explain the required outcome', text: 'Give the cities, date, deadline, contacts and the practical problem that must be solved.' },
+      { title: 'Separate each responsibility', text: 'List the belongings, keys, appointments and authorisations, and identify any task handled by another provider.' },
+      { title: 'Agree useful proof', text: 'Choose a non-sensitive inventory, photograph, signature or confirmation call for collection and delivery.' },
+      { title: 'Confirm the written itinerary', text: 'The route, stops, timing, waiting, costs, exclusions and contingency are agreed before departure.' },
+    ],
+    faqs: [
+      { q: 'Can you collect belongings from a hospital, care facility or home?', a: 'The request can be assessed when access is authorised and the items are identified in advance. The facility or on-site contact must confirm its collection procedure.' },
+      { q: 'Can you drive the person to another city?', a: 'Passenger transport is not sold through this logistics service. The passenger contracts directly with an authorised taxi or VTC, or the appropriate medical transport provider. Our timing can be coordinated with that separate journey.' },
+      { q: 'Can you deal with a vehicle left behind?', a: 'A key handover, garage meeting or photographic check can be assessed. Driving, towing, selling or repairing the vehicle requires the owner’s written authority and may require another suitably insured professional.' },
+      { q: 'Do you handle medical transport?', a: 'No. We are not an ambulance, VSL or medical transport provider. We only assess the non-medical logistics surrounding the situation.' },
+      { q: 'How is the price calculated?', a: 'The quote considers distance, total time, stops, waiting, access, belongings and known external costs. Only the written quote confirms the price and included tasks.' },
+    ],
+    related: [
+      { href: '/en/long-distance-removals-france/', title: 'Long-distance removals', text: 'A conventional furniture and box move in France.' },
+      { href: '/en/urgent-transport-carcassonne/', title: 'Urgent local transport', text: 'A material request needed today or tomorrow.' },
+      { href: '/en/furniture-transport-carcassonne/', title: 'Furniture transport', text: 'For one item or a defined load rather than a multi-step mission.' },
     ],
   },
   {

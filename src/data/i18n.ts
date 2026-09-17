@@ -15,6 +15,7 @@ const ROUTES = [
   ['/demenagement-entreprise-carcassonne/', '/en/office-removals-carcassonne/'],
   ['/demenagement-senior-carcassonne/', '/en/senior-removals-carcassonne/'],
   ['/emballage-cartons-carcassonne/', '/en/packing-service-carcassonne/'],
+  ['/mission-logistique-longue-distance/', '/en/long-distance-logistics-assistance/'],
   ['/services/demenagement-local/', '/en/local-removals-carcassonne/'],
   ['/services/demenagement-longue-distance/', '/en/long-distance-removals-france/'],
   ['/services/demenagement-international/', '/en/international-removals-carcassonne/'],

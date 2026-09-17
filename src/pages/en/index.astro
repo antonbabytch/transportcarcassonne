@@ -16,6 +16,7 @@ const services = [
   { num: '04', title: 'Furniture delivery', text: 'Collection from a shop, warehouse, storage unit or private seller.', href: '/en/furniture-delivery-carcassonne/' },
   { num: '05', title: 'Long-distance France', text: 'Door-to-door routes between Carcassonne and mainland France.', href: '/en/long-distance-removals-france/' },
   { num: '06', title: 'UK and international', text: 'Route, inventory, access and post-Brexit requirements checked first.', href: '/en/uk-france-removals-carcassonne/' },
+  { num: '07', title: 'Bespoke logistics assistance', text: 'Belongings, luggage, keys, vehicle coordination and practical multi-stop missions across France.', href: '/en/long-distance-logistics-assistance/', featured: true },
 ];
 const steps = [
   { title: 'Send the route and inventory', text: 'Both locations, preferred date, furniture, boxes and any heavy or fragile items.' },
@@ -97,7 +98,7 @@ const structuredData = {
         </div>
         <div class="eh-services__grid">
           {services.map((service, index) => (
-            <a href={service.href} class="eh-service reveal" data-i={index}>
+            <a href={service.href} class:list={['eh-service', service.featured && 'eh-service--wide', 'reveal']} data-i={index}>
               <span>— {service.num}</span><h3>{service.title}</h3><p>{service.text}</p><strong>Explore the service →</strong>
             </a>
           ))}
@@ -226,6 +227,7 @@ const structuredData = {
   .eh-service h3 { font-size: 1.8rem; margin: 28px 0 14px; font-weight: 400; }
   .eh-service p { color: var(--text-muted); line-height: 1.65; }
   .eh-service strong { margin-top: auto; padding-top: 20px; color: var(--accent-deep); font-size: .84rem; }
+  .eh-service--wide { grid-column: 1 / -1; min-height: 220px; background: var(--accent-soft); }
   .eh-expat { background: var(--bg-soft); padding: 100px 0; }
   .eh-expat__grid { display: grid; grid-template-columns: 1fr 1fr; gap: 76px; align-items: center; }
   .eh-expat__media img { width: 100%; aspect-ratio: 4 / 3; object-fit: cover; border-radius: 14px; }

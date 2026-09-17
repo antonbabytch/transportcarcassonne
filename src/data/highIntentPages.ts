@@ -17,6 +17,7 @@ export type HighIntentPage = {
   phoneCta?: string;
   ctaTitle?: string;
   ctaSubtitle?: string;
+  embedQuoteForm?: boolean;
   contextTitle: string;
   context: string[];
   profiles: { title: string; text: string }[];
@@ -430,5 +431,64 @@ export const HIGH_INTENT_PAGES: Record<string, HighIntentPage> = {
       { label: 'Vous êtes un magasin ?', href: '/prestataire-livraison-magasins-carcassonne/', text: 'Confier vos livraisons clients : bon signé, livraison à l’étage et facture au nom de l’établissement.' },
       { label: 'Objet ou document oublié', href: '/objet-oublie-transport-urgent-carcassonne/', text: 'Un papier, des clés ou un sac resté sur place et attendu ailleurs en région, dans la journée.' },
 ],
+  },
+  missionLogistique: {
+    slug: 'mission-logistique-longue-distance',
+    eyebrow: 'Situation complexe · France entière · Étude individuelle',
+    title: 'Mission logistique longue distance sur mesure',
+    metaTitle: 'Mission logistique longue distance | Carcassonne',
+    metaDescription: 'Mission logistique sur mesure depuis Carcassonne : effets personnels, bagages, clés, véhicule et coordination pratique sur longue distance.',
+    intro: 'Certaines situations ne rentrent pas dans la case d’un déménagement classique. Il faut parfois récupérer des effets personnels, déplacer des bagages, remettre des clés, coordonner un garage ou un proche et organiser plusieurs étapes entre Carcassonne et une autre ville. Nous étudions ces missions pratiques au cas par cas, avec un périmètre écrit avant le départ.',
+    quote: { source: 'landing-mission-logistique', service: 'mission-logistique', depart: 'Carcassonne', distance: 'france' },
+    primaryCta: 'Décrire la situation',
+    phoneCta: 'Parler de la mission · 06 80 87 30 47',
+    ctaTitle: 'Une situation inhabituelle à organiser ?',
+    ctaSubtitle: 'Indiquez les villes, la date, les biens à récupérer, les interlocuteurs sur place et chaque étape pratique. La faisabilité et le périmètre sont confirmés par écrit.',
+    embedQuoteForm: true,
+    contextTitle: 'Un seul dossier, plusieurs tâches à coordonner',
+    context: [
+      'La mission peut associer plusieurs besoins matériels : récupérer des vêtements ou des cartons, transférer des bagages, remettre des clés, rencontrer un garage, photographier un véhicule ou livrer des biens à un proche. Chaque tâche doit être décrite séparément afin de savoir qui autorise l’accès, quels documents sont nécessaires et ce qui doit être rapporté.',
+      'Transport Carcassonne intervient dans le cadre de ses prestations logistiques, de manutention, de livraison et de transport de biens. Le devis précise les objets confiés, les adresses, les contacts, les temps d’attente prévisibles et les éventuels frais externes qui restent à la charge du client.',
+      'Cette prestation n’est ni un service médical ni une offre de transport de voyageurs. Si le déplacement d’une personne est nécessaire, le passager conclut directement un contrat séparé avec un taxi, un VTC ou, lorsque son état l’exige, un transporteur sanitaire habilité. Nous pouvons coordonner les horaires pratiques avec le professionnel choisi par le client.',
+    ],
+    profiles: [
+      { title: 'Effets personnels et bagages', text: 'Récupération autorisée dans un logement ou un établissement, inventaire simple, chargement et livraison à l’adresse convenue.' },
+      { title: 'Véhicule, clés et interlocuteurs', text: 'Remise de clés ou de documents non sensibles, rendez-vous avec un garage ou un proche et constat photographique défini avant la mission.' },
+      { title: 'Itinéraire à plusieurs étapes', text: 'Une organisation Carcassonne–Toulouse, Montpellier, Paris ou autre destination, avec des arrêts et des horaires confirmés dans le devis.' },
+    ],
+    method: [
+      { title: 'Raconter la situation', text: 'Décrire le résultat attendu, les villes, la date impérative, les personnes à contacter et les contraintes déjà connues.' },
+      { title: 'Séparer chaque responsabilité', text: 'Lister ce que nous transportons, ce que nous remettons, ce que le client ou son représentant doit autoriser et les prestations exclues.' },
+      { title: 'Valider les preuves utiles', text: 'Prévoir inventaire, photos non sensibles, accusé de remise ou appel de confirmation, sans conserver de données médicales ou bancaires.' },
+      { title: 'Confirmer le déroulé écrit', text: 'Itinéraire, étapes, horaires, attente, frais, contacts et solution de repli apparaissent dans la proposition avant le départ.' },
+    ],
+    checklistTitle: 'Informations nécessaires pour étudier la mission',
+    checklistIntro: 'Une chronologie simple permet de vérifier rapidement si la demande est réalisable et d’éviter qu’une étape importante soit découverte en cours de route.',
+    checklist: [
+      'Ville et adresse de départ, destination et éventuelles étapes intermédiaires',
+      'Date souhaitée, heure limite et marge possible',
+      'Liste des biens, bagages, clés ou documents matériels à récupérer',
+      'Nom et téléphone de chaque interlocuteur autorisé',
+      'Conditions d’accès, étage, stationnement et temps d’attente probable',
+      'Situation du véhicule éventuel : emplacement, clés, garage et autorisation du propriétaire',
+      'Preuve de remise souhaitée : signature, photo des biens ou confirmation téléphonique',
+      'Coordonnées du taxi, VTC ou transporteur sanitaire choisi si un passager doit voyager',
+    ],
+    callout: {
+      title: 'Transport de personne exclu de notre devis logistique',
+      text: 'Nous ne facturons pas de transport médical ou de trajet passager sur cette page. Le voyage d’une personne doit être réservé et facturé séparément par un professionnel habilité. Notre mission peut être synchronisée avec son horaire de prise en charge.',
+    },
+    faqs: [
+      { q: 'Pouvez-vous récupérer des affaires dans un établissement ou un logement ?', a: 'La demande peut être étudiée si la personne qui donne accès est clairement identifiée et si le client dispose de l’autorisation nécessaire. Les biens à récupérer doivent être listés avant l’intervention.' },
+      { q: 'Pouvez-vous vous occuper d’une voiture laissée sur place ?', a: 'Nous pouvons étudier une remise de clés, un rendez-vous avec un garage, des photographies ou le transport d’objets contenus dans le véhicule. Conduire, remorquer, vendre ou faire réparer le véhicule exige l’accord écrit du propriétaire et peut nécessiter un professionnel distinct.' },
+      { q: 'Pouvez-vous ramener une personne après une hospitalisation ?', a: 'Transport Carcassonne ne propose pas de transport sanitaire ni de transport de voyageurs sur cette page. La personne doit réserver directement un taxi ou VTC habilité, ou un VSL, taxi conventionné ou ambulancier lorsque son état ou une prescription l’exige. Nous pouvons coordonner notre mission logistique avec cet horaire.' },
+      { q: 'Le prix est-il calculé au kilomètre ?', a: 'La distance compte, mais le prix dépend aussi du temps total, du nombre d’étapes, des attentes, des biens, des accès et des frais externes prévisibles. Seul le devis écrit confirme le montant.' },
+      { q: 'Pouvez-vous intervenir partout en France ?', a: 'Une demande au départ ou à destination de Carcassonne peut être étudiée pour toute la France selon le planning, la durée, les étapes et la faisabilité.' },
+    ],
+    related: [
+      { label: 'Déménagement longue distance', href: '/services/demenagement-longue-distance/', text: 'Pour un transfert classique de mobilier et de cartons en France.' },
+      { label: 'Transport urgent', href: '/transport-urgent-carcassonne/', text: 'Pour un besoin matériel local aujourd’hui ou demain.' },
+      { label: 'Objet ou document oublié', href: '/objet-oublie-transport-urgent-carcassonne/', text: 'Pour un petit objet, des clés ou un sac attendu rapidement ailleurs.' },
+    ],
   },
 };

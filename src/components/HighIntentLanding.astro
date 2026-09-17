@@ -4,6 +4,7 @@ import Header from './Header.astro';
 import Footer from './Footer.astro';
 import CTA from './CTA.astro';
 import Breadcrumbs from './Breadcrumbs.astro';
+import QuoteForm from './QuoteForm.astro';
 import type { HighIntentPage } from '../data/highIntentPages';
 import { SITE } from '../data/site.config';
 
@@ -141,11 +142,20 @@ const serviceSchema = {
     </section>
   </main>
 
-  <CTA
-    title={page.ctaTitle ?? 'Un projet à chiffrer à Carcassonne ?'}
-    subtitle={page.ctaSubtitle ?? 'Transmettez les adresses, l’inventaire et les contraintes d’accès pour recevoir une proposition adaptée au périmètre réel.'}
-    btnHref={quoteHref}
-  />
+  {page.embedQuoteForm ? (
+    <QuoteForm
+      title={page.ctaTitle ?? 'Décrivez votre mission sur mesure'}
+      subtitle={page.ctaSubtitle ?? 'Indiquez les lieux, la date, les biens concernés et les démarches pratiques à coordonner.'}
+      prefilledCity="Carcassonne"
+      prefilledService={page.quote.service}
+    />
+  ) : (
+    <CTA
+      title={page.ctaTitle ?? 'Un projet à chiffrer à Carcassonne ?'}
+      subtitle={page.ctaSubtitle ?? 'Transmettez les adresses, l’inventaire et les contraintes d’accès pour recevoir une proposition adaptée au périmètre réel.'}
+      btnHref={quoteHref}
+    />
+  )}
   <Footer />
 </BaseLayout>
 

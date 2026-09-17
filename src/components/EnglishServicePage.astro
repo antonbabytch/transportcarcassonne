@@ -9,14 +9,15 @@ import type { EnglishPage } from '../data/englishPages';
 
 const { page } = Astro.props as { page: EnglishPage };
 const pageUrl = new URL(`/en/${page.slug}/`, SITE.url).href;
-const related = [
+const defaultRelated = [
   { href: '/en/removals-carcassonne/', title: 'Carcassonne removals', text: 'Local homes, flats and villas.' },
   { href: '/en/urgent-transport-carcassonne/', title: 'Urgent transport', text: 'Today or tomorrow, subject to availability.' },
   { href: '/en/furniture-delivery-carcassonne/', title: 'Furniture delivery', text: 'Shop, storage or private collection.' },
   { href: '/en/uk-france-removals-carcassonne/', title: 'UK–France removals', text: 'Route and post-Brexit planning.' },
   { href: '/en/removal-prices-carcassonne/', title: 'Price guide', text: 'Indicative starting prices and cost factors.' },
   { href: '/en/moving-to-carcassonne/', title: 'Moving guide', text: 'Access, parking, inventory and completion dates.' },
-].filter(item => item.href !== `/en/${page.slug}/`).slice(0, 3);
+];
+const related = (page.related ?? defaultRelated).filter(item => item.href !== `/en/${page.slug}/`).slice(0, 3);
 
 const structuredData = {
   '@context': 'https://schema.org',

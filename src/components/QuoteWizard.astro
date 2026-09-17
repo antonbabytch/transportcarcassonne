@@ -766,6 +766,10 @@ const {
         setRadio('type_trajet', 'france');
         setHidden('request_context', 'trajet-groupe');
       }
+      if (service === 'mission-logistique') {
+        setRadio('type_trajet', 'france');
+        setHidden('request_context', 'mission-logistique-longue-distance');
+      }
       if (params.get('urgent') === '1') {
         setRadio('type_trajet', 'local');
         setHidden('request_context', 'transport-urgent-local');

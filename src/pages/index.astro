@@ -47,6 +47,7 @@ const specialties = [
   { title: 'Déménagement d’entreprise', text: 'Bureaux, commerces et activités : inventaire, accès et continuité à cadrer avant intervention.', href: '/demenagement-entreprise-carcassonne/' },
   { title: 'Accompagnement senior', text: 'Une préparation progressive et un périmètre d’aide clairement défini avec la personne concernée.', href: '/demenagement-senior-carcassonne/' },
   { title: 'Emballage et cartons', text: 'Matériel, objets fragiles et responsabilités détaillés dans la formule et le devis.', href: '/emballage-cartons-carcassonne/' },
+  { title: 'Mission logistique sur mesure', text: 'Effets personnels, bagages, clés, véhicule et plusieurs étapes à coordonner sur une longue distance.', href: '/mission-logistique-longue-distance/' },
 ];
 
 const faqs = [
@@ -441,7 +442,7 @@ const priceFmt = (n: number) => new Intl.NumberFormat('fr-FR').format(n) + ' €
   .step p { color: var(--text-muted); font-size: 14px; line-height: 1.6; }
 
   /* SPECIALITES */
-  .specialty-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; }
+  .specialty-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 24px; }
   .specialty-card { display: flex; flex-direction: column; min-height: 285px; background: var(--bg-dark-alt); border: 1px solid var(--line-dark); padding: 34px; transition: border-color .3s var(--ease-out), transform .35s var(--ease-out), box-shadow .35s var(--ease-out); }
   .specialty-card:hover { border-color: var(--accent); transform: translateY(-4px); box-shadow: var(--shadow-soft); }
   .specialty-card > span { color: var(--accent); font-size: 11px; letter-spacing: .16em; }
