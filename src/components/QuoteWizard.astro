@@ -399,8 +399,9 @@ const {
                 <input type="tel" name="telephone" autocomplete="tel" inputmode="tel" placeholder="06 00 00 00 00" minlength="8" required />
               </label>
               <label class="field">
-                <span>Email (obligatoire si contact par email)</span>
-                <input type="email" name="email" autocomplete="email" placeholder="vous@exemple.fr" />
+                <span>Email *</span>
+                <input type="email" name="email" autocomplete="email" inputmode="email" placeholder="vous@exemple.fr" required aria-describedby="wizard-email-help" />
+                <small id="wizard-email-help">Obligatoire pour recevoir notre réponse et votre devis écrit.</small>
               </label>
               <label class="field">
                 <span>Moyen de contact préféré</span>
@@ -500,6 +501,7 @@ const {
   .field textarea { min-height: 100px; resize: vertical; }
   .field input:focus, .field select:focus, .field textarea:focus { outline: 0; border-color: var(--color-accent); box-shadow: 0 0 0 3px rgba(168,112,63,.12); }
   .field input:invalid.is-touched, .field select:invalid.is-touched { border-color: #b42318; }
+  .field > small { color: var(--color-text-light); font-size: .7rem; font-weight: 400; line-height: 1.4; }
   .field__suffix { position: relative; display: block; }
   .field__suffix input { padding-right: 48px; }
   .field__suffix em { position: absolute; right: 13px; top: 50%; transform: translateY(-50%); color: var(--color-text-light); font-style: normal; font-weight: 600; }
@@ -584,8 +586,6 @@ const {
     const errorBox = form.querySelector<HTMLElement>('.wizard__error');
     const dateInput = form.elements.namedItem('date_souhaitee') as HTMLInputElement | null;
     const dateNotice = form.querySelector<HTMLElement>('[data-date-notice]');
-    const emailInput = form.elements.namedItem('email') as HTMLInputElement | null;
-    const preferredContact = form.elements.namedItem('contact_prefere') as HTMLSelectElement | null;
     const submitButton = form.querySelector<HTMLButtonElement>('.wizard__submit');
     const videoSlot = form.querySelector<HTMLElement>('[data-video-slot]');
     const stepNames = ['Trajet', 'Accès', 'Volume', 'Visite', 'Contact'];
@@ -857,11 +857,6 @@ const {
       videoSlot.hidden = value('visite_video') !== 'oui';
     };
 
-    const updateContactRequirements = () => {
-      if (!emailInput) return;
-      emailInput.required = preferredContact?.value === 'email';
-    };
-
     const updateSummary = () => {
       const list = form.querySelector<HTMLElement>('[data-summary]');
       if (!list) return;
@@ -892,7 +887,6 @@ const {
     };
 
     const validateStep = (index: number) => {
-      if (index === 4) updateContactRequirements();
       const controls = Array.from(steps[index].querySelectorAll<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>('input, select, textarea'));
       controls.forEach((control) => {
         if (!control.checkValidity()) {
@@ -943,7 +937,6 @@ const {
     applyQueryPrefill();
     updateDateNotice();
     updateVideoSlot();
-    updateContactRequirements();
     computeEstimate();
     showStep(0, false);
 
@@ -953,14 +946,12 @@ const {
       computeEstimate();
       updateDateNotice();
       updateVideoSlot();
-      updateContactRequirements();
     });
     form.addEventListener('change', () => {
       saveDraft();
       computeEstimate();
       updateDateNotice();
       updateVideoSlot();
-      updateContactRequirements();
     });
 
     form.querySelectorAll<HTMLButtonElement>('.wizard__next').forEach((button) => {

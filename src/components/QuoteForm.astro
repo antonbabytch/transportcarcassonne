@@ -73,6 +73,26 @@ const formSubtitle = subtitle ?? (isEnglish ? 'Tell us about the route, volume, 
 
       <div class="qf__row">
         <div class="qf__field">
+          <label class="qf__label" for="qf-email">{isEnglish ? 'Email address' : 'Adresse email'} *</label>
+          <input
+            class="qf__input"
+            type="email"
+            id="qf-email"
+            name="email"
+            placeholder={isEnglish ? 'you@example.com' : 'vous@exemple.fr'}
+            required
+            autocomplete="email"
+            inputmode="email"
+            aria-describedby="qf-email-help"
+          />
+          <small class="qf__help" id="qf-email-help">
+            {isEnglish ? 'Required so we can send your written reply and quote.' : 'Obligatoire pour vous envoyer notre réponse et votre devis écrit.'}
+          </small>
+        </div>
+      </div>
+
+      <div class="qf__row">
+        <div class="qf__field">
           <label class="qf__label" for="qf-type">{isEnglish ? 'Service required' : 'Type de prestation'} *</label>
           <select class="qf__input qf__select" id="qf-type" name="type_demenagement" required>
             <option value="" disabled selected={!prefilledService}>{isEnglish ? 'Choose a service…' : 'Choisissez une prestation…'}</option>
@@ -227,6 +247,11 @@ const formSubtitle = subtitle ?? (isEnglish ? 'Tell us about the route, volume, 
     box-shadow: 0 0 0 3px rgba(198,138,78,.12);
   }
   .qf__input::placeholder { color: rgba(156,163,172,.5); }
+  .qf__help {
+    color: var(--text-on-dark-muted);
+    font-size: .75rem;
+    line-height: 1.45;
+  }
   .qf__select option { background: var(--bg-dark); color: var(--text-on-dark); }
 
   .qf__select {
