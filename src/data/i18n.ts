@@ -1,6 +1,8 @@
 import { ENGLISH_PAGES } from './englishPages';
+import { ADDITIONAL_SERVICES } from './additionalServices';
 
 const ROUTES = [
+  ...ADDITIONAL_SERVICES.map(service => [`/${service.slug}/`, `/en/${service.englishSlug}/`] as const),
   ['/', '/en/'],
   ['/devis/', '/en/quote/'],
   ['/contact/', '/en/contact/'],

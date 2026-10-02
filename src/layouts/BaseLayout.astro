@@ -318,19 +318,19 @@ const schemaOrg = {
           });
         });
 
-        // Form submits (Netlify forms)
-        document.querySelectorAll('form[data-netlify="true"], form[name]').forEach(form => {
-          form.addEventListener('submit', () => {
-            if (typeof gtag === 'function') {
-              gtag('event', 'form_submit', {
-                event_category: 'lead',
-                event_label: form.getAttribute('name') || 'unknown_form'
-              });
-            }
-          });
-        });
       });
     </script>
+
+    <script>
+      import { enhanceLeadForms } from '../scripts/lead-submission.mjs';
+      enhanceLeadForms();
+    </script>
+
+    <style is:global>
+      .lead-submit-status { margin: 16px 0; padding: 14px 16px; border-radius: 6px; background: #fff4ed; color: #702700; line-height: 1.6; }
+      .lead-submit-status[hidden] { display: none; }
+      form[aria-busy="true"] button[type="submit"] { opacity: .7; cursor: wait; }
+    </style>
 
     <!-- Rating/count are refreshed from the daily Netlify cache when present. -->
     <script is:inline>
@@ -498,6 +498,7 @@ const schemaOrg = {
   }
 
   html { scroll-behavior: smooth; }
+  #quote { scroll-margin-top: 100px; }
 
   body {
     font-family: var(--font-sans);

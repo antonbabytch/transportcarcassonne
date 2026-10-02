@@ -586,7 +586,6 @@ const {
     const errorBox = form.querySelector<HTMLElement>('.wizard__error');
     const dateInput = form.elements.namedItem('date_souhaitee') as HTMLInputElement | null;
     const dateNotice = form.querySelector<HTMLElement>('[data-date-notice]');
-    const submitButton = form.querySelector<HTMLButtonElement>('.wizard__submit');
     const videoSlot = form.querySelector<HTMLElement>('[data-video-slot]');
     const stepNames = ['Trajet', 'Accès', 'Volume', 'Visite', 'Contact'];
     const storageKey = 'transport-carcassonne-devis-v1';
@@ -746,6 +745,12 @@ const {
         }
       });
       const service = params.get('service');
+      if (['livraison-leboncoin-carcassonne', 'transport-box-stockage-carcassonne', 'transport-etudiant-carcassonne'].includes(service || '')) {
+        setRadio('type_trajet', 'local');
+        setHidden('request_context', service || '');
+        const housing = field('logement_depart');
+        if (housing) housing.value = 'petit-volume';
+      }
       if (service === 'demenagement-local') setRadio('type_trajet', 'local');
       if (service === 'demenagement-longue-distance') setRadio('type_trajet', 'france');
       if (service === 'demenagement-international') setRadio('type_trajet', 'international');
@@ -985,18 +990,8 @@ const {
         event.preventDefault();
         return;
       }
-      const estimate = computeEstimate();
+      computeEstimate();
       setHidden('wizard_completed', 'oui');
-      track('devis_wizard_submit', {
-        form_version: 'smart-devis-v1',
-        estimate_min: estimate?.low || 0,
-        estimate_max: estimate?.high || 0,
-        route_type: estimate?.route || 'unknown',
-      });
-      if (submitButton) {
-        submitButton.disabled = true;
-        submitButton.textContent = 'Envoi en cours…';
-      }
     });
   }
 </script>

@@ -91,7 +91,7 @@ const stars = (n: number) => '★'.repeat(n) + '☆'.repeat(5 - n);
   .gr__stars { color: var(--color-accent); letter-spacing: .1em; }
   .gr__rating strong { color: var(--color-navy); }
 
-  .gr__grid { list-style: none; padding: 0; margin: 34px 0 0; display: grid; gap: 20px; grid-template-columns: repeat(auto-fit, minmax(290px, 1fr)); }
+  .gr__grid { list-style: none; padding: 0; margin: 34px 0 0; display: grid; gap: 20px; grid-template-columns: repeat(auto-fit, minmax(min(290px, 100%), 1fr)); }
   .gr__card { display: flex; flex-direction: column; gap: 12px; background: var(--color-white); border: 1px solid var(--color-border); border-radius: var(--radius-lg); padding: 24px 26px; }
   .gr__card-head { display: flex; align-items: center; justify-content: space-between; gap: 10px; margin: 0; }
   .gr__card-stars { color: var(--color-accent); letter-spacing: .1em; font-size: .95rem; }

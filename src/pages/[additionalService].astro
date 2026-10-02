@@ -1,0 +1,9 @@
+---
+import HighIntentLanding from '../components/HighIntentLanding.astro';
+import { ADDITIONAL_FRENCH_PAGES } from '../data/additionalServices';
+export function getStaticPaths() {
+  return ADDITIONAL_FRENCH_PAGES.map(page => ({ params: { additionalService: page.slug }, props: { page } }));
+}
+const { page } = Astro.props;
+---
+<HighIntentLanding page={page} />

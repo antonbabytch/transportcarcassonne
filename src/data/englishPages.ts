@@ -1,4 +1,5 @@
 import { CITIES } from './cities';
+import { ADDITIONAL_ENGLISH_PAGES } from './additionalServices';
 
 export interface EnglishPageSection {
   title: string;
@@ -766,6 +767,6 @@ const cityPages: EnglishPage[] = CITIES.filter(city => city.slug !== 'carcassonn
   ],
 }));
 
-export const ENGLISH_PAGES = [...commercialPages, ...cityPages];
+export const ENGLISH_PAGES = [...commercialPages, ...cityPages, ...ADDITIONAL_ENGLISH_PAGES];
 
 export const ENGLISH_PAGE_BY_SLUG = new Map(ENGLISH_PAGES.map(page => [page.slug, page]));

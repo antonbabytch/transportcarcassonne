@@ -46,7 +46,7 @@ const serviceSchema = {
           <h1>{page.title}</h1>
           <p>{page.intro}</p>
           <div class="intent-hero__actions">
-            <a class="btn btn--primary btn--lg" href={quoteHref}>{page.primaryCta ?? 'Décrire mon projet'}</a>
+            <a class="btn btn--primary btn--lg" href={page.embedQuoteForm ? '#quote' : quoteHref}>{page.primaryCta ?? 'Décrire mon projet'}</a>
             <a class="intent-phone" href={`tel:${SITE.phone}`} data-source={`landing-${page.slug}`}>{page.phoneCta ?? SITE.phoneDisplay}</a>
           </div>
         </div>
@@ -143,12 +143,14 @@ const serviceSchema = {
   </main>
 
   {page.embedQuoteForm ? (
+    <div id="quote">
     <QuoteForm
       title={page.ctaTitle ?? 'Décrivez votre mission sur mesure'}
       subtitle={page.ctaSubtitle ?? 'Indiquez les lieux, la date, les biens concernés et les démarches pratiques à coordonner.'}
       prefilledCity="Carcassonne"
       prefilledService={page.quote.service}
     />
+    </div>
   ) : (
     <CTA
       title={page.ctaTitle ?? 'Un projet à chiffrer à Carcassonne ?'}

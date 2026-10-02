@@ -2,6 +2,7 @@
 import { SITE } from '../data/site.config';
 import { SERVICES } from '../data/services';
 import { CITIES } from '../data/cities';
+import { ADDITIONAL_SERVICES } from '../data/additionalServices';
 
 interface Props { lang?: 'fr' | 'en'; }
 const { lang = 'fr' } = Astro.props;
@@ -74,6 +75,7 @@ const englishServices = [
               <li><a href="/tarifs/">Nos tarifs</a></li>
             </>
           )}
+          {ADDITIONAL_SERVICES.map(service => <li><a href={isEnglish ? `/en/${service.englishSlug}/` : `/${service.slug}/`}>{isEnglish ? service.englishTitle : service.title}</a></li>)}
         </ul>
       </div>
 

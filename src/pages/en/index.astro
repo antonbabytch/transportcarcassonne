@@ -4,8 +4,10 @@ import Header from '../../components/Header.astro';
 import Footer from '../../components/Footer.astro';
 import QuoteForm from '../../components/QuoteForm.astro';
 import GoogleReviews from '../../components/GoogleReviews.astro';
+import AdditionalServices from '../../components/AdditionalServices.astro';
 import { SITE } from '../../data/site.config';
 import { CITIES } from '../../data/cities';
+import { GOOGLE_RATING, hasGoogleRating } from '../../data/reviews.config';
 
 const title = 'Moving Company Carcassonne | English Removal Service';
 const description = 'English-language removal and transport enquiries in Carcassonne for homes, villas, furniture, urgent local jobs and UK–France moves. Free written quote.';
@@ -85,9 +87,11 @@ const structuredData = {
         <div><strong>Carcassonne</strong><span>Registered local base</span></div>
         <div><strong>50 km</strong><span>Core local service area</span></div>
         <div><strong>24/7</strong><span>Enquiries · work by appointment</span></div>
-        <div data-google-rating-live><strong><span aria-hidden="true">★</span> <span data-google-rating-label data-google-rating-lang="en" data-google-rating-suffix="Google reviews">5.0/5 · 5 Google reviews</span></strong><span>Public Google profile</span></div>
+        {hasGoogleRating && <div data-google-rating-live><strong><span aria-hidden="true">★</span> <span data-google-rating-label data-google-rating-lang="en" data-google-rating-suffix="Google reviews">{GOOGLE_RATING.average.toFixed(1)}/5 · {GOOGLE_RATING.count} Google reviews</span></strong><span>Public Google profile</span></div>}
       </div>
     </section>
+
+    <GoogleReviews lang="en" />
 
     <section class="eh-services">
       <div class="container">
@@ -105,6 +109,8 @@ const structuredData = {
         </div>
       </div>
     </section>
+
+    <AdditionalServices lang="en" />
 
     <section class="eh-expat">
       <div class="container eh-expat__grid">
@@ -179,8 +185,6 @@ const structuredData = {
         </div>
       </div>
     </section>
-
-    <GoogleReviews lang="en" />
 
     <section class="eh-faq" id="faq">
       <div class="container eh-faq__wrap">

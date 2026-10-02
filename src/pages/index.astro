@@ -7,6 +7,7 @@ import RoadDivider from '../components/RoadDivider.astro';
 import QuoteForm from '../components/QuoteForm.astro';
 import ComboOffer from '../components/ComboOffer.astro';
 import GoogleReviews from '../components/GoogleReviews.astro';
+import AdditionalServices from '../components/AdditionalServices.astro';
 import UrgentTransportSpotlight from '../components/UrgentTransportSpotlight.astro';
 import { SITE } from '../data/site.config';
 import { SERVICES } from '../data/services';
@@ -105,6 +106,8 @@ const priceFmt = (n: number) => new Intl.NumberFormat('fr-FR').format(n) + ' €
 
   <UrgentTransportSpotlight />
 
+  <GoogleReviews />
+
   <!-- ============ MARQUEE ============ -->
   <div class="marquee">
     <div class="marquee-in">
@@ -153,6 +156,8 @@ const priceFmt = (n: number) => new Intl.NumberFormat('fr-FR').format(n) + ' €
   </section>
 
   <!-- ============ CALCULATEUR DE VOLUME ============ -->
+  <AdditionalServices />
+
   <section class="volume-promo">
     <div class="container volume-promo__grid">
       <div class="volume-promo__copy reveal">
@@ -306,8 +311,6 @@ const priceFmt = (n: number) => new Intl.NumberFormat('fr-FR').format(n) + ' €
       <a class="specialty-formulas reveal" href="/formules/">Comparer les trois formules →</a>
     </div>
   </section>
-
-  <GoogleReviews />
 
   <!-- ============ FAQ ============ -->
   <section class="d-section">
