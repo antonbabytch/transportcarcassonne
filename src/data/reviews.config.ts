@@ -60,29 +60,32 @@ export interface GoogleReview {
   service?: string;
 }
 
-// Avis recopiés depuis la fiche Google, sans modification :
-// ponctuation et espacement d'origine conservés.
+// Sélection fournie par le propriétaire le 3 octobre 2026 (captures Google).
+// Le mois correspond à la visite affichée. La fin tronquée est signalée par […].
 export const GOOGLE_REVIEWS: GoogleReview[] = [
   {
     quote:
-      "Équipe au top et très ponctuelle . Grâce à eux la surprise pour l anniversaire d une amie a été très réussie . Très bonne communication . Merci à eux",
-    author: 'Samia B.',
+      'Transport Carcassonne, ils étaient excellents, polis et bien aimables vu comment ils nous ont aidé à mettre en place les meubles quand bien même qu’ils étaient pas obligés. Merci encore.\nJe vous les conseille à 100%',
+    author: 'Faïzou D.',
     rating: 5,
-    month: '2026-06',
+    month: '2026-09',
   },
   {
-    quote: 'Super service ! Je recommande vivement',
-    author: 'Ivan R.',
-    rating: 5,
-    month: '2026-05',
-  },
-  {
-    quote:
-      "Le déménagement s'est déroulé facilement et sans problème, les déménageurs ont fait un excellent travail et le prix était raisonnable.",
-    author: 'Наталья Е.',
+    quote: "Super contente de l'intervention. Ils n'ont pas pu venir hier..mon prévenu. Sont venus aujourd'hui.à l'heure prévue intervention rapide..descente d'un sèchelinge à condensation du.1er étage et repris..je recommande […]",
+    author: 'Maryse',
     rating: 5,
     month: '2026-09',
   },
 ];
+
+// Avis de l'activité partenaire : jamais intégré à GOOGLE_REVIEWS ni à sa note.
+// Attribution Débarras Carcassonne confirmée par le propriétaire.
+export const PARTNER_REVIEW: GoogleReview & { continuation: string } = {
+  author: 'Louis C.',
+  rating: 5,
+  month: '2026-09',
+  quote: 'Un immense merci à Débarras Carcassonne !\nIntervention réalisée dans un appartement qui demandait énormément de travail, et le résultat est tout simplement impressionnant. Je ne reconnais plus les lieux.',
+  continuation: 'Au-delà de la qualité du travail, j’ai surtout apprécié le professionnalisme, la disponibilité, la gentillesse et le sérieux du début à la fin. Communication parfaite, devis clair, travail efficace et soigné.\n\nOn sent vraiment quelqu’un qui prend son travail à cœur et qui cherche à rendre service à ses clients. C’est suffisamment rare pour être souligné.\n\nJe recommande sans aucune hésitation. Encore merci pour votre travail exceptionnel !',
+};
 
 export const hasGoogleReviews = GOOGLE_REVIEWS.length > 0;

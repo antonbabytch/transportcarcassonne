@@ -7,6 +7,7 @@
  */
 import {
   GOOGLE_REVIEWS,
+  PARTNER_REVIEW,
   GOOGLE_RATING,
   GOOGLE_PROFILE_URL,
   hasGoogleReviews,
@@ -27,7 +28,7 @@ const {
 } = Astro.props;
 const isEnglish = lang === 'en';
 const sectionTitle = title ?? (isEnglish ? 'What customers say' : 'Ce que disent nos clients');
-const sectionSubtitle = subtitle ?? (isEnglish ? 'Reviews published on our Google profile. Original wording is preserved.' : 'Avis publiés sur notre fiche Google, repris ici sans modification.');
+const sectionSubtitle = subtitle ?? (isEnglish ? 'Selected Google reviews about Transport Carcassonne, in the original French. Omissions are marked […].' : 'Une sélection d’avis Google sur Transport Carcassonne. Textes d’origine conservés ; les coupes sont signalées par […].');
 
 const ratingLabel = hasGoogleRating
   ? `${GOOGLE_RATING.average.toLocaleString(isEnglish ? 'en-GB' : 'fr-FR', { minimumFractionDigits: 1 })}/5 · ${GOOGLE_RATING.count} ${isEnglish ? 'Google reviews' : 'avis Google'}`
@@ -66,7 +67,7 @@ const stars = (n: number) => '★'.repeat(n) + '☆'.repeat(5 - n);
             <footer class="gr__meta">
               <span class="gr__author">{review.author}</span>
               <span class="gr__sep" aria-hidden="true">·</span>
-              <time datetime={review.month}>{formatMonth(review.month)}</time>
+              <span>{isEnglish ? 'Visited' : 'Visite en'} <time datetime={review.month}>{formatMonth(review.month)}</time></span>
               {review.service && <span class="gr__service">{review.service}</span>}
             </footer>
           </li>
@@ -76,10 +77,37 @@ const stars = (n: number) => '★'.repeat(n) + '☆'.repeat(5 - n);
       {hasGoogleProfileUrl && (
         <p class="gr__source">
           <a href={GOOGLE_PROFILE_URL} target="_blank" rel="noopener noreferrer" data-source="avis-google">
-            {isEnglish ? 'Read all reviews on Google' : 'Lire tous les avis sur Google'} →
+            {isEnglish ? 'All Transport Carcassonne reviews on Google' : 'Tous les avis Transport Carcassonne sur Google'} →
           </a>
         </p>
       )}
+
+      <aside class="gr__partner" aria-labelledby="partner-review-title">
+        <div class="gr__partner-intro">
+          <span class="gr__partner-label">{isEnglish ? 'Partner business' : 'Activité partenaire'}</span>
+          <h3 id="partner-review-title">Débarras Carcassonne</h3>
+          <p>{isEnglish ? 'A separate customer review about our partner’s clearance service, not a Transport Carcassonne transport job.' : 'Un retour client sur une prestation de débarras de notre partenaire, distincte des prestations de transport de Transport Carcassonne.'}</p>
+          <p class="gr__partner-disclaimer">{isEnglish ? 'This review is not included in the Transport Carcassonne Google rating shown above.' : 'Cet avis n’entre pas dans la note Google de Transport Carcassonne affichée ci-dessus.'}</p>
+        </div>
+        <article class="gr__card gr__partner-card">
+          <p class="gr__card-head">
+            <span class="gr__card-stars" role="img" aria-label={isEnglish ? '5 stars out of 5' : '5 étoiles sur 5'}><span aria-hidden="true">{stars(PARTNER_REVIEW.rating)}</span></span>
+            <span class="gr__via">via Google</span>
+          </p>
+          <blockquote class="gr__quote gr__quote--partner">
+            <p>{PARTNER_REVIEW.quote}</p>
+            <details class="gr__full-review">
+              <summary><span class="gr__read-more">{isEnglish ? 'Read the full review' : 'Lire l’avis complet'}</span><span class="gr__read-less">{isEnglish ? 'Show less' : 'Réduire'}</span></summary>
+              <p>{PARTNER_REVIEW.continuation}</p>
+            </details>
+          </blockquote>
+          <footer class="gr__meta">
+            <span class="gr__author">{PARTNER_REVIEW.author}</span><span aria-hidden="true">·</span>
+            <span>{isEnglish ? 'Visited' : 'Visite en'} <time datetime={PARTNER_REVIEW.month}>{formatMonth(PARTNER_REVIEW.month)}</time></span>
+            <span class="gr__service">{isEnglish ? 'Review about Débarras Carcassonne' : 'Avis concernant Débarras Carcassonne'}</span>
+          </footer>
+        </article>
+      </aside>
     </div>
   </section>
 )}
@@ -96,7 +124,7 @@ const stars = (n: number) => '★'.repeat(n) + '☆'.repeat(5 - n);
   .gr__card-head { display: flex; align-items: center; justify-content: space-between; gap: 10px; margin: 0; }
   .gr__card-stars { color: var(--color-accent); letter-spacing: .1em; font-size: .95rem; }
   .gr__via { font-size: .72rem; font-weight: 700; letter-spacing: .06em; text-transform: uppercase; color: var(--color-text-light); }
-  .gr__quote { margin: 0; font-size: .96rem; line-height: 1.7; color: var(--color-text); }
+  .gr__quote { margin: 0; font-size: .96rem; line-height: 1.7; color: var(--color-text); white-space: pre-line; }
   .gr__quote::before { content: '«\00a0'; }
   .gr__quote::after { content: '\00a0»'; }
   .gr__meta { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; margin-top: auto; font-size: .84rem; color: var(--color-text-light); }
@@ -106,6 +134,24 @@ const stars = (n: number) => '★'.repeat(n) + '☆'.repeat(5 - n);
   .gr__source { margin-top: 26px; text-align: center; font-size: .92rem; }
   .gr__source a { color: var(--color-navy); text-decoration: none; border-bottom: 1px solid var(--color-border); }
   .gr__source a:hover { color: var(--color-accent); border-bottom-color: currentColor; }
+
+  .gr__partner { margin-top: 40px; padding-top: 32px; border-top: 1px solid var(--color-border); display: grid; grid-template-columns: minmax(0, .8fr) minmax(0, 1.2fr); gap: 28px; align-items: start; }
+  .gr__partner-intro { padding: 8px 0; }
+  .gr__partner-label { display: inline-block; border: 1px solid var(--color-border); border-radius: 30px; padding: 5px 12px; font-size: .74rem; font-weight: 600; color: var(--color-text-light); }
+  .gr__partner h3 { margin: 14px 0 12px; font-size: 1.45rem; }
+  .gr__partner-intro p { font-size: .92rem; line-height: 1.65; color: var(--color-text-light); }
+  .gr__partner-intro .gr__partner-disclaimer { font-size: .8rem; margin-top: 12px; }
+  .gr__partner-card { border-left: 3px solid var(--color-accent); }
+  .gr__quote--partner { white-space: normal; }
+  .gr__quote--partner::before, .gr__quote--partner::after { content: none; }
+  .gr__quote--partner p { margin: 0; white-space: pre-line; }
+  .gr__full-review { margin-top: 12px; }
+  .gr__full-review summary { cursor: pointer; font-size: .84rem; font-weight: 600; color: var(--color-navy); }
+  .gr__full-review summary:focus-visible { outline: 2px solid var(--color-accent); outline-offset: 4px; }
+  .gr__full-review[open] p { margin-top: 12px; }
+  .gr__read-less, .gr__full-review[open] .gr__read-more { display: none; }
+  .gr__full-review[open] .gr__read-less { display: inline; }
+  @media (max-width: 760px) { .gr__partner { grid-template-columns: 1fr; gap: 18px; } }
 
   @media (max-width: 640px) {
     .gr__card { padding: 20px; }

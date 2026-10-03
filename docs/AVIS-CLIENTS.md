@@ -31,6 +31,20 @@ aucun nom, texte d'avis ou autre donnée client.
 
 ## Afficher le texte d'un nouvel avis sur le site
 
+### Sélection du 3 octobre 2026
+
+Les captures Google fournies par le propriétaire servent de source à la sélection
+Faïzou D. et Maryse. Septembre 2026 est le mois de visite, pas une date de publication
+inventée. Le texte de Maryse est tronqué dans la capture : la coupe est signalée par
+« […] ». Les noms sont abrégés suivant la règle éditoriale du site.
+
+Louis C. remercie explicitement Débarras Carcassonne. Sur confirmation du
+propriétaire, son avis figure dans `PARTNER_REVIEW`, dans un bloc partenaire
+distinct, avec son attribution d'origine et un texte intégral dépliable. Il ne
+fait pas partie de `GOOGLE_REVIEWS` et ne modifie ni la note ni le nombre d'avis
+de Transport Carcassonne. Aucun lien Google de l'activité partenaire n'est
+inventé. La capture alternative sans nom d'auteur n'est pas publiée.
+
 Les avis affichés sont recopiés à la main dans `src/data/reviews.config.ts`.
 Seuls la moyenne et le nombre total sont automatiques. L'API Google Places
 impose une clé, une facturation et des limites de mise en cache, et ne renvoie
