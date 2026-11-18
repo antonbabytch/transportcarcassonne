@@ -8,7 +8,7 @@ interface Props { lang?: 'fr' | 'en'; }
 const { lang = 'fr' } = Astro.props;
 const en = lang === 'en';
 const title = en ? 'Removal insurance & protection | Transport Carcassonne' : 'Assurance déménagement et protection | Transport Carcassonne';
-const description = en ? 'Our Allianz liability certificate, its stated validity, and the checks needed for pianos and valuable items. Request the certificate before booking.' : 'Attestation de responsabilité civile Allianz, période indiquée et vérifications pour les pianos et objets de valeur. Demandez le justificatif avant réservation.';
+const description = en ? 'Our Allianz liability certificate and the checks needed for pianos and valuable items. Request the certificate before booking.' : 'Attestation de responsabilité civile Allianz et vérifications pour les pianos et objets de valeur. Demandez le justificatif avant réservation.';
 const faqs = INSURANCE_FAQS[lang];
 const email = `mailto:${SITE.email}?subject=${encodeURIComponent(en ? 'Insurance certificate request — Transport Carcassonne' : 'Demande d’attestation d’assurance — Transport Carcassonne')}&body=${encodeURIComponent(en ? 'Hello, I would like your insurance certificate for this project.\nPlanned date:\nCollection and delivery towns:\nItems and estimated value:\nQuestions about cover:\n' : 'Bonjour, je souhaite recevoir votre attestation d’assurance pour ce projet.\nDate prévue :\nVilles de départ et d’arrivée :\nBiens et valeur estimée :\nQuestions sur les garanties :\n')}`;
 const steps = en ? [
@@ -40,10 +40,8 @@ const steps = en ? [
           <p>Allianz Solution Entreprise</p>
           <dl>
             <div><dt>{en ? 'Insured business' : 'Entreprise assurée'}</dt><dd>{SITE.legalName}<br />Transport Carcassonne</dd></div>
-            <div><dt>{en ? 'Declared activity' : 'Activité déclarée'}</dt><dd>{en ? 'Removals without furniture storage' : 'Déménagement sans garde-meubles'}</dd></div>
-            <div><dt>{en ? 'Stated period' : 'Période indiquée'}</dt><dd><time datetime={INSURANCE.certificateFrom}>01/11/2026</time> – <time datetime={INSURANCE.certificateUntil}>31/10/2027</time></dd></div>
           </dl>
-          <small>{en ? 'Subject to payment of premiums. The certificate confirms the existence of a policy, not automatic cover for every claim. For a later date, request a renewed certificate.' : 'Sous réserve du paiement des cotisations. L’attestation confirme l’existence d’un contrat, pas la couverture automatique de tout sinistre. Pour une date ultérieure, demandez une attestation renouvelée.'}</small>
+          <small>{en ? 'Subject to payment of premiums. The certificate confirms the existence of a policy, not automatic cover for every claim. Request the certificate applicable to your planned move.' : 'Sous réserve du paiement des cotisations. L’attestation confirme l’existence d’un contrat, pas la couverture automatique de tout sinistre. Demandez l’attestation applicable à votre déménagement.'}</small>
         </aside>
       </div>
     </section>

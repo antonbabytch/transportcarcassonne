@@ -23,6 +23,16 @@ test('both insurance routes have reciprocal language mappings and footer links',
   assert.match(await source('src/pages/en/removal-insurance.astro'), /<InsurancePage lang="en"/);
 });
 
+test('public insurance blocks omit certificate dates and card activity row', async () => {
+  for (const file of ['src/components/InsuranceNotice.astro', 'src/components/InsurancePage.astro']) {
+    const text = await source(file);
+    assert.doesNotMatch(text, /2026|2027|certificateFrom|certificateUntil|Stated period|Période indiquée|Declared activity|Activité déclarée/);
+  }
+  const data = await source('src/data/insurance.ts');
+  const faqs = data.slice(data.indexOf('export const INSURANCE_FAQS'));
+  assert.doesNotMatch(faqs, /2026|2027/);
+});
+
 test('both lead forms show special-item guidance without collecting new data', async () => {
   for (const file of ['src/components/QuoteForm.astro', 'src/components/QuoteWizard.astro']) {
     assert.match(await source(file), /<SpecialItemsNotice/);
