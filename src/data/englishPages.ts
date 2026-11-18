@@ -262,6 +262,7 @@ const commercialPages: EnglishPage[] = [
     faqs: [
       { q: 'Can every piano be moved?', a: 'No. Feasibility depends on the piano, access, weight, route and resources available. A detailed check is required before confirmation.' },
       { q: 'Do you move grand pianos?', a: 'A grand piano enquiry can be assessed, but it may require specialist preparation and equipment. Never assume the standard furniture service applies.' },
+      { q: 'Is my piano insured for its full value?', a: 'Our Allianz professional civil liability certificate alone does not establish full-value cover for a piano. Provide its estimated value and access details; feasibility, applicable cover, limits and excesses must be confirmed in writing before booking, with the insurer where necessary.' },
       { q: 'Can you quote from photographs?', a: 'Photos help, but measurements, step counts, turns, weight and parking details are also required.' },
     ],
   },

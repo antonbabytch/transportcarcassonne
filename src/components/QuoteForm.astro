@@ -1,4 +1,6 @@
 ---
+import InsuranceNotice from './InsuranceNotice.astro';
+import SpecialItemsNotice from './SpecialItemsNotice.astro';
 interface Props {
   title?: string;
   subtitle?: string;
@@ -28,6 +30,7 @@ const formSubtitle = subtitle ?? (isEnglish ? 'Tell us about the route, volume, 
       <p class="section-subtitle">{formSubtitle}</p>
     </div>
 
+    <InsuranceNotice lang={lang} />
     <form
       class="qf reveal"
       name="devis-transport"
@@ -165,6 +168,8 @@ const formSubtitle = subtitle ?? (isEnglish ? 'Tell us about the route, volume, 
           ></textarea>
         </div>
       </div>
+
+      <SpecialItemsNotice lang={lang} piano={prefilledService === 'transport-piano'} />
 
       <div class="qf__row">
         <button type="submit" class="qf__submit btn btn--primary btn--lg">

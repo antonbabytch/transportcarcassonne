@@ -1,0 +1,23 @@
+---
+import { INSURANCE } from '../data/insurance';
+interface Props { lang?: 'fr' | 'en'; }
+const { lang = 'fr' } = Astro.props;
+const en = lang === 'en';
+---
+<aside class="insurance-notice" aria-label={en ? 'Insurance information' : 'Information assurance'}>
+  <svg width="30" height="34" viewBox="0 0 24 28" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="M12 2 3 6v8c0 6 9 11 9 11s9-5 9-11V6Z"/><path d="m7 13 3 3 7-7"/></svg>
+  <div>
+    <strong>{en ? 'Professional civil liability · Allianz' : 'Responsabilité civile professionnelle · Allianz'}</strong>
+    <p>{en ? 'Certificate available on request · stated period: 1 Nov 2026–31 Oct 2027, subject to payment of premiums. Policy terms and limits apply; cover for valuable items must be confirmed separately.' : 'Attestation sur demande · période indiquée : 01/11/2026–31/10/2027, sous réserve du paiement des cotisations. Conditions et limites du contrat applicables ; couverture des objets de valeur à confirmer séparément.'}</p>
+    <a href={INSURANCE.paths[lang]}>{en ? 'Insurance details & certificate request' : 'Comprendre les garanties et demander l’attestation'} <span aria-hidden="true">→</span></a>
+  </div>
+</aside>
+<style>
+  .insurance-notice { display:flex; align-items:flex-start; gap:16px; padding:22px 24px; margin:24px auto; max-width:1100px; border:1px solid #d7bc99; border-radius:12px; background:#f8f4ed; color:#282520; text-align:left; }
+  svg { flex:none; color:#946031; margin-top:2px; }
+  strong { display:block; font-family:var(--font-sans); font-size:.95rem; line-height:1.5; }
+  p { margin:6px 0 9px; font-size:.8rem; line-height:1.65; color:#5e574e; }
+  a { font-size:.82rem; font-weight:600; color:#805021; text-decoration:underline; text-underline-offset:3px; }
+  a:focus-visible { outline:2px solid #805021; outline-offset:4px; }
+  @media(max-width:600px) { .insurance-notice { padding:18px 16px; gap:12px; } }
+</style>

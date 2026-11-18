@@ -5,6 +5,8 @@ import Footer from '../../components/Footer.astro';
 import QuoteForm from '../../components/QuoteForm.astro';
 import GoogleReviews from '../../components/GoogleReviews.astro';
 import AdditionalServices from '../../components/AdditionalServices.astro';
+import InsuranceNotice from '../../components/InsuranceNotice.astro';
+import { INSURANCE_FAQS } from '../../data/insurance';
 import { SITE } from '../../data/site.config';
 import { CITIES } from '../../data/cities';
 import { GOOGLE_RATING, hasGoogleRating } from '../../data/reviews.config';
@@ -27,6 +29,7 @@ const steps = [
   { title: 'Confirm collection and delivery', text: 'Keys, contact people and any final changes before the booked slot.' },
 ];
 const faqs = [
+  ...INSURANCE_FAQS.en.slice(0, 2),
   { q: 'Can I request a removal quote in English?', a: 'Yes. Send your route, inventory, access and date in English. The final service and price are confirmed in a written quote.' },
   { q: 'Do you help British buyers moving into Carcassonne?', a: 'Yes, local delivery, household moves, furniture collections and UK–France route enquiries can be assessed. International formalities must be verified for the specific move.' },
   { q: 'Can you deliver furniture to a villa or second home?', a: 'Yes, subject to gate, road, parking and internal access checks. Remote key and delivery contacts should be agreed before the slot.' },
@@ -92,6 +95,7 @@ const structuredData = {
     </section>
 
     <GoogleReviews lang="en" />
+    <div class="container"><InsuranceNotice lang="en" /></div>
 
     <section class="eh-services">
       <div class="container">

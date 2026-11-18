@@ -4,6 +4,7 @@ import Header from './Header.astro';
 import Footer from './Footer.astro';
 import QuoteForm from './QuoteForm.astro';
 import GoogleReviews from './GoogleReviews.astro';
+import InsuranceNotice from './InsuranceNotice.astro';
 import { SITE } from '../data/site.config';
 import type { EnglishPage } from '../data/englishPages';
 
@@ -104,6 +105,7 @@ const structuredData = {
       </div>
     </section>
 
+    {['why-choose-us', 'piano-moving-carcassonne'].includes(page.slug) && <div class="container"><InsuranceNotice lang="en" /></div>}
     <nav class="en-onpage" aria-label="On this page">
       <div class="container">
         <a href="#details">Service details</a>

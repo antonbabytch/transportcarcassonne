@@ -8,6 +8,8 @@ import QuoteForm from '../components/QuoteForm.astro';
 import ComboOffer from '../components/ComboOffer.astro';
 import GoogleReviews from '../components/GoogleReviews.astro';
 import AdditionalServices from '../components/AdditionalServices.astro';
+import InsuranceNotice from '../components/InsuranceNotice.astro';
+import { INSURANCE_FAQS } from '../data/insurance';
 import UrgentTransportSpotlight from '../components/UrgentTransportSpotlight.astro';
 import { SITE } from '../data/site.config';
 import { SERVICES } from '../data/services';
@@ -52,6 +54,7 @@ const specialties = [
 ];
 
 const faqs = [
+  ...INSURANCE_FAQS.fr.slice(0, 2),
   { q: 'Pouvez-vous intervenir aujourd’hui ou demain à Carcassonne ?', a: 'Une demande urgente locale peut être étudiée immédiatement selon le planning, le volume, les accès et les moyens nécessaires. Appelez avec les deux adresses, l’inventaire et l’heure limite ; le créneau et le tarif sont confirmés avant intervention.' },
   { q: 'Combien coûte un déménagement à Carcassonne ?', a: 'Les repères publiés commencent actuellement à 450 € pour un studio et 650 € pour un T2 local. Ils restent indicatifs : le volume, la distance, les accès, la date et les options déterminent le devis personnalisé.' },
   { q: 'Intervenez-vous hors de Carcassonne ?', a: `Oui, nous intervenons dans un rayon de ${SITE.serviceRadius} km autour de Carcassonne : Limoux, Castelnaudary, Lézignan-Corbières, Narbonne, Trèbes, Bram et environs. Nous réalisons aussi des déménagements longue distance vers toute la France.` },
@@ -107,6 +110,7 @@ const priceFmt = (n: number) => new Intl.NumberFormat('fr-FR').format(n) + ' €
   <UrgentTransportSpotlight />
 
   <GoogleReviews />
+  <div class="container"><InsuranceNotice /></div>
 
   <!-- ============ MARQUEE ============ -->
   <div class="marquee">

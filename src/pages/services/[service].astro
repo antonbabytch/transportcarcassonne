@@ -8,6 +8,7 @@ import CTA from '../../components/CTA.astro';
 import Breadcrumbs from '../../components/Breadcrumbs.astro';
 import { SERVICES } from '../../data/services';
 import { SITE } from '../../data/site.config';
+import { INSURANCE_FAQS } from '../../data/insurance';
 
 export function getStaticPaths() {
   return SERVICES.map(s => ({ params: { service: s.slug }, props: { service: s } }));
@@ -232,6 +233,7 @@ const serviceContent: Record<string, ServiceContent> = {
 };
 
 const content = serviceContent[service.slug];
+if (service.slug === 'transport-piano' && content) content.faqs = [...content.faqs, ...INSURANCE_FAQS.fr.slice(0, 2)];
 const pageTitle = content?.metaTitle ?? `${service.name} | Transport Carcassonne`;
 const pageDescription = content?.metaDescription ?? service.description;
 ---

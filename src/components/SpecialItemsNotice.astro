@@ -1,0 +1,33 @@
+---
+interface Props { lang?: 'fr' | 'en'; piano?: boolean; }
+const { lang = 'fr', piano = false } = Astro.props;
+const en = lang === 'en';
+---
+<details class="special-items" open={piano} data-special-items>
+  <summary>{en ? 'Piano, valuable or fragile items? Read before booking' : 'Piano, objets de valeur ou fragiles ? À lire avant réservation'}</summary>
+  <div class="special-items__fields">
+    <p>{en ? 'A piano or valuable item needs an individual assessment. After our first reply, we will agree how to discuss its value, dimensions, weight, access and any useful photographs. Do not send sensitive documents through this form.' : 'Un piano ou un objet de valeur nécessite une étude individuelle. Après notre première réponse, nous conviendrons du moyen d’échanger sur sa valeur, ses dimensions, son poids, les accès et les photos utiles. N’envoyez pas de documents sensibles par ce formulaire.'}</p>
+    <p>{en ? 'Your enquiry is not a declaration of value or confirmation of insurance. Feasibility and applicable cover must be confirmed in writing before booking.' : 'Votre demande ne vaut ni déclaration de valeur ni confirmation d’assurance. Faisabilité et garanties applicables doivent être confirmées par écrit avant réservation.'}</p>
+    <a href={en ? '/en/removal-insurance/' : '/assurance-demenagement/'}>{en ? 'Read about insurance and protection' : 'Comprendre l’assurance et la protection'} →</a>
+  </div>
+</details>
+<script>
+  document.querySelectorAll<HTMLDetailsElement>('[data-special-items]').forEach(panel => {
+    const form = panel.closest('form');
+    if (!form) return;
+    const sync = () => {
+      const piano = form.querySelector<HTMLInputElement>('[name="objet_piano"]')?.checked || form.querySelector<HTMLSelectElement>('[name="type_demenagement"]')?.value === 'transport-piano';
+      if (piano || form.querySelector<HTMLInputElement>('[name="objet_fragile"]')?.checked) panel.open = true;
+    };
+    form.addEventListener('change', sync);
+    sync();
+  });
+</script>
+<style>
+  .special-items { color:#302b25; background:#f5f0e7; border:1px solid #cbbb9f; padding:18px; border-radius:10px; margin:20px 0; min-width:0; }
+  summary { font-size:.9rem; font-weight:600; line-height:1.5; cursor:pointer; }
+  .special-items__fields { display:grid; gap:14px; margin-top:20px; }
+  a { color:#805021; font-size:.82rem; font-weight:600; text-decoration:underline; text-underline-offset:3px; }
+  p { margin:0; font-size:.78rem; line-height:1.65; }
+  :is(a,summary):focus-visible { outline:2px solid #946031; outline-offset:3px; }
+</style>

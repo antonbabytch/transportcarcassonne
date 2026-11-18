@@ -1,4 +1,6 @@
 ---
+import InsuranceNotice from './InsuranceNotice.astro';
+import SpecialItemsNotice from './SpecialItemsNotice.astro';
 interface Props {
   title?: string;
   subtitle?: string;
@@ -18,6 +20,7 @@ const {
       <p>{subtitle}</p>
     </div>
 
+    <InsuranceNotice />
     <form
       class="wizard"
       id="devis-intelligent"
@@ -306,6 +309,7 @@ const {
             </div>
 
             <div class="wizard__group">
+              <SpecialItemsNotice />
               <h3>Services souhaités</h3>
               <div class="check-grid">
                 <label class="check-card"><input type="checkbox" name="service_cartons" value="oui" /><span>Cartons et matériel</span></label>

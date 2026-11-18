@@ -1,0 +1,114 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Header from './Header.astro';
+import Footer from './Footer.astro';
+import { SITE } from '../data/site.config';
+import { INSURANCE, INSURANCE_FAQS } from '../data/insurance';
+interface Props { lang?: 'fr' | 'en'; }
+const { lang = 'fr' } = Astro.props;
+const en = lang === 'en';
+const title = en ? 'Removal insurance & protection | Transport Carcassonne' : 'Assurance déménagement et protection | Transport Carcassonne';
+const description = en ? 'Our Allianz liability certificate, its stated validity, and the checks needed for pianos and valuable items. Request the certificate before booking.' : 'Attestation de responsabilité civile Allianz, période indiquée et vérifications pour les pianos et objets de valeur. Demandez le justificatif avant réservation.';
+const faqs = INSURANCE_FAQS[lang];
+const email = `mailto:${SITE.email}?subject=${encodeURIComponent(en ? 'Insurance certificate request — Transport Carcassonne' : 'Demande d’attestation d’assurance — Transport Carcassonne')}&body=${encodeURIComponent(en ? 'Hello, I would like your insurance certificate for this project.\nPlanned date:\nCollection and delivery towns:\nItems and estimated value:\nQuestions about cover:\n' : 'Bonjour, je souhaite recevoir votre attestation d’assurance pour ce projet.\nDate prévue :\nVilles de départ et d’arrivée :\nBiens et valeur estimée :\nQuestions sur les garanties :\n')}`;
+const steps = en ? [
+  ['Describe the item', 'Type, make, dimensions, approximate weight and estimated value. Mention existing damage and any dismantling required.'],
+  ['Check access and handling', 'Floors, steps, turns, door widths, parking and carrying distance at both ends. Photos can be shared through an agreed direct channel after initial contact.'],
+  ['Confirm before booking', 'Obtain written confirmation of feasibility, equipment and applicable insurance terms. Any additional cover must be confirmed by the insurer; it is not automatic.'],
+] : [
+  ['Décrire le bien', 'Type, marque, dimensions, poids approximatif et valeur estimée. Signalez les dommages existants et tout démontage nécessaire.'],
+  ['Vérifier les accès et la manutention', 'Étages, marches, virages, largeur des portes, stationnement et portage au départ et à l’arrivée. Les photos peuvent être transmises par un canal direct convenu après le premier échange.'],
+  ['Confirmer avant réservation', 'Faisabilité, moyens et conditions d’assurance applicables doivent être confirmés par écrit. Une éventuelle garantie complémentaire doit être validée par l’assureur : elle n’est pas automatique.'],
+];
+---
+<BaseLayout lang={en ? 'en-GB' : 'fr-FR'} title={title} description={description}>
+  <script is:inline slot="head" type="application/ld+json" set:html={JSON.stringify({ '@context':'https://schema.org', '@type':'FAQPage', '@id':`${SITE.url}${INSURANCE.paths[lang]}#faq`, mainEntity:faqs.map(f => ({'@type':'Question', name:f.q, acceptedAnswer:{'@type':'Answer', text:f.a}})) })} />
+  <Header lang={lang} />
+  <main>
+    <section class="insurance-hero">
+      <div class="container insurance-grid">
+        <div>
+          <nav aria-label={en ? 'Breadcrumb' : 'Fil d’Ariane'}><a href={en ? '/en/' : '/'}>{en ? 'Home' : 'Accueil'}</a><span aria-hidden="true"> / </span>{en ? 'Insurance' : 'Assurance'}</nav>
+          <p class="eyebrow">{en ? 'Clear information · Written confirmation' : 'Transparence · Confirmation écrite'}</p>
+          <h1>{en ? 'Your belongings deserve clear answers.' : 'Vos biens méritent des réponses claires.'}</h1>
+          <p class="lead">{en ? 'Understand our liability certificate and the checks needed for your particular move — before you commit.' : 'Comprenez notre attestation de responsabilité civile et les vérifications nécessaires pour votre déménagement, avant de vous engager.'}</p>
+          <a class="btn btn--primary" href={email}>{en ? 'Request the certificate' : 'Demander l’attestation'} →</a>
+        </div>
+        <aside class="certificate" aria-label={en ? 'Certificate details' : 'Informations de l’attestation'}>
+          <span class="eyebrow">{en ? 'Certificate supplied by the business' : 'Attestation fournie par l’entreprise'}</span>
+          <h2>Allianz IARD</h2>
+          <p>Allianz Solution Entreprise</p>
+          <dl>
+            <div><dt>{en ? 'Insured business' : 'Entreprise assurée'}</dt><dd>{SITE.legalName}<br />Transport Carcassonne</dd></div>
+            <div><dt>{en ? 'Declared activity' : 'Activité déclarée'}</dt><dd>{en ? 'Removals without furniture storage' : 'Déménagement sans garde-meubles'}</dd></div>
+            <div><dt>{en ? 'Stated period' : 'Période indiquée'}</dt><dd><time datetime={INSURANCE.certificateFrom}>01/11/2026</time> – <time datetime={INSURANCE.certificateUntil}>31/10/2027</time></dd></div>
+          </dl>
+          <small>{en ? 'Subject to payment of premiums. The certificate confirms the existence of a policy, not automatic cover for every claim. For a later date, request a renewed certificate.' : 'Sous réserve du paiement des cotisations. L’attestation confirme l’existence d’un contrat, pas la couverture automatique de tout sinistre. Pour une date ultérieure, demandez une attestation renouvelée.'}</small>
+        </aside>
+      </div>
+    </section>
+    <section class="insurance-section">
+      <div class="container">
+        <p class="eyebrow">{en ? 'Two different questions' : 'Deux questions différentes'}</p>
+        <h2>{en ? 'Business liability is not unlimited cover for your belongings.' : 'La responsabilité de l’entreprise n’est pas une garantie illimitée sur vos biens.'}</h2>
+        <div class="insurance-grid explanations">
+          <article><h3>{en ? 'What the certificate states' : 'Ce que l’attestation indique'}</h3><p>{en ? 'It lists civil liability guarantees, including professional civil liability, for the declared removals activity. You may request the certificate before accepting a quote.' : 'Elle mentionne des garanties de responsabilité civile, dont la responsabilité civile professionnelle, pour l’activité de déménagement déclarée. Vous pouvez demander ce justificatif avant d’accepter un devis.'}</p></article>
+          <article><h3>{en ? 'What needs a specific check' : 'Ce qui nécessite une vérification'}</h3><p>{en ? 'Damage to items entrusted to us, loading and unloading, theft, pianos, individual values, compensation limits and excesses must be checked against the policy. No full-value or all-risks cover is promised here.' : 'Biens confiés, chargement et déchargement, vol, pianos, valeurs individuelles, plafonds d’indemnisation et franchises doivent être vérifiés dans le contrat. Aucune couverture tous risques ou à valeur intégrale n’est promise ici.'}</p></article>
+        </div>
+      </div>
+    </section>
+    <section class="insurance-section special-section" id="valuable-items">
+      <div class="container">
+        <p class="eyebrow">{en ? 'Pianos · Antiques · Fragile items' : 'Pianos · Antiquités · Objets fragiles'}</p>
+        <h2>{en ? 'A valuable item needs an individual assessment.' : 'Un objet de valeur mérite une étude individuelle.'}</h2>
+        <ol class="insurance-steps">{steps.map(([heading, text], index) => <li><span aria-hidden="true">0{index+1}</span><h3>{heading}</h3><p>{text}</p></li>)}</ol>
+        <p class="value-note">{en ? 'Information sent through our quote form is preliminary. It is not a declaration of value, an insurance contract or confirmation that the job has been accepted.' : 'Les informations envoyées par notre formulaire sont préliminaires. Elles ne constituent ni une déclaration de valeur, ni un contrat d’assurance, ni une acceptation de la prestation.'}</p>
+        <a class="btn btn--primary" href={en ? '/en/quote/' : '/devis/'}>{en ? 'Describe my project' : 'Décrire mon projet'} →</a>
+      </div>
+    </section>
+    <section class="insurance-section" id="faq">
+      <div class="container insurance-faq">
+        <p class="eyebrow">{en ? 'Your questions' : 'Vos questions'}</p>
+        <h2>{en ? 'Insurance: frequently asked questions' : 'Assurance : les réponses à vos questions'}</h2>
+        {faqs.map(faq => <details><summary>{faq.q}</summary><p>{faq.a}</p></details>)}
+        <div class="certificate-request"><h3>{en ? 'Need a document before deciding?' : 'Besoin d’un document avant de décider ?'}</h3><p>{en ? 'Request the certificate or ask about your particular item. We do not publish the full policy document or its identifying details here.' : 'Demandez l’attestation ou posez une question sur votre bien. Le document complet et ses références contractuelles ne sont pas publiés sur cette page.'}</p><a href={email}>{en ? 'Request the certificate by email' : 'Demander l’attestation par email'} →</a></div>
+      </div>
+    </section>
+  </main>
+  <Footer lang={lang} />
+</BaseLayout>
+<style>
+  .insurance-hero { background:var(--bg-dark); color:var(--text-on-dark); padding:42px 0 72px; }
+  .insurance-grid { display:grid; grid-template-columns:1.15fr 1fr; gap:48px; align-items:start; }
+  nav { font-size:.8rem; margin-bottom:40px; color:#c7c3bc; }
+  nav a { text-decoration:underline; text-underline-offset:3px; }
+  .eyebrow { color:#aa7543; font-size:.72rem; text-transform:uppercase; letter-spacing:.12em; margin-bottom:14px; font-weight:600; }
+  .insurance-hero .eyebrow { color:#dfb080; }
+  h1 { color:inherit; font-size:clamp(2.2rem,4.6vw,4rem); line-height:1.1; max-width:750px; }
+  .lead { font-size:1.08rem; line-height:1.75; color:#c7c3bc; margin:24px 0 30px; max-width:660px; }
+  .certificate { margin-top:45px; border:1px solid #78634b; background:#202426; border-radius:16px; padding:30px; }
+  .certificate h2 { color:#f6f1e9; font-size:2rem; margin-bottom:6px; }
+  .certificate > p { color:#d9d2c9; }
+  dl { margin:26px 0 20px; }
+  dl div { padding:13px 0; border-top:1px solid #444541; }
+  dt { font-size:.76rem; color:#c7b9a9; margin-bottom:5px; }
+  dd { margin:0; line-height:1.5; }
+  .certificate small { display:block; color:#c7c3bc; line-height:1.6; font-size:.75rem; }
+  .insurance-section { padding:72px 0; }
+  .insurance-section h2 { max-width:850px; font-size:clamp(1.7rem,3vw,2.6rem); line-height:1.2; margin-bottom:28px; }
+  .explanations article { border-top:2px solid #ba8c5a; padding-top:24px; }
+  h3 { font-size:1.25rem; margin-bottom:12px; line-height:1.4; }
+  .insurance-section p { line-height:1.75; }
+  .special-section { background:#eee9df; }
+  .insurance-steps { display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:28px; padding:0; margin:34px 0; list-style:none; }
+  .insurance-steps li > span { display:block; color:#946031; font-size:1.7rem; margin-bottom:18px; }
+  .value-note { max-width:840px; font-size:.85rem; border-left:3px solid #9e703f; padding-left:18px; margin:26px 0; }
+  .insurance-faq { max-width:900px; }
+  details { border-bottom:1px solid #d3cbbb; padding:20px 0; }
+  summary { cursor:pointer; font-weight:600; line-height:1.5; padding-right:12px; }
+  details p { margin:14px 0 0; font-size:.95rem; }
+  a:focus-visible,summary:focus-visible { outline:2px solid #aa7543; outline-offset:5px; }
+  .certificate-request { padding:26px; margin-top:32px; background:#f2ede4; border-radius:12px; }
+  .certificate-request a { display:inline-block; margin-top:16px; color:#805021; font-weight:600; text-decoration:underline; text-underline-offset:3px; }
+  @media(max-width:800px) { .insurance-grid,.insurance-steps { grid-template-columns:1fr; gap:28px; } .certificate { margin-top:0; } .insurance-section { padding:48px 0; } .insurance-hero { padding-bottom:48px; } }
+</style>
