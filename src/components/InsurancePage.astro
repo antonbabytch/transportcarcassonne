@@ -7,69 +7,39 @@ import { INSURANCE, INSURANCE_FAQS } from '../data/insurance';
 interface Props { lang?: 'fr' | 'en'; }
 const { lang = 'fr' } = Astro.props;
 const en = lang === 'en';
-const title = en ? 'Removal insurance & protection | Transport Carcassonne' : 'Assurance déménagement et protection | Transport Carcassonne';
-const description = en ? 'Our Allianz liability certificate and the checks needed for pianos and valuable items. Request the certificate before booking.' : 'Attestation de responsabilité civile Allianz et vérifications pour les pianos et objets de valeur. Demandez le justificatif avant réservation.';
+const title = en ? 'Business insurance | Transport Carcassonne' : 'Assurance de l’entreprise | Transport Carcassonne';
+const description = en ? 'Transport Carcassonne is insured with Allianz. Request our insurance certificate directly by email.' : 'Transport Carcassonne est assurée auprès d’Allianz. Demandez notre attestation d’assurance directement par email.';
 const faqs = INSURANCE_FAQS[lang];
-const email = `mailto:${SITE.email}?subject=${encodeURIComponent(en ? 'Insurance certificate request — Transport Carcassonne' : 'Demande d’attestation d’assurance — Transport Carcassonne')}&body=${encodeURIComponent(en ? 'Hello, I would like your insurance certificate for this project.\nPlanned date:\nCollection and delivery towns:\nItems and estimated value:\nQuestions about cover:\n' : 'Bonjour, je souhaite recevoir votre attestation d’assurance pour ce projet.\nDate prévue :\nVilles de départ et d’arrivée :\nBiens et valeur estimée :\nQuestions sur les garanties :\n')}`;
-const steps = en ? [
-  ['Describe the item', 'Type, make, dimensions, approximate weight and estimated value. Mention existing damage and any dismantling required.'],
-  ['Check access and handling', 'Floors, steps, turns, door widths, parking and carrying distance at both ends. Photos can be shared through an agreed direct channel after initial contact.'],
-  ['Confirm before booking', 'Obtain written confirmation of feasibility, equipment and applicable insurance terms. Any additional cover must be confirmed by the insurer; it is not automatic.'],
-] : [
-  ['Décrire le bien', 'Type, marque, dimensions, poids approximatif et valeur estimée. Signalez les dommages existants et tout démontage nécessaire.'],
-  ['Vérifier les accès et la manutention', 'Étages, marches, virages, largeur des portes, stationnement et portage au départ et à l’arrivée. Les photos peuvent être transmises par un canal direct convenu après le premier échange.'],
-  ['Confirmer avant réservation', 'Faisabilité, moyens et conditions d’assurance applicables doivent être confirmés par écrit. Une éventuelle garantie complémentaire doit être validée par l’assureur : elle n’est pas automatique.'],
-];
+const email = 'mailto:' + SITE.email + '?subject=' + encodeURIComponent(en ? 'Insurance certificate request — Transport Carcassonne' : 'Demande d’attestation d’assurance — Transport Carcassonne');
 ---
 <BaseLayout lang={en ? 'en-GB' : 'fr-FR'} title={title} description={description}>
-  <script is:inline slot="head" type="application/ld+json" set:html={JSON.stringify({ '@context':'https://schema.org', '@type':'FAQPage', '@id':`${SITE.url}${INSURANCE.paths[lang]}#faq`, mainEntity:faqs.map(f => ({'@type':'Question', name:f.q, acceptedAnswer:{'@type':'Answer', text:f.a}})) })} />
+  <script is:inline slot="head" type="application/ld+json" set:html={JSON.stringify({ '@context':'https://schema.org', '@type':'FAQPage', '@id':SITE.url + INSURANCE.paths[lang] + '#faq', mainEntity:faqs.map(f => ({'@type':'Question', name:f.q, acceptedAnswer:{'@type':'Answer', text:f.a}})) })} />
   <Header lang={lang} />
   <main>
     <section class="insurance-hero">
       <div class="container insurance-grid">
         <div>
           <nav aria-label={en ? 'Breadcrumb' : 'Fil d’Ariane'}><a href={en ? '/en/' : '/'}>{en ? 'Home' : 'Accueil'}</a><span aria-hidden="true"> / </span>{en ? 'Insurance' : 'Assurance'}</nav>
-          <p class="eyebrow">{en ? 'Clear information · Written confirmation' : 'Transparence · Confirmation écrite'}</p>
-          <h1>{en ? 'Your belongings deserve clear answers.' : 'Vos biens méritent des réponses claires.'}</h1>
-          <p class="lead">{en ? 'Understand our liability certificate and the checks needed for your particular move — before you commit.' : 'Comprenez notre attestation de responsabilité civile et les vérifications nécessaires pour votre déménagement, avant de vous engager.'}</p>
+          <p class="eyebrow">Transport Carcassonne</p>
+          <h1>{en ? 'An insured business. A team you can contact.' : 'Une entreprise assurée. Un interlocuteur à votre écoute.'}</h1>
+          <p class="lead">{en ? 'Transport Carcassonne is insured with Allianz. Our insurance certificate is available on request.' : 'Transport Carcassonne est assurée auprès d’Allianz. Notre attestation d’assurance est disponible sur demande.'}</p>
           <a class="btn btn--primary" href={email}>{en ? 'Request the certificate' : 'Demander l’attestation'} →</a>
         </div>
-        <aside class="certificate" aria-label={en ? 'Certificate details' : 'Informations de l’attestation'}>
-          <span class="eyebrow">{en ? 'Certificate supplied by the business' : 'Attestation fournie par l’entreprise'}</span>
-          <h2>Allianz IARD</h2>
-          <p>Allianz Solution Entreprise</p>
-          <dl>
-            <div><dt>{en ? 'Insured business' : 'Entreprise assurée'}</dt><dd>{SITE.legalName}<br />Transport Carcassonne</dd></div>
-          </dl>
-          <small>{en ? 'Subject to payment of premiums. The certificate confirms the existence of a policy, not automatic cover for every claim. Request the certificate applicable to your planned move.' : 'Sous réserve du paiement des cotisations. L’attestation confirme l’existence d’un contrat, pas la couverture automatique de tout sinistre. Demandez l’attestation applicable à votre déménagement.'}</small>
+        <aside class="certificate" aria-label={en ? 'Business insurance' : 'Assurance de l’entreprise'}>
+          <svg width="42" height="48" viewBox="0 0 24 28" fill="none" stroke="#dfb080" stroke-width="1.5" aria-hidden="true"><path d="M12 2 3 6v8c0 6 9 11 9 11s9-5 9-11V6Z"/><path d="m7 13 3 3 7-7"/></svg>
+          <p class="eyebrow">{en ? 'Insured business' : 'Entreprise assurée'}</p>
+          <h2>Allianz</h2>
+          <p>Transport Carcassonne</p>
+          <p>{en ? 'Insurance certificate available on request.' : 'Attestation d’assurance disponible sur demande.'}</p>
         </aside>
-      </div>
-    </section>
-    <section class="insurance-section">
-      <div class="container">
-        <p class="eyebrow">{en ? 'Two different questions' : 'Deux questions différentes'}</p>
-        <h2>{en ? 'Business liability is not unlimited cover for your belongings.' : 'La responsabilité de l’entreprise n’est pas une garantie illimitée sur vos biens.'}</h2>
-        <div class="insurance-grid explanations">
-          <article><h3>{en ? 'What the certificate states' : 'Ce que l’attestation indique'}</h3><p>{en ? 'It lists civil liability guarantees, including professional civil liability, for the declared removals activity. You may request the certificate before accepting a quote.' : 'Elle mentionne des garanties de responsabilité civile, dont la responsabilité civile professionnelle, pour l’activité de déménagement déclarée. Vous pouvez demander ce justificatif avant d’accepter un devis.'}</p></article>
-          <article><h3>{en ? 'What needs a specific check' : 'Ce qui nécessite une vérification'}</h3><p>{en ? 'Damage to items entrusted to us, loading and unloading, theft, pianos, individual values, compensation limits and excesses must be checked against the policy. No full-value or all-risks cover is promised here.' : 'Biens confiés, chargement et déchargement, vol, pianos, valeurs individuelles, plafonds d’indemnisation et franchises doivent être vérifiés dans le contrat. Aucune couverture tous risques ou à valeur intégrale n’est promise ici.'}</p></article>
-        </div>
-      </div>
-    </section>
-    <section class="insurance-section special-section" id="valuable-items">
-      <div class="container">
-        <p class="eyebrow">{en ? 'Pianos · Antiques · Fragile items' : 'Pianos · Antiquités · Objets fragiles'}</p>
-        <h2>{en ? 'A valuable item needs an individual assessment.' : 'Un objet de valeur mérite une étude individuelle.'}</h2>
-        <ol class="insurance-steps">{steps.map(([heading, text], index) => <li><span aria-hidden="true">0{index+1}</span><h3>{heading}</h3><p>{text}</p></li>)}</ol>
-        <p class="value-note">{en ? 'Information sent through our quote form is preliminary. It is not a declaration of value, an insurance contract or confirmation that the job has been accepted.' : 'Les informations envoyées par notre formulaire sont préliminaires. Elles ne constituent ni une déclaration de valeur, ni un contrat d’assurance, ni une acceptation de la prestation.'}</p>
-        <a class="btn btn--primary" href={en ? '/en/quote/' : '/devis/'}>{en ? 'Describe my project' : 'Décrire mon projet'} →</a>
       </div>
     </section>
     <section class="insurance-section" id="faq">
       <div class="container insurance-faq">
         <p class="eyebrow">{en ? 'Your questions' : 'Vos questions'}</p>
-        <h2>{en ? 'Insurance: frequently asked questions' : 'Assurance : les réponses à vos questions'}</h2>
+        <h2>{en ? 'Insurance, simply explained' : 'L’assurance, en toute simplicité'}</h2>
         {faqs.map(faq => <details><summary>{faq.q}</summary><p>{faq.a}</p></details>)}
-        <div class="certificate-request"><h3>{en ? 'Need a document before deciding?' : 'Besoin d’un document avant de décider ?'}</h3><p>{en ? 'Request the certificate or ask about your particular item. We do not publish the full policy document or its identifying details here.' : 'Demandez l’attestation ou posez une question sur votre bien. Le document complet et ses références contractuelles ne sont pas publiés sur cette page.'}</p><a href={email}>{en ? 'Request the certificate by email' : 'Demander l’attestation par email'} →</a></div>
+        <div class="certificate-request"><h3>{en ? 'Would you like the certificate?' : 'Vous souhaitez recevoir l’attestation ?'}</h3><p>{en ? 'Write to us. We provide the document directly and keep policy details off the public website.' : 'Écrivez-nous. Nous vous transmettons le document directement et conservons les informations contractuelles hors du site public.'}</p><a href={email}>{en ? 'Contact us by email' : 'Nous contacter par email'} →</a></div>
       </div>
     </section>
   </main>
@@ -87,10 +57,6 @@ const steps = en ? [
   .certificate { margin-top:45px; border:1px solid #78634b; background:#202426; border-radius:16px; padding:30px; }
   .certificate h2 { color:#f6f1e9; font-size:2rem; margin-bottom:6px; }
   .certificate > p { color:#d9d2c9; }
-  dl { margin:26px 0 20px; }
-  dl div { padding:13px 0; border-top:1px solid #444541; }
-  dt { font-size:.76rem; color:#c7b9a9; margin-bottom:5px; }
-  dd { margin:0; line-height:1.5; }
   .certificate small { display:block; color:#c7c3bc; line-height:1.6; font-size:.75rem; }
   .insurance-section { padding:72px 0; }
   .insurance-section h2 { max-width:850px; font-size:clamp(1.7rem,3vw,2.6rem); line-height:1.2; margin-bottom:28px; }

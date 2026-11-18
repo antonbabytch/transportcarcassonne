@@ -4,14 +4,11 @@ import { readFile } from 'node:fs/promises';
 
 const source = path => readFile(new URL(`../${path}`, import.meta.url), 'utf8');
 
-test('insurance information uses fixed certificate dates and no policy number', async () => {
+test('insurance summary contains no dates, policy number or blanket cover promise', async () => {
   const data = await source('src/data/insurance.ts');
-  assert.match(data, /2026-11-01/);
-  assert.match(data, /2027-10-31/);
-  assert.doesNotMatch(data, /64969091/);
-  assert.match(data, /franchises/);
-  assert.match(data, /excesses/);
-  assert.match(data, /paiement des cotisations/);
+  assert.doesNotMatch(data, /2021|2026|2027|64969091|sans garde-meubles|without furniture storage|all belongings are insured|tous vos biens sont assurés/);
+  assert.match(data, /Allianz/);
+  assert.match(data, /disponible sur demande/);
 });
 
 test('both insurance routes have reciprocal language mappings and footer links', async () => {
@@ -42,5 +39,5 @@ test('both lead forms show special-item guidance without collecting new data', a
   assert.doesNotMatch(fields, /\srequired(?:\s|>|=)/);
   assert.doesNotMatch(fields, /type="file"/);
   assert.doesNotMatch(fields, /<(?:input|select|textarea)\b/);
-  assert.match(fields, /ni déclaration de valeur ni confirmation d’assurance/);
+  assert.match(fields, /avant réservation/);
 });
