@@ -9,6 +9,7 @@ import ComboOffer from '../components/ComboOffer.astro';
 import GoogleReviews from '../components/GoogleReviews.astro';
 import AdditionalServices from '../components/AdditionalServices.astro';
 import InsuranceNotice from '../components/InsuranceNotice.astro';
+import WorkGallery from '../components/WorkGallery.astro';
 import { INSURANCE_FAQS } from '../data/insurance';
 import UrgentTransportSpotlight from '../components/UrgentTransportSpotlight.astro';
 import { SITE } from '../data/site.config';
@@ -111,6 +112,7 @@ const priceFmt = (n: number) => new Intl.NumberFormat('fr-FR').format(n) + ' €
 
   <GoogleReviews />
   <div class="container"><InsuranceNotice /></div>
+  <WorkGallery preview />
 
   <!-- ============ MARQUEE ============ -->
   <div class="marquee">

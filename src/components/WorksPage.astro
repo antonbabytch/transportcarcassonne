@@ -1,0 +1,54 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Header from './Header.astro';
+import Footer from './Footer.astro';
+import CTA from './CTA.astro';
+import WorkGallery from './WorkGallery.astro';
+import { WORK_PHOTOS, workImage } from '../data/workGallery';
+import { SITE } from '../data/site.config';
+interface Props { lang?: 'fr' | 'en' }
+const { lang = 'fr' } = Astro.props;
+const en = lang === 'en';
+const title = en ? 'Our work in pictures | Transport Carcassonne' : 'Nos réalisations en photos | Transport Carcassonne';
+const description = en ? 'Explore photographs of our removal and furniture transport work: loading, handling, transport to storage units and jobs in town.' : 'Découvrez nos réalisations en photos : chargement, manutention de meubles, transport vers un box et interventions en ville avec Transport Carcassonne.';
+const path = en ? '/en/our-work/' : '/realisations/';
+---
+<BaseLayout title={title} description={description} lang={en ? 'en-GB' : 'fr-FR'} ogImage={workImage('camion-hayon')} ogImageAlt={WORK_PHOTOS[0][lang]}>
+  <script is:inline slot="head" type="application/ld+json" set:html={JSON.stringify({
+    '@context': 'https://schema.org', '@type': 'ImageGallery', name: title, description,
+    url: SITE.url + path, inLanguage: en ? 'en-GB' : 'fr-FR',
+    associatedMedia: WORK_PHOTOS.map(photo => ({ '@type': 'ImageObject', contentUrl: SITE.url + workImage(photo.id), caption: photo[lang] })),
+  })} />
+  <Header lang={lang} />
+  <main>
+    <section class="works-intro">
+      <div class="container intro-layout">
+        <div>
+          <nav aria-label={en ? 'Breadcrumb' : 'Fil d’Ariane'}><a href={en ? '/en/' : '/'}>{en ? 'Home' : 'Accueil'}</a><span aria-hidden="true"> / </span>{en ? 'Our work' : 'Réalisations'}</nav>
+          <span class="section-label">Transport Carcassonne</span>
+          <h1>{en ? 'Real work.' : 'Des gestes concrets.'}<br/><em>{en ? 'Real photographs.' : 'Des images réelles.'}</em></h1>
+          <p>{en ? 'Behind every move are furniture to handle, belongings to load and access to organise. Take a closer look at our work on the ground.' : 'Derrière chaque transport, il y a des meubles à manipuler, un chargement à organiser et des accès à prendre en compte. Entrez dans les coulisses de nos interventions.'}</p>
+          <a class="btn btn--primary" href="#photos">{en ? 'Browse the photos' : 'Parcourir les photos'}</a>
+        </div>
+        <figure class="intro-photo"><img src={workImage('camion-hayon')} alt={WORK_PHOTOS[0][lang]} width="1080" height="1440" fetchpriority="high" /><figcaption>{en ? 'Loading & furniture transport' : 'Chargement & transport de mobilier'}</figcaption></figure>
+      </div>
+    </section>
+    <div id="photos"><WorkGallery lang={lang} /></div>
+    <CTA title={en ? 'A similar project in mind?' : 'Un projet similaire en tête ?'} subtitle={en ? 'Tell us what needs moving and the access at each end. We will prepare a quote for your project.' : 'Décrivez les biens à transporter et les accès. Nous étudierons ensemble les moyens adaptés à votre projet.'} btnLabel={en ? 'Request a free quote' : 'Demander un devis gratuit'} btnHref={en ? '/en/quote/?source=our-work' : '/devis/?source=realisations'} />
+  </main>
+  <Footer lang={lang} />
+</BaseLayout>
+<style>
+  .works-intro { background: var(--color-navy); color: white; padding: 48px 0 64px; }
+  .intro-layout { display: grid; grid-template-columns: 1.1fr .8fr; gap: 80px; align-items: center; }
+  nav { color: #ddd; font-size: .875rem; margin-bottom: 42px; }
+  nav a { text-decoration: underline; text-underline-offset: 4px; }
+  h1 { color: white; font-size: clamp(2.6rem, 4.7vw, 4.6rem); line-height: 1.12; margin: 20px 0; }
+  h1 em { color: #d6ab87; font-weight: 400; }
+  .intro-layout p { color: #d8d8d8; line-height: 1.8; max-width: 590px; margin-bottom: 28px; font-size: 1.0625rem; }
+  .intro-photo { position: relative; margin: 0; border-radius: 16px; overflow: hidden; }
+  .intro-photo img { display: block; width: 100%; height: 510px; object-fit: cover; }
+  .intro-photo figcaption { position: absolute; bottom: 0; left: 0; right: 0; background: linear-gradient(transparent, #000d); padding: 42px 24px 22px; font-size: .9375rem; }
+  #photos { scroll-margin-top: 90px; }
+  @media (max-width: 800px) { .intro-layout { grid-template-columns: 1fr; gap: 32px; } .intro-photo img { height: auto; max-height: 520px; object-fit: contain; background: #111; } nav { margin-bottom: 28px; } .works-intro { padding: 32px 0 40px; } }
+</style>

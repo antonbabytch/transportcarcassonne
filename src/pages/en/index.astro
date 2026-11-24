@@ -6,6 +6,7 @@ import QuoteForm from '../../components/QuoteForm.astro';
 import GoogleReviews from '../../components/GoogleReviews.astro';
 import AdditionalServices from '../../components/AdditionalServices.astro';
 import InsuranceNotice from '../../components/InsuranceNotice.astro';
+import WorkGallery from '../../components/WorkGallery.astro';
 import { INSURANCE_FAQS } from '../../data/insurance';
 import { SITE } from '../../data/site.config';
 import { CITIES } from '../../data/cities';
@@ -96,6 +97,7 @@ const structuredData = {
 
     <GoogleReviews lang="en" />
     <div class="container"><InsuranceNotice lang="en" /></div>
+    <WorkGallery lang="en" preview />
 
     <section class="eh-services">
       <div class="container">

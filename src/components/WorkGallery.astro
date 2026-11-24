@@ -1,0 +1,139 @@
+---
+import { WORK_PHOTOS, workImage } from '../data/workGallery';
+interface Props { lang?: 'fr' | 'en'; preview?: boolean }
+const { lang = 'fr', preview = false } = Astro.props;
+const en = lang === 'en';
+const photos = preview ? WORK_PHOTOS.slice(0, 3) : WORK_PHOTOS;
+const categories = en
+  ? [['all', 'All photos'], ['loading', 'Loading'], ['storage', 'Transport to storage'], ['street', 'In town']]
+  : [['all', 'Toutes les photos'], ['loading', 'Chargement'], ['storage', 'Transport vers un box'], ['street', 'En ville']];
+const galleryPath = en ? '/en/our-work/' : '/realisations/';
+---
+<section class:list={['work-gallery', { 'work-gallery--preview': preview }]} data-work-gallery data-preview={preview ? 'true' : 'false'}>
+  <div class="container">
+    <div class="gallery-heading">
+      <div>
+        <span class="section-label">{en ? 'On the job' : 'Sur le terrain'}</span>
+        <h2>{en ? 'Our work, in pictures' : 'Notre travail, en images'}</h2>
+        <p>{en ? 'Loading, handling and transport: a look at our work through real photographs.' : 'Chargement, manutention et transport : un aperçu de nos interventions à travers des photographies réelles.'}</p>
+      </div>
+      {preview && <a class="btn btn--primary" href={galleryPath}>{en ? 'Explore our work' : 'Découvrir nos réalisations'}</a>}
+    </div>
+    {!preview && <div class="gallery-filters" role="group" aria-label={en ? 'Filter photos' : 'Filtrer les photos'}>
+      {categories.map(([id, label]) => <button type="button" data-filter={id} aria-pressed={id === 'all'}>{label}</button>)}
+    </div>}
+    <div class="photo-grid">
+      {photos.map((photo) => <figure data-category={photo.category}>
+        <a class="photo-link" href={preview ? galleryPath : workImage(photo.id)}
+          data-photo={!preview ? photo.id : undefined} data-caption={photo[lang]}
+          aria-label={preview ? `${en ? 'Explore our work' : 'Voir nos réalisations'} : ${photo[lang]}` : `${en ? 'Enlarge' : 'Agrandir'} : ${photo[lang]}`}>
+          <img src={workImage(photo.id, true)} srcset={`${workImage(photo.id, true)} 540w, ${workImage(photo.id)} 1080w`}
+            sizes="(max-width: 600px) calc(100vw - 40px), (max-width: 900px) 45vw, 30vw"
+            alt={photo[lang]} width="1080" height="1440" loading="lazy" decoding="async" />
+          <span class="photo-open" aria-hidden="true">{en ? 'View photo' : 'Voir la photo'} <span>＋</span></span>
+        </a>
+        <figcaption>{photo[lang]}</figcaption>
+      </figure>)}
+    </div>
+    {!preview && <p class="gallery-note">{en ? 'Transport to storage units shown here does not imply that we operate the storage facilities.' : 'Les interventions vers des box présentées ici ne signifient pas que nous exploitons les sites de stockage.'}</p>}
+  </div>
+  {!preview && <dialog class="photo-dialog" aria-label={en ? 'Photo viewer' : 'Visionneuse de photos'}>
+    <div class="viewer-toolbar">
+      <span data-counter aria-live="polite"></span>
+      <button type="button" data-close autofocus>{en ? 'Close' : 'Fermer'} <span aria-hidden="true">×</span></button>
+    </div>
+    <figure class="viewer-figure">
+      <img data-full-image alt="" width="1080" height="1440" />
+      <figcaption data-full-caption aria-live="polite"></figcaption>
+    </figure>
+    <div class="viewer-navigation">
+      <button type="button" data-prev>{en ? 'Previous' : 'Précédente'}</button>
+      <button type="button" data-next>{en ? 'Next' : 'Suivante'}</button>
+    </div>
+  </dialog>}
+</section>
+
+<script>
+  document.querySelectorAll<HTMLElement>('[data-work-gallery][data-preview="false"]').forEach((gallery) => {
+    const dialog = gallery.querySelector<HTMLDialogElement>('dialog');
+    const image = gallery.querySelector<HTMLImageElement>('[data-full-image]');
+    const caption = gallery.querySelector<HTMLElement>('[data-full-caption]');
+    const counter = gallery.querySelector<HTMLElement>('[data-counter]');
+    if (!dialog || !image || !caption || !counter) return;
+    const cards = Array.from(gallery.querySelectorAll<HTMLElement>('[data-category]'));
+    const links = Array.from(gallery.querySelectorAll<HTMLAnchorElement>('[data-photo]'));
+    let activeLinks = links;
+    let index = 0;
+    let opener: HTMLAnchorElement | null = null;
+    let previousOverflow = '';
+    function show(next: number) {
+      index = (next + activeLinks.length) % activeLinks.length;
+      const link = activeLinks[index];
+      image!.src = link.href;
+      image!.alt = link.dataset.caption || '';
+      caption!.textContent = image!.alt;
+      counter!.textContent = `${index + 1} / ${activeLinks.length}`;
+    }
+    links.forEach(link => link.addEventListener('click', event => {
+      if (event.ctrlKey || event.metaKey || event.shiftKey || event.altKey || !dialog.showModal) return;
+      event.preventDefault();
+      opener = link;
+      show(activeLinks.indexOf(link));
+      previousOverflow = document.body.style.overflow;
+      document.body.style.overflow = 'hidden';
+      dialog.showModal();
+    }));
+    gallery.querySelectorAll<HTMLButtonElement>('[data-filter]').forEach(button => button.addEventListener('click', () => {
+      const filter = button.dataset.filter;
+      gallery.querySelectorAll('[data-filter]').forEach(item => item.setAttribute('aria-pressed', String(item === button)));
+      cards.forEach(card => { card.hidden = filter !== 'all' && card.dataset.category !== filter; });
+      activeLinks = links.filter(link => !link.closest<HTMLElement>('[data-category]')?.hidden);
+    }));
+    dialog.querySelector('[data-close]')?.addEventListener('click', () => dialog.close());
+    dialog.querySelector('[data-prev]')?.addEventListener('click', () => show(index - 1));
+    dialog.querySelector('[data-next]')?.addEventListener('click', () => show(index + 1));
+    dialog.addEventListener('keydown', event => {
+      if (event.key === 'ArrowLeft' || event.key === 'ArrowRight') {
+        event.preventDefault();
+        show(index + (event.key === 'ArrowRight' ? 1 : -1));
+      }
+    });
+    dialog.addEventListener('click', event => { if (event.target === dialog) dialog.close(); });
+    dialog.addEventListener('close', () => {
+      document.body.style.overflow = previousOverflow;
+      opener?.focus();
+    });
+  });
+</script>
+
+<style>
+  .work-gallery { padding: 72px 0; background: var(--color-bg); }
+  .gallery-heading { display: flex; justify-content: space-between; align-items: end; gap: 28px; margin-bottom: 30px; }
+  .gallery-heading h2 { margin: 12px 0; font-size: clamp(2rem, 4vw, 3rem); }
+  .gallery-heading p { max-width: 610px; color: var(--color-text-light); line-height: 1.7; }
+  .gallery-heading .btn { flex-shrink: 0; }
+  .gallery-filters { display: flex; flex-wrap: wrap; gap: 10px; margin-bottom: 32px; }
+  .gallery-filters button { padding: 12px 19px; border: 1px solid var(--color-border); border-radius: 100px; background: transparent; color: var(--color-text); font: inherit; cursor: pointer; }
+  .gallery-filters button[aria-pressed="true"] { background: var(--color-navy); color: white; border-color: var(--color-navy); }
+  .photo-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 32px 24px; }
+  .photo-grid figure { margin: 0; min-width: 0; }
+  .photo-grid figure[hidden] { display: none; }
+  .photo-link { position: relative; display: block; overflow: hidden; border-radius: 14px; background: var(--color-navy); aspect-ratio: 3/4; }
+  .photo-link img { width: 100%; height: 100%; object-fit: cover; display: block; transition: transform .35s ease; }
+  .photo-link:hover img { transform: scale(1.025); }
+  .photo-open { position: absolute; bottom: 14px; right: 14px; left: 14px; display: flex; justify-content: space-between; align-items: center; padding: 11px 15px; border: 1px solid #ffffff42; border-radius: 8px; background: #15191ce6; color: white; font-size: .875rem; }
+  .photo-open span { font-size: 1.25rem; }
+  figcaption { font-size: 1rem; line-height: 1.5; padding-top: 14px; }
+  .gallery-note { margin-top: 28px; color: var(--color-text-light); font-size: .875rem; max-width: 760px; line-height: 1.6; }
+  .photo-dialog { position: fixed; inset: 0; margin: auto; width: min(960px, calc(100vw - 24px)); max-width: none; max-height: calc(100dvh - 24px); padding: 16px 22px; border: 1px solid #ffffff30; border-radius: 14px; background: #15191c; color: white; overflow-y: auto; }
+  .photo-dialog::backdrop { background: #000e; }
+  .viewer-toolbar, .viewer-navigation { display: flex; justify-content: space-between; align-items: center; gap: 16px; }
+  .photo-dialog button { font: inherit; font-size: 1rem; cursor: pointer; min-height: 44px; padding: 8px 16px; color: white; background: #ffffff12; border: 1px solid #ffffff55; border-radius: 8px; }
+  .viewer-figure { margin: 14px 0; }
+  .viewer-figure img { display: block; width: 100%; height: min(66dvh, 780px); object-fit: contain; }
+  .viewer-figure figcaption { text-align: center; color: #eee; }
+  .work-gallery :is(a, button):focus-visible { outline: 3px solid var(--color-accent); outline-offset: 4px; }
+  @media (max-width: 900px) { .photo-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); } .gallery-heading { align-items: start; flex-direction: column; } }
+  @media (max-width: 600px) { .work-gallery { padding: 46px 0; } .photo-grid { grid-template-columns: 1fr; gap: 28px; } .gallery-filters { gap: 8px; } .gallery-filters button { font-size: .875rem; padding: 10px 14px; } .photo-dialog { padding: 12px; } .viewer-figure img { height: 58dvh; } }
+  @media (prefers-reduced-motion: reduce) { .photo-link img { transition: none; } .photo-link:hover img { transform: none; } }
+</style>

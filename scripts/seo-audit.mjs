@@ -1,5 +1,5 @@
 import { existsSync, readdirSync, readFileSync } from 'node:fs';
-import { join, relative, resolve, sep } from 'node:path';
+import { extname, join, relative, resolve, sep } from 'node:path';
 
 const root = resolve('dist');
 if (!existsSync(root)) {
@@ -32,6 +32,8 @@ const pageForHref = href => {
   if (!clean || /^(?:https?:|mailto:|tel:|sms:|javascript:)/i.test(clean)) return null;
   const pathname = clean.startsWith('/') ? clean : null;
   if (!pathname) return null;
+  // Image/PDF download links point to files, not HTML route directories.
+  if (extname(pathname)) return join(root, pathname);
   const candidates = pathname.endsWith('/')
     ? [join(root, pathname, 'index.html')]
     : [join(root, pathname, 'index.html'), join(root, `${pathname}.html`)];
