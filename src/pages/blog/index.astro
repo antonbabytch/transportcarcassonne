@@ -7,8 +7,8 @@ import CTA from '../../components/CTA.astro';
 import Breadcrumbs from '../../components/Breadcrumbs.astro';
 import { SITE } from '../../data/site.config';
 
-const title = 'Conseils déménagement à Carcassonne et dans l’Aude';
-const description = `Guides pratiques pour préparer un déménagement à Carcassonne : stationnement, cartons, démarches et organisation. Conseils locaux par ${SITE.name}.`;
+const title = 'Blog déménagement Carcassonne : conseils et actualités';
+const description = `Conseils de déménagement, équipement et actualités de ${SITE.name}. Découvrez notre Pianoplan et nos photos de réalisations à Carcassonne.`;
 const posts = (await getCollection('blog', ({ data }) => !data.draft))
   .sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf());
 const postHref = (id: string) => `/blog/${id.replace(/\.(md|mdx)$/, '')}/`;
@@ -19,17 +19,18 @@ const formatDate = (date: Date) => new Intl.DateTimeFormat('fr-FR', {
 
 <BaseLayout title={title} description={description}>
   <Header />
-  <Breadcrumbs items={[{ name: 'Accueil', href: '/' }, { name: 'Conseils déménagement' }]} />
+  <Breadcrumbs items={[{ name: 'Accueil', href: '/' }, { name: 'Blog' }]} />
 
   <main>
     <section class="blog-hero">
       <div class="container">
-        <span class="section-label">Guides locaux</span>
-        <h1>Conseils pour déménager sereinement</h1>
+        <span class="section-label">Le blog de Transport Carcassonne</span>
+        <h1>Conseils, équipement et vie de l’entreprise</h1>
         <p class="blog-hero-sub">
-          Des réponses concrètes sur les accès, le stationnement, les cartons et les démarches
-          à Carcassonne et dans l'Aude.
+          Nos conseils pratiques pour déménager, les nouveautés de notre matériel et des images
+          de notre travail à Carcassonne et dans l’Aude.
         </p>
+        <div class="blog-links"><a href="/realisations/">Nos réalisations en photos</a><a href="/monte-escalier-pianoplan-carcassonne/">Notre équipement Pianoplan</a></div>
       </div>
     </section>
 
@@ -38,6 +39,7 @@ const formatDate = (date: Date) => new Intl.DateTimeFormat('fr-FR', {
         <div class="article-grid">
           {posts.map((post, index) => (
             <article class:list={['article-card', index === 0 && 'article-card--featured']}>
+              {post.data.image && <a href={postHref(post.id)} tabindex="-1" aria-hidden="true"><img class="article-card__image" src={post.data.image} alt="" width="1024" height="683" loading="lazy" decoding="async" /></a>}
               <div class="article-card__meta">
                 <time datetime={post.data.pubDate.toISOString()}>{formatDate(post.data.pubDate)}</time>
                 <span>·</span>
@@ -46,7 +48,7 @@ const formatDate = (date: Date) => new Intl.DateTimeFormat('fr-FR', {
               <h2><a href={postHref(post.id)}>{post.data.title}</a></h2>
               <p>{post.data.description}</p>
               <a class="article-card__link" href={postHref(post.id)} aria-label={`Lire : ${post.data.title}`}>
-                Lire le guide <span aria-hidden="true">→</span>
+                Lire l’article
               </a>
             </article>
           ))}
@@ -70,6 +72,9 @@ const formatDate = (date: Date) => new Intl.DateTimeFormat('fr-FR', {
   }
   .blog-hero h1 { color: white; margin: 12px 0 16px; max-width: 760px; }
   .blog-hero-sub { color: rgba(255,255,255,.78); font-size: 1.08rem; max-width: 680px; }
+  .blog-links { display: flex; flex-wrap: wrap; gap: 24px; margin-top: 24px; }
+  .blog-links a { color: #e5b789; text-decoration: underline; text-underline-offset: 4px; }
+  .article-card__image { width: 100%; height: auto; aspect-ratio: 3 / 2; object-fit: cover; border-radius: 10px; margin-bottom: 24px; }
   .article-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 24px; }
   .article-card {
     background: var(--color-white);

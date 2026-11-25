@@ -30,7 +30,7 @@ const articleSources: Record<string, string> = {
 };
 const quoteHref = `/devis/?${new URLSearchParams({
   source: articleSources[postSlug] ?? 'article-blog',
-  service: 'demenagement-local',
+  service: postSlug === 'pianoplan-monte-escalier-carcassonne' ? 'transport-piano' : 'demenagement-local',
   depart: 'Carcassonne',
 }).toString()}`;
 const image = post.data.image ?? '/images/og-default.jpg';
@@ -66,7 +66,7 @@ const formatDate = (date: Date) => new Intl.DateTimeFormat('fr-FR', {
   <Header />
   <Breadcrumbs items={[
     { name: 'Accueil', href: '/' },
-    { name: 'Conseils', href: '/blog/' },
+    { name: 'Blog', href: '/blog/' },
     { name: post.data.title },
   ]} />
 
@@ -85,6 +85,7 @@ const formatDate = (date: Date) => new Intl.DateTimeFormat('fr-FR', {
 
       <div class="container article-layout">
         <div class="article-body">
+          {post.data.image && <figure class="article-cover"><img src={post.data.image} alt={post.data.imageAlt ?? post.data.title} width="1024" height="683" decoding="async" />{postSlug === 'pianoplan-monte-escalier-carcassonne' && <figcaption>Notre appareil · Photo de l’annonce HNVI, lot 198054.</figcaption>}</figure>}
           <Content />
         </div>
         <aside class="article-aside" aria-label="Contact rapide">
@@ -112,6 +113,9 @@ const formatDate = (date: Date) => new Intl.DateTimeFormat('fr-FR', {
   .article-meta { color: #D09A67; font-size: .78rem; text-transform: uppercase; letter-spacing: .08em; }
   .article-layout { display: grid; grid-template-columns: minmax(0, 760px) 280px; gap: 64px; padding-top: 72px; padding-bottom: 88px; align-items: start; }
   .article-body { min-width: 0; }
+  .article-cover { margin: 0 0 32px; }
+  .article-cover img { display: block; width: 100%; height: auto; border-radius: 14px; }
+  .article-cover figcaption { font-size: .875rem; color: var(--color-text-light); margin-top: 10px; }
   .article-body :global(h2) { margin: 44px 0 16px; font-size: 1.85rem; }
   .article-body :global(h3) { margin: 30px 0 12px; font-size: 1.3rem; }
   .article-body :global(p) { margin-bottom: 18px; line-height: 1.78; }

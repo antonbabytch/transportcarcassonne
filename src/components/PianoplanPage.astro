@@ -1,0 +1,152 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Header from './Header.astro';
+import Footer from './Footer.astro';
+import Breadcrumbs from './Breadcrumbs.astro';
+import CTA from './CTA.astro';
+import { SITE } from '../data/site.config';
+
+interface Props { lang?: 'fr' | 'en'; }
+const { lang = 'fr' } = Astro.props;
+const en = lang === 'en';
+const photo = '/images/equipement/pianoplan-600j-vertical-carcassonne-1024.webp';
+const source = 'https://www.hnvi.nl/gesloten/rupstraploper-pianoplan-type-600j-speedy-verticale-bouwjaar-2011-max-draaglast-600-kg/198054';
+const documentation = 'https://www.ctelift.com/wp-content/uploads/2015/11/PIANOPLAN_2018-07_EN.pdf';
+const quote = `${en ? '/en/quote/' : '/devis/'}?service=transport-piano&source=pianoplan`;
+const title = en ? 'Pianoplan stair climber in Carcassonne | Up to 600 kg' : 'Monte-escalier Pianoplan à Carcassonne | Jusqu’à 600 kg';
+const description = en
+  ? 'Pianoplan 600J Speedy Vertical available in Carcassonne for pianos, furniture and heavy equipment. Stair access assessed before a personalised quote.'
+  : 'Pianoplan 600J Speedy Vertical disponible à Carcassonne : pianos, meubles et équipements lourds jusqu’à 600 kg. Montée et descente après étude des accès.';
+const uses = en ? [
+  ['Upright pianos', 'Moving an instrument upstairs or downstairs, with its weight, dimensions, protection and route checked in advance.'],
+  ['Grand pianos', 'A tailored assessment of the instrument, turning space and preparation required. Dismantling and orientation are agreed before the move.'],
+  ['Heavy furniture & equipment', 'Large appliances, safes and bulky equipment: each load is assessed for its weight, balance, dimensions and suitability for the machine.'],
+] : [
+  ['Pianos droits', 'Monter ou descendre un instrument en étudiant son poids, son encombrement, les protections et le cheminement avant l’intervention.'],
+  ['Pianos à queue', 'Une étude sur mesure de l’instrument, des virages et de la préparation nécessaire. Le démontage éventuel et l’orientation sont définis avant le transport.'],
+  ['Mobilier & équipements lourds', 'Gros électroménager, coffres-forts et équipements encombrants : poids, équilibre, dimensions et compatibilité avec le plateau sont examinés pour chaque charge.'],
+];
+const faqs = en ? [
+  ['Is the Pianoplan already available?', 'Yes. Our Pianoplan 600J Speedy Vertical is available for work. The date, handling method and feasibility are confirmed for your project before booking.'],
+  ['Can you reach the first or second floor?', 'Yes, on a suitable staircase after an access assessment. Floor count alone does not determine feasibility: steps, slope, landings, turns and structural load capacity must also be checked.'],
+  ['Does 600 kg mean every item can be moved?', 'No. 600 kg is the machine’s maximum rated load, not a guarantee for every object or staircase. The load, attachments, balance and route must comply with the operating instructions. The stairs must support both the machine and the load.'],
+  ['Is this an external furniture lift?', 'No. The Pianoplan travels on tracks along a suitable staircase. It is not a facade lift through a window or balcony. A different access solution requires a separate assessment.'],
+  ['How much does the service cost?', 'We prepare a personalised quote based on the item, access at both addresses, floors, journey and team required. No fixed stair-climbing surcharge is assumed.'],
+] : [
+  ['Le Pianoplan est-il déjà disponible ?', 'Oui. Notre Pianoplan 600J Speedy Vertical est disponible pour les interventions. Le créneau, la méthode de manutention et la faisabilité sont confirmés pour votre projet avant réservation.'],
+  ['Pouvez-vous monter au premier ou au deuxième étage ?', 'Oui, sur un escalier compatible, après étude des accès. Le nombre d’étages ne suffit pas : marches, pente, paliers, virages et résistance de l’escalier doivent aussi être vérifiés.'],
+  ['600 kg signifie-t-il que tous les objets peuvent passer ?', 'Non. 600 kg est la charge maximale nominale de la machine, pas une garantie pour tout objet ou tout escalier. La charge, les accessoires, l’équilibre et le trajet doivent respecter la notice. L’escalier doit supporter la machine et sa charge.'],
+  ['Est-ce un monte-meuble extérieur ?', 'Non. Le Pianoplan se déplace sur chenilles dans un escalier compatible. Ce n’est pas un élévateur de façade passant par une fenêtre ou un balcon. Une autre solution d’accès nécessite une étude distincte.'],
+  ['Quel est le tarif de cette prestation ?', 'Le devis est personnalisé selon l’objet, les accès aux deux adresses, les étages, le trajet et l’équipe nécessaire. Aucun supplément forfaitaire de montée d’escalier n’est présumé.'],
+];
+---
+
+<BaseLayout title={title} description={description} lang={en ? 'en-GB' : 'fr-FR'} ogImage={photo} ogImageAlt="Pianoplan 600J Speedy Vertical" preloadImage={photo}>
+  <script is:inline slot="head" type="application/ld+json" set:html={JSON.stringify({
+    '@context': 'https://schema.org', '@type': 'Service', name: title, description,
+    url: new URL(Astro.url.pathname, SITE.url).href,
+    image: new URL(photo, SITE.url).href, provider: { '@id': `${SITE.url}/#business` },
+    areaServed: [{ '@type': 'City', name: 'Carcassonne' }, { '@type': 'AdministrativeArea', name: 'Aude' }],
+  })} />
+  <script is:inline slot="head" type="application/ld+json" set:html={JSON.stringify({
+    '@context': 'https://schema.org', '@type': 'FAQPage', mainEntity: faqs.map(([q, a]) => ({
+      '@type': 'Question', name: q, acceptedAnswer: { '@type': 'Answer', text: a },
+    })),
+  })} />
+  <Header lang={lang} />
+  <Breadcrumbs items={[{ name: en ? 'Home' : 'Accueil', href: en ? '/en/' : '/' }, { name: 'Pianoplan 600J' }]} />
+  <main>
+    <section class="lift-hero">
+      <div class="container lift-layout">
+        <div>
+          <span class="eyebrow">{en ? 'Our equipment · Available now' : 'Notre équipement · Disponible'}</span>
+          <h1>{en ? 'Heavy items. A better way up the stairs.' : 'Vos objets lourds prennent de la hauteur.'}</h1>
+          <p class="lift-intro">{en ? 'Pianoplan stair-climbing transport in Carcassonne' : 'Transport avec monte-escalier Pianoplan à Carcassonne'}</p>
+          <p>{en ? 'Our Pianoplan 600J Speedy Vertical helps us move pianos, bulky furniture and heavy equipment upstairs and downstairs, after checking your access.' : 'Notre Pianoplan 600J Speedy Vertical nous accompagne pour monter et descendre pianos, meubles encombrants et équipements lourds, après vérification de vos accès.'}</p>
+          <div class="lift-actions"><a class="btn btn--primary" href={quote}>{en ? 'Discuss your project' : 'Étudier mon projet'}</a><a class="lift-phone" href={`tel:${SITE.phone}`}>{SITE.phoneDisplay}</a></div>
+          <p class="capacity"><strong>600 kg</strong><span>{en ? 'Maximum rated load · subject to access assessment' : 'Charge maximale nominale · sous réserve de faisabilité'}</span></p>
+        </div>
+        <figure>
+          <img src={photo} srcset="/images/equipement/pianoplan-600j-vertical-carcassonne-512.webp 512w, /images/equipement/pianoplan-600j-vertical-carcassonne-1024.webp 1024w" sizes="(max-width: 850px) 100vw, 50vw" width="1024" height="683" alt={en ? 'The acquired Pianoplan 600J Speedy Vertical tracked stair climber, with tilting platform' : 'Pianoplan 600J Speedy Vertical acquis par Transport Carcassonne, chenilles et plateau inclinable'} fetchpriority="high" />
+          <figcaption>{en ? 'Photo of the acquired machine from the ' : 'Photo de l’appareil acquis, issue de l’'}<a href={source} rel="noopener">{en ? 'HNVI listing' : 'annonce HNVI'}</a>.</figcaption>
+        </figure>
+      </div>
+    </section>
+    <section class="section">
+      <div class="container">
+        <span class="section-label">{en ? 'Pianos, furniture & equipment' : 'Pianos, mobilier & matériel'}</span>
+        <h2>{en ? 'One machine. Different moving projects.' : 'Un équipement, plusieurs types de transport.'}</h2>
+        <div class="lift-cards">{uses.map(([heading, text]) => <article><h3>{heading}</h3><p>{text}</p></article>)}</div>
+      </div>
+    </section>
+    <section class="section section--alt">
+      <div class="container lift-detail">
+        <figure><img src="/images/equipement/pianoplan-commandes-chenilles-512.webp" width="512" height="768" loading="lazy" decoding="async" alt={en ? 'Pianoplan rear view showing controls and tracks' : 'Vue arrière du Pianoplan : commandes et chenilles'} /><figcaption>{en ? 'Rear view · Photo: HNVI listing.' : 'Vue arrière · Photo : annonce HNVI.'}</figcaption></figure>
+        <div>
+          <span class="section-label">Pianoplan 600J Speedy Vertical</span>
+          <h2>{en ? 'The staircase is part of the plan.' : 'L’escalier fait partie de la préparation.'}</h2>
+          <p>{en ? 'Tracks and a tilting platform assist heavy-load handling. To reach the first or second floor, or bring an item back down, we assess the complete route at both ends of the journey.' : 'Les chenilles et le plateau inclinable assistent la manutention des charges lourdes. Pour rejoindre le premier ou le deuxième étage, ou redescendre un objet, nous étudions le cheminement complet au départ et à l’arrivée.'}</p>
+          <ul>
+            <li>{en ? 'Item: type, actual weight, length, width and height.' : 'Objet : nature, poids réel, longueur, largeur et hauteur.'}</li>
+            <li>{en ? 'Access: doorways, stair width, landings, bends and headroom.' : 'Accès : portes, largeur des marches, paliers, virages et hauteur libre.'}</li>
+            <li>{en ? 'Site: staircase load capacity, floor protection and parking.' : 'Bâtiment : résistance de l’escalier, protection des sols et stationnement.'}</li>
+          </ul>
+          <p class="lift-note">{en ? 'A 600 kg rating does not replace an on-site assessment. Equipment condition, operating instructions and load limits are checked before use.' : 'Une capacité de 600 kg ne remplace pas l’étude du lieu. État du matériel, notice d’utilisation et limites de charge sont vérifiés avant utilisation.'}</p>
+          <a href={documentation} rel="noopener">{en ? 'CTE manufacturer brochure (PDF, English)' : 'Documentation du fabricant CTE (PDF, anglais)'}</a>
+        </div>
+      </div>
+    </section>
+    <section class="section">
+      <div class="container lift-faq">
+        <h2>{en ? 'Before arranging your move' : 'Avant d’organiser votre transport'}</h2>
+        {faqs.map(([q, a]) => <details><summary>{q}</summary><p>{a}</p></details>)}
+        <nav class="lift-related" aria-label={en ? 'Related information' : 'Pour aller plus loin'}>
+          <a href={en ? '/en/piano-moving-carcassonne/' : '/services/transport-piano/'}>{en ? 'Piano moving service' : 'Transport de piano'}</a>
+          <a href={en ? '/en/our-work/' : '/realisations/'}>{en ? 'Our work in pictures' : 'Nos réalisations en photos'}</a>
+          <a href="/blog/pianoplan-monte-escalier-carcassonne/" lang="fr">{en ? 'Read our equipment news (French)' : 'L’arrivée du Pianoplan dans notre équipement'}</a>
+        </nav>
+      </div>
+    </section>
+  </main>
+  <CTA title={en ? 'A piano or heavy item to move?' : 'Un piano ou un objet lourd à déplacer ?'} subtitle={en ? 'Let’s check the item and access together before confirming the move.' : 'Vérifions ensemble l’objet et les accès avant de confirmer l’intervention.'} btnLabel={en ? 'Request a quote' : 'Demander un devis'} btnHref={quote} />
+  <Footer lang={lang} />
+</BaseLayout>
+
+<style>
+  .lift-hero { background: var(--color-navy); color: white; padding: 64px 0; }
+  .lift-layout { display: grid; grid-template-columns: 1fr 1fr; gap: 48px; align-items: center; }
+  .eyebrow { color: #e5b789; font-size: .9rem; letter-spacing: .06em; }
+  h1 { color: white; font-size: clamp(2.25rem, 4.7vw, 3.7rem); line-height: 1.08; margin: 20px 0; }
+  .lift-hero p { color: #e0e5e9; line-height: 1.7; }
+  .lift-intro { font-size: 1.25rem; font-weight: 600; margin-bottom: 16px; }
+  .lift-actions { display: flex; flex-wrap: wrap; align-items: center; gap: 24px; margin: 28px 0; }
+  .lift-phone { color: white; font-weight: 700; }
+  a:not(.btn) { text-decoration: underline; text-underline-offset: 4px; }
+  .capacity { display: flex; align-items: center; gap: 20px; border-top: 1px solid #ffffff30; padding-top: 22px; }
+  .capacity strong { color: #e5b789; font-size: 2.3rem; white-space: nowrap; }
+  .capacity span { font-size: .9rem; max-width: 230px; }
+  figure { margin: 0; min-width: 0; }
+  figure img { width: 100%; height: auto; display: block; border-radius: 16px; }
+  figcaption { font-size: .875rem; line-height: 1.5; padding-top: 12px; }
+  .lift-hero figcaption, .lift-hero figcaption a { color: #d6dfe7; }
+  h2 { margin: 12px 0 24px; max-width: 780px; }
+  .lift-cards { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; margin-top: 32px; }
+  .lift-cards article { border: 1px solid var(--color-border); border-radius: 16px; padding: 28px; }
+  .lift-cards h3 { margin-bottom: 14px; }
+  .lift-cards p, .lift-detail p, .lift-faq p { line-height: 1.75; }
+  .lift-detail { display: grid; grid-template-columns: minmax(220px, 360px) 1fr; gap: 64px; align-items: center; }
+  .lift-detail ul { list-style: disc; padding-left: 24px; margin: 22px 0; }
+  .lift-detail li { line-height: 1.7; margin-bottom: 12px; }
+  .lift-note { border-left: 3px solid var(--color-accent); padding-left: 18px; margin-bottom: 20px; }
+  .lift-detail a, .lift-related a { color: var(--color-accent-deep); }
+  .lift-faq { max-width: 900px; }
+  details { border-bottom: 1px solid var(--color-border); padding: 20px 0; }
+  summary { cursor: pointer; font-weight: 700; font-size: 1.05rem; }
+  details p { padding-top: 14px; }
+  .lift-related { display: flex; flex-wrap: wrap; gap: 20px; margin-top: 36px; }
+  @media (max-width: 850px) {
+    .lift-layout, .lift-detail, .lift-cards { grid-template-columns: 1fr; gap: 28px; }
+    .lift-hero { padding: 40px 0; }
+    .lift-detail figure { max-width: 360px; margin-inline: auto; }
+  }
+</style>

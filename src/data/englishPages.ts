@@ -255,6 +255,7 @@ const commercialPages: EnglishPage[] = [
     highlights: [{ value: 'Type', label: 'Identify the exact item' }, { value: 'Access', label: 'Measure every constraint' }, { value: 'Written', label: 'Resources confirmed first' }],
     sections: [
       { title: 'Details required for a feasibility check', paragraphs: ['Photographs and measurements are particularly important for heavy items. Include every step from the item to the parking position at both addresses.'], bullets: ['Item type, make and approximate weight', 'Length, width and height', 'Number of steps and staircase turns', 'Door, corridor and lift dimensions', 'Parking and carrying distance'] },
+        { title: 'Our Pianoplan tracked stair climber', paragraphs: ['Our Pianoplan 600J Speedy Vertical is available for suitable piano and heavy-item moves. Its maximum rated load is 600 kg. Suitability depends on the item, staircase dimensions, landings and structural load capacity; it is not a guarantee for every staircase.'] },
       { title: 'Specialist resources are not assumed', paragraphs: ['Extra labour, lifting equipment or a different access solution may be necessary. Feasibility is only confirmed after those requirements are understood.'] },
       { title: 'Protect the instrument and the property', paragraphs: ['The agreed protection and handling method should cover both the item and vulnerable floors, walls or doorways. Existing damage should be documented before movement.'] },
     ],

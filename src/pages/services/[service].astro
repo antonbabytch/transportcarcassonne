@@ -171,6 +171,7 @@ const serviceContent: Record<string, ServiceContent> = {
     metaDescription: `Projet de transport de piano ou d'objet lourd à Carcassonne. Faisabilité, moyens de levage, protections et prix confirmés après étude et devis. ${SITE.phoneDisplay}`,
     body: [
       `Le transport d’un piano est une opération délicate. Le poids réel, les dimensions, la valeur, les passages et les accès doivent être évalués avant de confirmer la faisabilité.`,
+        `Nous disposons d’un Pianoplan 600J Speedy Vertical, un monte-escalier sur chenilles d’une charge maximale nominale de 600 kg. Il assiste la montée et la descente des pianos et objets lourds lorsque le poids, les dimensions et la configuration de l’escalier le permettent.`,
       `Les compétences, le nombre d’intervenants, les moyens de levage et les protections nécessaires doivent être confirmés sur le devis avant toute manutention.`,
       `La préparation est essentielle : le piano est d\'abord évalué (taille, poids, accès depuis le logement de départ et d\'arrivée). Certaines configurations nécessitent un démontage partiel ou l\'utilisation d\'un monte-meuble. Nous anticipons tous ces aspects dès le devis pour vous proposer la solution la plus adaptée.`,
       `Une demande peut aussi concerner un coffre-fort, une sculpture, un équipement de sport ou un objet d’art volumineux. Chaque objet exige une étude de poids, d’accès et de responsabilité.`,
@@ -179,7 +180,7 @@ const serviceContent: Record<string, ServiceContent> = {
     ],
     included: [
       'Évaluation technique et devis adapté',
-      'Équipement à confirmer selon l’évaluation',
+        'Pianoplan disponible, utilisation à confirmer après étude des accès',
       'Protection complète de l\'instrument',
       'Transport sécurisé',
       'Moyens humains et manutention précisés au devis',
@@ -319,6 +320,7 @@ const pageDescription = content?.metaDescription ?? service.description;
     <div class="container svc-layout">
       <div class="svc-body">
         {content?.body.map(para => <p class="svc-para">{para}</p>)}
+        {service.slug === 'transport-piano' && <p class="svc-para"><a href="/monte-escalier-pianoplan-carcassonne/" class="btn btn--outline">Découvrir notre monte-escalier Pianoplan</a></p>}
 
         <!-- Scope to be confirmed in the written quote -->
         <div class="svc-lists">

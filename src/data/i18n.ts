@@ -10,6 +10,7 @@ const ROUTES = [
   ['/a-propos/', '/en/about-transport-carcassonne/'],
   ['/nos-garanties/', '/en/why-choose-us/'],
   ['/realisations/', '/en/our-work/'],
+  ['/monte-escalier-pianoplan-carcassonne/', '/en/pianoplan-stair-climber-carcassonne/'],
   ['/assurance-demenagement/', '/en/removal-insurance/'],
   ['/comment-ca-marche/', '/en/how-it-works/'],
   ['/formules/', '/en/removal-services-carcassonne/'],
