@@ -5,8 +5,8 @@ const { lang = 'fr', preview = false } = Astro.props;
 const en = lang === 'en';
 const photos = preview ? WORK_PHOTOS.slice(0, 3) : WORK_PHOTOS;
 const categories = en
-  ? [['all', 'All photos'], ['loading', 'Loading'], ['storage', 'Transport to storage'], ['street', 'In town']]
-  : [['all', 'Toutes les photos'], ['loading', 'Chargement'], ['storage', 'Transport vers un box'], ['street', 'En ville']];
+  ? [['all', 'All photos'], ['loading', 'Loading'], ['handling', 'Handling'], ['storage', 'Transport to storage'], ['street', 'In town']]
+  : [['all', 'Toutes les photos'], ['loading', 'Chargement'], ['handling', 'Manutention'], ['storage', 'Transport vers un box'], ['street', 'En ville']];
 const galleryPath = en ? '/en/our-work/' : '/realisations/';
 ---
 <section class:list={['work-gallery', { 'work-gallery--preview': preview }]} data-work-gallery data-preview={preview ? 'true' : 'false'}>
@@ -27,10 +27,10 @@ const galleryPath = en ? '/en/our-work/' : '/realisations/';
         <a class="photo-link" href={preview ? galleryPath : workImage(photo.id)}
           data-photo={!preview ? photo.id : undefined} data-caption={photo[lang]}
           aria-label={preview ? `${en ? 'Explore our work' : 'Voir nos réalisations'} : ${photo[lang]}` : `${en ? 'Enlarge' : 'Agrandir'} : ${photo[lang]}`}>
-          <img src={workImage(photo.id, true)} srcset={`${workImage(photo.id, true)} 540w, ${workImage(photo.id)} 1080w`}
+          <img src={workImage(photo.id, true)} srcset={`${workImage(photo.id, true)} 540w, ${workImage(photo.id)} ${photo.width ?? 1080}w`}
             sizes="(max-width: 600px) calc(100vw - 40px), (max-width: 900px) 45vw, 30vw"
-            alt={photo[lang]} width="1080" height="1440" loading="lazy" decoding="async" />
-          <span class="photo-open" aria-hidden="true">{en ? 'View photo' : 'Voir la photo'} <span>＋</span></span>
+            alt={photo[lang]} width={photo.width ?? 1080} height={photo.height ?? 1440} loading="lazy" decoding="async" />
+          <span class="photo-open" aria-hidden="true">{preview ? (en ? 'Explore our work' : 'Voir nos réalisations') : (en ? 'View photo' : 'Voir la photo')} <span>＋</span></span>
         </a>
         <figcaption>{photo[lang]}</figcaption>
       </figure>)}
@@ -71,6 +71,9 @@ const galleryPath = en ? '/en/our-work/' : '/realisations/';
       const link = activeLinks[index];
       image!.src = link.href;
       image!.alt = link.dataset.caption || '';
+      const thumbnail = link.querySelector('img');
+      image!.width = thumbnail?.width || 1080;
+      image!.height = thumbnail?.height || 1440;
       caption!.textContent = image!.alt;
       counter!.textContent = `${index + 1} / ${activeLinks.length}`;
     }
