@@ -8,9 +8,11 @@ import QuoteForm from './QuoteForm.astro';
 import type { HighIntentPage } from '../data/highIntentPages';
 import { SITE } from '../data/site.config';
 
-const { page } = Astro.props as { page: HighIntentPage };
-const canonical = `${SITE.url}/${page.slug}/`;
-const quoteHref = `/devis/?${new URLSearchParams(page.quote).toString()}`;
+interface Props { page: HighIntentPage; lang?: 'fr' | 'en'; }
+const { page, lang = 'fr' } = Astro.props;
+const en = lang === 'en';
+const canonical = `${SITE.url}/${en ? 'en/' : ''}${page.slug}/`;
+const quoteHref = `${en ? '/en/quote/' : '/devis/'}?${new URLSearchParams(page.quote).toString()}`;
 const faqSchema = {
   '@context': 'https://schema.org',
   '@type': 'FAQPage',
@@ -32,11 +34,11 @@ const serviceSchema = {
 };
 ---
 
-<BaseLayout title={page.metaTitle} description={page.metaDescription} canonical={canonical}>
+<BaseLayout lang={en ? 'en-GB' : 'fr-FR'} title={page.metaTitle} description={page.metaDescription} canonical={canonical}>
   <script is:inline slot="head" type="application/ld+json" set:html={JSON.stringify(faqSchema)} />
   <script is:inline slot="head" type="application/ld+json" set:html={JSON.stringify(serviceSchema)} />
-  <Header />
-  <Breadcrumbs items={[{ name: 'Accueil', href: '/' }, { name: page.title }]} />
+  <Header lang={lang} />
+  <Breadcrumbs lang={lang} items={[{ name: en ? 'Home' : 'Accueil', href: en ? '/en/' : '/' }, { name: page.title }]} />
 
   <main>
     <section class="intent-hero">
@@ -46,16 +48,16 @@ const serviceSchema = {
           <h1>{page.title}</h1>
           <p>{page.intro}</p>
           <div class="intent-hero__actions">
-            <a class="btn btn--primary btn--lg" href={page.embedQuoteForm ? '#quote' : quoteHref}>{page.primaryCta ?? 'Décrire mon projet'}</a>
+            <a class="btn btn--primary btn--lg" href={page.embedQuoteForm ? '#quote' : quoteHref}>{page.primaryCta ?? (en ? 'Describe your project' : 'Décrire mon projet')}</a>
             <a class="intent-phone" href={`tel:${SITE.phone}`} data-source={`landing-${page.slug}`}>{page.phoneCta ?? SITE.phoneDisplay}</a>
           </div>
         </div>
-        <nav class="intent-summary" aria-label="Sur cette page">
-          <strong>Préparer une demande utile</strong>
-          <a href="#besoins">Besoins concernés</a>
-          <a href="#methode">Méthode de préparation</a>
-          <a href="#informations">Informations à fournir</a>
-          <a href="#questions">Questions fréquentes</a>
+        <nav class="intent-summary" aria-label={en ? 'On this page' : 'Sur cette page'}>
+          <strong>{en ? 'Prepare your request' : 'Préparer une demande utile'}</strong>
+          <a href="#besoins">{en ? 'What we can move' : 'Besoins concernés'}</a>
+          <a href="#methode">{en ? 'How it works' : 'Méthode de préparation'}</a>
+          <a href="#informations">{en ? 'What to tell us' : 'Informations à fournir'}</a>
+          <a href="#questions">{en ? 'Common questions' : 'Questions fréquentes'}</a>
         </nav>
       </div>
     </section>
@@ -63,7 +65,7 @@ const serviceSchema = {
     <section class="section" id="besoins">
       <div class="container intent-intro">
         <div>
-          <span class="section-label">Le point de départ</span>
+          <span class="section-label">{en ? 'Where to start' : 'Le point de départ'}</span>
           <h2>{page.contextTitle}</h2>
         </div>
         <div class="intent-copy">
@@ -83,8 +85,8 @@ const serviceSchema = {
 
     <section class="section intent-method" id="methode">
       <div class="container">
-        <span class="section-label">Organisation</span>
-        <h2>Une préparation en quatre étapes</h2>
+        <span class="section-label">{en ? 'Planning' : 'Organisation'}</span>
+        <h2>{en ? 'Four steps to prepare' : 'Une préparation en quatre étapes'}</h2>
         <div class="intent-steps">
           {page.method.map((step, index) => (
             <article>
@@ -99,7 +101,7 @@ const serviceSchema = {
     <section class="section" id="informations">
       <div class="container intent-check-layout">
         <div>
-          <span class="section-label">Avant le devis</span>
+          <span class="section-label">{en ? 'Before a quote' : 'Avant le devis'}</span>
           <h2>{page.checklistTitle}</h2>
           <p>{page.checklistIntro}</p>
           <ul class="intent-checklist">
@@ -107,17 +109,17 @@ const serviceSchema = {
           </ul>
         </div>
         <aside class="intent-callout">
-          <span>À vérifier</span>
+          <span>{en ? 'What to check' : 'À vérifier'}</span>
           <h3>{page.callout.title}</h3>
           <p>{page.callout.text}</p>
-          <a href={quoteHref}>Ajouter ces informations au devis →</a>
+          <a href={quoteHref}>{en ? 'Add these details to your quote request' : 'Ajouter ces informations au devis →'}</a>
         </aside>
       </div>
     </section>
 
     <section class="section intent-faq" id="questions">
       <div class="container intent-faq__layout">
-        <div><span class="section-label">Questions fréquentes</span><h2>Décider avec un périmètre clair</h2></div>
+        <div><span class="section-label">{en ? 'Common questions' : 'Questions fréquentes'}</span><h2>{en ? 'Know what is included' : 'Décider avec un périmètre clair'}</h2></div>
         <div>
           {page.faqs.map(item => (
             <details>
@@ -131,11 +133,11 @@ const serviceSchema = {
 
     <section class="section intent-related">
       <div class="container">
-        <span class="section-label">Pour aller plus loin</span>
-        <h2>Guides et services associés</h2>
+        <span class="section-label">{en ? 'Further reading' : 'Pour aller plus loin'}</span>
+        <h2>{en ? 'Related guides and services' : 'Guides et services associés'}</h2>
         <div class="intent-related__grid">
           {page.related.map(item => (
-            <a href={item.href}><strong>{item.label}</strong><span>{item.text}</span><i aria-hidden="true">→</i></a>
+            <a href={item.href} hreflang={en && !item.href.startsWith('/en/') ? 'fr' : undefined}><strong>{item.label}</strong><span>{item.text}</span><i aria-hidden="true">→</i></a>
           ))}
         </div>
       </div>
@@ -145,20 +147,22 @@ const serviceSchema = {
   {page.embedQuoteForm ? (
     <div id="quote">
     <QuoteForm
-      title={page.ctaTitle ?? 'Décrivez votre mission sur mesure'}
-      subtitle={page.ctaSubtitle ?? 'Indiquez les lieux, la date, les biens concernés et les démarches pratiques à coordonner.'}
+      lang={lang}
+      title={page.ctaTitle ?? (en ? 'Describe your project' : 'Décrivez votre mission sur mesure')}
+      subtitle={page.ctaSubtitle ?? (en ? 'Tell us the addresses, preferred date, inventory and practical arrangements.' : 'Indiquez les lieux, la date, les biens concernés et les démarches pratiques à coordonner.')}
       prefilledCity="Carcassonne"
       prefilledService={page.quote.service}
     />
     </div>
   ) : (
     <CTA
-      title={page.ctaTitle ?? 'Un projet à chiffrer à Carcassonne ?'}
-      subtitle={page.ctaSubtitle ?? 'Transmettez les adresses, l’inventaire et les contraintes d’accès pour recevoir une proposition adaptée au périmètre réel.'}
+      title={page.ctaTitle ?? (en ? 'Planning a move in Carcassonne?' : 'Un projet à chiffrer à Carcassonne ?')}
+      subtitle={page.ctaSubtitle ?? (en ? 'Share both addresses, the inventory and access details for a quote tailored to the move.' : 'Transmettez les adresses, l’inventaire et les contraintes d’accès pour recevoir une proposition adaptée au périmètre réel.')}
+      btnLabel={en ? 'Free quote' : undefined}
       btnHref={quoteHref}
     />
   )}
-  <Footer />
+  <Footer lang={lang} />
 </BaseLayout>
 
 <style>

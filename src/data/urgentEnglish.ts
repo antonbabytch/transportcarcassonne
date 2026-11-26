@@ -1,0 +1,63 @@
+import { HIGH_INTENT_PAGES, type HighIntentPage } from './highIntentPages';
+
+export const URGENT_EN: HighIntentPage = {
+  slug: 'urgent-transport-carcassonne',
+  eyebrow: 'Local express transport · Availability checked by phone',
+  title: 'Express transport in Carcassonne today or tomorrow',
+  metaTitle: 'Urgent Transport Carcassonne | Today or Tomorrow',
+  metaDescription: 'Need furniture, boxes or a small load moved in Carcassonne today or tomorrow? Call to check availability, access and price before booking.',
+  intro: 'Need a local move at short notice? Call with both addresses, the item list and your deadline. We check availability, access and what the job requires before confirming.',
+  quote: HIGH_INTENT_PAGES.urgent.quote,
+  primaryCta: 'Send the details now',
+  phoneCta: 'Call now · 06 80 87 30 47',
+  ctaTitle: 'Need something moved today or tomorrow?',
+  ctaSubtitle: 'Calling is quickest. Have both addresses, the inventory, access details and your deadline ready. We will confirm the slot and price before you book.',
+  contextTitle: 'Local express transport requests we can assess quickly',
+  context: [
+    'We focus on Carcassonne and nearby towns, for small loads that fit the available vehicle and time. Examples include a sofa, bed, appliance, boxes, a private purchase or a last-minute small move.',
+    'Same-day or next-day work depends on the schedule, volume, weight, floors, parking and travel time. We confirm a slot only after checking these details and agreeing on what is included.',
+    'The price reflects distance, the item list, handling time, access and the team needed. We confirm both the price and the slot before the job starts.',
+  ],
+  profiles: [
+    { title: 'Furniture or a purchase', text: 'A sofa, table, wardrobe, bed or appliance to collect from a private seller or a Carcassonne shop.' },
+    { title: 'A small local move', text: 'A few pieces of furniture and some boxes between nearby addresses, with the items ready and access confirmed.' },
+    { title: 'A one-off business request', text: 'Local delivery for a shop, office, rental property or customer who needs a short-notice slot.' },
+  ],
+  method: [
+    { title: 'Call with the key details', text: 'Give both addresses, the deadline, the item list, dimensions and any access restrictions.' },
+    { title: 'Send photos if needed', text: 'Pictures of the furniture, stairs, doors and parking help us assess the handling requirements.' },
+    { title: 'We check availability', text: 'We review the schedule, vehicle, journey, team and whether the move is practical.' },
+    { title: 'Confirm before we set off', text: 'The time, price, included work and any limitations are agreed before we set off.' },
+  ],
+  checklistTitle: 'What to have ready for a quick answer',
+  checklistIntro: 'Giving us the details on the first call helps us check availability faster.',
+  checklist: [
+    'Exact collection and delivery addresses',
+    'Possible time window and the latest time the work must be finished',
+    'List of furniture, boxes and appliances, with approximate dimensions',
+    'Floor, lift, doorway widths and carrying distance at each address',
+    'Parking options near each entrance',
+    'Whether furniture is dismantled, boxes are sealed and purchases paid for',
+    'Photos of bulky or heavy items and the access route',
+  ],
+  callout: {
+    title: 'Today or tomorrow is subject to availability',
+    text: 'We confirm a slot after checking the schedule, load, access and equipment. An unusually heavy item, unsuitable access or regulated work may need a different plan.',
+  },
+  faqs: [
+    { q: 'What is express transport in Carcassonne?', a: 'Local transport for furniture, appliances, boxes, shop purchases and small loads, often for the same or next day. Timing depends on the schedule, vehicle, access and handling.' },
+    { q: 'Can you come today?', a: 'Sometimes, for a short route and a small load. Call with both addresses, what needs moving, the access and your deadline so we can check.' },
+    { q: 'Can you come tomorrow?', a: 'Next-day transport may be easier to arrange, but it still depends on the schedule and the resources needed. Complete details help us answer faster.' },
+    { q: 'Can you move just one sofa or appliance?', a: 'Yes, we can assess a single-item move. Tell us the dimensions, weight if known, floors, lift and any narrow passages.' },
+    { q: 'Can you collect a purchase from a shop?', a: 'Yes, if it is paid for, ready for collection, accessible and can fit the vehicle. Share the shop name, collection window, dimensions and delivery address.' },
+    { q: 'How much does urgent local transport cost?', a: 'It depends on distance, volume, access, handling time, the team and the slot. We tell you the full price before you confirm.' },
+    { q: 'Which towns do you cover for urgent requests?', a: 'We prioritise Carcassonne and nearby towns, including Trèbes, Cazilhac, Palaja, Pennautier, Villemoustaussou and Berriac. We can assess other destinations depending on the route and schedule.' },
+  ],
+  related: [
+    { label: 'Furniture transport', href: '/en/furniture-transport-carcassonne/', text: 'One or more items, online purchases and local deliveries.' },
+    { label: 'Shop collection and delivery', href: '/en/furniture-delivery-carcassonne/', text: 'Collection and delivery of bulky purchases in Carcassonne.' },
+    { label: 'Small removals', href: '/en/small-removals-carcassonne/', text: 'Studios, a few pieces of furniture and small loads.' },
+    { label: 'Price guide', href: '/en/removal-prices-carcassonne/', text: 'See what affects the price of your move.' },
+    { label: 'Forgotten items or documents (FR)', href: '/objet-oublie-transport-urgent-carcassonne/', text: 'A document, keys or bag left behind and needed elsewhere in the region.' },
+  ],
+};

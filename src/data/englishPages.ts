@@ -427,6 +427,11 @@ const commercialPages: EnglishPage[] = [
     imageAlt: 'Removal route between the United Kingdom and Carcassonne',
     serviceName: 'UK to Carcassonne removal enquiry',
     formService: 'demenagement-international',
+    related: [
+      { href: '/en/moving-from-london-to-carcassonne/', title: 'Moving from London', text: 'Prepare access, collection and delivery between London and the Aude.' },
+      { href: '/en/international-removals-carcassonne/', title: 'International removals', text: 'How we assess routes and access before quoting.' },
+      { href: '/en/moving-to-carcassonne/', title: 'Moving to Carcassonne guide', text: 'Plan access, parking and your inventory.' },
+    ],
     highlights: [{ value: 'UK', label: 'Collection details required' }, { value: 'France', label: 'Local delivery access checked' }, { value: 'Brexit', label: 'Formalities verified first' }],
     sections: [
       { title: 'Post-Brexit moves require preparation', paragraphs: ['Household-goods movements from the UK into France can involve customs declarations and supporting evidence. Requirements depend on the customer, goods and circumstances; obtain current official guidance and confirm who handles each step.'], bullets: ['Detailed inventory in a usable format', 'Evidence of ownership where required', 'Identity and residence documents requested for the route', 'Restricted or prohibited goods identified', 'Customs and carrier responsibilities confirmed in writing'] },

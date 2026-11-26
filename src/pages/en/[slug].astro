@@ -1,12 +1,24 @@
 ---
 import EnglishServicePage from '../../components/EnglishServicePage.astro';
+import CoreServicePage from '../../components/CoreServicePage.astro';
+import ContactPage from '../../components/ContactPage.astro';
+import HighIntentLanding from '../../components/HighIntentLanding.astro';
 import { ENGLISH_PAGES } from '../../data/englishPages';
+import { SERVICES } from '../../data/services';
+import { getLanguageAlternates } from '../../data/i18n';
+import { URGENT_EN } from '../../data/urgentEnglish';
 
 export function getStaticPaths() {
   return ENGLISH_PAGES.map(page => ({ params: { slug: page.slug }, props: { page } }));
 }
 
 const { page } = Astro.props;
+const coreService = SERVICES.find(service =>
+  getLanguageAlternates(`/services/${service.slug}/`)?.english === `/en/${page.slug}/`
+);
 ---
 
-<EnglishServicePage page={page} />
+{page.slug === 'contact' ? <ContactPage lang="en" />
+  : page.slug === 'urgent-transport-carcassonne' ? <HighIntentLanding page={URGENT_EN} lang="en" />
+  : coreService ? <CoreServicePage service={coreService} englishPage={page} />
+  : <EnglishServicePage page={page} />}

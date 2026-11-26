@@ -63,7 +63,7 @@ const stars = (n: number) => '★'.repeat(n) + '☆'.repeat(5 - n);
               </span>
               <span class="gr__via">via Google</span>
             </p>
-            <blockquote class="gr__quote">{review.quote}</blockquote>
+            <blockquote class="gr__quote" lang={isEnglish ? 'fr' : undefined}>{review.quote}</blockquote>
             <footer class="gr__meta">
               <span class="gr__author">{review.author}</span>
               <span class="gr__sep" aria-hidden="true">·</span>
@@ -95,10 +95,10 @@ const stars = (n: number) => '★'.repeat(n) + '☆'.repeat(5 - n);
             <span class="gr__via">via Google</span>
           </p>
           <blockquote class="gr__quote gr__quote--partner">
-            <p>{PARTNER_REVIEW.quote}</p>
+              <p lang={isEnglish ? 'fr' : undefined}>{PARTNER_REVIEW.quote}</p>
             <details class="gr__full-review">
               <summary><span class="gr__read-more">{isEnglish ? 'Read the full review' : 'Lire l’avis complet'}</span><span class="gr__read-less">{isEnglish ? 'Show less' : 'Réduire'}</span></summary>
-              <p>{PARTNER_REVIEW.continuation}</p>
+              <p lang={isEnglish ? 'fr' : undefined}>{PARTNER_REVIEW.continuation}</p>
             </details>
           </blockquote>
           <footer class="gr__meta">

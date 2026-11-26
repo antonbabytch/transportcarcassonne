@@ -2,7 +2,7 @@
 import { SITE } from '../data/site.config';
 import { SERVICES } from '../data/services';
 import { CITIES } from '../data/cities';
-import { getLanguageSwitchPath } from '../data/i18n';
+import { EN_SERVICE_NAMES, getLanguageSwitchPath, localizeNavLink } from '../data/i18n';
 
 interface Props { lang?: 'fr' | 'en'; }
 const { lang = 'fr' } = Astro.props;
@@ -11,32 +11,36 @@ const home = isEnglish ? '/en/' : '/';
 const quote = isEnglish ? '/en/quote/' : '/devis/';
 const languageSwitch = getLanguageSwitchPath(Astro.url.pathname);
 
-const desktopLinks = isEnglish
-  ? [
-      { href: '/en/removals-carcassonne/', label: 'Removals' },
-      { href: '/en/small-removals-carcassonne/', label: 'Small moves' },
-      { href: '/en/urgent-transport-carcassonne/', label: 'Urgent 24–48h', urgent: true },
-      { href: '/en/removal-prices-carcassonne/', label: 'Prices' },
-      { href: '/en/moving-to-carcassonne/', label: 'Moving guide' },
-    ]
-  : [
-      { href: '/services/demenagement-local/', label: 'Déménagement' },
-      { href: '/petit-demenagement/', label: 'Petit déménagement' },
-      { href: '/transport-urgent-carcassonne/', label: 'Express 24–48 h', urgent: true },
-      { href: '/tarifs/', label: 'Tarifs' },
-      { href: '/outils-demenagement/', label: 'Outils' },
-      { href: '/blog/', label: 'Blog' },
-    ];
+const navLink = (href: string, fr: string, en: string) => localizeNavLink(href, fr, en, lang);
+const desktopLinks: (ReturnType<typeof navLink> & { urgent?: boolean })[] = [
+  navLink('/services/demenagement-local/', 'Déménagement', 'Removals'),
+  navLink('/petit-demenagement/', 'Petit déménagement', 'Small moves'),
+  { ...navLink('/transport-urgent-carcassonne/', 'Express 24–48 h', 'Express 24–48 h'), urgent: true },
+  navLink('/tarifs/', 'Tarifs', 'Prices'),
+  navLink('/outils-demenagement/', 'Outils', 'Tools'),
+  navLink('/blog/', 'Blog', 'Blog'),
+];
 
-const englishServices = [
-  ['removals-carcassonne', 'Local removals'],
-  ['small-removals-carcassonne', 'Small removals'],
-  ['furniture-delivery-carcassonne', 'Furniture delivery'],
-  ['long-distance-removals-france', 'Long-distance removals'],
-  ['international-removals-carcassonne', 'International removals'],
-  ['piano-moving-carcassonne', 'Piano and heavy items'],
-  ['long-distance-logistics-assistance', 'Bespoke logistics assistance'],
-] as const;
+const mobileLinks = [
+  navLink('/', 'Accueil', 'Home'),
+  navLink('/transport-urgent-carcassonne/', 'Transport express 24–48 h', 'Express transport 24–48 h'),
+  navLink('/livraison-meubles-magasins-carcassonne/', 'Livraison depuis un magasin', 'Furniture delivery'),
+  navLink('/tarifs/', 'Tarifs', 'Prices'),
+  navLink('/formules/', 'Formules', 'Service packages'),
+  navLink('/comment-ca-marche/', 'Méthode', 'How it works'),
+  navLink('/realisations/', 'Réalisations', 'Our work'),
+  navLink('/nos-garanties/', 'Nos garanties', 'Why choose us'),
+  navLink('/outils-demenagement/', 'Outils gratuits', 'Free tools'),
+  navLink('/calculateur-volume-demenagement/', 'Calculateur de volume', 'Volume calculator'),
+  navLink('/mission-logistique-longue-distance/', 'Mission logistique sur mesure', 'Bespoke logistics assistance'),
+  navLink('/blog/', 'Conseils', 'Blog'),
+  navLink('/a-propos/', 'À propos', 'About'),
+  navLink('/contact/', 'Contact', 'Contact'),
+];
+const serviceLinks = [
+  navLink('/petit-demenagement/', 'Petit déménagement', 'Small removals'),
+  ...SERVICES.map(service => navLink(`/services/${service.slug}/`, service.name, EN_SERVICE_NAMES[service.slug])),
+];
 ---
 
 <nav class="site-nav">
@@ -59,13 +63,13 @@ const englishServices = [
 
     <ul class="nav-links">
       {desktopLinks.map(item => (
-        <li><a href={item.href} class:list={[item.urgent && 'nav-urgent']}>{item.label}</a></li>
+        <li><a href={item.href} hreflang={item.hreflang} class:list={[item.urgent && 'nav-urgent']}>{item.label}</a></li>
       ))}
     </ul>
 
     <div class="nav-cta">
       <a href={`tel:${SITE.phone}`} class="nav-phone">{SITE.phoneDisplay}</a>
-      <a class="lang-switch" href={languageSwitch} hreflang={isEnglish ? 'fr' : 'en'} lang={isEnglish ? 'fr' : 'en'}>{isEnglish ? 'FR' : 'EN'}</a>
+      {languageSwitch && <a class="lang-switch" data-language-switch href={languageSwitch} hreflang={isEnglish ? 'fr' : 'en'} lang={isEnglish ? 'fr' : 'en'} aria-label={isEnglish ? 'Version française' : 'English version'}>{isEnglish ? 'FR' : 'EN'}</a>}
       <a href={`${quote}?source=navigation`} class="btn btn-primary">{isEnglish ? 'Free quote' : 'Devis gratuit'}</a>
     </div>
 
@@ -89,57 +93,17 @@ const englishServices = [
   <div class="mobile-menu-inner">
 
     <nav class="mobile-section">
-      <p class="mobile-section-title">{isEnglish ? 'Navigation' : 'Navigation'}</p>
+      <p class="mobile-section-title">Navigation</p>
       <ul>
-        {isEnglish ? (
-          <>
-            <li><a href="/en/" class="mobile-menu-link">Home</a></li>
-            <li><a href="/en/urgent-transport-carcassonne/" class="mobile-menu-link">Urgent transport 24–48h</a></li>
-            <li><a href="/en/furniture-delivery-carcassonne/" class="mobile-menu-link">Furniture delivery</a></li>
-            <li><a href="/en/removal-prices-carcassonne/" class="mobile-menu-link">Prices</a></li>
-            <li><a href="/en/how-it-works/" class="mobile-menu-link">How it works</a></li>
-            <li><a href="/en/our-work/" class="mobile-menu-link">Our work</a></li>
-            <li><a href="/en/why-choose-us/" class="mobile-menu-link">Why choose us</a></li>
-            <li><a href="/en/moving-to-carcassonne/" class="mobile-menu-link">Moving guide</a></li>
-            <li><a href="/en/about-transport-carcassonne/" class="mobile-menu-link">About</a></li>
-            <li><a href="/en/contact/" class="mobile-menu-link">Contact</a></li>
-            <li><a href={languageSwitch} class="mobile-menu-link" lang="fr">Version française</a></li>
-          </>
-        ) : (
-          <>
-            <li><a href="/" class="mobile-menu-link">Accueil</a></li>
-            <li><a href="/transport-urgent-carcassonne/" class="mobile-menu-link">Transport express 24–48 h</a></li>
-            <li><a href="/livraison-meubles-magasins-carcassonne/" class="mobile-menu-link">Livraison depuis un magasin</a></li>
-            <li><a href="/tarifs/" class="mobile-menu-link">Tarifs</a></li>
-            <li><a href="/formules/" class="mobile-menu-link">Formules</a></li>
-            <li><a href="/comment-ca-marche/" class="mobile-menu-link">Méthode</a></li>
-            <li><a href="/realisations/" class="mobile-menu-link">Réalisations</a></li>
-            <li><a href="/nos-garanties/" class="mobile-menu-link">Nos garanties</a></li>
-            <li><a href="/outils-demenagement/" class="mobile-menu-link">Outils gratuits</a></li>
-            <li><a href="/calculateur-volume-demenagement/" class="mobile-menu-link">Calculateur de volume</a></li>
-            <li><a href="/mission-logistique-longue-distance/" class="mobile-menu-link">Mission logistique sur mesure</a></li>
-            <li><a href="/blog/" class="mobile-menu-link">Conseils</a></li>
-            <li><a href="/a-propos/" class="mobile-menu-link">À propos</a></li>
-            <li><a href="/contact/" class="mobile-menu-link">Contact</a></li>
-            <li><a href={languageSwitch} class="mobile-menu-link" lang="en">English version</a></li>
-          </>
-        )}
+        {mobileLinks.map(item => <li><a href={item.href} hreflang={item.hreflang} class="mobile-menu-link">{item.label}</a></li>)}
+        {languageSwitch && <li><a href={languageSwitch} class="mobile-menu-link" data-language-switch lang={isEnglish ? 'fr' : 'en'} hreflang={isEnglish ? 'fr' : 'en'}>{isEnglish ? 'Version française' : 'English version'}</a></li>}
       </ul>
     </nav>
 
     <nav class="mobile-section">
       <p class="mobile-section-title">{isEnglish ? 'Our services' : 'Nos services'}</p>
       <ul>
-        {isEnglish ? englishServices.map(([slug, label]) => (
-          <li><a href={`/en/${slug}/`} class="mobile-menu-link">{label}</a></li>
-        )) : (
-          <>
-            <li><a href="/petit-demenagement/" class="mobile-menu-link">Petit déménagement</a></li>
-            {SERVICES.map(s => (
-              <li><a href={`/services/${s.slug}/`} class="mobile-menu-link">{s.name}</a></li>
-            ))}
-          </>
-        )}
+        {serviceLinks.map(item => <li><a href={item.href} hreflang={item.hreflang} class="mobile-menu-link">{item.label}</a></li>)}
       </ul>
     </nav>
 
@@ -515,6 +479,16 @@ const englishServices = [
 <script>
   const burgerBtn = document.getElementById('burger-btn');
   const mobileMenu = document.getElementById('mobile-menu');
+
+  // Both homepages share this section ID. Do not carry unknown fragments to other pages.
+  if ((location.pathname === '/' || /^\/en\/?$/.test(location.pathname)) && document.getElementById('services')) {
+    const switches = document.querySelectorAll<HTMLAnchorElement>('a[data-language-switch]');
+    const syncLanguageAnchor = () => {
+      for (const link of switches) link.hash = location.hash === '#services' ? '#services' : '';
+    };
+    syncLanguageAnchor();
+    window.addEventListener('hashchange', syncLanguageAnchor);
+  }
 
   function openMenu() {
     mobileMenu?.classList.add('is-open');

@@ -1,0 +1,569 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Header from './Header.astro';
+import Footer from './Footer.astro';
+import PhotoPlaceholder from './PhotoPlaceholder.astro';
+import QuoteForm from './QuoteForm.astro';
+import CTA from './CTA.astro';
+import Breadcrumbs from './Breadcrumbs.astro';
+import type { SERVICES } from '../data/services';
+import { SITE } from '../data/site.config';
+import { INSURANCE_FAQS } from '../data/insurance';
+import type { EnglishPage } from '../data/englishPages';
+import { CORE_SERVICES_EN } from '../data/coreServicesEnglish';
+
+interface Props {
+  service: (typeof SERVICES)[number];
+  englishPage?: EnglishPage;
+}
+const { service, englishPage } = Astro.props;
+const en = !!englishPage;
+const lang = en ? 'en' : 'fr';
+const home = en ? '/en/' : '/';
+const quote = en ? '/en/quote/' : '/devis/';
+const quoteService = `${quote}?service=${service.slug}&source=service`;
+const servicePath = en ? `/en/${englishPage.slug}/` : `/services/${service.slug}/`;
+const englishCopy = en ? CORE_SERVICES_EN[service.slug] : undefined;
+const serviceName = englishCopy?.name ?? service.name;
+const price = en ? `€${new Intl.NumberFormat('en-GB', { useGrouping: true }).format(service.priceFrom)}` : `${service.priceFrom} €`;
+
+type ServiceContent = {
+  title: string;
+  metaTitle: string;
+  metaDescription: string;
+  body: string[];
+  included: string[];
+  notIncluded: string[];
+  faqs: { q: string; a: string }[];
+  image: string;
+};
+
+const serviceContent: Record<string, ServiceContent> = {
+  'demenagement-local': {
+    title: 'Déménagement local à Carcassonne et dans l\'Aude',
+    metaTitle: 'Déménagement local à Carcassonne | dès 450 €',
+    metaDescription: `Déménagement local à Carcassonne et dans l'Aude (≤ 50 km). Repère indicatif dès 450 €, prix confirmé sur devis selon le projet. ${SITE.phoneDisplay}`,
+    body: [
+      `Vous déménagez à Carcassonne ou dans les environs ? La demande est étudiée selon le volume, les adresses, les accès, le trajet et le créneau souhaité.`,
+      `Une demande locale peut concerner Carcassonne, Trèbes, Pezens, Alzonne, Capendu, Bram, Lézignan-Corbières, Limoux ou Castelnaudary. La zone, le véhicule et les moyens humains restent à confirmer sur le devis.`,
+      `Le devis détaille le volume déclaré, les contraintes d'accès (étage, solution de levage éventuelle, distance de portage), les prestations retenues, le prix et les conditions applicables.`,
+      `Le jour du déménagement, les moyens et protections prévus doivent correspondre au devis accepté. Signalez avant l’intervention tout bien fragile, lourd ou de valeur et toute modification d’accès.`,
+      `À l'arrivée, nous déchargeons et déposons vos affaires dans les pièces indiquées. Sur demande, nous proposons également le remontage des meubles démontés. Vos meubles sont protégés (couvertures, housses) et soigneusement calés dans le fourgon, pour votre tranquillité d'esprit.`,
+      `Que vous soyez locataire ou propriétaire, en appartement ou en maison, le créneau n’est confirmé qu’après vérification du planning et acceptation des conditions convenues.`,
+    ],
+    included: [
+      'Déchargement et chargement du fourgon',
+      'Protection des meubles (couvertures)',
+      'Transport sécurisé jusqu\'à destination',
+      'Déchargement et mise en place',
+      'Meubles protégés, calés et sanglés',
+      'Devis détaillé écrit',
+    ],
+    notIncluded: [
+      'Emballage des cartons (option payante)',
+      'Démontage/remontage des meubles (option payante)',
+      'Monte-meuble si nécessaire (sur devis)',
+      'Solution de stockage éventuelle, uniquement si elle figure au devis',
+    ],
+    faqs: [
+      { q: 'Quel est le délai pour réserver un déménagement local ?', a: 'Le délai dépend du planning, du volume, du trajet et des accès. Aucun créneau n’est garanti avant confirmation écrite.' },
+      { q: 'Proposez-vous des créneaux le week-end ?', a: 'Toute demande de week-end est étudiée selon le planning. Les horaires et conditions applicables sont confirmés sur le devis.' },
+      { q: 'Comment est calculé le prix d\'un déménagement local ?', a: 'Le prix dépend du volume, de la distance, des accès, du stationnement, du créneau et des options. Le montant applicable figure sur le devis écrit.' },
+      { q: 'Que se passe-t-il en cas d\'imprévu le jour J (maladie, météo) ?', a: 'Les conditions d’annulation, de report et leurs éventuels frais sont celles remises avant acceptation. Contactez l’entreprise dès que possible en cas d’imprévu.' },
+      { q: 'Faut-il être présent pendant tout le déménagement ?', a: 'La présence du client ou d’un représentant autorisé est recommandée au départ et à l’arrivée. Toute organisation différente doit être convenue par écrit au préalable.' },
+      { q: 'Mes meubles seront-ils protégés des chocs et rayures ?', a: 'Les protections dépendent des biens transportés. Faites préciser sur le devis le matériel prévu pour les meubles, appareils, écrans et surfaces fragiles.' },
+    ],
+    image: '/images/transport.webp',
+  },
+  'demenagement-longue-distance': {
+    title: 'Déménagement longue distance depuis Carcassonne',
+    metaTitle: 'Déménagement longue distance Carcassonne | dès 950 €',
+    metaDescription: `Déménagement longue distance depuis Carcassonne. Repère indicatif dès 950 €, prix et trajet confirmés sur devis. ${SITE.phoneDisplay}`,
+    body: [
+      `Vous quittez l'Aude pour vous installer ailleurs en France ? Une demande longue distance peut être étudiée selon la destination, le volume, les accès et le planning.`,
+      `Un déménagement longue distance demande une organisation rigoureuse. Le véhicule, le chargement, les étapes et le créneau de livraison sont définis selon le volume, le trajet et les accès.`,
+      `Pour les grands volumes, plusieurs rotations ou un véhicule supplémentaire peuvent être nécessaires. Les moyens réellement prévus et les éventuels intervenants doivent figurer sur le devis.`,
+      `Les objets précieux (œuvres d\'art, équipements hi-fi, instruments de musique) doivent être signalés avant le devis afin d’y préciser les protections et les limites applicables.`,
+      `Les éventuelles options d’emballage, de démontage, de remontage ou de nettoyage ne sont incluses que si elles apparaissent explicitement sur le devis.`,
+      `Le devis est établi à partir du volume déclaré, de la distance, des accès et des prestations choisies. Vérifiez qu’il mentionne les péages, le carburant, les étapes et toute option applicable.`,
+    ],
+    included: [
+      'Chargement depuis Carcassonne',
+      'Transport longue distance vers destination',
+      'Déchargement et mise en place',
+      'Manutention soignée et calage',
+      'Suivi de votre déménagement',
+      'Devis écrit détaillé',
+    ],
+    notIncluded: [
+      'Emballage cartons (option)',
+      'Démontage/remontage (option)',
+      'Hébergement de nuit si nécessaire (sur devis)',
+      'Péages et carburant (inclus dans le devis)',
+    ],
+    faqs: [
+      { q: 'Combien de temps dure un déménagement Paris-Carcassonne ?', a: 'Le trajet Carcassonne-Paris prend environ 7h de route. En comptant le chargement et déchargement, comptez 1 à 2 jours selon le volume et les contraintes.' },
+      { q: 'Puis-je voyager dans le véhicule de transport ?', a: 'Le transport de passagers n’est pas inclus dans la prestation. Organisez votre trajet séparément, sauf disposition écrite contraire.' },
+      { q: 'Proposez-vous une solution de stockage si les dates ne coïncident pas ?', a: 'Aucune capacité de stockage propre n’est promise sur cette page. Une éventuelle solution tierce doit être confirmée et chiffrée par écrit.' },
+      { q: 'Quelles destinations étudiez-vous en France ?', a: 'La faisabilité est vérifiée pour chaque destination selon le trajet et le planning. Transmettez les deux adresses pour obtenir une confirmation écrite.' },
+      { q: 'Comment les protections sont-elles définies pour un long trajet ?', a: 'Signalez les biens fragiles et de valeur. Les protections, l’arrimage, le véhicule et les éventuelles limites doivent être précisés dans la proposition.' },
+      { q: 'Faut-il un déménagement aller-retour si je suis seul ?', a: 'Non, nous pouvons faire un trajet aller-simple Carcassonne → destination. Le prix inclut le retour à vide du camion. Pas besoin d\'organiser quoi que ce soit côté retour.' },
+    ],
+    image: '/images/demenagement-longue-distance.webp',
+  },
+  'demenagement-international': {
+    title: 'Déménagement international depuis Carcassonne',
+    metaTitle: 'Déménagement international Carcassonne | Espagne, Italie',
+    metaDescription: `Projet de déménagement international depuis Carcassonne vers l’Europe. Faisabilité, formalités, intervenants et prix à confirmer sur devis. ${SITE.phoneDisplay}`,
+    body: [
+      `Vous déménagez à l\'étranger depuis Carcassonne ? Une demande internationale peut être étudiée selon le pays, le trajet, les formalités, les intervenants nécessaires et le planning.`,
+      `La proximité de l’Espagne peut faciliter certains trajets, mais chaque destination exige de vérifier les accès, les règles de transport, les formalités et les délais applicables.`,
+      `Un déménagement international nécessite une préparation minutieuse. Le volume, les accès, la réglementation locale, les taxes éventuelles, les intervenants et le planning doivent être vérifiés avant acceptation.`,
+      `Le devis doit identifier les moyens prévus et préciser si des transporteurs, transitaires ou autres partenaires interviennent. Demandez leurs rôles et responsabilités avant acceptation.`,
+      `L\'emballage est particulièrement important sur une longue distance internationale. Le devis doit indiquer les matériaux réellement prévus et la personne chargée d’emballer chaque catégorie de biens.`,
+      `Pour les déménagements hors Union européenne ou vers une destination soumise à des règles spécifiques, vérifiez les formalités auprès des autorités et professionnels compétents. Toute mise en relation éventuelle avec un transitaire doit être confirmée par écrit.`,
+    ],
+    included: [
+      'Transport de porte à porte',
+      'Manutention soignée porte à porte',
+      'Formalités douanières conseillées',
+      'Emballage professionnel recommandé',
+      'Déchargement et mise en place',
+    ],
+    notIncluded: [
+      'Taxes douanières éventuelles',
+      'Permis de stationnement (à votre charge)',
+      'Travaux d\'adaptation logement destination',
+    ],
+    faqs: [
+      { q: 'Intervenez-vous vers toute l\'Europe ?', a: 'Nous intervenons principalement vers l\'Espagne, l\'Italie, la Belgique et le Luxembourg. Pour d\'autres destinations européennes, contactez-nous : nous étudions chaque demande.' },
+      { q: 'Faut-il un inventaire douanier pour déménager en Espagne ?', a: 'Pour les ressortissants de l\'UE déménageant entre pays membres, les formalités douanières sont simplifiées. Cependant, un inventaire détaillé reste recommandé pour votre assurance.' },
+      { q: 'Quel est le délai de livraison vers l\'Espagne ?', a: 'Le délai dépend de la destination, du volume, des formalités, des accès et des conditions de circulation. Il doit être confirmé dans la proposition.' },
+    ],
+    image: '/images/demenagement-international.webp',
+  },
+  'transport-meubles': {
+    title: 'Transport de meubles à Carcassonne et dans l\'Aude',
+    metaTitle: 'Transport de meubles à Carcassonne | dès 80 €',
+    metaDescription: `Transport de meubles à Carcassonne et dans l'Aude. Un meuble ou plusieurs objets ; repère indicatif dès 80 €, montant confirmé sur devis. ${SITE.phoneDisplay}`,
+    body: [
+      `Vous avez besoin de transporter un ou plusieurs meubles sans pour autant faire appel à un service de déménagement complet ? Transport Carcassonne propose un service de transport de meubles à la pièce ou par lots, adapté à vos besoins précis.`,
+      `Notre service de transport de meubles est idéal dans de nombreuses situations : achat d\'un meuble chez un particulier ou en magasin, livraison d\'un meuble en cadeau, transfert de quelques objets entre deux logements, récupération d\'héritage familial, vente de meubles en ligne.`,
+      `Le type de véhicule et les moyens de manutention sont définis selon les dimensions, le poids, la quantité de mobilier et les accès. Ils doivent être précisés sur le devis.`,
+      `Les protections nécessaires dépendent du meuble et de sa valeur. Signalez les surfaces fragiles ou anciennes afin que le matériel prévu et les limites éventuelles soient décrits avant l’intervention.`,
+      `Notre service de transport de meubles couvre Carcassonne et les communes environnantes dans un rayon de 50 km. Pour les destinations plus lointaines, contactez-nous : nous étudions chaque demande selon les disponibilités.`,
+      `Le tarif est établi selon le volume, la distance et les difficultés d’accès (étage, portage, stationnement). Le montant dès 80 € est un repère indicatif non contractuel ; seul le devis confirme le prix.`,
+    ],
+    included: [
+      'Chargement et transport du meuble',
+      'Protection couvertures et film',
+      'Livraison à l\'étage si nécessaire',
+      'Déchargement et mise en place',
+      'Protection anti-rayures et sanglage',
+    ],
+    notIncluded: [
+      'Démontage/remontage (option chiffrée sur devis)',
+      'Monte-meuble (si nécessaire, sur devis)',
+      'Emballage cartons (non applicable)',
+    ],
+    faqs: [
+      { q: 'Puis-je faire transporter un seul canapé ?', a: 'Une demande pour un seul meuble peut être étudiée. Le repère dès 80 € reste indicatif et varie selon le trajet, le poids et les accès.' },
+      { q: 'Proposez-vous le démontage de meubles ?', a: 'Cette option doit être confirmée selon le meuble. Son périmètre et son prix figurent sur le devis.' },
+      { q: 'Intervenez-vous le même jour ?', a: 'Une demande urgente peut être étudiée, sans promesse de délai avant confirmation du planning.' },
+      { q: 'Faites-vous la livraison Le Bon Coin ou Vinted ?', a: 'Une demande de retrait chez un vendeur et de livraison à domicile peut être étudiée. Les responsabilités, le créneau et le prix sont confirmés sur devis.' },
+      { q: 'Mon canapé passera-t-il par mon escalier ?', a: 'Transmettez les dimensions du meuble, des portes et de l’escalier. Si une solution de levage est nécessaire, sa faisabilité et son prix doivent être confirmés séparément.' },
+      { q: 'Acceptez-vous les transports inter-villes (ex: Carcassonne → Béziers) ?', a: 'La faisabilité d’un trajet inter-villes est étudiée selon la destination et le planning. Aucun supplément standard n’est annoncé ici : le devis détaille le prix.' },
+    ],
+    image: '/images/transport-meubles.webp',
+  },
+  'transport-piano': {
+    title: 'Transport piano et objets lourds à Carcassonne',
+    metaTitle: 'Transport piano & objets lourds Carcassonne | dès 350 €',
+    metaDescription: `Projet de transport de piano ou d'objet lourd à Carcassonne. Faisabilité, moyens de levage, protections et prix confirmés après étude et devis. ${SITE.phoneDisplay}`,
+    body: [
+      `Le transport d’un piano est une opération délicate. Le poids réel, les dimensions, la valeur, les passages et les accès doivent être évalués avant de confirmer la faisabilité.`,
+        `Nous disposons d’un Pianoplan 600J Speedy Vertical, un monte-escalier sur chenilles d’une charge maximale nominale de 600 kg. Il assiste la montée et la descente des pianos et objets lourds lorsque le poids, les dimensions et la configuration de l’escalier le permettent.`,
+      `Les compétences, le nombre d’intervenants, les moyens de levage et les protections nécessaires doivent être confirmés sur le devis avant toute manutention.`,
+      `La préparation est essentielle : le piano est d\'abord évalué (taille, poids, accès depuis le logement de départ et d\'arrivée). Certaines configurations nécessitent un démontage partiel ou l\'utilisation d\'un monte-meuble. Nous anticipons tous ces aspects dès le devis pour vous proposer la solution la plus adaptée.`,
+      `Une demande peut aussi concerner un coffre-fort, une sculpture, un équipement de sport ou un objet d’art volumineux. Chaque objet exige une étude de poids, d’accès et de responsabilité.`,
+      `Pour les objets d’art et les instruments de valeur, indiquez la nature et la valeur avant le devis. Les protections, les limites de manutention et les conditions d’assurance doivent être vérifiées par écrit.`,
+      `Nous intervenons à Carcassonne et dans un rayon de 50 km pour le transport de pianos et objets lourds. Pour les déménagements longue distance incluant un piano, nous adaptons l\'organisation logistique en conséquence.`,
+    ],
+    included: [
+      'Évaluation technique et devis adapté',
+        'Pianoplan disponible, utilisation à confirmer après étude des accès',
+      'Protection complète de l\'instrument',
+      'Transport sécurisé',
+      'Moyens humains et manutention précisés au devis',
+    ],
+    notIncluded: [
+      'Monte-meuble si nécessaire (supplément)',
+      'Démontage de la queue du piano à queue (si requis)',
+      'Accord du piano après transport (à votre charge)',
+    ],
+    faqs: [
+      { q: 'Faut-il faire accorder le piano après transport ?', a: 'Il est recommandé de faire accorder un piano après un déménagement, surtout si les conditions de température et d\'humidité ont changé. Nous pouvons vous recommander un accordeur à Carcassonne.' },
+      { q: 'Combien de personnes sont nécessaires pour transporter un piano ?', a: 'Selon le type et la configuration (étages, accès), nous mobilisons 2 à 3 personnes. La sécurité de votre instrument et de nos équipes est notre priorité.' },
+      { q: 'Transportez-vous les clavecins et orgues ?', a: 'Oui, nous sommes équipés pour transporter différents types d\'instruments à clavier. Chaque cas est étudié individuellement au moment du devis.' },
+      { q: 'Mon piano peut-il passer par un escalier en colimaçon ?', a: 'Tout dépend du modèle, du poids et des dimensions des passages. Une solution de levage extérieure peut être étudiée ; sa faisabilité et son prix doivent être confirmés séparément.' },
+      { q: 'Comment protéger un piano de grande valeur ?', a: 'Pour les pianos de grande valeur (Steinway, Bösendorfer, antiquités), nous vous conseillons de souscrire une assurance à valeur agréée auprès de votre assureur — précisez la valeur lors du devis, nous adaptons l\'emballage et la manutention en conséquence.' },
+      { q: 'Combien coûte le transport d\'un piano sur longue distance ?', a: 'Le prix dépend du piano, du poids, des accès, des protections, des moyens humains et du trajet. Demandez une étude personnalisée ; aucun montant n’est garanti sur cette page.' },
+    ],
+    image: '/images/transport-piano.webp',
+  },
+  'evacuation-dechets-metaux': {
+    title: 'Évacuation de déchets et métaux à Carcassonne',
+    metaTitle: 'Évacuation déchets & ferraille Carcassonne | dès 150 €',
+    metaDescription: `Demande d'évacuation de déchets encombrants, ferraille et métaux à Carcassonne. Nature des déchets, filière, délai et prix confirmés sur devis. ${SITE.phoneDisplay}`,
+    body: [
+      `Vous avez des encombrants à évacuer, de la ferraille à faire enlever ou des déchets à transporter vers la déchetterie ? Transport Carcassonne propose un service d\'évacuation de déchets et de métaux rapide et efficace.`,
+      `Notre service d\'évacuation couvre tout type de déchets encombrants : vieux meubles, électroménager hors d\'usage, ferraille, métaux divers (aluminium, cuivre, acier), déchets de chantier non dangereux, gravats, bois et palettes.`,
+      `Une demande peut concerner une cave, un grenier, un garage ou un terrain. La nature et le volume des déchets doivent être déclarés avant de confirmer la manutention, le transport et la destination.`,
+      `La filière envisagée doit être adaptée à chaque type de déchet. Demandez que la destination, les exclusions et les éventuels justificatifs figurent dans la proposition.`,
+      `Le prix dépend du volume, du poids, du tri nécessaire, des accès, de la distance et des frais de traitement. Tout montant affiché constitue seulement un repère indicatif confirmé sur devis.`,
+      `Le délai dépend de la nature des déchets, des moyens nécessaires et du planning. Une demande urgente peut être étudiée sans garantie avant confirmation écrite.`,
+    ],
+    included: [
+      'Chargement des déchets et ferraille',
+      'Transport vers filières adaptées',
+      'Évacuation meubles et électroménager',
+      'Ferraille et métaux divers',
+      'Déchets de chantier non dangereux',
+    ],
+    notIncluded: [
+      'Déchets dangereux (amiante, produits chimiques)',
+      'Déchets radioactifs',
+      'Véhicules hors d\'usage (VHU) — filière dédiée',
+    ],
+    faqs: [
+      { q: 'Récupérez-vous les métaux pour la revente ?', a: 'Oui, les métaux valorisables (cuivre, aluminium, acier) sont dirigés vers des centres de recyclage. Selon la quantité et la qualité des métaux, un ajustement de tarif peut être proposé.' },
+      { q: 'Intervenez-vous pour les professionnels ?', a: 'Une demande professionnelle peut être étudiée selon la nature des déchets, le volume, la fréquence et la filière nécessaire.' },
+      { q: 'Vous chargez-vous du nettoyage après évacuation ?', a: 'Nous évacuons les déchets mais le nettoyage de la zone n\'est pas inclus par défaut. Nous pouvons le proposer en option sur demande.' },
+    ],
+    image: '/images/evacuation-dechets-metaux.webp',
+  },
+};
+
+const original = serviceContent[service.slug];
+const content = englishCopy && englishPage ? {
+  ...original,
+  ...englishCopy,
+  metaTitle: englishPage.title,
+  metaDescription: englishPage.description,
+} : original;
+const faqs = service.slug === 'transport-piano'
+  ? [...content.faqs, ...INSURANCE_FAQS[lang].slice(0, 2)]
+  : content.faqs;
+const pageTitle = content.metaTitle;
+const pageDescription = content.metaDescription;
+---
+
+<BaseLayout
+  title={pageTitle}
+  description={pageDescription}
+  preloadImage={content?.image}
+  ogImage={content?.image}
+  ogImageAlt={englishPage ? englishPage.imageAlt : `${content.title} à Carcassonne`}
+  lang={en ? 'en-GB' : 'fr-FR'}
+>
+  <script is:inline slot="head" type="application/ld+json" set:html={JSON.stringify({
+    '@context': 'https://schema.org',
+    '@type': 'Service',
+    '@id': `${SITE.url}${servicePath}#service`,
+    'serviceType': serviceName,
+    'name': content?.title ?? service.name,
+    'description': pageDescription,
+    'url': `${SITE.url}${servicePath}`,
+    'provider': { '@id': `${SITE.url}/#business` },
+    'areaServed': [
+      { '@type': 'City', 'name': SITE.hq.city },
+      { '@type': 'AdministrativeArea', 'name': 'Aude' },
+      ...(en ? [{ '@type': 'AdministrativeArea', 'name': 'Occitanie' }] : []),
+    ],
+    ...(en ? { availableChannel: {
+      '@type': 'ServiceChannel',
+      serviceUrl: `${SITE.url}${quote}`,
+      servicePhone: { '@type': 'ContactPoint', telephone: SITE.phone, availableLanguage: ['en', 'fr'] },
+    } } : {}),
+  })} />
+  {faqs.length > 0 && (
+    <script is:inline slot="head" type="application/ld+json" set:html={JSON.stringify({
+      '@context': 'https://schema.org',
+      '@type': 'FAQPage',
+      'mainEntity': faqs.map(f => ({
+        '@type': 'Question',
+        'name': f.q,
+        'acceptedAnswer': { '@type': 'Answer', 'text': f.a },
+      })),
+    })} />
+  )}
+  <Header lang={lang} />
+  <Breadcrumbs lang={lang} items={[{ name: en ? 'Home' : 'Accueil', href: home }, { name: 'Services', href: `${home}#services` }, { name: content.title }]} />
+
+  <!-- Page Hero -->
+  <section class="svc-hero">
+    <div class="svc-hero-bg"></div>
+    <div class="container svc-hero-layout">
+      <div class="svc-hero-content">
+        <div class="svc-hero-badge">
+          <span class="svc-icon">{service.icon}</span>
+          <span>{en ? 'Quoted individually' : 'Service sur devis'}</span>
+        </div>
+        <h1>{content?.title ?? service.name}</h1>
+        <p class="svc-hero-desc">{englishCopy?.summary ?? service.description}</p>
+        <div class="svc-hero-price">
+          {en ? 'Indicative from ' : 'Repère indicatif dès '}<strong>{price}</strong>{en ? ' · confirmed by quote' : ' · confirmé sur devis'}
+        </div>
+        <div class="svc-hero-ctas">
+          <a href={quoteService} class="btn btn--primary btn--lg">{en ? 'Free quote →' : 'Devis gratuit →'}</a>
+          <a href={`tel:${SITE.phone}`} class="btn btn--white btn--lg">📞 {SITE.phoneDisplay}</a>
+        </div>
+      </div>
+      <div class="svc-hero-media">
+        {content?.image?.startsWith('/')
+          ? <img
+              src={content.image}
+              alt={`${content?.title ?? service.name} — Transport Carcassonne`}
+              width="1376"
+              height="768"
+              loading="eager"
+              fetchpriority="high"
+              decoding="async"
+              style="width:100%;height:auto;display:block;border-radius:12px"
+            />
+          : <PhotoPlaceholder
+              aspectRatio="4/3"
+              label={serviceName}
+              description={content?.image ?? 'photo.jpg'}
+              variant="dark"
+            />}
+      </div>
+    </div>
+  </section>
+
+  <!-- Body text -->
+  <section class="section">
+    <div class="container svc-layout">
+      <div class="svc-body">
+        {content.body.map((para, index) => (
+          <p class="svc-para">{para}{en && service.slug === 'demenagement-international' && index === 1 && (
+            <> For British routes, see <a href="/en/uk-france-removals-carcassonne/" style="text-decoration:underline">UK–France removals</a> or <a href="/en/moving-from-london-to-carcassonne/" style="text-decoration:underline">moving from London to Carcassonne</a>.</>
+          )}</p>
+        ))}
+        {service.slug === 'transport-piano' && <p class="svc-para"><a href={en ? '/en/pianoplan-stair-climber-carcassonne/' : '/monte-escalier-pianoplan-carcassonne/'} class="btn btn--outline">{en ? 'Explore our Pianoplan stair climber' : 'Découvrir notre monte-escalier Pianoplan'}</a></p>}
+
+        <!-- Scope to be confirmed in the written quote -->
+        <div class="svc-lists">
+          <div class="svc-list-block svc-list-block--yes">
+            <h3>{en ? '📋 Services to confirm' : '📋 Prestations à confirmer'}</h3>
+            <ul>
+              {content?.included.map(item => <li>{item}</li>)}
+            </ul>
+          </div>
+          <div class="svc-list-block svc-list-block--no">
+            <h3>{en ? 'ℹ️ Options and exclusions to check' : 'ℹ️ Options et exclusions à vérifier'}</h3>
+            <ul>
+              {content?.notIncluded.map(item => <li>{item}</li>)}
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <!-- Sidebar price block -->
+      <aside class="svc-sidebar">
+        <div class="price-block">
+          <div class="price-block__label">{en ? 'Price guide' : 'Repère indicatif'}</div>
+          <div class="price-block__price">{en ? 'From ' : 'Dès '}{price}</div>
+          <p class="price-block__note">{en ? 'Indicative only; confirmed in your quote' : 'Montant non contractuel, confirmé sur devis'}</p>
+          <a href={quoteService} class="btn btn--primary" style="width:100%;justify-content:center;margin-bottom:12px">
+            {en ? 'Request a quote' : 'Demander un devis'}
+          </a>
+          <a href={`tel:${SITE.phone}`} class="btn btn--outline" style="width:100%;justify-content:center">
+            {en ? '📞 Call now' : '📞 Appeler maintenant'}
+          </a>
+        </div>
+
+        <div class="trust-block">
+          <div class="trust-item">{en ? '🛡️ Protection set out in the quote' : '🛡️ Protections précisées au devis'}</div>
+          <div class="trust-item">{en ? '📅 Reply subject to availability' : '📅 Réponse selon disponibilités'}</div>
+          <div class="trust-item">{en ? '📍 Handled from Carcassonne' : '📍 Demande étudiée depuis Carcassonne'}</div>
+          <div class="trust-item">{en ? '💶 Written price and scope' : '💶 Prix et périmètre écrits'}</div>
+        </div>
+      </aside>
+    </div>
+  </section>
+
+  <!-- FAQ -->
+  {faqs.length > 0 && (
+    <section class="section section--alt">
+      <div class="container">
+        <div class="section-header" style="text-align:center;margin-bottom:40px">
+          <span class="section-label">FAQ</span>
+          <h2 class="section-title">{en ? 'Questions about' : 'Questions sur'} {serviceName.toLowerCase()}</h2>
+        </div>
+        <div class="faq-list">
+          {faqs.map(faq => (
+            <details class="faq-item">
+              <summary class="faq-question">{faq.q}</summary>
+              <p class="faq-answer">{faq.a}</p>
+            </details>
+          ))}
+        </div>
+      </div>
+    </section>
+  )}
+
+  <QuoteForm lang={lang} prefilledService={service.slug} />
+
+  <CTA
+    title={en ? 'Ready to plan your move?' : `Prêt pour votre ${service.name.toLowerCase()} ?`}
+    subtitle={en ? 'Tell us what you need. We’ll get back to you about availability.' : 'Décrivez votre projet · réponse selon nos disponibilités.'}
+    btnLabel={en ? 'Free quote →' : undefined}
+    btnHref={en ? `${quote}?service=${service.slug}&source=cta` : undefined}
+  />
+
+  <Footer lang={lang} />
+</BaseLayout>
+
+<style>
+  .svc-hero {
+    background: var(--color-navy);
+    color: white;
+    padding: 72px 0;
+    position: relative;
+    overflow: hidden;
+  }
+  .svc-hero-bg {
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(ellipse at 70% 50%, rgba(234,125,58,.12) 0%, transparent 60%);
+    pointer-events: none;
+  }
+  .svc-hero-layout {
+    position: relative;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 56px;
+    align-items: center;
+  }
+  .svc-hero-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: rgba(255,255,255,.1);
+    border: 1px solid rgba(255,255,255,.2);
+    padding: 6px 14px;
+    border-radius: 100px;
+    font-size: .8rem;
+    font-weight: 600;
+    margin-bottom: 20px;
+    color: rgba(255,255,255,.9);
+  }
+  .svc-icon { font-size: 1.1em; }
+  .svc-hero-content h1 { color: white; margin-bottom: 16px; }
+  .svc-hero-desc { color: rgba(255,255,255,.8); font-size: 1.05rem; margin-bottom: 16px; }
+  .svc-hero-price {
+    font-size: 1rem;
+    color: rgba(255,255,255,.75);
+    margin-bottom: 28px;
+  }
+  .svc-hero-price strong { color: var(--color-accent); font-size: 1.3rem; }
+  .svc-hero-ctas { display: flex; gap: 14px; flex-wrap: wrap; }
+  .svc-hero-media { border-radius: var(--radius-lg); overflow: hidden; }
+
+  .svc-layout {
+    display: grid;
+    grid-template-columns: 1fr 320px;
+    gap: 56px;
+    align-items: start;
+  }
+  .svc-para {
+    font-size: 1rem;
+    line-height: 1.75;
+    color: var(--color-text);
+    margin-bottom: 20px;
+  }
+
+  .svc-lists {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 24px;
+    margin-top: 40px;
+  }
+  .svc-list-block {
+    padding: 24px;
+    border-radius: var(--radius);
+    border: 1.5px solid var(--color-border);
+  }
+  .svc-list-block--yes { background: rgba(34,197,94,.05); border-color: rgba(34,197,94,.2); }
+  .svc-list-block--no { background: rgba(148,163,184,.05); }
+  .svc-list-block h3 {
+    font-family: var(--font-sans);
+    font-size: .9rem;
+    font-weight: 700;
+    margin-bottom: 12px;
+    color: var(--color-navy);
+  }
+  .svc-list-block ul { display: flex; flex-direction: column; gap: 6px; }
+  .svc-list-block li {
+    font-size: .88rem;
+    color: var(--color-text-light);
+    padding-left: 16px;
+    position: relative;
+  }
+  .svc-list-block li::before { content: '—'; position: absolute; left: 0; }
+
+  /* Sidebar */
+  .svc-sidebar { position: sticky; top: 80px; display: flex; flex-direction: column; gap: 16px; }
+  .price-block {
+    background: var(--color-white);
+    border: 1.5px solid var(--color-border);
+    border-radius: var(--radius-lg);
+    padding: 24px;
+    box-shadow: var(--shadow);
+  }
+  .price-block__label { font-size: .78rem; font-weight: 700; text-transform: uppercase; letter-spacing: .08em; color: var(--color-text-light); margin-bottom: 6px; }
+  .price-block__price { font-family: var(--font-display); font-size: 1.8rem; font-weight: 700; color: var(--color-navy); margin-bottom: 6px; }
+  .price-block__note { font-size: .8rem; color: var(--color-text-light); margin-bottom: 20px; }
+
+  .trust-block {
+    background: var(--color-bg-alt);
+    border-radius: var(--radius);
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+  .trust-item { font-size: .88rem; color: var(--color-text); font-weight: 500; }
+
+  .faq-list { max-width: 800px; margin: 0 auto; display: flex; flex-direction: column; gap: 8px; }
+  .faq-item {
+    background: var(--color-white);
+    border: 1.5px solid var(--color-border);
+    border-radius: var(--radius);
+    overflow: hidden;
+  }
+  .faq-question {
+    padding: 18px 24px;
+    font-weight: 600;
+    font-size: .93rem;
+    cursor: pointer;
+    list-style: none;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    color: var(--color-navy);
+  }
+  .faq-question::-webkit-details-marker { display: none; }
+  .faq-question::after { content: '+'; font-size: 1.1rem; color: var(--color-accent); }
+  details[open] .faq-question::after { content: '−'; }
+  .faq-answer { padding: 0 24px 18px; font-size: .9rem; color: var(--color-text-light); line-height: 1.65; }
+
+  @media (max-width: 900px) {
+    .svc-hero-layout { grid-template-columns: 1fr; gap: 32px; }
+    .svc-hero-media { order: -1; }
+    .svc-layout { grid-template-columns: 1fr; }
+    .svc-sidebar { position: static; }
+    .svc-lists { grid-template-columns: 1fr; }
+  }
+</style>

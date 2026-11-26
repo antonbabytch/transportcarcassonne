@@ -2,38 +2,41 @@
 // src/components/ComboOffer.astro
 // Баннер партнёрского предложения с debarras-carcassonne.fr
 // Используется на главной и на странице тарифов
+interface Props { lang?: 'fr' | 'en'; }
+const { lang = 'fr' } = Astro.props;
+const en = lang === 'en';
 ---
 
 <section class="combo">
   <div class="container combo__wrap">
     <div class="combo__head reveal">
-      <span class="combo__badge">SERVICE COMPLÉMENTAIRE</span>
+      <span class="combo__badge">{en ? 'ADDITIONAL SERVICE' : 'SERVICE COMPLÉMENTAIRE'}</span>
       <h2 class="combo__title">
-        Vous devez aussi <em>vider la maison</em> ?
+        {en ? 'Do you also need ' : 'Vous devez aussi '}<em>{en ? 'a house clearance' : 'vider la maison'}</em>{en ? '?' : ' ?'}
       </h2>
       <p class="combo__sub">
-        Pour un besoin distinct, le site
-        <a href="https://debarras-carcassonne.fr/" rel="noopener" data-track="sister_site_click" data-source="combo-transport">
+        {en ? 'For a separate clearance, visit' : 'Pour un besoin distinct, le site'}
+        <a href="https://debarras-carcassonne.fr/" rel="noopener" hreflang={en ? 'fr' : undefined} data-track="sister_site_click" data-source="combo-transport">
           Débarras Carcassonne
         </a>
-        présente ses prestations de tri, démontage et évacuation. Demandez un devis
+        {en ? 'for sorting, dismantling and removal services (site in French). Ask for a separate quote to compare what is included, where items will go and what terms apply.' : <>présente ses prestations de tri, démontage et évacuation. Demandez un devis
         séparé afin de comparer clairement le périmètre, les filières prévues et les
-        conditions applicables à chaque intervention.
+        conditions applicables à chaque intervention.</>}
       </p>
     </div>
 
     <div class="combo__steps">
       <div class="combo__step reveal" data-i="0">
         <span class="combo__num">1</span>
-        <p>Décrivez le déménagement et les biens à transporter</p>
+        <p>{en ? 'Describe the move and the items to transport' : 'Décrivez le déménagement et les biens à transporter'}</p>
       </div>
       <div class="combo__step reveal" data-i="1">
         <span class="combo__num">2</span>
-        <p>Demandez séparément l’étude du débarras éventuel</p>
+        <p>{en ? 'Ask separately about any clearance you need' : 'Demandez séparément l’étude du débarras éventuel'}</p>
       </div>
       <div class="combo__step reveal" data-i="2">
         <span class="combo__num">3</span>
-        <p>Comparez les <strong>deux devis</strong> et leurs responsabilités</p>
+        <p>{en ? 'Compare the ' : 'Comparez les '}<strong>{en ? 'two quotes' : 'deux devis'}</strong>{en ? ' and who is responsible for what' : ' et leurs responsabilités'}</p>
       </div>
     </div>
 
@@ -42,10 +45,11 @@
         class="combo__btn combo__btn--primary"
         href="https://debarras-carcassonne.fr/contact/?ref=transport-combo"
         rel="noopener"
+        hreflang={en ? 'fr' : undefined}
         data-track="combo_devis_click"
         data-source="combo-transport"
       >
-        Demander le devis débarras →
+        {en ? 'Get a clearance quote →' : 'Demander le devis débarras →'}
       </a>
       <a
         class="combo__btn combo__btn--ghost"
@@ -58,8 +62,8 @@
     </div>
 
     <p class="combo__note">
-      Les prestations, prix, responsabilités et conditions du débarras sont définis
-      par son propre devis. Vérifiez-les avant toute acceptation.
+      {en ? 'The clearance quote sets out its services, prices, responsibilities and terms. Check them before accepting.' : <>Les prestations, prix, responsabilités et conditions du débarras sont définis
+      par son propre devis. Vérifiez-les avant toute acceptation.</>}
     </p>
   </div>
 </section>

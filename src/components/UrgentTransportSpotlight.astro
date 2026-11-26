@@ -1,22 +1,25 @@
 ---
 import { SITE } from '../data/site.config';
+interface Props { lang?: 'fr' | 'en'; }
+const { lang = 'fr' } = Astro.props;
+const en = lang === 'en';
 ---
 
 <section class="urgent-spotlight" aria-labelledby="urgent-spotlight-title">
   <div class="container">
     <div class="urgent-spotlight__shell reveal">
       <div class="urgent-spotlight__copy">
-        <p class="urgent-spotlight__eyebrow"><span aria-hidden="true"></span>Transport local urgent · Carcassonne et environs</p>
-        <h2 id="urgent-spotlight-title">Transport express <em>aujourd’hui ou demain&nbsp;?</em></h2>
+        <p class="urgent-spotlight__eyebrow"><span aria-hidden="true"></span>{en ? 'Urgent local transport · Carcassonne and nearby' : 'Transport local urgent · Carcassonne et environs'}</p>
+        <h2 id="urgent-spotlight-title">{en ? 'Express transport ' : 'Transport express '}<em>{en ? 'today or tomorrow?' : 'aujourd’hui ou demain\u00a0?'}</em></h2>
         <p>
-          Petit déménagement, canapé, électroménager, cartons ou achat à retirer en magasin&nbsp;:
+          {en ? 'Moving a sofa, appliance, boxes or a shop purchase? Call us now. We’ll check our schedule, the vehicle, access and whether we can offer a slot soon.' : <>Petit déménagement, canapé, électroménager, cartons ou achat à retirer en magasin&nbsp;:
           appelez-nous maintenant. Nous vérifions immédiatement le planning, le véhicule, les accès
-          et la faisabilité d’un créneau proche.
+          et la faisabilité d’un créneau proche.</>}
         </p>
-        <div class="urgent-spotlight__tags" aria-label="Demandes étudiées">
-          <span>1 à quelques meubles</span>
-          <span>Retrait en magasin</span>
-          <span>Carcassonne · courte distance</span>
+        <div class="urgent-spotlight__tags" aria-label={en ? 'Types of requests' : 'Demandes étudiées'}>
+          <span>{en ? 'One or a few items' : '1 à quelques meubles'}</span>
+          <span>{en ? 'Shop collection' : 'Retrait en magasin'}</span>
+          <span>{en ? 'Carcassonne · short distance' : 'Carcassonne · courte distance'}</span>
         </div>
       </div>
       <div class="urgent-spotlight__actions">
@@ -25,14 +28,14 @@ import { SITE } from '../data/site.config';
           href={`tel:${SITE.phone}`}
           data-source="urgent-home"
         >
-          <small>Vérifier la disponibilité</small>
-          <strong>Appeler maintenant</strong>
+          <small>{en ? 'Check availability' : 'Vérifier la disponibilité'}</small>
+          <strong>{en ? 'Call now' : 'Appeler maintenant'}</strong>
           <span>{SITE.phoneDisplay}</span>
         </a>
-        <a class="urgent-spotlight__link" href="/transport-urgent-carcassonne/">
-          Voir le service urgent <span aria-hidden="true">→</span>
+        <a class="urgent-spotlight__link" href={en ? '/en/urgent-transport-carcassonne/' : '/transport-urgent-carcassonne/'}>
+          {en ? 'See urgent transport' : 'Voir le service urgent'} <span aria-hidden="true">→</span>
         </a>
-        <p>Créneau et tarif confirmés avant intervention · selon disponibilité et faisabilité.</p>
+        <p>{en ? 'Time and price confirmed before the job, subject to availability and access.' : 'Créneau et tarif confirmés avant intervention · selon disponibilité et faisabilité.'}</p>
       </div>
     </div>
   </div>

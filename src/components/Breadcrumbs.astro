@@ -3,7 +3,8 @@
 // item is the current page (no href).
 import { SITE } from '../data/site.config';
 interface Crumb { name: string; href?: string; }
-const { items } = Astro.props as { items: Crumb[] };
+interface Props { items: Crumb[]; lang?: 'fr' | 'en'; }
+const { items, lang = 'fr' } = Astro.props;
 
 const schema = {
   '@context': 'https://schema.org',
@@ -17,7 +18,7 @@ const schema = {
 };
 ---
 
-<nav class="breadcrumbs" aria-label="Fil d'Ariane">
+<nav class="breadcrumbs" aria-label={lang === 'en' ? 'Breadcrumb' : "Fil d'Ariane"}>
   <div class="container">
     <ol>
       {items.map((it, i) => (

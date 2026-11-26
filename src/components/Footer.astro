@@ -3,24 +3,37 @@ import { SITE } from '../data/site.config';
 import { SERVICES } from '../data/services';
 import { CITIES } from '../data/cities';
 import { ADDITIONAL_SERVICES } from '../data/additionalServices';
+import { EN_SERVICE_NAMES, localizeNavLink } from '../data/i18n';
 
 interface Props { lang?: 'fr' | 'en'; }
 const { lang = 'fr' } = Astro.props;
 const isEnglish = lang === 'en';
-const englishServices = [
-  ['/en/small-removals-carcassonne/', 'Small removals'],
-  ['/en/urgent-transport-carcassonne/', 'Urgent transport today / tomorrow'],
-  ['/en/furniture-delivery-carcassonne/', 'Furniture delivery'],
-  ['/en/local-removals-carcassonne/', 'Local removals'],
-  ['/en/long-distance-removals-france/', 'Long-distance removals'],
-  ['/en/international-removals-carcassonne/', 'International removals'],
-  ['/en/uk-france-removals-carcassonne/', 'UK to Carcassonne removals'],
-  ['/en/piano-moving-carcassonne/', 'Piano and heavy items'],
-  ['/en/pianoplan-stair-climber-carcassonne/', 'Pianoplan stair climber'],
-  ['/en/office-removals-carcassonne/', 'Office removals'],
-  ['/en/packing-service-carcassonne/', 'Packing service'],
-  ['/en/long-distance-logistics-assistance/', 'Bespoke logistics assistance'],
-] as const;
+const navLink = (href: string, fr: string, en: string) => localizeNavLink(href, fr, en, lang);
+const serviceLinks = [
+  navLink('/petit-demenagement/', 'Petit déménagement', 'Small removals'),
+  navLink('/transport-urgent-carcassonne/', 'Transport express aujourd’hui / demain', 'Express transport today / tomorrow'),
+  navLink('/livraison-meubles-magasins-carcassonne/', 'Livraison de meubles depuis un magasin', 'Furniture delivery from shops'),
+  ...SERVICES.map(service => navLink(`/services/${service.slug}/`, service.name, EN_SERVICE_NAMES[service.slug])),
+  navLink('/demenagement-entreprise-carcassonne/', 'Déménagement d’entreprise', 'Office removals'),
+  navLink('/monte-escalier-pianoplan-carcassonne/', 'Monte-escalier Pianoplan', 'Pianoplan stair climber'),
+  navLink('/demenagement-senior-carcassonne/', 'Déménagement senior', 'Senior removals'),
+  navLink('/emballage-cartons-carcassonne/', 'Emballage et cartons', 'Packing and boxes'),
+  navLink('/mission-logistique-longue-distance/', 'Mission logistique sur mesure', 'Bespoke logistics assistance'),
+  navLink('/formules/', 'Nos formules', 'Our service packages'),
+  navLink('/tarifs/', 'Nos tarifs', 'Our prices'),
+  ...ADDITIONAL_SERVICES.map(service => navLink(`/${service.slug}/`, service.title, service.englishTitle)),
+];
+const resourceLinks = [
+  navLink('/outils-demenagement/', 'Tous les outils', 'All moving tools'),
+  navLink('/calculateur-volume-demenagement/', 'Calculateur de volume', 'Volume calculator'),
+  navLink('/calculateur-cartons-demenagement/', 'Calculateur de cartons', 'Box calculator'),
+  navLink('/checklist-demenagement/', 'Checklist interactive', 'Interactive checklist'),
+  navLink('/trajets-groupes/', 'Trajets groupés', 'Shared trips'),
+  navLink('/realisations/', 'Réalisations', 'Our work'),
+  navLink('/nos-garanties/', 'Nos garanties', 'Our safeguards'),
+  navLink('/assurance-demenagement/', 'Assurance et protection', 'Insurance & protection'),
+  navLink('/blog/', 'Blog : conseils et actualités', 'Blog: tips and news'),
+];
 ---
 
 <footer class="site-footer">
@@ -56,28 +69,9 @@ const englishServices = [
       </div>
 
       <div class="reveal" data-i="1">
-        <p class="footer-title">{isEnglish ? 'Services' : 'Services'}</p>
+        <p class="footer-title">Services</p>
         <ul>
-          {isEnglish ? englishServices.map(([href, label]) => (
-            <li><a href={href}>{label}</a></li>
-          )) : (
-            <>
-              <li><a href="/petit-demenagement/">Petit déménagement</a></li>
-              <li><a href="/transport-urgent-carcassonne/">Transport express aujourd’hui / demain</a></li>
-              <li><a href="/livraison-meubles-magasins-carcassonne/">Livraison de meubles depuis un magasin</a></li>
-              {SERVICES.map(s => (
-                <li><a href={`/services/${s.slug}/`}>{s.name}</a></li>
-              ))}
-              <li><a href="/demenagement-entreprise-carcassonne/">Déménagement d’entreprise</a></li>
-              <li><a href="/monte-escalier-pianoplan-carcassonne/">Monte-escalier Pianoplan</a></li>
-              <li><a href="/demenagement-senior-carcassonne/">Déménagement senior</a></li>
-              <li><a href="/emballage-cartons-carcassonne/">Emballage et cartons</a></li>
-              <li><a href="/mission-logistique-longue-distance/">Mission logistique sur mesure</a></li>
-              <li><a href="/formules/">Nos formules</a></li>
-              <li><a href="/tarifs/">Nos tarifs</a></li>
-            </>
-          )}
-          {ADDITIONAL_SERVICES.map(service => <li><a href={isEnglish ? `/en/${service.englishSlug}/` : `/${service.slug}/`}>{isEnglish ? service.englishTitle : service.title}</a></li>)}
+          {serviceLinks.map(item => <li><a href={item.href} hreflang={item.hreflang}>{item.label}</a></li>)}
         </ul>
       </div>
 
@@ -93,28 +87,13 @@ const englishServices = [
       <div class="reveal" data-i="3">
         <p class="footer-title">{isEnglish ? 'Resources' : 'Ressources'}</p>
         <ul>
-          {isEnglish ? (
+          {resourceLinks.map(item => <li><a href={item.href} hreflang={item.hreflang}>{item.label}</a></li>)}
+          {isEnglish && (
             <>
-              <li><a href="/en/moving-to-carcassonne/">Moving to Carcassonne guide</a></li>
+              <li><a href="/en/uk-france-removals-carcassonne/">UK to Carcassonne removals</a></li>
+              <li><a href="/en/moving-from-london-to-carcassonne/">Moving from London</a></li>
               <li><a href="/en/second-home-removals-carcassonne/">Second-home removals</a></li>
-              <li><a href="/en/removal-prices-carcassonne/">Removal price guide</a></li>
-              <li><a href="/en/how-it-works/">How the service works</a></li>
-              <li><a href="/en/why-choose-us/">Business details and safeguards</a></li>
-              <li><a href="/en/removal-insurance/">Insurance & protection</a></li>
-              <li><a href="/en/our-work/">Our work in pictures</a></li>
               <li><a href="/en/quote/">Request a quote</a></li>
-            </>
-          ) : (
-            <>
-              <li><a href="/outils-demenagement/">Tous les outils</a></li>
-              <li><a href="/calculateur-volume-demenagement/">Calculateur de volume</a></li>
-              <li><a href="/calculateur-cartons-demenagement/">Calculateur de cartons</a></li>
-              <li><a href="/checklist-demenagement/">Checklist interactive</a></li>
-              <li><a href="/trajets-groupes/">Trajets groupés</a></li>
-              <li><a href="/realisations/">Réalisations</a></li>
-              <li><a href="/nos-garanties/">Nos garanties</a></li>
-              <li><a href="/assurance-demenagement/">Assurance et protection</a></li>
-              <li><a href="/blog/">Blog : conseils et actualités</a></li>
             </>
           )}
         </ul>

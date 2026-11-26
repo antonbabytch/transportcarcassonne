@@ -1,6 +1,7 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import { readFile } from 'node:fs/promises';
+import { localizeNavLink } from '../src/data/i18n.ts';
 
 const source = path => readFile(new URL(`../${path}`, import.meta.url), 'utf8');
 
@@ -15,7 +16,8 @@ test('both insurance routes have reciprocal language mappings and footer links',
   const routes = await source('src/data/i18n.ts');
   assert.match(routes, /\['\/assurance-demenagement\/', '\/en\/removal-insurance\/'\]/);
   const footer = await source('src/components/Footer.astro');
-  for (const url of ['/assurance-demenagement/', '/en/removal-insurance/']) assert.ok(footer.includes(url));
+  assert.match(footer, /navLink\('\/assurance-demenagement\/'/);
+  assert.equal(localizeNavLink('/assurance-demenagement/', 'Assurance', 'Insurance', 'en').href, '/en/removal-insurance/');
   assert.match(await source('src/pages/assurance-demenagement.astro'), /<InsurancePage/);
   assert.match(await source('src/pages/en/removal-insurance.astro'), /<InsurancePage lang="en"/);
 });

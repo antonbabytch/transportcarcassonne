@@ -1,5 +1,4 @@
-import { ENGLISH_PAGES } from './englishPages';
-import { ADDITIONAL_SERVICES } from './additionalServices';
+import { ADDITIONAL_SERVICES } from './additionalServices.ts';
 
 const ROUTES = [
   ...ADDITIONAL_SERVICES.map(service => [`/${service.slug}/`, `/en/${service.englishSlug}/`] as const),
@@ -37,21 +36,16 @@ const ROUTES = [
   ['/demenagement-capendu/', '/en/removals-capendu/'],
   ['/demenagement-pezens/', '/en/removals-pezens/'],
   ['/demenagement-alzonne/', '/en/removals-alzonne/'],
-  ['/blog/', '/en/moving-to-carcassonne/'],
+  ['/blog/', '/en/blog/'],
 ] as const;
 
 function normalise(pathname: string) {
-  const clean = pathname.split('?')[0].split('#')[0];
-  return clean === '/' ? '/' : `${clean.replace(/^\/+|\/+$/g, '')}/`.replace(/^/, '/');
+  const clean = pathname.split(/[?#]/, 1)[0].replace(/^\/+|\/+$/g, '');
+  return clean ? `/${clean}/` : '/';
 }
 
 const frenchToEnglish = new Map<string, string>(ROUTES.map(([fr, en]) => [fr, en]));
 const englishToFrench = new Map<string, string>(ROUTES.map(([fr, en]) => [en, fr]));
-const englishSwitchToFrench = new Map<string, string>([
-  ...englishToFrench,
-  ...ENGLISH_PAGES.map(page => [`/en/${page.slug}/`, page.frenchPath] as const),
-]);
-
 export function getLanguageAlternates(pathname: string) {
   const path = normalise(pathname);
   if (path.startsWith('/en/')) {
@@ -64,7 +58,25 @@ export function getLanguageAlternates(pathname: string) {
 }
 
 export function getLanguageSwitchPath(pathname: string) {
-  const path = normalise(pathname);
-  if (path.startsWith('/en/')) return englishSwitchToFrench.get(path) || '/';
-  return frenchToEnglish.get(path) || '/en/';
+  const alternatives = getLanguageAlternates(pathname);
+  if (!alternatives) return null;
+  return normalise(pathname).startsWith('/en/') ? alternatives.french : alternatives.english;
 }
+
+export function localizeNavLink(href: string, french: string, english: string, lang: 'fr' | 'en') {
+  const translated = lang === 'en' ? frenchToEnglish.get(normalise(href)) : undefined;
+  return {
+    href: translated ?? href,
+    label: lang === 'fr' ? french : translated ? english : `${english} (FR)`,
+    hreflang: lang === 'en' ? translated ? 'en-GB' : 'fr-FR' : undefined,
+  };
+}
+
+export const EN_SERVICE_NAMES = {
+  'demenagement-local': 'Local removals',
+  'demenagement-longue-distance': 'Long-distance removals',
+  'demenagement-international': 'International removals',
+  'transport-meubles': 'Furniture transport',
+  'transport-piano': 'Piano and heavy items',
+  'evacuation-dechets-metaux': 'Bulky and metal item removal',
+} as const;
